@@ -1,0 +1,13 @@
+/*ACTOR MWeapFrostDropper : RandomSpawner replaces MWeapFrost
+{
+	DropItem "Strucker2"
+}*/
+
+ACTOR Strucker2 : Strucker replaces FWeapAxe
+{
+   Game Hexen
+   Weapon.AmmoGive 30
+   Weapon.AmmoType "BlueMana"
+   Weapon.AmmoUse 1
+   Tag "Strucker"
+}

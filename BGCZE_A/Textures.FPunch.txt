@@ -1,0 +1,155 @@
+// Falcon Punch!!! Yeah I used TEXTURES to color my particle graphics, go ahead
+// and sue me already for being lazy! D: -KeksDose
+
+Sprite "FALCA0B0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Cloud_02", 0, 0
+	{
+		Blend 255, 35, 5, 255
+	}
+}
+
+Sprite "FALCC0D0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Flame_05", 0, 0
+	{
+		Blend 255, 100, 30, 255
+		Rotate 90
+	}
+}
+
+Sprite "FALCE0F0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Flame_05", 0, 0
+	{
+		Blend 170, 50, 20, 255
+		Rotate 180
+	}
+}
+
+Sprite "FALCG0H0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Cloud_02", 0, 0
+	{
+		Blend 255, 40, 10, 255
+		FlipY
+	}
+}
+
+// Flare
+
+Sprite "FALCI0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Flare_09", 0, 0
+	{
+		Blend 255, 160, 40, 255
+	}
+}
+
+// Flying ember thingies
+
+Sprite "FALCJ0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Flare_08", 0, 0
+	{
+		Blend 255, 60, 20, 255
+		Style Add
+	}
+	
+	Patch "Flare_08", 0, 0
+	{
+		Blend 200, 130, 20, 255
+		Style Add
+	}
+}
+
+Sprite "FALCK0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Flare_08", 0, 0
+	{
+		Blend 255, 70, 30, 255
+		Style Add
+	}
+	
+	Patch "Flare_08", 0, 0
+	{
+		Blend 255, 75, 60, 255
+		Style Add
+	}
+}
+
+Sprite "FALCL0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Flare_08", 0, 0
+	{
+		Blend 255, 130, 60, 255
+		Style Add
+	}
+}
+
+// Glow
+
+Sprite "FALCM0R0", 128, 128 // Why R as the mirror sprite? Because jelly-beans, that's why.
+{
+	Offset 64, 64
+	
+	Patch "Cloud_02", 0, 0
+	{
+		Blend 255, 70, 20, 255
+		Style Add
+	}
+}
+
+// Smoke
+
+Sprite "FALCN0O0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Cloud_02", 0, 0
+	{
+		Blend 30, 10, 10, 255
+		Style CopyAlpha
+	}
+	
+	Patch "Cloud_02", 0, 0
+	{
+		Blend 50, 50, 50, 255
+		Style CopyAlpha
+	}
+}
+
+Sprite "FALCP0Q0", 128, 128
+{
+	Offset 64, 64
+	
+	Patch "Cloud_02", 0, 0
+	{
+		Blend 30, 10, 10, 255
+		Style CopyAlpha
+		FlipY
+	}
+	
+	Patch "Cloud_02", 0, 0
+	{
+		Blend 50, 50, 50, 255
+		Style CopyAlpha
+		FlipY
+	}
+}

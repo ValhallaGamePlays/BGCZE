@@ -1,0 +1,115 @@
+/*
+ACTOR ArtiBoostManaDropper : Randomspawner replaces ArtiBoostMana
+{
+	DropItem "HBackpack" 255 15
+	DropItem "PhilosophersTome" 255 1
+}
+*/
+
+ACTOR ArtiBoostManaDropper replaces ArtiBoostMana
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("HBackpack")
+		TNT1 A 0 A_DropItem("PhilosophersTome",1,16)
+		Stop
+	}
+}
+
+
+ACTOR ArtiBoostArmorDropper2 : Randomspawner replaces ArtiBoostArmor
+{
+	DropItem "BasicArmorSpawner" 255 1
+	DropItem "AdvancedArmorSpawner" 255 1
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+ACTOR ArtiPorkDropper : Randomspawner replaces ArtiPork
+{
+	DropItem "GunzerkPot" 255 20
+	DropItem "BerserkPot" 255 20
+	DropItem "WyvernIdol" 255 20
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+//Oh the goods of multiplay.
+ACTOR ArtiHealingRadiusDropper : RandomSpawner replaces ArtiHealingRadius
+{
+	DropItem "GunzerkPot"
+	DropItem "BerserkPot"
+	DropItem "IronLizardPot"
+	DropItem "Diamond"
+	DropItem "WyvernIdol"
+	DropItem "SurgeBringer"
+	DropItem "BoosterBringer"
+	DropItem "StimulantBringer"
+	DropItem "TomeSpawner"
+	DropItem "StratSpawner"
+	DropItem "TibCoreBringer"
+	DropItem "PowersuitBringer" //Hoho.
+}
+ACTOR FlechetteDropper : RandomSpawner replaces ArtiPoisonBag
+{
+	DropItem "TNTAmmo"
+}
+
+ACTOR ArtiDarkServantDropper : TomeSpawner replaces ArtiDarkServant
+{
+	DropItem "TibCoreBringer"
+	/*
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+	DropItem "LifterBringer" 255 1
+	*/
+}
+
+ACTOR ArtiSpeedBootsDropper : RandomSpawner replaces ArtiSpeedBoots
+{
+	DropItem "GunzerkPot" 255 20
+	DropItem "BerserkPot" 255 20
+	DropItem "WyvernIdol" 255 20
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+ACTOR ArtiBlastRadiusDropper : RandomSpawner replaces ArtiBlastRadius
+{
+	DropItem "RejuvPot"
+}
+
+ACTOR ArtiInvulnerability2Dropper : RandomSpawner replaces ArtiInvulnerability2
+{
+	DropItem "IronLizardPot" 255 20
+	//DropItem "EXTREMESphere" 255 2
+	/*
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+	DropItem "LifterBringer" 255 1
+	*/
+}
+
+ACTOR ArtiTeleportOtherDropper : RandomSpawner replaces ArtiTeleportOther
+{
+	DropItem "WizardsEye" 255 20
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+ACTOR FlameThingyReplacer: RandomSpawner replaces CWeapFlame
+{
+	DropItem "Matriarch2" 255 2
+	DropItem "Sovereign2" 255 1
+}

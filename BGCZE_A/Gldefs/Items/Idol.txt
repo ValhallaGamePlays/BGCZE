@@ -1,0 +1,64 @@
+pointlight WYVIDOL1
+{
+    color 0.9 0.1 0.1
+    size 24
+	offset 0 16 0
+}
+
+pulselight WYVIDOL2
+{
+    color 0.5 0.3 0.1
+    size 12
+    secondarySize 42
+	offset 0 16 0
+    interval 1.2
+}
+
+object WyvernIdol
+{
+    frame DIDLA { light WYVIDOL1 }
+    frame DIDL { light WYVIDOL2 }
+}
+
+pulselight WYVFAMILIAR
+{
+    color 0.6 0.1 0.1
+    size 36
+    secondarySize 42
+	offset 0 16 0
+    interval 1.2
+}
+
+pulselight WYVSPAWN
+{
+    color 1.0 0.1 0.1
+    size 128
+    secondarySize 24
+	offset 0 16 0
+    interval 1.2
+}
+
+object CasterFamiliar
+{
+    frame DFAM { light WYVFAMILIAR }
+}
+
+object CasterFamiliar2
+{
+    frame DFAM { light WYVFAMILIAR }
+}
+
+object MeteorfistFamiliar
+{
+    frame DFAM { light WYVFAMILIAR }
+}
+
+object MeteorfistFamiliarReturn
+{
+    frame DFAM { light WYVFAMILIAR }
+}
+
+object CasterFamiliarRelease
+{
+    frame TNT1 { light WYVSPAWN }
+}

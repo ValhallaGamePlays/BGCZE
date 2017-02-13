@@ -1,0 +1,8 @@
+Left a reference here in case I'll feel like actually doing it.
+
+      LGHF A 0 A_Recoil(CallACS("RecoilCheck2", 7.0))
+
+      LGHF A 0 A_SetPitch(CallACS("RecoilCheck1", 2.0, pitch, 1))
+      LGHF A 0 A_SetAngle(CallACS("RecoilCheck1",2.0, angle, 1))
+
+      LGHF A 1 Bright A_ZoomFactor(CallACS("RecoilCheck3",0.99))

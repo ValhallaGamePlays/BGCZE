@@ -1,0 +1,145 @@
+//Take note this ain't updated, because it isn't currently used anywhere now.
+
+ACTOR GuncastChicken : Chicken Replaces Chicken
+{
+	DropItem "Diamond", 2 //Yes, that's right. There is a rough chance that you'll get a diamond from a chicken. Cool, ain't it?
+	States
+	{
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+	TNT1 A 0 A_FaceTarget
+	TNT1 A 0 A_ChangeVelocity(frandom(-10.0,-12.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+	Goto Pain
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+	TNT1 A 0 A_FaceTarget
+	TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+	Goto Pain
+	Death.SuperCloseCombat:
+	TNT1 A 0 A_FaceTarget
+	TNT1 A 0 A_ChangeVelocity(frandom(-10.0,-12.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+	Goto Death
+	Death.SuperShoelaces:
+	TNT1 A 0 A_FaceTarget
+	TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+	Goto Death
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	TNT1 A 1 A_FaceTarget
+	TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_Pain
+	TNT1 A 0 A_PlaySound("Midas/Touched")
+	TNT1 A 0 A_SpawnItemEx("Midas_Statue_Chicken",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS) //SXF_TRANSFERSPRITEFRAME|SXF_SETMASTER)
+	Stop
+	Death.SuperMidasCloseCombat:
+	TNT1 A 0 A_FaceTarget
+	TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_Pain
+	TNT1 A 0 A_PlaySound("Midas/Touched")
+	TNT1 A 0 A_SpawnItemEx("Midas_Statue_Chicken",0,0,0,frandom(-10.0,-12.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+	TNT1 A 1 A_KillChildren
+	stop
+	Death.SuperMidasShoelaces:
+	TNT1 A 0 A_FaceTarget
+	TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_Pain
+	TNT1 A 0 A_PlaySound("Midas/Touched")
+	TNT1 A 0 A_SpawnItemEx("Midas_Statue_Chicken",0,0,0,frandom(-15.0,-20.0),0,frandom(10.0,15.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+	TNT1 A 1 A_KillChildren
+	Stop
+	Death.Acid:
+    TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_SpawnItemEx("HereticChickenGib")
+	Stop
+	GenericFreezeDeath:
+	"####" "#" 5 A_GenericFreezeDeath
+	"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+	"----" A 0 A_Jump(256,2)
+	"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	"----" A 1 A_FreezeDeathChunks
+	Wait
+	Death:
+	CHKN E 6 A_Scream
+	CHKN F 6 A_Feathers
+	CHKN G 6
+	CHKN H 6 A_NoBlocking
+	CHKN IJK 6
+	Looplet:
+	CHKN L 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+	CHKN L 1 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+	Loop
+	CorpseBlastA:
+	TNT1 A 0 A_SpawnItemEx("ChickenBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Stop
+	CorpseBlastB:
+	TNT1 A 0 A_SpawnItemEx("ChickenBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	TNT1 A 0 A_TakeInventory("CorpseTrigger2",1)
+	Goto Looplet
+	}
+}
+
+ACTOR Midas_Statue_Chicken : Midas_Statue
+{
+	Radius 9
+	Height 22
+	Health 10
+	States
+	{
+	Spawn:
+		CHKN E 1
+		Goto Super::Cycle
+	Death:
+	Crash:
+		TNT1 A 0 A_SetUserVar("User_GoldRange",6)
+		TNT1 A 0 A_SetUserVar("User_GoldAmount",4)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter1",4)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter2",0)
+		Goto Super::DeathInit
+	MidasReward:
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+		TNT1 A 0 A_GiveToTarget("Dosh",10)
+		Stop
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,10)
+		Stop
+	}
+}
+
+ACTOR ChickenBlast : BlastShared
+{
+	States
+	{
+	Spawn:
+		 TNT1 A 0 NoDelay A_RearrangePointers(AAPTR_DEFAULT, AAPTR_TARGET, AAPTR_DEFAULT) 
+		 TNT1 A 0 A_Explode(50,92,0)
+		 TNT1 A 0 A_PlaySound("Corpseblast/Hit")
+		 TNT1 AAAA 0 A_CustomMissile ("XDeath1", 6, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 6, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Feather", 6, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 bright A_CustomMissile ("SuperGoreSpawner", 6, 0, random (0, 360), 2, random (50, 130))
+		 Stop
+	 }
+}
+
+ACTOR HereticChickenGib : GibShared
+{
+	States
+	{
+		Spawn:
+		CHKN E 1
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 A_SetScale(ScaleX+frandom(0.01,0.025))
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		TNT1 AAAA 0 A_CustomMissile ("XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Feather", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 bright A_CustomMissile ("SuperGoreSpawner", 32, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Gravity
+		CHKN F 6 
+		CHKN G 6
+		CHKN H 6 A_NoBlocking
+		CHKN IJK 6
+		TNT1 A 0 A_CustomMissile ("GiantBloodSpot", 4, 0, random (0, 360), 2, random (0, 160))
+		CHKN L -1
+		Stop
+	}
+}

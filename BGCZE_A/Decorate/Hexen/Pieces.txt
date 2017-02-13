@@ -1,0 +1,239 @@
+//Fighter weapon assembly
+ACTOR DreadfulPiece : WeaponPiece
+{
+  Inventory.PickupSound "misc/w_pkup"
+  WeaponPiece.Weapon "Old Dreadful2"
+  +FLOATBOB
+  +NOGRAVITY
+}
+
+ACTOR DreadfulPiece1 : DreadfulPiece replaces FWeaponPiece1
+{
+  WeaponPiece.Number 1
+  Inventory.PickupMessage "Obtained Old Dreadful's gun barrel!"
+  States
+  {
+  Spawn:
+	BFGP A 0 NoDelay //A_JumpIf(CallACS("ParticleChoke"), 2)
+    BFGP A 0 A_SpawnItemEx("GreenParticle",frandom(18.0,-18.0),frandom(18.0,-18.0),22+frandom(24.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	BFGP A 1 Bright
+	Loop
+  } 
+}
+
+ACTOR DreadfulPiece2 : DreadfulPiece replaces FWeaponPiece2
+{
+  WeaponPiece.Number 2
+  Inventory.PickupMessage "Obtained Old Dreadful's crystal capacitor!"
+  States
+  {
+  Spawn:
+	BFGP B 0 NoDelay //A_JumpIf(CallACS("ParticleChoke"), 2)
+    BFGP B 0 A_SpawnItemEx("GreenParticle",frandom(18.0,-18.0),frandom(18.0,-18.0),16+frandom(24.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	BFGP B 1 Bright
+	Loop
+  } 
+}
+
+ACTOR DreadfulPiece3 : DreadfulPiece replaces FWeaponPiece3
+{
+  WeaponPiece.Number 3
+  Inventory.PickupMessage "Obtained Old Dreadful's buttstock!"
+  States
+  {
+  Spawn:
+	BFGP C 0 NoDelay //A_JumpIf(CallACS("ParticleChoke"), 2)
+    BFGP C 0 A_SpawnItemEx("GreenParticle",frandom(18.0,-18.0),frandom(18.0,-18.0),18+frandom(24.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	BFGP C 1 Bright
+	Loop
+  } 
+}
+
+//Mage weapon assembly
+Actor PowersuitAssembled : Weapon
+{
+	Health 3
+	Inventory.PickupSound "Bishop/Pickup"
+	Inventory.PickupMessage "You have obtained the ''Bishop'' Battle Armored Dragon Assault Strike System! Ooooh boy."
+	Weapon.AmmoType1 "BlueMana"
+	Weapon.AmmoType2 "GreenMana"
+	Weapon.AmmoGive1 50
+	Weapon.AmmoGive2 50
+	States
+	{
+	Spawn:
+		SUIT B -1
+		Stop
+	Fire:
+		TNT1 A 0
+		Stop
+	Select:
+		TNT1 AAAAAAAAAAAAA 0 A_Raise
+	Ready:
+		TNT1 A 0 A_JumpIf(CallACS("Mighty Morphin' Power Dragon") == FALSE, "RemoveThyself")
+		TNT1 A 0 A_JumpIfInventory("PowersuitItem",0,"Dosh")
+		//TNT1 A 0 A_JumpIfInventory("PowersuitItem2",0,"Dosh")
+		TNT1 A 0 A_Print("\c[Red]Powersuit's additional instructions:\n\c[white]Reload toggles the arm cannons mode.\n\c[white]Casting a spell causes to launch an airstrike.\n\c[white]The rest is self-explanatory. Have fun!", 5)
+		TNT1 A 0 A_JumpIfInventory("PowersuitItem",1,"NoAutoactivation")
+		TNT1 A 0 A_GiveInventory("PowersuitItemAutoactivate",1)
+		TNT1 A 0 A_TakeInventory("PowersuitAssembled",1)
+		Goto Deselect
+	Dosh:
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),3)
+		TNT1 A 0 A_GiveToTarget("Dosh",20000)	//It's worth its slack.
+		TNT1 A 0 A_TakeInventory("PowersuitAssembled",1)
+		Goto Deselect
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,20000)
+		TNT1 A 0 A_TakeInventory("PowersuitAssembled",1)
+		Goto Deselect
+	RemoveThyself:
+		TNT1 A 0 A_TakeInventory("PowersuitAssembled",1)
+		Goto Deselect
+	NoAutoactivation:
+		TNT1 A 0 A_GiveInventory("PowersuitItem",1)
+		TNT1 A 0 A_TakeInventory("PowersuitAssembled",1)
+		Stop
+	Deselect:
+		TNT1 AAAAAAAAAAAAA 0 A_Lower
+		Loop
+	}
+}
+		
+/*Actor PowersuitPiece1 : WeaponPiece replaces MWeaponPiece1
+{
+	WeaponPiece.Weapon "PowersuitAssembled"
+	WeaponPiece.Number 1
+	Inventory.PickupSound "Bishop/Pickup"
+	Inventory.PickupMessage "Obtained ''Bishop'' B.A.D.A.S.S. lower body part."
+	Scale 0.65
+	+FLOATBOB
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+		SUIT C 0 NoDelay //A_JumpIf(CallACS("ParticleChoke"), 2)
+		SUIT C 0 A_SpawnItemEx("RedParticle",frandom(12.0,-12.0),frandom(12.0,-12.0),12+frandom(24.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		SUIT C 1 Bright
+		Loop
+	}
+}
+
+Actor PowersuitPiece2 : PowersuitPiece1 replaces MWeaponPiece2
+{
+	WeaponPiece.Number 2
+	Inventory.PickupMessage "Obtained ''Bishop'' B.A.D.A.S.S. upper body part."
+	States
+	{
+	Spawn:
+		SUIT D 0 NoDelay //A_JumpIf(CallACS("ParticleChoke"), 2)
+		SUIT D 0 A_SpawnItemEx("RedParticle",frandom(18.0,-18.0),frandom(18.0,-18.0),12+frandom(48.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		SUIT D 1 Bright
+		Loop
+	}
+}
+
+Actor PowersuitPiece3 : PowersuitPiece1 replaces MWeaponPiece3
+{
+	WeaponPiece.Number 3
+	Inventory.PickupMessage "Obtained ''Bishop'' B.A.D.A.S.S. mask."
+	States
+	{
+	Spawn:
+		SUIT E 0 NoDelay //A_JumpIf(CallACS("ParticleChoke"), 2)
+		SUIT E 0 A_SpawnItemEx("RedParticle",frandom(6.0,-6.0),frandom(6.0,-6.0),24+frandom(8.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		SUIT E 1 Bright
+		Loop
+	}
+}*/
+
+Actor PowersuitPiece1 : CustomInventory replaces MWeaponPiece1
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 999
+	Inventory.PickupSound "Bishop/Pickup"
+	Inventory.PickupMessage "Obtained ''Bishop'' B.A.D.A.S.S. lower body part."
+	Scale 0.65
+	+FLOATBOB
+	+NOGRAVITY
+	+INVENTORY.AUTOACTIVATE
+	//+INVENTORY.ALWAYSPICKUP
+	-INVBAR
+	States
+	{
+	Spawn:
+		SUIT C 0 NoDelay //A_JumpIf(CallACS("ParticleChoke"), 2)
+		SUIT C 0 A_SpawnItemEx("RedParticle",frandom(12.0,-12.0),frandom(12.0,-12.0),12+frandom(24.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		SUIT C 1 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("BlueMana",50)
+		TNT1 A 0 A_GiveInventory("GreenMana",50)
+		Stop
+	Use:
+		TNT1 A 0 A_JumpIf(CountInv("PowersuitPiece1") && CountInv("PowersuitPiece2") && CountInv("PowersuitPiece3"), "AssembleTheSuit")
+		Fail
+	AssembleTheSuit:
+		TNT1 A 0 A_TakeInventory("PowersuitPiece1",1)
+		TNT1 A 0 A_TakeInventory("PowersuitPiece2",1)
+		TNT1 A 0 A_TakeInventory("PowersuitPiece3",1)
+		TNT1 A 0 A_JumpIfInventory("PowersuitItem",1,"Dosh")
+		TNT1 A 0 A_GiveInventory("PowersuitBringer",1)
+		Stop
+	Dosh:
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),3)
+		TNT1 A 0 A_GiveToTarget("Dosh",20000)	//It's worth its slack.
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,20000)
+		TNT1 A 0
+		Stop
+	}
+}
+
+Actor PowersuitPiece2 : PowersuitPiece1 replaces MWeaponPiece2
+{
+	Inventory.PickupMessage "Obtained ''Bishop'' B.A.D.A.S.S. upper body part."
+	States
+	{
+	Spawn:
+		SUIT D 0 NoDelay //A_JumpIf(CallACS("ParticleChoke"), 2)
+		SUIT D 0 A_SpawnItemEx("RedParticle",frandom(18.0,-18.0),frandom(18.0,-18.0),12+frandom(48.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		SUIT D 1 Bright
+		Loop
+	}
+}
+
+Actor PowersuitPiece3 : PowersuitPiece1 replaces MWeaponPiece3
+{
+	Inventory.PickupMessage "Obtained ''Bishop'' B.A.D.A.S.S. mask."
+	States
+	{
+	Spawn:
+		SUIT E 0 NoDelay //A_JumpIf(CallACS("ParticleChoke"), 2)
+		SUIT E 0 A_SpawnItemEx("RedParticle",frandom(6.0,-6.0),frandom(6.0,-6.0),24+frandom(8.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		SUIT E 1 Bright
+		Loop
+	}
+}
+
+
+//Cleric weapon assembly
+ACTOR CWeaponPiece1Dropper : Randomspawner replaces CWeaponPiece1
+{
+	DropItem "BerserkPot" 255 1
+	DropItem "GunzerkPot" 255 1
+	DropItem "Diamond" 255 1
+}
+
+ACTOR CWeaponPiece2Dropper : Randomspawner replaces CWeaponPiece2
+{
+	DropItem "BerserkPot" 255 1
+	DropItem "GunzerkPot" 255 1
+	DropItem "Diamond" 255 1
+}
+
+ACTOR CWeaponPiece3Dropper : Randomspawner replaces CWeaponPiece3
+{
+	DropItem "BerserkPot" 255 1
+	DropItem "GunzerkPot" 255 1
+	DropItem "Diamond" 255 1
+}

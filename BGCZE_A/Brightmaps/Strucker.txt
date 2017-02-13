@@ -1,0 +1,225 @@
+//Strucker
+brightmap sprite STRGA0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Recoil
+brightmap sprite STRRA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRRB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRRC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRRD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTE0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTJ0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTK0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTL0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTM0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTN0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRTO0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Kick
+brightmap sprite STRKA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRKB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRKC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRKD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRKE0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRKF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRKG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRKH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRKI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRKZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Midas Kick
+brightmap sprite STMKA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STMKB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STMKC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STMKD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STMKE0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STMKF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STMKG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STMKH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STMKI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STMKZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Gunzerk Kick
+brightmap sprite 1TRKA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRKB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRKC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRKD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRKE0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRKF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRKG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRKH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRKI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRKZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Gunzerk Midas Kick
+brightmap sprite 1TMKA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TMKB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TMKC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TMKD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TMKE0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TMKF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TMKG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TMKH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TMKI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TMKZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+
+//Cast
+brightmap sprite STRMA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRME0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMJ0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMK0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRML0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMM0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMN0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRMZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Meteor Fist
+brightmap sprite ST1GA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST1GB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST1GC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST1GD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST1GZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Gunzerk-Both
+brightmap sprite 3TRGA0 { map "Bmaps/Strucker/STRBC.png" }
+
+//Gunzerk-Right
+brightmap sprite 1TRGA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRRA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRRB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRRC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRRD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTE0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTJ0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTK0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTL0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTM0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTN0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite 1TRTO0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Gunzerk-Left
+brightmap sprite 2TRGA0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRRA0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRRB0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRRC0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRRD0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTA0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTB0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTC0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTD0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTE0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTF0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTG0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTH0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTI0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTJ0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTK0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTL0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTM0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTN0 { map "Bmaps/Strucker/STRBB.png" }
+brightmap sprite 2TRTO0 { map "Bmaps/Strucker/STRBB.png" }
+
+//Stratocaster
+brightmap sprite STRBA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBE0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBJ0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBK0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBL0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBM0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBN0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBO0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBP0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBQ0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBR0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBT0 { map "Bmaps/Strucker/STRBA.png" }
+					//S FIRE
+brightmap sprite STRBU0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBV0 { map "Bmaps/Strucker/STRBA.png" }
+					//W FIRE
+brightmap sprite STRBX0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBY0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STRBZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+brightmap sprite ST2BA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST2BB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST2BC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST2BD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST2BE0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Strat-Kick
+brightmap sprite STBKA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBKB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBKC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBKD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBKE0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBKF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBKG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBKH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBKI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBKZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Strat-Kick-Midas
+brightmap sprite SBMKA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite SBMKB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite SBMKC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite SBMKD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite SBMKE0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite SBMKF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite SBMKG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite SBMKH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite SBMKI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite SBMKZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Strat-Cast
+brightmap sprite STBMA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBME0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMF0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMG0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMH0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMI0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMJ0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMK0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBML0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMM0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMN0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite STBMZ0 { map "Bmaps/Strucker/STRBA.png" }
+
+//Meteor Strat Fist
+brightmap sprite ST2GA0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST2GB0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST2GC0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST2GD0 { map "Bmaps/Strucker/STRBA.png" }
+brightmap sprite ST2GZ0 { map "Bmaps/Strucker/STRBA.png" }

@@ -1,0 +1,60 @@
+object IronblastProjectile
+{
+    frame TNT1A { light IRONFLIGHT }
+}
+
+object IronblastFX //Same reason here.
+{
+    frame TNT1A { light IRONIMPACT }
+}
+
+pointlight IRONFLIGHT
+{
+    color 1.0 0.7 0.1
+    size 32
+}
+
+pulselight IRONIMPACT
+{
+    color 1.0 0.7 0.1
+    size 64
+    secondarySize 0
+    interval 1.3
+}
+
+pulselight IRONOMINOUS
+{
+    color 0.5 0.5 0.5
+    size 32
+    secondarySize 48
+    interval 1.6
+    //dontlightself 1
+	subtractive 1
+}
+
+pointlight IRONGLOW
+{
+    color 1.0 0.7 0.1
+    size 96
+}
+
+pointlight IRONOUTTAJUICE
+{
+    color 0.6 0.1 0.1
+    size 36
+}
+
+
+object FloatingIronblast
+{
+    frame PIRN { light IRONOMINOUS }
+    frame PIRNE { light IRONGLOW }
+    frame PIRNF { light IRONOUTTAJUICE }
+}
+
+object FloatingIronblast2
+{
+    frame PIRN { light IRONOMINOUS }
+    frame PIRNE { light IRONGLOW }
+    frame PIRNF { light IRONOUTTAJUICE }
+}

@@ -1,0 +1,51 @@
+ACTOR CasterPoisonBag : ArtiPoisonBag3
+{
+  Inventory.PickupFlash "none"
+  Inventory.PickupSound "Pot/Pickup"
+  Inventory.UseSound "Flechette/Throw"
+  Inventory.MaxAmount 25
+  Inventory.PickupMessage "Obtained an explosive flask."
+  Tag "Bottle of C4-orium"
+  -FANCYPICKUPSOUND
+  States
+  {
+  Spawn:
+    PSBG A 1 A_SpawnItemEx("GreenParticle",frandom(6.0,-6.0),frandom(6.0,-6.0),16+frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+  }
+}
+
+ACTOR CasterBomb : ThrowingBomb replaces ThrowingBomb
+{
+  DeathSound ""
+  DamageType "Matriarch"
+  Speed 20
+  +FOILINVUL
+  +DONTREFLECT
+  States
+  {
+  Spawn:
+    THRW A 4 A_CheckThrowBomb
+    THRW BCDE 3 A_CheckThrowBomb
+    THRW F 3 A_CheckThrowBomb2
+    Loop
+    THRW G 6 A_CheckThrowBomb
+    THRW F 4 A_CheckThrowBomb
+    THRW H 6 A_CheckThrowBomb
+    THRW F 4 A_CheckThrowBomb
+    THRW G 6 A_CheckThrowBomb
+    THRW F 3 A_CheckThrowBomb
+    Wait
+  Death:
+    TNT1 A 0 A_Quake (6, 25, 0, 256, none)
+    TNT1 A 0 A_Quake (2, 25, 0, 384, none)
+    TNT1 A 0 A_PlaySound("Matriarch/Hit",5,0.8)
+    TNT1 A 0 A_PlaySound("Matriarch/Add",6,0.8)
+    TNT1 A 0 A_Explode((180*random(2,3)),226)
+    TNT1 A 0 A_AlertMonsters
+    TNT1 A 0 A_SpawnItemEx("Matriarch_Main",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    TNT1 A 0 A_SpawnItemEx("MatriarchFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    TNT1 A 15 A_Quake(3,12,0,512,"none")
+    Stop
+  }
+}

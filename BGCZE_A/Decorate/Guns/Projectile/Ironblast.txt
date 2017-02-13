@@ -1,0 +1,327 @@
+ACTOR IronblastProjectile : FastProjectile
+{
+	Damage (16*frandom(2.0,3.0))
+	Radius 5
+	Height 3
+	Speed 200
+	MissileHeight 3
+	MissileType "IronblastTrailer"
+	Decal "LonghornChip"
+	ProjectileKickback 300
+	+NOEXTREMEDEATH
+	+DONTREFLECT
+	+DONTBLAST
+	-RIPPER
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_ScaleVelocity(frandom(0.9,1.1))
+		TNT1 A 0 A_SetScale(frandom(0.07,0.05))
+		TNT1 A 1 ThrustThingZ(0,random(10,14),0,1)
+	Looplet:
+		TNT1 A 1 Bright ThrustThingZ(0,frandom(-5.0,-3.0),0,1)
+		Loop
+	Death:
+		TNT1 A 0 A_PlaySound("Ironblast/Hit",4,0.2)
+		TNT1 A 0 A_Explode(10,36,0)
+		TNT1 A 0 A_SpawnItemEx("IronblastFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 1 A_SpawnItemEx("IronblastImpact",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		Stop
+	}
+}
+
+//Basis
+
+ACTOR IronblastBasis
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+	Alpha 0
+	Scale 0
+}
+
+ACTOR IronblastSpawnerBasis
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOTONAUTOMAP
+}
+
+//GLDEF
+
+ACTOR IronblastFX : IronblastSpawnerBasis
+{
+	States
+	{
+	Spawn:
+	TNT1 A 25
+	Stop
+	}
+}
+
+//Partecleeeeees
+
+ACTOR IronblastFlare : IronblastBasis
+{
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_FadeIn(frandom(0.9,0.99))
+		TNT1 A 0 A_SetScale(frandom(0.15,0.2))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+		FLFR A 0
+		Goto MolotovVodkail
+	SpriteB:
+		FLFR B 0
+		Goto MolotovVodkail
+	SpriteC:
+		FLFR C 0
+		Goto MolotovVodkail
+	SpriteD:
+		FLFR D 0
+	MolotovVodkail:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.03,0.04))
+		"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.05))
+		Loop
+	}
+}
+
+ACTOR IronblastImpactFlare : IronblastBasis
+{
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_SetScale(frandom(0.03,0.045))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+		FLFR A 0
+		Goto PierdolStudiaZostanStudentem
+	SpriteB:
+		FLFR B 0
+		Goto PierdolStudiaZostanStudentem
+	SpriteC:
+		FLFR C 0
+		Goto PierdolStudiaZostanStudentem
+	SpriteD:
+		FLFR D 0
+	PierdolStudiaZostanStudentem:
+		"####" "#" 1 Bright A_JumpIf(Alpha >= 0.95, "MojaBabciaLepiejOgarniaDecorateNizTy")
+		"####" "#" 0 A_FadeIn(frandom(0.15,0.2))
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.075,0.05))
+		Loop
+	MojaBabciaLepiejOgarniaDecorateNizTy:
+		"####" "#" 1 Bright A_SetScale(ScaleX - frandom(0.005,0.01))
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "NULL")
+		"####" "#" 0 A_FadeOut(frandom(0.05,0.075))
+		Loop
+	}
+}
+
+ACTOR IronblastTrail : IronblastBasis
+{
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_SetScale(frandom(0.03,0.045),ScaleX)
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD",
+		"SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+		FLTR A 0
+		Goto CornishGaben
+	SpriteB:
+		FLTR B 0
+		Goto CornishGaben
+	SpriteC:
+		FLTR C 0
+		Goto CornishGaben
+	SpriteD:
+		FLTR D 0
+		Goto CornishGaben
+	SpriteE:
+		FLTR E 0
+		Goto CornishGaben
+	SpriteF:
+		FLTR F 0
+		Goto CornishGaben
+	SpriteG:
+		FLTR G 0
+		Goto CornishGaben
+	SpriteH:
+		FLTR H 0
+	CornishGaben:
+		"####" "#" 1 Bright A_JumpIf(Alpha >= 0.7, "SergeantHastagaspacho")
+		"####" "#" 0 A_FadeIn(frandom(0.05,0.075))
+		"####" "#" 0 A_ChangeVelocity(Velx * 0.975, Vely * 0.975, Velz * 1.05,
+		CVF_REPLACE)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.0015,0.0025),ScaleX)
+		Loop
+	SergeantHastagaspacho:
+		"####" "###" 1 Bright A_SetScale(ScaleX + frandom(0.0015,0.0025),ScaleX)
+		"####" "#" 0 A_ChangeVelocity(Velx * 0.975, Vely * 0.975, Velz * 1.05,
+		CVF_REPLACE)
+		"####" "#" 0 A_Jump(192,"GoingBackToMacDonalds")
+		Loop
+	GoingBackToMacDonalds:
+		"####" "#" 1 Bright A_SetScale(ScaleX + frandom(0.0015,0.0025),ScaleX)
+		"####" "#" 0 A_ChangeVelocity(Velx * 0.975, Vely * 0.975, Velz * 1.05,
+		CVF_REPLACE)
+		"####" "#" 0 A_FadeOut(frandom(0.05,0.075))
+		Loop
+	}
+}
+
+ACTOR IronblastParticle : IronblastBasis
+{
+	States
+	{
+	Spawn:
+		TNT1 AA 0 //A_SetScale(frandom(0.015,0.035),ScaleX)
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD",
+		"SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+		FLEM A 0
+		Goto CornishGaben
+	SpriteB:
+		FLEM B 0
+		Goto CornishGaben
+	SpriteC:
+		FLEM C 0
+		Goto CornishGaben
+	SpriteD:
+		FLEM D 0
+		Goto CornishGaben
+	SpriteE:
+		FLEM E 0
+		Goto CornishGaben
+	SpriteF:
+		FLEM F 0
+		Goto CornishGaben
+	SpriteG:
+		FLEM G 0
+		Goto CornishGaben
+	SpriteH:
+		FLEM H 0
+	CornishGaben:
+		"####" "#" 1 Bright A_JumpIf(Alpha >= 0.95, "FelisNavidad")
+		"####" "#" 0 A_FadeIn(frandom(0.05,0.075))
+		"####" "#" 0 A_ChangeVelocity(0,0,frandom(-0.1,-0.15),0)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.0015,0.0025),ScaleX)
+		Loop
+	FelisNavidad:
+		"####" "###" 1 Bright
+		"####" "#" 0 A_ChangeVelocity(0,0,frandom(-0.1,-0.15),0)
+		"####" "#" 0 A_Jump(192,"HastaLaVista")
+		Loop
+	HastaLaVista:
+		"####" "#" 1 Bright A_SetScale(ScaleX - frandom(0.0015,0.0025),ScaleX)
+		"####" "#" 0 A_ChangeVelocity(0,0,frandom(-0.1,-0.15),0)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_FadeOut(frandom(0.1,0.05))
+		Loop
+	}
+}
+
+ACTOR IronblastSmokeTrail : IronblastBasis
+{
+	Renderstyle Translucent
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_SetScale(frandom(0.03,0.045),ScaleX)
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD",
+		"SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+		DYMI I 0
+		Goto CornishGaben
+	SpriteB:
+		DYMI J 0
+		Goto CornishGaben
+	SpriteC:
+		DYMI K 0
+		Goto CornishGaben
+	SpriteD:
+		DYMI L 0
+		Goto CornishGaben
+	SpriteE:
+		DYMI E 0
+		Goto CornishGaben
+	SpriteF:
+		DYMI F 0
+		Goto CornishGaben
+	SpriteG:
+		DYMI G 0
+		Goto CornishGaben
+	SpriteH:
+		DYMI H 0
+	CornishGaben:
+		"####" "#" 1 A_JumpIf(Alpha >= 0.35, "Must.Think.About.Mustard")
+		"####" "#" 0 A_FadeIn(frandom(0.05,0.075))
+		"####" "#" 0 A_ChangeVelocity(Velx * 0.975, Vely * 0.975, Velz * 1.05,
+		CVF_REPLACE)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.0015,0.0025),ScaleX)
+		Loop
+	Must.Think.About.Mustard:
+		"####" "###" 1 A_SetScale(ScaleX + frandom(0.0015,0.0025),ScaleX)
+		"####" "#" 0 A_ChangeVelocity(Velx * 0.975, Vely * 0.975, Velz * 1.05,
+		CVF_REPLACE)
+		"####" "#" 0 A_Jump(192,"WeHaveNoMoniesHere")
+		Loop
+	WeHaveNoMoniesHere:
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.0025),ScaleX)
+		"####" "#" 0 A_ChangeVelocity(Velx * 0.975, Vely * 0.975, Velz * 1.05,
+		CVF_REPLACE)
+		"####" "#" 0 A_FadeOut(frandom(0.0175,0.015))
+		Loop
+	}
+}
+
+//Spawners
+
+ACTOR IronblastTrailer : IronblastSpawnerBasis
+{
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_SpawnItemEx("IronblastFlare",frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5),0,0,0,0,SXF_CLIENTSIDE,50)
+		TNT1 A 0 A_SpawnItemEx("IronblastParticle",frandom(-0.5,0.5),frandom(-0.5,0.5),
+		frandom(-0.5,0.5),frandom(0.4,0.6),frandom(0.4,0.6),frandom(0.9,1.4),
+		frandom(270.0,135.0),SXF_CLIENTSIDE,220)
+		//TNT1 A 0 A_JumpIf(GetCvar("GC_ParticleChoke") == true,"NULL")
+		TNT1 A random(5,7) A_SpawnItemEx("IronblastTrail",frandom(-0.5,0.5),frandom(-0.5,0.5),
+		frandom(-0.5,0.5),frandom(0.1,0.2),frandom(0.1,0.2),frandom(0.1,0.2),
+		frandom(270.0,135.0),SXF_CLIENTSIDE,170)
+		TNT1 A 1 A_SpawnItemEx("IronblastSmokeTrail",frandom(-0.5,0.5),frandom(-0.5,0.5),
+		frandom(-0.5,0.5),frandom(0.1,0.15),frandom(0.1,0.15),frandom(0.1,0.2),
+		frandom(270.0,135.0),SXF_CLIENTSIDE,170)
+		Stop
+	}
+}
+
+ACTOR IronblastImpact : IronblastSpawnerBasis
+{
+	var int user_count;
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_SetUserVar("user_count", 3)
+		TNT1 A 0 A_SpawnItemEx("IronblastImpactFlare",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+	CapotaineVodkaSupreme:
+		TNT1 AA 0 A_SpawnItemEx("IronblastParticle",frandom(-1.5,1.5),frandom(-1.5,1.5),
+		frandom(-1.5,1.5),frandom(1.0,1.6),frandom(1.0,1.6),frandom(2.0,2.6),
+		frandom(360.0,0.0),SXF_CLIENTSIDE,100)
+		TNT1 AAA 0 A_SpawnItemEx("IronblastTrail",frandom(-1.5,0.5),frandom(-1.5,1.5),
+		frandom(-1.5,1.5),frandom(0.4,0.2),frandom(0.4,0.2),frandom(0.4,0.2),
+		frandom(360.0,0.0),SXF_CLIENTSIDE,80)
+		TNT1 AA 0 A_SpawnItemEx("IronblastSmokeTrail",frandom(-1.5,1.5),frandom(-1.5,1.5),
+		frandom(-1.5,1.5),frandom(0.3,0.15),frandom(0.3,0.15),frandom(0.4,0.2),
+		frandom(360.0,0.0),SXF_CLIENTSIDE,80)
+		TNT1 A 0 A_SetUserVar("user_count", user_count - 1)
+		TNT1 A random(1,2) A_JumpIf(user_count <= 0, "NULL")
+		Loop
+	}
+}

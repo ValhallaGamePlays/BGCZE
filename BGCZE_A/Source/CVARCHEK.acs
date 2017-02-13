@@ -1,0 +1,118 @@
+// Individual scripts for checking this crap? Argh. Oh well, at least we have CVARs!
+// By Zhs2.
+
+#library "CheckingThoseCVARs"
+#include "zcommon.acs"
+
+#libdefine MAX_PLAYERS 8
+
+script "ArmorCheck" (void)
+{
+	SetResultValue(GetCVar("GC_RestrictiveArmorBehavior"));
+}
+
+script "DynamiteCheck" (void)
+{
+	SetActivatorToTarget(0); // The projectile has no access to CVars!
+	SetResultValue(GetUserCVar(PlayerNumber(), "GC_ShootableTNT"));
+}
+
+ //But... but I made sucha good crosshairs... ;-;
+script "CrosshairMode" (void)
+{
+	SetResultValue(GetCVar("GC_Crosshair"));
+}
+
+ //POW! DOUBLE POW! HAHA!
+script "GunslingerMode" (void)
+{
+	SetResultValue(GetCVar("GC_Gunslinger"));
+}
+
+
+ //WOP THAT WAD ON THE COUNTER!
+script "LodsemoneMode" (void)
+{
+	SetResultValue(GetCVar("GC_Loadsamoney"));
+}
+
+//It's everyone's money, and they need it now!
+script "MoneyShareCheck" (void)
+{
+	SetResultValue(GetCVar("GC_MoneyShare"));
+}
+
+//SHADDAP YOU GODDAMN BURDS! - Bill.
+script "MuteShotgun" (void)
+{
+	SetResultValue(GetCVar("GC_MuteShotgun"));
+}
+
+//If everyone doesn't have a suit when one is picked up, give them a suit.
+//If everyone has a suit, then give them money.
+script "Mighty Morphin' Power Dragon" (void)
+{
+	int SuitRewarded;
+	if(GetCVar("GC_PowersuitShare") && (GameType() == GAME_NET_COOPERATIVE))
+	{
+		for(int i = 0; i < MAX_PLAYERS; i++)
+		{
+			if(SetActivator(0, AAPTR_PLAYER1<<i))
+			{
+				if(!(CheckInventory("PowerSuitItem") /*|| CheckInventory("PowerSuitItem2")*/))
+				{
+					GiveInventory("PowerSuitItem", 1);
+					Playsound(0, "Bishop/Pickup", CHAN_ITEM);
+					HUDMessage(s:"You've received a shared ''Bishop'' Battle Armored Dragon Assault Strike System!";HUDMSG_FADEOUT|HUDMSG_LOG, 1000, CR_UNTRANSLATED, 0.5, 0.2, 3.0, 0.5);
+					SuitRewarded++; // If we actually gave it away, nobody gets gold.
+				}
+			}
+		}
+	}
+	if(SuitRewarded) { SetResultValue(FALSE); }
+	else { SetResultValue(TRUE); }
+}
+
+/*
+PILLOW: So you want a way to toggle recoil and other screen effects on/off?
+Our client, our master, as we say in Poland... But it would cost me way too
+much patience, time and effort to be put in. I've had left it here just in case
+I'd change my mind.
+*/
+
+/*
+script "RecoilCheck1" (int recoilfactor, int pitchangle, int subtract) //Pitch/Angle stuff
+{
+	int recoil1var = GetCVar("GC_RecoilFactor1");
+	int recoilamount; // end result
+	if(subtract)
+	{
+		recoilamount = pitchangle - (FixedMul(recoil1var, recoilfactor));
+	}
+	else
+	{
+		recoilamount = pitchangle + (FixedMul(recoil1var, recoilfactor));
+	}
+	SetResultValue(recoilamount);
+}
+
+
+script "RecoilCheck2" (int recoilfactor) //Standard recoil stuff
+{
+	int recoil2var = GetCVar("GC_RecoilFactor2");
+	SetResultValue(FixedMul(recoilfactor, recoil2var));
+}
+
+script "RecoilCheck3" (int FOV) //Zoom factor stuff
+{
+	int recoil3var = GetCVar("GC_RecoilFactor3");
+	if(recoil3var)
+	{
+		SetResultValue(FOV);
+	}
+	else
+	{
+		SetResultValue(1);
+	}
+}
+*/

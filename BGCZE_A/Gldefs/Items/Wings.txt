@@ -1,0 +1,17 @@
+pointlight WINGSLIGHT
+{
+    color 1.0 0.5 0.05
+    size 64
+    offset 0 16 0
+    dontlightself 1
+}
+
+object WingsOfWrath
+{
+    frame WWNG { light WINGSLIGHT }
+}
+
+object WingsBringer
+{
+    frame WWNG { light WINGSLIGHT }
+}

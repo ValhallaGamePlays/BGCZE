@@ -1,0 +1,620 @@
+ACTOR BloodDoshSpawner2: BloodDoshSpawner
+{
+	DropItem "Dosh1" 28
+}
+
+ACTOR GC_Brutal_Blood: Brutal_Blood replaces Brutal_Blood
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner")
+		Stop
+	}
+}
+
+ACTOR GC_Big_Blood: Big_Blood replaces Big_Blood
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_12BloodTrail: 12BloodTrail replaces 12BloodTrail
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BrainBlood: BrainBlood replaces BrainBlood
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_FlyingBlood: Brutal_FlyingBlood replaces Brutal_FlyingBlood
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_FlyingBloodMuchFaster: Brutal_FlyingBloodMuchFaster replaces Brutal_FlyingBloodMuchFaster
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_FlyingBloodLevel3: Brutal_FlyingBloodLevel3 replaces Brutal_FlyingBloodLevel3
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_LiquidBlood: Brutal_LiquidBlood replaces Brutal_LiquidBlood
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_LiquidBlood2: Brutal_LiquidBlood2 replaces Brutal_LiquidBlood2
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_LiquidBlood3: Brutal_LiquidBlood3 replaces Brutal_LiquidBlood3
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_FlyingBloodFake: Brutal_FlyingBloodFake replaces Brutal_FlyingBloodFake
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_LiquidBloodFast: Brutal_LiquidBloodFast replaces Brutal_LiquidBloodFast
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_FatalityBlood: FatalityBlood replaces FatalityBlood
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_MuchBlood: MuchBlood replaces MuchBlood
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_MuchBlood2: MuchBlood2 replaces MuchBlood2
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_MuchBlood3: MuchBlood3 replaces MuchBlood3
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_DeadBlood: DeadBlood replaces DeadBlood
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_GoreBloodFly: GoreBloodFly replaces GoreBloodFly
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_FlyingBloodTrail: Brutal_FlyingBloodTrail replaces Brutal_FlyingBloodTrail
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_FlyingBloodTrail5: Brutal_FlyingBloodTrail5 replaces Brutal_FlyingBloodTrail5
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BloodTr: BloodTr replaces BloodTr
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BloodTr2: BloodTr2 replaces BloodTr2
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BloodTr3: BloodTr3 replaces BloodTr3
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BloodTr95: BloodTr95 replaces BloodTr95
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BloodTr255: BloodTr255 replaces BloodTr255
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+ 
+ACTOR GC_BloodTr255G: BloodTr255G replaces BloodTr255G
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_FlyingBloodFaster: Brutal_FlyingBloodFaster replaces Brutal_FlyingBloodFaster
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Brutal_FlyingBloodTrail16: Brutal_FlyingBloodTrail16 replaces Brutal_FlyingBloodTrail16
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Blue_Blood : GC_Brutal_Blood replaces Blue_Blood
+{
+	Translation "168:191=192:207","16:47=240:247"
+	Decal BlueBloodSplat
+	states
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+        TNT1 AAA 0 A_CustomMissile ("Blue_FlyingBloodTrail", 15, 0, random (0, 360), 2, random (0, 180))
+        TNT1 AAAAAA 0 A_CustomMissile ("Blue_FlyingBloodTrail", 0, 0, random (0, 180), 2, random (0, 180))
+  	    TNT1 A 0 A_CustomMissile ("Blue_FlyingBlood", 32, 0, random (0, 360), 2, random (0, 160))
+stop
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner")
+		Stop
+	}
+}
+
+ACTOR GC_Blue_FlyingBlood: GC_Brutal_FlyingBlood replaces Blue_FlyingBlood
+{
+	Translation "168:191=192:207","16:47=240:247"
+	Decal BlueBloodSplat
+	states
+	{
+	Death:
+		TNT1 A 1 A_SpawnItem("Blue_BloodSpot",0,0,0,1)
+		XDT1 EFGHIJKL 3
+		Stop
+	}
+}
+
+ACTOR GC_BlueBloodTrails: BlueBloodTrails replaces BlueBloodTrails
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_Blue_FlyingBloodTrail: Blue_FlyingBloodTrail replaces Blue_FlyingBloodTrail
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BlueBloodHit: BlueBloodHit replaces BlueBloodHit
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BlueBloodMist : BlueBloodMist replaces BlueBloodMist
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BlueSawBlood: BlueSawBlood replaces BlueSawBlood
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_SuperGore: SuperGore replaces SuperGore
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_SuperGoreMist: SuperGoreMist replaces SuperGoreMist
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_SuperGoreMistSmall: SuperGoreMistSmall replaces SuperGoreMistSmall
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_SuperGoreMistTiny: SuperGoreMistTiny replaces SuperGoreMistTiny
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BlueSuperGore: BlueSuperGore replaces BlueSuperGore
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_BlueSuperGoreFast: BlueSuperGoreFast replaces BlueSuperGoreFast
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_GreenSuperGore: GreenSuperGore replaces GreenSuperGore
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_StealthBloodLol: StealthBloodLol replaces StealthBloodLol
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_SmallSuperGore: SmallSuperGore replaces SmallSuperGore
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_SmallSuperGore2: SmallSuperGore2 replaces SmallSuperGore2
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_MediumSuperGore: MediumSuperGore replaces MediumSuperGore
+{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}
+
+ACTOR GC_GiantSuperGore: GiantSuperGore replaces GiantSuperGore{
+	States
+	{
+	Spawn:
+	    TNT1 A 0 NoDelay A_JumpIf(CallACS("LodsemoneMode"), "DOSH")
+		Goto Super::Spawn
+	DOSH:
+		TNT1 A 0 A_DropItem("BloodDoshSpawner2")
+		Stop
+	}
+}

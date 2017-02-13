@@ -1,0 +1,65 @@
+//addkeysection "Quick-use Galore" Derpwaschermachinen
+
+//addmenukey "Tome of Power" PowerOverwhelming
+alias +PowerOverwhelming "use Amplifier"
+alias -PowerOverwhelming "use TomeOfPowah"
+
+//addmenukey "Health Pot" PatchMeUpScotty
+alias PatchMeUpScotty "use HealPot"
+
+//addmenukey "Rejuvenation Pot\Capsule" ItsOver9000
+alias +ItsOver9000 "use RejuvCaps"
+alias -ItsOver9000 "use RejuvPot"
+
+//addmenukey "Medbag" UbermenschUnlimited
+alias UbermenschUnlimited "use Medbag"
+
+alias +HolyDogShit "use Gunzerk"
+alias -HolyDogShit "use GunzerkPot"
+alias HolyDogShit "use Gunzerk;use GunzerkPot"
+
+alias +TentativeButtsecks "use Berserk2"
+alias -TentativeButtsecks "use BerserkPot"
+alias TentativeButtsecks "use Berserk2;use BerserkPot"
+
+alias Rubberfruit "use Envirosuit"
+
+alias ShotgunExorcism "use IronblastRevert"
+
+alias Powersuit "use PowersuitItem"
+
+alias Vision "use VisionToggler"
+alias +Gimbostratus "pukename  \"Shop Activation Sensation"\"
+alias -Gimbostratus ""
+
+alias QuickEscape "pukename StartTeleport always"
+
+alias +Quicktoss "use DynamiteQuickToss"
+alias -Quicktoss ""
+alias DragonBragon "use GuncasterTauntItem"
+alias DancingDerg "pukename CarltonDJ always"
+
+alias AltMode "use AltModeItem"
+
+//addkeysection "Quick-spells" BagOfSpelling
+//addmenukey "Quick Spell 1" +button1
+//addmenukey "Quick Spell 2" +button2
+//addmenukey "Quick Spell 3" +button3
+//addmenukey "Quick Spell 4" +button4
+//alias +button1 "+user1"
+//alias -button1 "-user1"
+//alias +button2 "+user2"
+//alias -button2 "-user2"
+//alias +button3 "+user3"
+//alias -button3 "-user3"
+//alias +button4 "+user4"
+//alias -button4 "-user4"
+//defaultbind U "+button1"
+//defaultbind I "+button2"
+//defaultbind O "+button3"
+//defaultbind P "+button4"
+
+//addmenukey "Next Spell" deckforward
+//addmenukey "Previous Spell" deckbackward
+alias deckforward "pukename DeckShuffling always 1"
+alias deckbackward "pukename DeckShuffling always"

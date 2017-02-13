@@ -1,0 +1,50 @@
+// It's not unusual to be loved by anyone (except by Keks when it comes to scripting standards.)
+// (Yes, I realize what kinds of things I could be throwing into a list of #defines.)
+// By Zhs2.
+
+#library "DanceDanceBaby"
+#include "zcommon.acs"
+
+script "CarltonDJ" (void) net
+{
+	if((GetActorVelX(0) == 0) && (GetActorVelY(0) == 0)
+	&& (GetActorVelZ(0) == 0) // The player must not be moving,
+	&& (GetActorZ(0) == GetActorFloorZ(0)) // nor in the air,
+	&& (GetActorProperty(0, APROP_Waterlevel) < 1) // nor underwater,
+	&& (GetUserVariable(0, "user_amuletopen") == 0) // nor in the shop when this is activated
+	&& (GetUserVariable(0, "user_Carlton") == 0)) // or already dancing, of course
+	{
+		SetActorState(0, "CarltonDragon");
+		SetPlayerProperty(0, TRUE, PROP_FROZEN); 
+		SetUserVariable(0, "user_Carlton", 1);
+		PlaySound(0, "Guncaster/Unusual", CHAN_BODY, 1.0, TRUE, ATTN_NORM);
+		while(GetUserVariable(0, "user_Carlton"))
+		{
+			if(GetPlayerInput(-1, INPUT_BUTTONS) & (BT_FORWARD|BT_BACK|BT_LEFT|BT_RIGHT|BT_MOVELEFT|
+			BT_MOVERIGHT|BT_ATTACK|BT_ALTATTACK|BT_USE|BT_JUMP|BT_CROUCH|BT_RELOAD|BT_ZOOM|BT_MOVEUP|
+			BT_MOVEDOWN|BT_USER1|BT_USER2|BT_USER3|BT_USER4))
+			// If the player presses any of this major list of buttons, cancel dancing
+			{
+				break;
+			}
+			if(GetUserVariable(0, "User_Ouch"))
+			// If the user feels pain, same
+			{
+				break;
+			}
+			delay(1);
+		}
+		SetPlayerProperty(0, FALSE, PROP_FROZEN);
+		StopSound(0, CHAN_BODY);
+		if(!GetUserVariable(0, "User_Ouch")) { SetActorState(0, "Spawn"); } // Reset the player's pose if they weren't hurt.
+		delay(20); // Cooldown before allowing the dance again.
+		SetUserVariable(0, "user_Carlton", 0);
+	}
+}
+
+script "CarltonReset" ENTER
+{
+	// Note to self: User variables reset on death, not map changes.
+	SetUserVariable(0, "user_Carlton", 0);
+	SetUserVariable(0, "user_Ouch", 0);
+}

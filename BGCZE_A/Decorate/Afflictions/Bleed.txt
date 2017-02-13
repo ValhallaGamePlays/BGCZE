@@ -1,0 +1,65 @@
+//Affliction item.
+ACTOR BleedItem : CustomInventory
+{
+	Inventory.Amount 0
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	Inventory.PickupFlash None 
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.NOSCREENFLASH
+	States
+	{
+		Spawn:
+			TNT1 A -1
+			Stop
+	   Pickup:
+			TNT1 A 0 A_GiveInventory("IfItBleeds")
+			Stop
+	}
+}
+
+ACTOR IfItBleeds : PowerupGiver
+{
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.ADDITIVETIME
+	powerup.duration -6
+	Powerup.Type IsBleeding
+	Powerup.Color None 0.0
+	Inventory.PickupMessage "...we can kill it."
+	States
+	{
+		Spawn:
+			TNT1 A -1
+			Stop
+	}
+}
+
+actor PowerIsBleeding : PowerProtection
+{
+	damagefactor "Normal", 1.0
+}
+
+ACTOR BleedIndicator
+{
+	+NOINTERACTION
+	+NOCLIP
+	+FORCERADIUSDMG
+	+MISSILE
+	Obituary "%o couldn't staunch the flow."
+	var int User_Radius;
+	var int User_Height;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+	Looplet:
+		TNT1 A 0 A_Warp(AAPTR_TARGET,0,0,0,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		TNT1 A 0 A_Explode((15),8,1,0,8)
+		TNT1 A 0 A_SpawnItemEx("Blood",0,0,30,0,0,0,0,SXF_CLIENTSIDE,64)
+		TNT1 A random(35,45)
+		TNT1 A 0 A_JumpIfInTargetInventory("PowerIsBleeding",1,"Looplet")
+		Stop
+	}
+}

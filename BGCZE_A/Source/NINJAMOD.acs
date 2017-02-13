@@ -1,0 +1,106 @@
+// This is by Zhs2.
+// You are officially a ninja dragon. Now all you need is the pirate part. Go nuts. (What this means is that running around makes you better at evading bullets.)
+
+#include "zcommon.acs"
+#library "NINJAMOD"
+
+function int abs (int num) // creds to mah homie the zdumb weekee
+{
+    if (num < 0)
+        return -num;
+
+    return num;
+}
+
+function void thiefy (str GiveWhat) // Stolen completely unshamefully from Inheritance and modified. I wrote this anyway.
+{
+	if(!CheckInventory(GiveWhat))
+	{
+	TakeInventory("PowerRunDamage1",1);
+	TakeInventory("PowerRunDamage2",1);
+	TakeInventory("PowerRunDamage3",1);
+	TakeInventory("PowerRunDamage4",1);
+	TakeInventory("PowerRunDamage5",1);
+	TakeInventory("PowerRunDamage6",1);
+	TakeInventory("PowerRunDamage7",1);
+	TakeInventory("PowerRunDamage8",1);
+	TakeInventory("PowerRunDamage9",1);
+	GiveInventory(GiveWhat,1);
+	}
+}
+
+function void takethemall (void) // lazy!
+{
+	TakeInventory("PowerRunDamage1",1);
+	TakeInventory("PowerRunDamage2",1);
+	TakeInventory("PowerRunDamage3",1);
+	TakeInventory("PowerRunDamage4",1);
+	TakeInventory("PowerRunDamage5",1);
+	TakeInventory("PowerRunDamage6",1);
+	TakeInventory("PowerRunDamage7",1);
+	TakeInventory("PowerRunDamage8",1);
+	TakeInventory("PowerRunDamage9",1);
+}
+
+
+script "Ninja Mode" ENTER
+{
+	int xvel, yvel, totalvel; // where totalvel is a bullshit value the game makes up on the fly from the previous two
+	int countdownelevate, countdowndecay, graceperiod, currentresistance; // The presence of one countdown timer deprecates the other based on movement conditions. A small grace period is allowed before the player's elevation countdown is erased and decay begins. Current resistance is checked to make sure the player is holding the right item
+	xvel = GetActorVelX(0);
+	yvel = GetActorVelY(0);
+	
+	totalvel = abs(xvel) + abs(yvel);
+	if(totalvel >= 19.0) // Apparently the max speed in one direction on one single axis is about 20 for this guy. Same as Doomguy? The world may never care to know.
+	{
+		graceperiod = 0; // Fuck that shit we're rolling like baughses
+		countdowndecay = 0; // Clear this timer in case it had something in it.
+		if(!(currentresistance > 8)) // We don't want this value to go any higher than 9. Bad things could happen. Just stop counting.
+		{
+			if(countdownelevate >= 10) // Upgrade! Change this to effect the time taken before one elevation happens. The formula for full elevation is simply countdownelevate * 9.
+			{
+			currentresistance++;
+			countdownelevate = 0;
+			}
+			else {countdownelevate++;} // Keep counting!
+		}
+	}
+	else
+	{
+		if(graceperiod >= 15) // It's okay, it's about half a second right?
+		{
+			countdownelevate = 0; // Clear this timer in case it had something in it. In this case, you get no help if you let the grace timer run out and you need to build another second to start elevating again
+			if(!(currentresistance < 1)) // We don't want this value to go any lower than 0. Unexpected events may occur. Division might also suck.
+			{
+				if(countdowndecay >= 5) // Change this to effect the time taken before decay fully occurs for one level. From full resistance, the formula for full decay is graceperiod + (countdowndecay * 9).
+				{
+					currentresistance--;
+					countdowndecay = 0;
+				}
+				else {countdowndecay++;} // Decay happens to the best and worst of us equally.
+			}
+		}
+		else {graceperiod++;}
+	}
+	
+	/* Testing suite values. Uncomment to see the magic happen
+	hudmessage(f:xvel; HUDMSG_PLAIN, 9001, CR_GREEN, 0.3, 0.3, 0.1);
+	hudmessage(f:yvel; HUDMSG_PLAIN, 9002, CR_GREEN, 0.8, 0.3, 0.1);
+	hudmessage(f:totalvel; HUDMSG_PLAIN, 9003, CR_GREEN, 0.5, 0.8, 0.1);
+	hudmessage(i:currentresistance; HUDMSG_PLAIN, 9004, CR_GREEN, 0.5, 0.9, 0.1);
+	*/
+	
+	if(currentresistance==1) {thiefy("PowerRunDamage9");} // Where the magic happens. Kind of like Charlie and the Chocolate Factory, including the ugliness.
+	else if(currentresistance==2) {thiefy("PowerRunDamage8");}
+	else if(currentresistance==3) {thiefy("PowerRunDamage7");}
+	else if(currentresistance==4) {thiefy("PowerRunDamage6");}
+	else if(currentresistance==5) {thiefy("PowerRunDamage5");}
+	else if(currentresistance==6) {thiefy("PowerRunDamage4");}
+	else if(currentresistance==7) {thiefy("PowerRunDamage3");}
+	else if(currentresistance==8) {thiefy("PowerRunDamage2");}
+	else if(currentresistance==9) {thiefy("PowerRunDamage1");}
+	else {takethemall();} // Like I said...
+	
+	delay(1);
+	restart;
+}

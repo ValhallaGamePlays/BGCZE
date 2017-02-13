@@ -1,0 +1,50 @@
+//Property of Pillow - No perms required, albeit a mention would be nice when used.
+
+#library "wtrcheck"
+#include "zcommon.acs"
+
+script "WaterBollocks" (void)
+{
+	if (//Heretic
+		CheckActorFloorTexture(0, "FLTWAWA1") || CheckActorFloorTexture(0, "FLTWAWA2") || CheckActorFloorTexture(0, "FLTWAWA3") || CheckActorFloorTexture(0, "FLTWAWA4") ||
+		CheckActorFloorTexture(0, "FLTFLWW1") || CheckActorFloorTexture(0, "FLTFLWW2") || CheckActorFloorTexture(0, "FLTFLWW3") || CheckActorFloorTexture(0, "FLTFLWW4") ||
+		CheckActorFloorTexture(0, "FLTSLUD1") || CheckActorFloorTexture(0, "FLTSLUD2") || CheckActorFloorTexture(0, "FLTSLUD3") ||
+		
+		//Doom
+		CheckActorFloorTexture(0, "NUKAGE1") || CheckActorFloorTexture(0, "NUKAGE2") || CheckActorFloorTexture(0, "NUKAGE3") ||
+		CheckActorFloorTexture(0, "FWATER1") || CheckActorFloorTexture(0, "FWATER2") || CheckActorFloorTexture(0, "FWATER3") || CheckActorFloorTexture(0, "FWATER4") ||
+		CheckActorFloorTexture(0, "SLIME01") || CheckActorFloorTexture(0, "SLIME02") || CheckActorFloorTexture(0, "SLIME03") || CheckActorFloorTexture(0, "SLIME04") ||
+		CheckActorFloorTexture(0, "SLIME05") || CheckActorFloorTexture(0, "SLIME06") || CheckActorFloorTexture(0, "SLIME07") || CheckActorFloorTexture(0, "SLIME08") ||
+		CheckActorFloorTexture(0, "BLOOD1") || CheckActorFloorTexture(0, "BLOOD2") || CheckActorFloorTexture(0, "BLOOD3") ||
+		
+		//Hexen
+		CheckActorFloorTexture(0, "X_005") || CheckActorFloorTexture(0, "X_006") || CheckActorFloorTexture(0, "X_007") || CheckActorFloorTexture(0, "X_008") ||
+		CheckActorFloorTexture(0, "X_009") || CheckActorFloorTexture(0, "X_010") ||CheckActorFloorTexture(0, "X_011")
+		)
+		SetResultValue(true);
+	else
+		SetResultValue(false);
+}
+
+script "FrostbiteBollocks" (void)
+{
+	int var = 0;
+	if (
+		//Heretic
+		CheckActorFloorTexture(0, "FLATHUH1") || CheckActorFloorTexture(0, "FLATHUH2") || CheckActorFloorTexture(0, "FLATHUH3") || CheckActorFloorTexture(0, "FLATHUH4") ||
+		CheckActorFloorTexture(0, "FLTLAVA1") || CheckActorFloorTexture(0, "FLTLAVA2") || CheckActorFloorTexture(0, "FLTLAVA3") || CheckActorFloorTexture(0, "FLTLAVA4") ||
+		
+		//Doom
+		CheckActorFloorTexture(0, "LAVA1") || CheckActorFloorTexture(0, "LAVA2") || CheckActorFloorTexture(0, "LAVA3") || CheckActorFloorTexture(0, "LAVA4") ||
+		
+		//Hexen
+		CheckActorFloorTexture(0, "X_001") || CheckActorFloorTexture(0, "X_002") || CheckActorFloorTexture(0, "X_003") || CheckActorFloorTexture(0, "X_004")
+		)
+		var = 1;
+	else if (
+		CheckActorFloorTexture(0, "FLAT517") ||
+		CheckActorFloorTexture(0, "F_033")
+		)
+		var = 2;
+		SetResultValue(var);
+}

@@ -1,0 +1,2 @@
+STARTUPTITLE = "Brutal Doom V20 - Only Monsters"
+STARTUPCOLORS = "FF0000", "000000"

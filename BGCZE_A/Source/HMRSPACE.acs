@@ -1,0 +1,60 @@
+//Cue theme goes to Stanley and Zhs2 for this little piece of f*ck I have moderated, heh.
+#library "DOPEPACK"
+
+#include "zcommon.acs"
+#define NumAmmoTypes 10
+
+int ammotypes[NumAmmoTypes] = {
+"LonghornAmmo",
+"ShotgunAmmo",
+"PulverizerAmmo",
+"MatriarchAmmo",
+"SovereignAmmo",
+"CauterizerAmmo",
+"TiberiumAmmo",
+"TNTAmmo",
+"BlueMana",
+"GreenMana",
+};
+
+script "HammerspaceBackpack" (void)
+{
+	int i, new_cap;
+	if (CheckInventory("Castpack") || CheckInventory("Backpack") && !((GetAmmoCapacity(ammotypes[0])*2)<0) && (GetCVar("GC_Hammerspace")))
+	{
+		for (i = 0; i < NumAmmoTypes; i++)
+		{
+			new_cap = GetAmmoCapacity(ammotypes[i]);
+			new_cap += (new_cap / CheckInventory("HammerSpaceCounter"));
+			if (new_cap >= 0) {
+				SetAmmoCapacity(ammotypes[i], new_cap);
+			}
+		}
+		GiveInventory("HammerSpaceCounter", 1);
+		GiveInventory("Castpack", 1);
+		ACS_NamedExecuteWithResult("update_Tiberium_Heretic", 6, 6 + CheckInventory("HammerSpaceCounter"));
+		ACS_NamedExecuteWithResult("update_Tiberium_Doom", 5, 6 + CheckInventory("HammerSpaceCounter"));
+		ACS_NamedExecuteWithResult("update_TNT", 11, 3 * CheckInventory("HammerSpaceCounter"));
+	}
+	else 
+	{
+	GiveInventory("CastPack",1);
+	ACS_NamedExecuteAlways("double_stockamount", 0);
+	}
+}
+
+script "double_stockamount" (void)
+{
+	if (CheckInventory("Castpack"))
+	{
+		GiveInventory("CastPack", 1);
+		terminate;
+	}
+	else
+	{
+		ACS_NamedExecuteWithResult("update_Tiberium_Heretic", 6, 16);
+		ACS_NamedExecuteWithResult("update_Tiberium_Doom", 5, 16);
+		ACS_NamedExecuteWithResult("update_TNT", 11, 30);
+		terminate;
+	}
+}

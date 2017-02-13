@@ -1,0 +1,305 @@
+ACTOR GuncastLostSoul : LostSoul replaces LostSoul
+{
+	//Loot
+	DropItem "Dosh1"
+	DropItem "Dosh1"
+	DropItem "Dosh1", 128
+	DropItem "Dosh1", 192
+	DropItem "Dosh5", 64
+	DropItem "Dosh5", 192
+	DropItem "SkullfireBringer", 1 //lel.
+
+	//Resists & weaknesses
+	
+	//Flying, burning skull. Can't get too crazy here.
+	
+	DamageFactor Ice, 1.25
+	
+	DamageFactor Fire, 0.7
+	DamageFactor Meteorfist, 0.8
+	DamageFactor Crow, 0.7
+	DamageFactor Crow2, 0.7
+	
+	//PAAAAAIN
+	PainChance 256
+	PainChance Crow, 2
+	PainChance Crow2, 2
+	
+	//Guaranteed Effects
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	//Chance Effects
+	PainChance Lightning, 128
+	PainChance LightningBlue, 24
+	PainChance Fire, 20
+	
+	var int User_DeathByFire;
+	var int User_DeathByTiberium;
+	var int User_DeathByBlueTiberium;
+	var int User_LightningLock;
+	
+	+NOBLOOD
+	States
+	{
+	
+	//Melee
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Pain
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+		Goto Pain
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 5 A_SpawnItemEx("Midas_Statue_LostSoul",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS) //SXF_TRANSFERSPRITEFRAME|SXF_SETMASTER)
+		Stop
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_LostSoul",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_LostSoul",0,0,0,frandom(-15.0,-20.0),0,frandom(10.0,15.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+
+	//Standard death stuff
+	Death:
+		"####" "#" 0 A_StopSound(5)
+		SKUL F 6 Bright
+		SKUL G 6 Bright A_Scream
+		SKUL H 6 Bright
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		SKUL I 6 Bright A_NoBlocking
+		SKUL J 6
+		SKUL K 6
+		Stop
+
+	XDeath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+	Crush:
+		TNT1 A 0 A_SpawnItemEx("LostSoulGibbed",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_NoBlocking
+		Stop
+
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		"####" "#" 0 A_Jump(32,"Pain")
+		Goto See
+	Death.Acid:
+		SKUL E 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 A_SetScale(ScaleX+frandom(0.01,0.025))
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItemEx("LostSoulGibbed",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+		
+	//Dreadful
+	Death.Tiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	Death.BlueTiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByBlueTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+		
+	//Threadcutter
+	/*Pain.Manuel:
+		"####" "#" 0 A_Jump(128,1)
+		Goto Pain
+		"####" "#" 0 A_GiveInventory("BleedItem")
+		"####" "#" 0 A_SpawnItemEx("BleedIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain*/
+		
+	//Thunderstruck
+	Pain.Lightning:
+		"####" "#" 0 A_Jump(164,1)
+		Goto Pain
+		SKUL E 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	LightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "LightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Cauterizer
+	Pain.LightningBlue:
+		"####" "#" 0 A_Jump(48,1)
+		Goto Pain
+		SKUL E 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	BlueLightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "BlueLightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Fire
+	Pain.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+		Goto Pain
+	Death.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+		Goto Death
+	/*Death.Lightning:
+	Death.LightningBlue:
+	Death.Fire:
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 1)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_SpawnItemEx("FlamingDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	FireMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	EndOfMelt:
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium", 0)
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 0)
+		Goto Looplet
+		
+	//Crows
+	Crash.Crow:
+		TNT1 AA 0 A_SpawnItemEx("FlockOfCrows",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		HEAD G 8
+		HEAD H 8
+		HEAD H 0 A_Scream
+		Goto Super::Death+3*/
+		
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+	}
+}
+
+ACTOR Midas_Statue_LostSoul : Midas_Statue //PAINIS IN DA AINIS!
+{
+	Radius 16
+	States
+	{
+	Spawn:
+		SKUL E 1
+		Goto Super::Cycle
+	Death:
+	Crash:
+		TNT1 A 0 A_SetUserVar("User_GoldRange",7)
+		TNT1 A 0 A_SetUserVar("User_GoldAmount",5)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter1",5)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter2",0)
+		Goto Super::DeathInit
+	MidasReward:
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+		TNT1 A 0 A_GiveToTarget("Dosh",35)
+		Stop
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,35)
+		Stop
+	}
+}
+
+ACTOR LostSoulGibbed
+{
+	DamageType Fire
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("Matriarch/Exp",6,1.0)
+		TNT1 A 0 A_PlaySound("Skullchunk/Impact",4,1.0)
+		TNT1 A 0 A_Explode(80,192,0)
+		TNT1 A 0 A_Quake(2,25,0,384,"none")
+		TNT1 A 0 A_AlertMonsters
+		//TNT1 A 0 A_SpawnItemEx("SkullfireSkull",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		//TNT1 A 0 A_SpawnItemEx("SkullfireDrop",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_SpawnItemEx("SkullfireBlaster",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		//TNT1 A 0 A_SpawnItemEx("SkullfireDropper",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 25
+		Stop
+	}
+}

@@ -1,0 +1,35 @@
+ACTOR MatrixHasYou : PowerupGiver
+{
+	Inventory.Amount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	powerup.duration 0x7FFFFFFF
+	Powerup.Type RunDamage1
+	Inventory.PickupMessage "SOLDIER, I CURSE YOUR PENIS FOR THOUSAND YEARS!"
+	States
+	{
+	Spawn:
+	TNT1 A -1
+	Stop
+	}
+}
+
+actor PowerRunDamage1 : PowerProtection { damagefactor "Bueller", 0.1 }
+actor PowerRunDamage2 : PowerProtection { damagefactor "Bueller", 0.2 }
+actor PowerRunDamage3 : PowerProtection { damagefactor "Bueller", 0.3 }
+actor PowerRunDamage4 : PowerProtection { damagefactor "Bueller", 0.4 }
+actor PowerRunDamage5 : PowerProtection { damagefactor "Bueller", 0.5 }
+actor PowerRunDamage6 : PowerProtection { damagefactor "Bueller", 0.6 }
+actor PowerRunDamage7 : PowerProtection { damagefactor "Bueller", 0.7 }
+actor PowerRunDamage8 : PowerProtection { damagefactor "Bueller", 0.8 }
+actor PowerRunDamage9 : PowerProtection { damagefactor "Bueller", 0.9 }
+
+ACTOR DamageLower1 : MatrixHasYou { Powerup.Type RunDamage1 }
+ACTOR DamageLower2 : MatrixHasYou { Powerup.Type RunDamage2 }
+ACTOR DamageLower3 : MatrixHasYou { Powerup.Type RunDamage3 }
+ACTOR DamageLower4 : MatrixHasYou { Powerup.Type RunDamage4 }
+ACTOR DamageLower5 : MatrixHasYou { Powerup.Type RunDamage5 }
+ACTOR DamageLower6 : MatrixHasYou { Powerup.Type RunDamage6 }
+ACTOR DamageLower7 : MatrixHasYou { Powerup.Type RunDamage7 }
+ACTOR DamageLower8 : MatrixHasYou { Powerup.Type RunDamage8 }
+ACTOR DamageLower9 : MatrixHasYou { Powerup.Type RunDamage9 }

@@ -1,0 +1,48 @@
+// A few things for teleporting the player out of trouble at will, with a cooldown.
+// By Zhs2.
+
+#library "GETTINOUTTATROUBLE"
+#include "zcommon.acs"
+
+script "StartTeleport" (void) net
+{
+	if((!GameType() == GAME_NET_COOPERATIVE) && !CheckInventory("HexenCounter"))
+	{
+		// Does nothing unless co-op is on or you're playing Hexen.
+		// Good for if you fall in a huge pit and didn't die.
+		terminate;
+	}
+	if((GameType() == GAME_NET_DEATHMATCH) || (GameType() == GAME_TITLE_MAP))
+	{
+		// Other cases where it shouldn't work. Because Hexen.
+		terminate;
+	}
+	
+	int warmup = 30*35;
+	SetFont("SMALLFNT");
+	if(!CheckInventory("StartTeleportInProgress"))
+	{
+		GiveInventory("StartTeleportInProgress", 1);
+		while(warmup && CheckInventory("StartTeleportInProgress"))
+		{
+			HUDMessage(s:"Returning to start in ", i:(warmup/35)+1, s:" seconds. Press the key again to cancel.";HUDMSG_PLAIN, 825, CR_UNTRANSLATED, 0.5, 0.3, 0.5);
+			warmup--;
+			delay(1);
+		}
+		if(!CheckInventory("StartTeleportInProgress"))
+		{
+			terminate;
+		}
+		HUDMessage(s:"Teleport complete. Have a nice day.";HUDMSG_PLAIN, 825, CR_UNTRANSLATED, 0.5, 0.3, 1.0);
+		GiveInventory("ArtiTeleport", 1);
+		UseInventory("ArtiTeleport");
+		TakeInventory("StartTeleportInProgress",1);
+	}
+	else
+	{
+		TakeInventory("StartTeleportInProgress", 1);
+		HUDMessage(s:"Teleport cancelled.";HUDMSG_PLAIN, 825, CR_UNTRANSLATED, 0.5, 0.3, 1.0);
+	}
+}
+
+//script "PlayerTeleport" (void) net

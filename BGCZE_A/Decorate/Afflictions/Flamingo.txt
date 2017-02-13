@@ -1,0 +1,185 @@
+//Affliction item.
+ACTOR OnFireItem : CustomInventory
+{
+	Inventory.Amount 0
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	Inventory.PickupFlash None 
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.NOSCREENFLASH
+	States
+	{
+		Spawn:
+			TNT1 A -1
+			Stop
+	   Pickup:
+			TNT1 A 0 A_GiveInventory("HotForTeacher")
+			Stop
+	}
+}
+
+ACTOR HotForTeacher : PowerupGiver
+{
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	//+INVENTORY.ADDITIVETIME
+	powerup.duration -6
+	Powerup.Type OnFire
+	Powerup.Color None 0.0
+	Inventory.PickupMessage "Hot Tamales hot hot tamales, hot tamales hot hot!"
+	States
+	{
+		Spawn:
+			TNT1 A -1
+			Stop
+	}
+}
+
+actor PowerOnFire : PowerProtection //Makes sense I guess?
+{
+	damagefactor "Ice", 0.75
+}
+
+//Flaming Monsters
+ACTOR OnFireIndicator
+{
+	+NOINTERACTION
+	+NOCLIP
+	+FORCERADIUSDMG
+	+MISSILE
+	Obituary "%o shouldn't have had get near fire."
+	DamageType Fire
+	var int User_StickyCycle;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(waterlevel > 0, "Null")	//Something I kept forgetting about.
+		TNT1 A 0 A_CheckFloor("Watercheck")
+		Goto Main
+	Watercheck:
+		TNT1 A 0 A_JumpIf(CallACS("WaterBollocks") == true, "Null") // I could probably add some "Extinguish" state in case it hits some water. But that's when I'll get some sounds and idea how to pull that effect off.
+	Main:
+		TNT1 A 0 A_PlaySound("Skullfire/Fly",5,0.3,1)
+	Looplet:
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", User_StickyCycle + 1)
+		TNT1 A 0 A_JumpIf(User_StickyCycle >= 3, 2)
+		TNT1 A 0 A_Jump(256,3)
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", 0)
+		TNT1 A 0 A_Warp(AAPTR_TARGET,0,0,0,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		
+		TNT1 A 0 A_Jump(214,2)
+		TNT1 A 0 A_Explode((10),8,1,0,8)
+		TNT1 A 0 A_SpawnItemEx("SkullfireFlame", FRandom(8.0,2.0), FRandom(8.0,2.0), FRandom(60.0,8.0),
+												   frandom(0.2,0.5),frandom(0.2,0.5),frandom(2.5,0.5),
+												   frandom(0.0,360.0),SXF_TRANSFERPOINTERS,64)
+		TNT1 A 0 A_SpawnItemEx("OnFireSmoke", FRandom(8.0,2.0), FRandom(8.0,2.0), FRandom(60.0,8.0),
+												   frandom(0.2,0.5),frandom(0.2,0.5),frandom(2.5,0.5),
+												   frandom(0.0,360.0),SXF_TRANSFERPOINTERS,64)
+		TNT1 A 0 A_SpawnItemEx("Matriarch_Ember", FRandom(2.0,1.0), FRandom(2.0,1.0), FRandom(20.0,12.0),
+									FRandom(-2.0, -7.0), FRandom(-4.0, 5.0),
+									FRandom(1.0, 6.0), FRandom(0.0,360.0), SXF_CLIENTSIDE, 234)
+		TNT1 A random(1,2)
+		TNT1 A 0 A_JumpIfInTargetInventory("PowerOnFire",1,"Looplet")
+		TNT1 A 0 A_StopSound(5)
+		Stop
+	}
+}
+
+//Monster's corpse flaming.
+ACTOR FlamingDeath
+{
+	//+NOINTERACTION
+	+NOEXPLODEFLOOR		//Preventive measure.
+	+CANBOUNCEWATER		//Another preventive measure in case of dying on water floor.
+	var int User_StickyCycle;
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIf(waterlevel > 0, "Null")	//Something I kept forgetting about.
+		TNT1 A 0 A_JumpIf(CallACS("WaterBollocks") == true, "Null") // I could probably add some "Extinguish" state in case it hits some water. But that's when I'll get some sounds and idea how to pull that effect off.
+		TNT1 A 0 A_SetUserVar("User_Counter",35*random(3,6))
+		TNT1 A 0 A_PlaySound("Skullfire/Fly",5,0.3,1)
+	Main:
+		TNT1 A 0 A_JumpIf(User_Counter <= 0, "PhaseTwo")
+		
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", User_StickyCycle + 1)
+		TNT1 A 0 A_JumpIf(User_StickyCycle >= 3, 2)
+		TNT1 A 0 A_Jump(256,3)
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", 0)
+		TNT1 A 0 A_Warp(AAPTR_TARGET,0,0,0,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("SkullfireFlame", FRandom(8.0,2.0), FRandom(8.0,2.0), FRandom(12.0,2.0),
+												   frandom(0.2,0.5),frandom(0.2,0.5),frandom(2.5,0.5),
+												   frandom(0.0,360.0),SXF_TRANSFERPOINTERS,64)
+		TNT1 A 0 A_SpawnItemEx("OnFireSmoke", FRandom(8.0,2.0), FRandom(8.0,2.0), FRandom(12.0,2.0),
+												   frandom(0.2,0.5),frandom(0.2,0.5),frandom(2.5,0.5),
+												   frandom(0.0,360.0),SXF_TRANSFERPOINTERS,64)
+		TNT1 A 0 A_SpawnItemEx("Matriarch_Ember", FRandom(2.0,1.0), FRandom(2.0,1.0), FRandom(12.0,2.0),
+									FRandom(-2.0, -7.0), FRandom(-4.0, 5.0),
+									FRandom(1.0, 6.0), FRandom(0.0,360.0), SXF_CLIENTSIDE, 234)
+		TNT1 B random(1,2)
+		Loop
+	PhaseTwo:
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 0 A_SetUserVar("User_Counter",35*random(2,4))
+	PhaseTwoLoop:
+		TNT1 A 0 A_JumpIf(User_Counter <= 0, "Null")
+		
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", User_StickyCycle + 1)
+		TNT1 A 0 A_JumpIf(User_StickyCycle >= 3, 2)
+		TNT1 A 0 A_Jump(256,3)
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", 0)
+		TNT1 A 0 A_Warp(AAPTR_TARGET,0,0,0,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("OnFireSmoke", frandom(10.0,-10.0), frandom(10.0,-10.0), frandom(10.0,-10.0),
+												   frandom(0.2,0.5),frandom(0.2,0.5),frandom(2.5,0.5),
+												   frandom(0.0,360.0),SXF_TRANSFERPOINTERS,64)
+		TNT1 A random(1,2)
+		Loop
+	}
+}
+
+ACTOR OnFireSmoke
+{
+	Renderstyle Normal
+	Alpha 0.1
+	Scale 0.0
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(frandom(1.25,1.5))
+	SpawnType:
+		TNT1 A 0 A_Jump(256,"SpawnA","SpawnB","SpawnC","SpawnD","SpawnE")
+	SpawnA:
+		RSMK A 0
+		Goto Main
+	SpawnB:
+		RSMK B 0
+		Goto Main
+	SpawnC:
+		RSMK C 0
+		Goto Main
+	SpawnD:
+		RSMK D 0
+		Goto Main
+	SpawnE:
+		RSMK E 0
+		Goto Main
+	Main:
+		"####" "#" 0 A_JumpIf(Alpha > 0.2, "PhaseTwo")
+		"####" "#" 0 A_ChangeVelocity (random(0.2, -0.2), random(0.2, -0.2), random(0.1, -0.1), 0)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.03,0.05))
+		"####" "#" 1 A_FadeIn(frandom(0.02,0.01))
+		Loop
+    PhaseTwo:
+		"####" "#" 0 A_ChangeVelocity (random(0.2, -0.2), random(0.2, -0.2), random(0.1, -0.1), 0)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.03,0.05))
+		"####" "#" 1 A_FadeOut(0.01)
+		Loop
+	}
+}

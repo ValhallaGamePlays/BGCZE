@@ -1,0 +1,969 @@
+ACTOR BrutalGuncastMancubus : Mancubus Replaces Mancubus
+{
+	//Loot
+	DropItem Amber 192
+	DropItem Ruby 128
+	
+	//Lardass can destroyed with many ways, which is nice.
+	//Especially a feast for crows!
+	//It is still impervious to melee attacks and ice, being so fat.
+	//The regular pound attack however is shockingly good on it.
+
+	//Resist & Weaknesses
+	DamageFactor Fire, 1.2
+	DamageFactor Meteorfist, 1.2
+	DamageFactor Acid, 1.25
+	DamageFactor Pound, 3.0
+	DamageFactor Manuel, 1.25
+	DamageFactor Crow, 1.2
+	DamageFactor Crow2, 1.2
+	
+	DamageFactor Ice, 0.7
+	
+	DamageFactor CloseCombat, 0.6
+	DamageFactor Shoelaces, 0.6
+	DamageFactor SuperCloseCombat, 0.6
+	DamageFactor SuperShoelaces, 0.6
+	DamageFactor SuperMidasCloseCombat, 0.6
+	DamageFactor SuperMidasShoelaces, 0.6
+	
+	//PAAAAAIN
+	PainChance 80
+	
+	//Guaranteed Effects
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	//Chance Effects
+	PainChance Lightning, 144
+	PainChance LightningBlue, 16
+	PainChance Manuel, 120
+	PainChance Fire, 80
+	
+	var int User_DeathByFire;
+	var int User_DeathByTiberium;
+	var int User_DeathByBlueTiberium;
+	var int User_LightningLock;
+	var int User_Smoke;
+	var int User_SmokeLoop;
+	
+	States
+	{	
+	//Melee
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-2.0,-5.0),0,frandom(0.5,1.0),CVF_RELATIVE)
+		Goto Pain.SSG
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 1 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-5.0,-10.0),0,frandom(3.0,6.0),CVF_RELATIVE)
+		Goto Pain.SSG
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-2.0,-5.0),0,frandom(0.5,1.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-5.0,-10.0),0,frandom(3.0,6.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Fatality",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERSCALE) //SXF_TRANSFERSPRITEFRAME|SXF_SETMASTER)
+		TNT1 A 5 A_BossDeath
+		Stop
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Fatality",0,0,0,frandom(-2.0,-5.0),0,frandom(0.5,1.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER|SXF_TRANSFERSCALE)
+		TNT1 A 0 A_BossDeath
+		TNT1 A 10 A_KillChildren
+		stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Fatality",0,0,0,frandom(-5.0,-10.0),0,frandom(3.0,6.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER|SXF_TRANSFERSCALE)
+		TNT1 A 0 A_BossDeath
+		TNT1 A 10 A_KillChildren
+		Stop
+		
+	//General death stuff
+	Crush:
+		TNT1 A 0 A_BossDeath
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("BloodTr255", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		XBIG EEEEE 1 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GiantBloodSpot", 4, 0, random (0, 360), 2, random (0, 160))
+		XBIG E 0
+		Goto Looplet
+
+    Death.minorhead:
+    Death.head:
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_JumpIfInTargetInventory("HasPlasmaWeapon", 1, "Death.Plasma")
+	TNT1 A 0 A_SpawnItem("BloodSplasher2")
+		TNT1 AAAAAA 0 A_CustomMissile ("GC_Xdeath1", 62, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_Brains1", 62, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_Brains2", 62, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_Brains6", 62, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_Brains7", 62, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_MancubusEyeballs", 62, 0, random (0, 360), 2, random (0, 160))
+		FATT KKK 2 A_CustomMissile ("Brutal_LiquidBlood2", 50, 0, random (0, 360), 2, random (30, 50))
+		FATT LLL 2 A_CustomMissile ("Brutal_LiquidBlood2", 40, 0, random (0, 360), 2, random (30, 50)) 
+		TNT1 A 0 A_Scream
+		FATT MMM 2 A_CustomMissile ("Brutal_LiquidBlood2", 30, 0, random (0, 360), 2, random (20, 50))
+		TNT1 A 0 A_NoBlocking
+		FATT NNOOPPQQRRSS 2 A_CustomMissile ("Brutal_LiquidBlood2", 20, 0, random (0, 360), 2, random (20, 50))
+		FATT TTTTTTTTTTTTTTTTTTTTTTT 2 A_CustomMissile ("Brutal_LiquidBlood2", 20, 0, random (0, 360), 2, random (20, 50))
+		TNT1 A 0 A_SpawnItem ("GC_DeadFatNoHead", 1)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+        Stop
+		
+	Death.decaptate:
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 AAAAAA 0 A_CustomMissile ("GC_Xdeath1", 62, 0, random (50, 130), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GC_XdeathMancubusHead", 62, 0, random (50, 130), 2, random (50, 130))
+		FATT O 6 A_Scream
+		FATT P 6 A_NoBlocking
+		FATT QRS 6
+		FATT T 1 A_BossDeath
+	    TNT1 A 0 A_SpawnItem ("GC_DeadFatNoHead", 1)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+        Stop
+
+    Death:
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		FAT3 A 1 A_Jump(64, "Death2")
+		FAT3 B 6 A_Scream
+		FAT3 C 6 A_NoBlocking
+		FAT3 DEF 6
+		FAT3 F 0 A_BossDeath
+	Looplet:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		//"####" "#" 0 A_JumpIf(User_DeathByFire == 1, "FireMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByTiberium == 1, "TiberiumMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByBlueTiberium == 1, "BlueTiberiumMelt")
+		Loop	
+	
+    Death2:
+		FATK A 6
+		FATK B 6 A_Scream
+		FATK C 6 A_NoBlocking
+		FATK DEF 6
+		FATK F 1 A_BossDeath    
+	    TNT1 A 0 A_SpawnItem ("GC_DeadFat", 1)
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+		Stop
+    Death.Fatality:
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+	    TNT1 A 0 A_Pain
+	    TNT1 A 0 A_JumpIfIntargetInventory("FistsSelected", 1, 1)
+		Goto Death
+	    TNT1 A 0 A_GiveToTarget("GoFatality", 1)
+        TNT1 A 0 A_GiveToTarget("FatsoFatality", 1)
+        TNT1 A 1 A_BossDeath
+        TNT1 A 0 
+		Stop
+
+	Death.cut:
+	Death.Saw:
+		TNT1 O 0 A_Jump(195, 2)
+		Goto Death
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+        TNT1 AAA 0 A_CustomMissile ("MuchBlood", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_Scream
+		TNT1 O 0 A_NoBlocking
+        FAT2 KL 5 A_CustomMissile ("MuchBlood", 75, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_RipGuts", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 A 0 A_BossDeath
+		FAT2 MNOP 5 A_CustomMissile ("MuchBlood", 15, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 A 0 A_SpawnItem ("GC_NoGutsFatso", 1)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+        Stop
+
+	Death.cutless:
+		TNT1 O 0 A_Jump(110, 2)
+		Goto Death
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+        TNT1 AAA 0 A_CustomMissile ("MuchBlood", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_Scream
+		TNT1 O 0 A_NoBlocking
+        FAT2 KL 5 A_CustomMissile ("MuchBlood", 75, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_RipGuts", 0, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 A 0 A_BossDeath
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		FAT2 MNOP 5 A_CustomMissile ("MuchBlood", 15, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 A 0 A_SpawnItem ("GC_NoGutsFatso", 1)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+        Stop
+	Death.SuperPlasma:
+    Death.Plasma: 
+	Death.Plasma2:
+	Death.Lightning:
+	Death.LightningBlue:
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+        TNT1 A 0 A_BossDeath
+        TNT1 A 0 A_Scream
+        TNT1 A 0 A_NoBlocking
+		CRB7 G 5 BRIGHT
+        TNT1 AAA 0 A_CustomMissile ("Brutal_FlyingBlood", 50, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat3", 32, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat2", 32, 0, random (0, 360), 2, random (0, 160))
+		CRB7 H 5 BRIGHT
+		EXPL AAAAAA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+        CRB7 IJ 5 BRIGHT
+		CARB L 0 A_SetUserVar("User_SmokeLoop",1000)
+	PlasmaSmokeInit:
+		"####" "#" 0 A_SetUserVar("User_Smoke",10)
+	PlasmaSmokeLoop:
+        "####" "#" 1 A_JumpIf(User_SmokeLoop <= 0, "Looplet")
+		"####" "#" 0 A_JumpIf(User_Smoke <= 0, "PlasmaSmoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	PlasmaSmoke:
+		"####" "#" 0 A_CustomMissile ("SmallSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Goto PlasmaSmokeInit 
+		/*CARB LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL 10 A_CustomMissile ("SmallSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+        CARB L -1
+        Stop*/
+		
+	 Death.Fire:
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		FATK A 4
+		FATK B 4 A_Scream
+		FATK C 4 A_NoBlocking
+		FATK DEF 4
+		FATK F 1 A_BossDeath
+		TNT1 A 0 A_Playsound("props/redfire")
+		CARB L 0 A_SetUserVar("User_Smoke",105)
+	FlameInit:
+		/*CARB LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL 2 A_CustomMissile ("FlameTrails", 32, 0, random (0, 360), 2, random (70, 130))*/
+		CARB L 0 A_JumpIf(User_Smoke <= 0, "PlasmaSmokeLoop")
+		CARB L 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		CARB L 1 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		CARB L 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		CARB L 1 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		CARB L 0 A_CustomMissile ("FlameTrails", 32, 0, random (0, 360), 2, random (70, 130))
+		CARB L 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop
+        /*CARB LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL 10 A_CustomMissile ("PLasmaSmoke", 32, 0, random (0, 360), 2, random (70, 130))
+        CARB L -1
+        Stop*/
+
+    Death.Explosives:
+	XDeath:
+	Death.ExplosiveImpact:
+	Death.Landmine:
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+        TNT1 A 0 A_CustomMissile ("MeatDeath", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (60, 90))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathMancubusArm", 20, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathMancubusHead", 20, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_XDeath2b", 20, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_XDeath3b", 20, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAA 0 A_CustomMissile ("MuchBlood2", 50, 0, random (0, 360), 2, random (0, 160))
+        XFBT A 6 A_Scream
+        XFBT B 6 A_NoBlocking
+        XFBT CDEF 6 A_BossDeath
+        XFBT F 1
+	    TNT1 A 0 A_SpawnItem ("GC_XDeadFat", 1)
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+        Stop
+	/*Death:
+		TNT1 A 0 A_StopSound(5)
+		FATT K 6 
+		FATT L 6 A_Scream
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		FATT M 6 A_NoBlocking
+		FATT NOPQRS 6
+		FATT T 0 A_BossDeath
+	XDeath:
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_BossDeath
+		TNT1 A 0 A_SpawnItemEx("FatsoGibbed",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		XBIG ABCDE 5*/
+	Looplet2:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastC")
+		"####" "#" 1 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+	
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathMancubusArm", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("FatsoBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("FatsoBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "PlasmaSmokeInit")
+		Goto Looplet
+	CorpseBlastC:
+		"####" "#" 0 A_SpawnItemEx("FatsoBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Looplet2
+
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERSCALE)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		"####" "#" 0 A_Jump(80,"Pain")
+		Goto See
+	Death.Acid:
+		FATT J 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 A_SetScale(ScaleX+frandom(0.01,0.025))
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+        TNT1 A 0 A_CustomMissile ("MeatDeath", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (60, 90))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathMancubusArm", 20, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathMancubusHead", 20, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_XDeath2b", 20, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_XDeath3b", 20, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAA 0 A_CustomMissile ("MuchBlood2", 50, 0, random (0, 360), 2, random (0, 160))
+        //TNT1 A 0 A_Scream
+        TNT1 A 0 A_NoBlocking
+        TNT1 A 0 A_BossDeath
+		TNT1 A 0 A_SpawnItem ("GrowingBloodPool")
+		TNT1 A 0 A_SpawnItemEx("FatsoGibbed",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		XBIG ABCDE 5
+		Goto Looplet2
+	//Dreadful
+	Death.Tiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		Goto Death
+	TiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.62, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	Death.BlueTiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByBlueTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		Goto Death
+	BlueTiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.62, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+		
+	//Threadcutter
+	Pain.Manuel:
+		"####" "#" 0 A_Jump(128,1)
+		Goto Pain
+		"####" "#" 0 A_GiveInventory("BleedItem")
+		"####" "#" 0 A_SpawnItemEx("BleedIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+		
+	//Thunderstruck
+	Pain.Lightning:
+		"####" "#" 0 A_Jump(164,1)
+		Goto Pain
+		FATT J 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	LightningLock:
+		"####" "#" 0 A_SpawnItem("HeadshotTarget10", 24, 62, 0)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "LightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Cauterizer
+	Pain.LightningBlue:
+		"####" "#" 0 A_Jump(48,1)
+		Goto Pain
+		FATT J 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	BlueLightningLock:
+		"####" "#" 0 A_SpawnItem("HeadshotTarget10", 24, 62, 0)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "BlueLightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Fire
+	Pain.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-5.0,-10.0),0,frandom(3.0,6.0),CVF_RELATIVE)
+		"####" "#" 0 A_Jump(256,2) //Guaranteed "On Fire!" effect, heeeh.
+	Pain.Fire:
+		"####" "#" 0 A_Jump(16,1)
+		Goto Pain
+		"####" "#" 0 A_JumpIfInventory("PowerOnFire",1,"Pain")
+		"####" "#" 0 A_GiveInventory("OnFireItem")
+		"####" "#" 0 A_SpawnItemEx("OnFireIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+	Death.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-5.0,-10.0),0,frandom(3.0,6.0),CVF_RELATIVE)
+		Goto Death.Fire
+	/*Death.Lightning:
+	Death.LightningBlue:
+	Death.Fire:
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 1)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_SpawnItemEx("FlamingDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	FireMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet*/
+	EndOfMelt:
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium", 0)
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 0)
+		Goto Looplet
+		
+	//Crows
+	Death.Crow:
+		//Crows like to feast on things... especially as fat things as this.
+		TNT1 AAAA 0 A_SpawnItemEx("FlockOfCrows",random(45,-45),random(45,-45),0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Goto Death
+		
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_BossDeath
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+	Death.Ice:
+	Death.Freeze:
+	Death.Frost:
+	Death.DukeIce:
+		"####" "#" 0 A_BossDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_JumpIfInventory("ChillgraspTrigger",1,4)
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("FrozenMancubus")
+		Stop	
+		FZD9 A 5 A_FreezeDeath
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+	Raise:
+		"####" "#" 0 ACS_NamedExecuteAlways("Normalization")
+		"####" "#" 0 A_SetScale(1.2)
+		Goto Super::Raise
+	}
+}
+
+ACTOR BrutalGuncastStealthMancubus : BrutalGuncastMancubus replaces StealthFatso
+{
+  +STEALTH
+  RenderStyle Translucent
+  Alpha 0
+  Obituary "$OB_STEALTHFATSO"
+}
+
+Actor GC_NoGutsFatso: GC_CurbstompedMarine replaces NoGutsFatso
+{
+    Radius 24
+    Height 46
+    +SHOOTABLE
+    -SOLID
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    Mass 1000
+    Health 300
+    Scale 1.2
+    damagefactor "Blood", 0.0
+    damagefactor "Trample", 0.0
+	var int User_DeathByFire;
+	var int User_LightningLock;
+	var int User_Smoke;
+	var int User_SmokeLoop;
+	States
+    {
+    Spawn:
+		FAT2 P 0 NoDelay A_SetInvulnerable
+	TrueSpawn:
+		"####" "#" 0 A_JumpIfInventory("TibDeathCounter",1,"TibSpawn")
+		"####" "#" 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibSpawn") 
+		"####" "#" 1 A_UnSetInvulnerable
+		Goto Continue
+	TibSpawn:
+		"####" "#" 1 ACS_NamedExecuteAlways("Toxic Avenger")
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium",1)
+		"####" "#" 0 A_UnSetInvulnerable
+		Goto Continue
+	BlueTibSpawn:
+		"####" "#" 1 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		"####" "#" 0 A_SetUserVar("User_DeathByBlueTiberium",1)
+		"####" "#" 0 A_UnSetInvulnerable
+		Goto Continue
+	Continue:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIf(User_DeathByTiberium == 1, "TiberiumMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByBlueTiberium == 1, "BlueTiberiumMelt")
+		Loop
+	CorpseBlastA:
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathMancubusArm", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("FatsoBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Goto Death
+	CorpseBlastB:
+		"####" "#" 0 A_SetInvulnerable
+		"####" "#" 0 A_SpawnItemEx("FatsoBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_UnSetInvulnerable
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "PlasmaSmokeInit")
+		Goto Continue
+	
+	TiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		"####" "#" 0 A_Jump(256,"Continue")
+		Goto Continue
+	BlueTiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		"####" "#" 0 A_Jump(256,"Continue")
+		Goto Continue
+	EndOfMelt:
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium", 0)
+		"####" "#" 0 A_SetUserVar("User_DeathByBlueTiberium", 0)
+		"####" "#" 0 A_Jump(256,"Continue")
+		Goto Continue
+    Death:
+		"####" "#" 1
+        TNT1 A 0 A_CustomMissile ("GC_MuchMeatDeath", 2, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+		Stop
+    Death.flames:
+    Death.burn:
+    Death.Plasma: 
+	Death.Plasma2:
+        TNT1 A 0 A_Scream
+        TNT1 A 0 A_NoBlocking
+        TNT1 AAA 0 A_CustomMissile ("Brutal_FlyingBlood", 50, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat3", 32, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat2", 32, 0, random (0, 360), 2, random (0, 160))
+		EXPL AAAAAA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+        /*CARB LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL 10 A_CustomMissile ("SmallSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+        CARB L -1*/
+		CARB L 0 A_SetUserVar("User_SmokeLoop",1000)
+	PlasmaSmokeInit:
+		"####" "#" 0 A_SetUserVar("User_Smoke",10)
+	PlasmaSmokeLoop:
+        "####" "#" 1 A_JumpIf(User_SmokeLoop <= 0, "Continue")
+		"####" "#" 0 A_JumpIf(User_Smoke <= 0, "PlasmaSmoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	PlasmaSmoke:
+		"####" "#" 0 A_CustomMissile ("SmallSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Goto PlasmaSmokeInit 
+
+	Death.Cut:
+	Death.Saw:
+		TNT1 A 0
+		TNT1 A 0 A_CustomMissile ("GC_XDeathMancubusArm", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath2", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GC_NoGutsFatso_RemovedWeapon", 1)
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+		Stop
+    }
+}
+
+Actor GC_NoGutsFatso_RemovedWeapon: GC_NoGutsFatso replaces NoGutsFatso_RemovedWeapon
+{
+	Health 200 
+	States
+	{
+	Spawn:
+		FAT2 Q 0 A_SetInvulnerable
+		Goto TrueSpawn
+	Continue:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIf(User_DeathByTiberium == 1, "TiberiumMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByBlueTiberium == 1, "BlueTiberiumMelt")
+		Loop
+	CorpseBlastA:
+		TNT1 A 0 A_CustomMissile ("GC_XDeathMancubusArm", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("FatsoBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Goto Death
+	CorpseBlastB:
+		"####" "#" 0 A_SetInvulnerable
+		"####" "#" 0 A_SpawnItemEx("FatsoBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_UnSetInvulnerable
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "PlasmaSmokeInit")
+		Goto Continue
+	Death.Cutless: 
+	Death.Cut:	       
+	Death.Saw:
+		Goto Death
+	}
+}
+
+Actor GC_DeadFat: GC_CurbstompedMarine replaces DeadFat
+{
+    Radius 16
+    Height 18
+    Scale 1.2
+    +SHOOTABLE
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    +CORPSE
+	-SOLID
+	+THRUACTORS
+	damagefactor "Crusher", 50.0
+    Mass 1000
+    Health 200
+    damagefactor "Blood", 0.0
+    damagefactor "Trample", 0.0
+	var int User_DeathByFire;
+	var int User_LightningLock;
+	var int User_Smoke;
+	var int User_SmokeLoop;
+	States
+    {
+    Spawn:
+		FATK F 0 NoDelay A_SetInvulnerable
+	TrueSpawn:
+		"####" "#" 0 A_JumpIfInventory("TibDeathCounter",1,"TibSpawn")
+		"####" "#" 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibSpawn") 
+		"####" "#" 1 A_UnSetInvulnerable
+		Goto Continue
+	TibSpawn:
+		"####" "#" 1 ACS_NamedExecuteAlways("Toxic Avenger")
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium",1)
+		"####" "#" 0 A_UnSetInvulnerable
+		Goto Continue
+	BlueTibSpawn:
+		"####" "#" 1 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		"####" "#" 0 A_SetUserVar("User_DeathByBlueTiberium",1)
+		"####" "#" 0 A_UnSetInvulnerable
+		Goto Continue
+	Continue:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIf(User_DeathByTiberium == 1, "TiberiumMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByBlueTiberium == 1, "BlueTiberiumMelt")
+		Loop
+	CorpseBlastA:
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathMancubusArm", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItemEx("FatsoBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Goto CurbstompedMarine::Death
+	CorpseBlastB:
+		"####" "#" 0 A_SetInvulnerable
+		"####" "#" 0 A_SpawnItemEx("FatsoBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_UnSetInvulnerable
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Continue
+	
+	TiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.62, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		"####" "#" 0 A_Jump(256,"Continue")
+		Goto Continue
+	BlueTiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.62, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		"####" "#" 0 A_Jump(256,"Continue")
+		Goto Continue
+	EndOfMelt:
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium", 0)
+		"####" "#" 0 A_SetUserVar("User_DeathByBlueTiberium", 0)
+		"####" "#" 0 A_Jump(256,"Continue")
+		Goto Continue
+    Death:
+	Death.ExplosiveImpact:
+	Death.Shotgun:
+		"####" "#" 1
+		TNT1 A 0 A_SpawnItem("GC_GutsPile")
+		TNT1 A 0 A_SpawnItemEx("GC_GibsZ", 15, 15)
+		TNT1 A 0 A_SpawnItemEx("GC_GibsZ", 15, -15)
+		TNT1 A 0 A_SpawnItemEx("GC_GibsZ", -15, 15)
+		TNT1 A 0 A_SpawnItemEx("GC_GibsZ", -15, -15)
+		TNT1 A 0 A_NoBlocking
+		TNT1 AAA 0 A_CustomMissile ("UltraGoreSpawner", 5, 0, random (0, 360), 2, random (30, 60))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath2b", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath3b", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 30, 0, random (0, 360), 2, random (40, 90))
+		TNT1 AAAAAAA 0 A_CustomMissile ("GC_XDeathSkinPiece2", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeathSkinPiece1", 25, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SmallSuperGore", 30, 0, random (0, 360), 2, random (10, 170))
+		TNT1 AAAA 0 A_CustomMissile ("BloodMistSmall", 35, 0, random (0, 360), 2, random (40, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+		Stop
+    Death.flames:
+    Death.burn:
+    Death.Plasma: 
+	Death.Plasma2:
+        TNT1 A 0
+        TNT1 A 0 A_Scream
+        TNT1 A 0 A_NoBlocking
+        TNT1 AAA 0 A_CustomMissile ("Brutal_FlyingBlood", 50, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat3", 32, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat2", 32, 0, random (0, 360), 2, random (0, 160))
+		EXPL AAAAAA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+		CARB L 0 A_SetUserVar("User_SmokeLoop",1000)
+	PlasmaSmokeInit:
+		"####" "#" 0 A_SetUserVar("User_Smoke",10)
+	PlasmaSmokeLoop:
+        "####" "#" 1 A_JumpIf(User_SmokeLoop <= 0, "Continue")
+		"####" "#" 0 A_JumpIf(User_Smoke <= 0, "PlasmaSmoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	PlasmaSmoke:
+		"####" "#" 0 A_CustomMissile ("SmallSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Goto PlasmaSmokeInit 
+        /*CARB LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL 10 A_CustomMissile ("SmallSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+        CARB L -1
+        Stop*/
+	Death.Cut:
+	Death.Saw:
+		TNT1 A 0
+		TNT1 A 0 A_CustomMissile ("GC_XDeathMancubusArm", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("GC_XDeath2", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GC_DeadFatNoArm", 1)
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+		Stop
+	}
+}
+		
+		
+Actor GC_DeadFatNoArm: GC_DeadFat replaces DeadFatNoArm
+{
+	States
+    {
+    Spawn:
+		FATK G 0 A_SetInvulnerable
+		Goto TrueSpawn
+	
+	Death.Saw:
+	Death.Cut:
+		TNT1 A 1
+		Goto Death
+    }
+}
+
+Actor GC_DeadFatNoHead: GC_DeadFat replaces DeadFatNoHead
+{
+	Health 200 
+	States
+	{
+	Spawn:
+		FATT T 0 A_SetInvulnerable
+		Goto TrueSpawn
+	Death.Cutless:
+		TNT1 A 0
+		Goto Death
+	Death.Cut:
+	Death.Saw:
+		TNT1 A 0
+		TNT1 A 0 A_CustomMissile ("GC_XDeathMancubusArm", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath2", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("GC_DeadFatNoHead_RemovedWeapon", 1)
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+		Stop
+	}
+}
+
+Actor GC_DeadFatNoHead_RemovedWeapon: GC_DeadFat replaces DeadFatNoHead_RemovedWeapon
+{
+	Health 200 
+	States
+	{
+	Spawn:
+		FAT2 R 0 A_SetInvulnerable
+		Goto TrueSpawn
+	Death.Cutless: 
+	Death.Cut:	        
+	Death.Saw:
+		TNT1 A 0
+		Goto Death
+	}
+}
+
+Actor GC_XDeadFat: GC_DeadFat replaces XDeadFat
+{
+	Health 200 
+	States
+	{
+	Spawn:
+		XFBT F 0 A_SetInvulnerable
+		Goto TrueSpawn 
+	Death.Cutless: 
+	Death.Cut:	       
+	Death.Saw:
+  	    TNT1 A 0
+		Goto Death
+	}
+}
+
+
+Actor GC_FatalizedFatso: GC_DeadFat replaces FatalizedFatso
+{
+	Scale 1.0 
+	Health 200 
+	States
+	{
+	Spawn:
+		FATF F 1 A_PlaySound("fatso/pain")
+        FATF FFEE 10 A_CustomMissile ("Blood", 35, 0, random (0, 360), 2, random (0, 160))
+		
+		FATF F 1 A_PlaySound("fatso/pain")
+        FATF FFEE 10 A_CustomMissile ("Blood", 35, 0, random (0, 360), 2, random (0, 160))
+		
+		FATF F 1 A_PlaySound("fatso/pain")
+        FATF FFEE 10 A_CustomMissile ("Blood", 35, 0, random (0, 360), 2, random (0, 160))
+		
+		FATF F 1 A_PlaySound("fatso/pain")
+        FATF FF 10 A_CustomMissile ("Blood", 35, 0, random (0, 360), 2, random (0, 160))
+		
+		FATF E 1 A_PlaySound("fatso/death")
+		FATF EEEEEEEEE 4 A_CustomMissile ("Blood", 35, 0, random (0, 360), 2, random (0, 160))
+		FATF E 0 A_SetInvulnerable
+		Goto TrueSpawn
+	}
+}

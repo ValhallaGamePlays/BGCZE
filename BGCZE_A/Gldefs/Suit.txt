@@ -1,0 +1,170 @@
+//Jets
+pulselight ROCKETPACKSTUFF
+{
+    color 0.8 0.5 0.1
+    size 96
+    secondarySize 0
+    interval 0.8
+}
+
+/*object Rocketpack_Emitter
+{
+    frame TNT1A { light ROCKETPACKSTUFF }
+}
+
+object Rocketglide_Emitter
+{
+    frame TNT1A { light ROCKETPACKSTUFF }
+}*/
+
+object Rocketpack_GLDEF
+{
+    frame TNT1A { light ROCKETPACKSTUFF }
+}
+
+//Zerk
+object SuperPowerStraightRight
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+object SuperPowerStraightLeft
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+object SuperPowerUppercutRight
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+object SuperPowerUppercutLeft
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+object SuperPowerKickProjectile
+{
+    frame TNT1A { light SUPERKEECK }
+}
+
+object SuperPowerKickProjectileLeft
+{
+    frame TNT1A { light SUPERKEECK }
+}
+
+object SuperPowerKickProjectileRight
+{
+    frame TNT1A { light SUPERKEECK }
+}
+
+object PowerBerserkStomp
+{
+    frame TNT1A { light ZERKBLAST }
+}
+
+//Midas
+object SuperMidasPowerStraightRight //shit, why did I reverse that. Oh well, whatever.
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+object SuperMidasPowerStraightLeft
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+object SuperMidasPowerUppercutRight
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+object SuperMidasPowerUppercutLeft
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+object SuperPowerMidasKickProjectile
+{
+    frame TNT1A { light SUPERMIDASKEECK }
+}
+
+object SuperPowerMidasKickProjectileLeft
+{
+    frame TNT1A { light SUPERMIDASKEECK }
+}
+
+object SuperPowerMidasKickProjectileRight
+{
+    frame TNT1A { light SUPERMIDASKEECK }
+}
+
+object PowerMidasBerserkStomp
+{
+    frame TNT1A { light MIDASZERKBLAST }
+}
+
+//Armcannons
+object BishArmcanProjectile
+{
+    frame TNT1A { light ARMCANFLIGHT }
+}
+
+object BishArmcanFX
+{
+    frame TNT1A { light ARMCANHIT }
+}
+
+pointlight ARMCANFLIGHT
+{
+    color 0.1 0.8 0.1
+    size 92
+}
+
+pulselight ARMCANHIT
+{
+    color 0.1 1.0 0.1
+    size 256
+    secondarySize 92
+    interval 1.5
+}
+
+//Cored Armcannons
+Object CoreBishArmcanProjectile
+{
+    frame TNT1A { light COREARMCANFLIGHT }
+}
+
+object CoreBishArmcanFX
+{
+    frame TNT1A { light COREARMCANHIT }
+}
+
+pointlight COREARMCANFLIGHT
+{
+    color 0.1 0.1 0.8
+    size 92
+}
+
+pulselight COREARMCANHIT
+{
+    color 0.1 0.1 1.0
+    size 256
+    secondarySize 92
+    interval 1.5
+}
+
+
+//Armstrike
+pulselight DATSTRIKEGLOW
+{
+    color 0.8 0.1 0.1
+    size 192
+    secondarySize 224
+    interval 0.9
+}
+
+object AirstrikeLockdown
+{
+	frame PNTRA { light DATSTRIKEGLOW }
+}

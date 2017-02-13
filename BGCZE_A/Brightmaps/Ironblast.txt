@@ -1,0 +1,259 @@
+//Ironblast
+brightmap sprite IRNGA0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Strat
+brightmap sprite IRNVA0 { map "Bmaps/Ironblast/Strat/IRNVA.png" }
+brightmap sprite IRNVB0 { map "Bmaps/Ironblast/Strat/IRNVB.png" }
+brightmap sprite IRNVC0 { map "Bmaps/Ironblast/Strat/IRNVC.png" }
+brightmap sprite IRNVD0 { map "Bmaps/Ironblast/Strat/IRNVD.png" }
+brightmap sprite IRNVE0 { map "Bmaps/Ironblast/Strat/IRNVE.png" }
+brightmap sprite IRNVF0 { map "Bmaps/Ironblast/Strat/IRNVF.png" }
+brightmap sprite IRNVG0 { map "Bmaps/Ironblast/Strat/IRNVG.png" }
+brightmap sprite IRNVH0 { map "Bmaps/Ironblast/Strat/IRNVH.png" }
+brightmap sprite IRNVI0 { map "Bmaps/Ironblast/Strat/IRNVI.png" }
+brightmap sprite IRNVJ0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVK0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVL0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVM0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVN0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVO0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVP0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVQ0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVR0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVS0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVT0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVU0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVV0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVW0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVX0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVY0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+brightmap sprite IRNVZ0 { map "Bmaps/Ironblast/Strat/IRNVZ.png" }
+
+brightmap sprite IRNSA0 { map "Bmaps/Ironblast/RRONREL0.png" }
+brightmap sprite IRNSB0 { map "Bmaps/Ironblast/RRONREL0.png" }
+brightmap sprite IRNSC0 { map "Bmaps/Ironblast/RRONREL1.png" }
+brightmap sprite IRNSD0 { map "Bmaps/Ironblast/RRONREL1.png" }
+brightmap sprite IRNSE0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite IRNSF0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite IRNSG0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite IRNSH0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite IRNSI0 { map "Bmaps/Ironblast/RRONREL3.png" }
+brightmap sprite IRNSJ0 { map "Bmaps/Ironblast/RRONREL3.png" }
+brightmap sprite IRNSK0 { map "Bmaps/Ironblast/RRONREL3.png" }
+brightmap sprite IRNSL0 { map "Bmaps/Ironblast/RRONREL4.png" }
+brightmap sprite IRNSM0 { map "Bmaps/Ironblast/RRONREL4.png" }
+brightmap sprite IRNSN0 { map "Bmaps/Ironblast/RRONREL4.png" }
+brightmap sprite IRNSO0 { map "Bmaps/Ironblast/RRONREL4.png" }
+
+//Kick
+brightmap sprite IRNKA0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IRNKB0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IRNKC0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNKD0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNKE0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRNKF0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRNKG0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNKH0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNKI0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNKZ0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Midas Kick
+brightmap sprite IRMKA0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IRMKB0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IRMKC0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRMKD0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRMKE0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRMKF0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRMKG0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRMKH0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRMKI0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRMKZ0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Gunzerk Kick
+brightmap sprite 1RNKA0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite 1RNKB0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite 1RNKC0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RNKD0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RNKE0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite 1RNKF0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite 1RNKG0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RNKH0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RNKI0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RNKZ0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Gunzerk Midas Kick
+brightmap sprite 1RMKA0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite 1RMKB0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite 1RMKC0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RMKD0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RMKE0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite 1RMKF0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite 1RMKG0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RMKH0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RMKI0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RMKZ0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Cast
+brightmap sprite IRNMA0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IRNMB0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IRNMC0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNMD0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNME0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRNMF0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRNMG0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNMH0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNMI0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNMJ0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNMK0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNML0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNMM0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNMN0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNMZ0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Single-Recoil
+brightmap sprite IRNHA0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNHB0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNHC0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRNHD0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRNHE0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNHF0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNHG0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNHH0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNHI0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNHJ0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite IRNHK0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRNHL0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRNHM0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite IRNHN0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNHO0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNHP0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNHQ0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite IRNHR0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IRNHS0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IRNHT0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Single-Reload
+brightmap sprite IRNRA0 { map "Bmaps/Ironblast/RRONREL0.png" }
+brightmap sprite IRNRB0 { map "Bmaps/Ironblast/RRONREL0.png" }
+brightmap sprite IRNRC0 { map "Bmaps/Ironblast/RRONREL1.png" }
+brightmap sprite IRNRD0 { map "Bmaps/Ironblast/RRONREL1.png" }
+brightmap sprite IRNRE0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite IRNRF0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite IRNRG0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite IRNRH0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite IRNRI0 { map "Bmaps/Ironblast/RRONREL3.png" }
+brightmap sprite IRNRJ0 { map "Bmaps/Ironblast/RRONREL3.png" }
+brightmap sprite IRNRK0 { map "Bmaps/Ironblast/RRONREL3.png" }
+brightmap sprite IRNRL0 { map "Bmaps/Ironblast/RRONREL4.png" }
+brightmap sprite IRNRM0 { map "Bmaps/Ironblast/RRONREL4.png" }
+brightmap sprite IRNRN0 { map "Bmaps/Ironblast/RRONREL4.png" }
+brightmap sprite IRNRO0 { map "Bmaps/Ironblast/RRONREL5.png" }
+brightmap sprite IRNRP0 { map "Bmaps/Ironblast/RRONREL5.png" }
+brightmap sprite IRNRQ0 { map "Bmaps/Ironblast/RRONREL5.png" }
+brightmap sprite IRNRR0 { map "Bmaps/Ironblast/RRONREL6.png" }
+brightmap sprite IRNRS0 { map "Bmaps/Ironblast/RRONREL6.png" }
+brightmap sprite IRNRT0 { map "Bmaps/Ironblast/RRONREL6.png" }
+
+//Gunzerk-Both
+brightmap sprite 3RNGA0 { map "Bmaps/Ironblast/IRONDUAL.png" }
+
+//Gunzerk-Right
+brightmap sprite 1RNGA0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Recoil
+brightmap sprite 1RNHA0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RNHB0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RNHC0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite 1RNHD0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite 1RNHE0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RNHF0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RNHG0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RNHH0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RNHI0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RNHJ0 { map "Bmaps/Ironblast/RRONREC3.png" }
+brightmap sprite 1RNHK0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite 1RNHL0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite 1RNHM0 { map "Bmaps/Ironblast/RRONREC2.png" }
+brightmap sprite 1RNHN0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RNHO0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RNHP0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RNHQ0 { map "Bmaps/Ironblast/RRONREC1.png" }
+brightmap sprite 1RNHR0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite 1RNHS0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite 1RNHT0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Reload
+brightmap sprite 1RNRA0 { map "Bmaps/Ironblast/RRONREL0.png" }
+brightmap sprite 1RNRB0 { map "Bmaps/Ironblast/RRONREL0.png" }
+brightmap sprite 1RNRC0 { map "Bmaps/Ironblast/RRONREL1.png" }
+brightmap sprite 1RNRD0 { map "Bmaps/Ironblast/RRONREL1.png" }
+brightmap sprite 1RNRE0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite 1RNRF0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite 1RNRG0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite 1RNRH0 { map "Bmaps/Ironblast/RRONREL2.png" }
+brightmap sprite 1RNRI0 { map "Bmaps/Ironblast/RRONREL3.png" }
+brightmap sprite 1RNRJ0 { map "Bmaps/Ironblast/RRONREL3.png" }
+brightmap sprite 1RNRK0 { map "Bmaps/Ironblast/RRONREL3.png" }
+brightmap sprite 1RNRL0 { map "Bmaps/Ironblast/RRONREL4.png" }
+brightmap sprite 1RNRM0 { map "Bmaps/Ironblast/RRONREL4.png" }
+brightmap sprite 1RNRN0 { map "Bmaps/Ironblast/RRONREL4.png" }
+brightmap sprite 1RNRO0 { map "Bmaps/Ironblast/RRONREL5.png" }
+brightmap sprite 1RNRP0 { map "Bmaps/Ironblast/RRONREL5.png" }
+brightmap sprite 1RNRQ0 { map "Bmaps/Ironblast/RRONREL5.png" }
+brightmap sprite 1RNRR0 { map "Bmaps/Ironblast/RRONREL6.png" }
+brightmap sprite 1RNRS0 { map "Bmaps/Ironblast/RRONREL6.png" }
+brightmap sprite 1RNRT0 { map "Bmaps/Ironblast/RRONREL6.png" }
+
+//Meteor Fist
+brightmap sprite IR1GA0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IR1GB0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IR1GC0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IR1GD0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+brightmap sprite IR1GZ0 { map "Bmaps/Ironblast/RRONIDLE.png" }
+
+//Gunzerk-Left
+brightmap sprite 2RNGA0 { map "Bmaps/Ironblast/LRONIDLE.png" }
+
+//Recoil
+brightmap sprite 2RNHA0 { map "Bmaps/Ironblast/LRONREC1.png" }
+brightmap sprite 2RNHB0 { map "Bmaps/Ironblast/LRONREC1.png" }
+brightmap sprite 2RNHC0 { map "Bmaps/Ironblast/LRONREC2.png" }
+brightmap sprite 2RNHD0 { map "Bmaps/Ironblast/LRONREC2.png" }
+brightmap sprite 2RNHE0 { map "Bmaps/Ironblast/LRONREC3.png" }
+brightmap sprite 2RNHF0 { map "Bmaps/Ironblast/LRONREC3.png" }
+brightmap sprite 2RNHG0 { map "Bmaps/Ironblast/LRONREC3.png" }
+brightmap sprite 2RNHH0 { map "Bmaps/Ironblast/LRONREC3.png" }
+brightmap sprite 2RNHI0 { map "Bmaps/Ironblast/LRONREC3.png" }
+brightmap sprite 2RNHJ0 { map "Bmaps/Ironblast/LRONREC3.png" }
+brightmap sprite 2RNHK0 { map "Bmaps/Ironblast/LRONREC2.png" }
+brightmap sprite 2RNHL0 { map "Bmaps/Ironblast/LRONREC2.png" }
+brightmap sprite 2RNHM0 { map "Bmaps/Ironblast/LRONREC2.png" }
+brightmap sprite 2RNHN0 { map "Bmaps/Ironblast/LRONREC1.png" }
+brightmap sprite 2RNHO0 { map "Bmaps/Ironblast/LRONREC1.png" }
+brightmap sprite 2RNHP0 { map "Bmaps/Ironblast/LRONREC1.png" }
+brightmap sprite 2RNHQ0 { map "Bmaps/Ironblast/LRONREC1.png" }
+brightmap sprite 2RNHR0 { map "Bmaps/Ironblast/LRONIDLE.png" }
+brightmap sprite 2RNHS0 { map "Bmaps/Ironblast/LRONIDLE.png" }
+brightmap sprite 2RNHT0 { map "Bmaps/Ironblast/LRONIDLE.png" }
+
+//Reload
+brightmap sprite 2RNRA0 { map "Bmaps/Ironblast/LRONREL0.png" }
+brightmap sprite 2RNRB0 { map "Bmaps/Ironblast/LRONREL0.png" }
+brightmap sprite 2RNRC0 { map "Bmaps/Ironblast/LRONREL1.png" }
+brightmap sprite 2RNRD0 { map "Bmaps/Ironblast/LRONREL1.png" }
+brightmap sprite 2RNRE0 { map "Bmaps/Ironblast/LRONREL2.png" }
+brightmap sprite 2RNRF0 { map "Bmaps/Ironblast/LRONREL2.png" }
+brightmap sprite 2RNRG0 { map "Bmaps/Ironblast/LRONREL2.png" }
+brightmap sprite 2RNRH0 { map "Bmaps/Ironblast/LRONREL2.png" }
+brightmap sprite 2RNRI0 { map "Bmaps/Ironblast/LRONREL3.png" }
+brightmap sprite 2RNRJ0 { map "Bmaps/Ironblast/LRONREL3.png" }
+brightmap sprite 2RNRK0 { map "Bmaps/Ironblast/LRONREL3.png" }
+brightmap sprite 2RNRL0 { map "Bmaps/Ironblast/LRONREL4.png" }
+brightmap sprite 2RNRM0 { map "Bmaps/Ironblast/LRONREL4.png" }
+brightmap sprite 2RNRN0 { map "Bmaps/Ironblast/LRONREL4.png" }
+brightmap sprite 2RNRO0 { map "Bmaps/Ironblast/LRONREL5.png" }
+brightmap sprite 2RNRP0 { map "Bmaps/Ironblast/LRONREL5.png" }
+brightmap sprite 2RNRQ0 { map "Bmaps/Ironblast/LRONREL5.png" }
+brightmap sprite 2RNRR0 { map "Bmaps/Ironblast/LRONREL6.png" }
+brightmap sprite 2RNRS0 { map "Bmaps/Ironblast/LRONREL6.png" }
+brightmap sprite 2RNRT0 { map "Bmaps/Ironblast/LRONREL6.png" }

@@ -1,0 +1,73 @@
+//Left in case I'd make it somehow work with Althud as well.
+height 28;
+
+statusbar normal
+{
+	DrawImage "GCASTBAR", -70, 172;
+	DrawShader 460, 28, vertical, reverse, -70, 172;
+	
+	DrawString /*"CONFONT",*/ "SMALLFONT", White, "Health", 3, 172, 0, Alignment(left);
+	DrawNumber 3, /*"HUDFONT_RAVEN"*/ "BIGFONT", Green, Health, Alignment(right), Interpolate(8), 58, 180, 2, Red, 25;
+	
+	DrawString /*"CONFONT",*/ "SMALLFONT", White, "Armor", 75, 172, 0, Alignment(left);
+	DrawNumber 3, /*"HUDFONT_RAVEN"*/ "BIGFONT", Green, Armor, Alignment(right), Interpolate(8), 118, 180, 2, Red, 25;
+	
+	UsesAmmo
+	{
+		DrawString /*"CONFONT",*/ "SMALLFONT", White, "Ammo", 137, 172, 0, Alignment(left);
+		DrawNumber 3, /*"HUDFONT_RAVEN"*/ "BIGFONT", LightBlue, Ammo1, Alignment(right), Interpolate(8), 173, 180, 2;
+	}
+	
+	DrawString /*"CONFONT",*/ "SMALLFONT", White, "Gold", 270, 173, 0, Alignment(right);
+	DrawNumber 10, "INDEXFONT_RAVEN", Gold, "Dosh", Alignment(right), 269, 182, 0;
+	
+	DrawKeyBar 3, horizontal, 11, 272, 192;
+	
+	drawselectedinventory artiflash, INDEXFONT_RAVEN, 280, 170;
+	
+	drawimage "BO2KZ0", 188, 175;
+	ininventory SkullfireActive, 1
+	{
+		drawimage "BO2KA0", 188, 175;
+	}
+	ininventory FrostbiteActive, 1
+	{
+		drawimage "BO2KB0", 188, 175;
+	}
+	ininventory SkypunchActive, 1
+	{
+		drawimage "BO2KF0", 188, 175;
+	}
+	ininventory GumpopActive, 1
+	{
+		drawimage "BO2KC0", 188, 175;
+	}
+	ininventory CrowsActive, 1
+	{
+		drawimage "BO2KG0", 188, 175;
+	}
+	ininventory ThunderActive, 1
+	{
+		drawimage "BO2KD0", 188, 175;
+	}
+	ininventory BreathActive, 1
+	{
+		drawimage "BO2KH0", 188, 175;
+	}
+	ininventory CorpseActive, 1
+	{
+		drawimage "BO2KI0", 188, 175;
+	}
+	ininventory ThreadcutterActive, 1
+	{
+		drawimage "BO2KE0", 188, 175;
+	}
+	ininventory AnnihilationActive, 1
+	{
+		drawimage "BO2KJ0", 188, 175;
+	}
+	//DrawString /*"CONFONT",*/ "SMALLFONT", White, "Mana", 221, 173, 0, Alignment(left);
+	//DrawNumber 10, "HUDFONT_RAVEN", Gold, "Mana", Alignment(right), 288, 171, 1;
+	drawbar "GCMBAR", "GCBBAR", Mana, horizontal, interpolate(8), 221, 192;
+	drawnumber 3, INDEXFONT_RAVEN, untranslated, Mana, 240, 193;
+}

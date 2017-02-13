@@ -1,0 +1,57 @@
+pointlight DARKPROJECTILE
+{
+    color 1.0 1.0 1.0
+    size 96
+    subtractive 1
+}
+
+object DarkVoidBlackHoleProjectile
+{
+    frame VOIP { light DARKPROJECTILE }
+}
+
+object DarkWeave
+{
+    frame RAMDB0 { light DARKPROJECTILE }
+}
+
+pulselight DARKSPAWN
+{
+    color 1.0 1.0 1.0
+    size 96
+    secondarysize 512
+    interval 0.65
+    subtractive 1
+}
+
+object DarkVoidBlackHoleSpawn
+{
+    frame VOIP { light DARKSPAWN }
+}
+
+pointlight DARKNESSVEIL
+{
+    color 1.0 1.0 1.0
+    size 512
+    subtractive 1
+}
+
+object DarkVoidFadeSpawner
+{
+    frame TNT1 { light DARKNESSVEIL }
+}
+
+pulselight DarkVoidCHUNK
+{
+    color 0.7 0.0 0.7
+    size 128
+    secondarySize 0
+    interval 1.35
+    subtractive 1
+} 
+
+object DarkVoidBlackHoleChunk
+{
+    frame VORX { light DarkVoidCHUNK }
+    frame TNT1B { light DarkVoidCHUNK }
+}

@@ -1,0 +1,13 @@
+HUDFONT_GCDOOM
+{
+	0 GC0
+	1 GC1
+	2 GC2
+	3 GC3
+	4 GC4
+	5 GC5
+	6 GC6
+	7 GC7
+	8 GC8
+	9 GC9
+}

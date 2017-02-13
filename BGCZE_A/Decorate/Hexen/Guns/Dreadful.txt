@@ -1,0 +1,13 @@
+ACTOR "Old Dreadful2" : "Old Dreadful"
+{
+   Health 3
+   Weapon.AmmoUse1 25
+   Weapon.AmmoGive1 50
+   Weapon.AmmoType1 "BlueMana"
+   Weapon.AmmoUse2 25
+   Weapon.AmmoGive2 50
+   Weapon.AmmoType2 "GreenMana"
+   Inventory.PickupMessage "''Old Dreadful'' assembled, have a nice, freaking day! (7)"
+   +WEAPON.PRIMARY_USES_BOTH
+   Tag "Old Dreadful"
+}

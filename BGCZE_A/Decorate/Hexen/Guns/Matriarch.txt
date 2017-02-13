@@ -1,0 +1,7 @@
+ACTOR Matriarch2 : Matriarch //replaces CWeapFlame
+{
+   Weapon.AmmoGive 30
+   Weapon.AmmoType "GreenMana"
+   Weapon.AmmoUse 3
+   Tag "Matriarch"
+}

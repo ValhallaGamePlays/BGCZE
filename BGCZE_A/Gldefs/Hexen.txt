@@ -1,0 +1,55 @@
+pulselight BAGOFGREENS
+{
+    color 0.1 0.7 0.1
+    size 24
+    secondarySize 36
+	offset 0 16 0
+    interval 1.4
+}
+
+object CasterPoisonBag
+{
+    frame PSBGA { light BAGOFGREENS }
+}
+
+pulselight BLUESHIZNIT
+{
+    color 0.2 0.2 1.0
+    size 24
+    secondarySize 32
+	offset 0 12 0
+    interval 1.0
+}
+
+object BlueMana
+{
+    frame MAN1 { light BLUESHIZNIT }
+}
+
+pulselight GREENSHIZNIT
+{
+    color 0.1 0.8 0.1
+    size 24
+    secondarySize 32
+	offset 0 12 0
+    interval 1.0
+}
+
+object GreenMana
+{
+    frame MAN2 { light GREENSHIZNIT }
+}
+
+pulselight REDSHIZNIT
+{
+    color 0.8 0.1 0.1
+    size 24
+    secondarySize 32
+	offset 0 12 0
+    interval 1.0
+}
+
+object CombineMana
+{
+    frame MAN3 { light REDSHIZNIT }
+}

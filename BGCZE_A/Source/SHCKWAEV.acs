@@ -1,0 +1,57 @@
+#library "GIGINSKY"
+#include "zcommon.acs"
+ 
+#define SPAAACE_PARTICLE 0
+#define SPAAACE_TILTSPEED 1
+#define SPAAACE_STRAIGHTSPEED 2
+#define SPAAACE_PARTCOUNT 3
+#define SPAAACE_ALL 4
+ 
+int spaaace_parameterz[4][SPAAACE_ALL] = {
+        {"BlueSpaceNukeParticleBlast", 80.0, 80.0, 256}, //Big blue wave.
+        {"BlueSpaceNukeParticleBlastShort", 60.0, 60.0, 64}, //Small blue wave.
+        {"GreenSpaceNukeParticleBlast", 80.0, 80.0, 256}, //Big green wave.
+        {"GreenSpaceNukeParticleBlastShort", 60.0, 60.0, 64} //Small green wave.
+};
+ 
+script "SpaceNukeWave" (int angle1, int angle2, int disctype) {
+        int x = GetActorX(0);
+        int y = GetActorY(0);
+        int z = GetActorZ(0);
+        int an = GetActorAngle(0);
+ 
+        SetActivatorToTarget(0);
+        int playerno = PlayerNumber();
+        int actorpointer = 0;
+        if (playerno >= 0) {
+                actorpointer = AAPTR_PLAYER1 << playerno;
+        }
+ 
+        int particlename = spaaace_parameterz[disctype][SPAAACE_PARTICLE];
+        int tiltspeed = spaaace_parameterz[disctype][SPAAACE_TILTSPEED];
+        int straightspeed = spaaace_parameterz[disctype][SPAAACE_STRAIGHTSPEED];
+        int partcount = spaaace_parameterz[disctype][SPAAACE_PARTCOUNT];
+ 
+        int x1, y1, z1, x2, y2, z2;
+        z2 = FixedMul(cos(angle2), tiltspeed); z1 = 0.0;
+        int troll = FixedMul(sin(angle2), tiltspeed);
+        x1 = FixedMul(cos(angle1), straightspeed);
+        y1 = FixedMul(sin(angle1), straightspeed);
+        y2 = FixedMul(cos(angle1), -troll);
+        x2 = FixedMul(sin(angle1), troll);
+ 
+        int tid = UniqueTID();
+ 
+        int velx, vely, velz;
+        int shift = 1.0 / partcount;
+        for (int i = 0.0; i < 1.0; i += shift) {
+                velx = FixedMul(x1, cos(i)) + FixedMul(x2, sin(i));
+                vely = FixedMul(y1, cos(i)) + FixedMul(y2, sin(i));
+                velz = FixedMul(z1, cos(i)) + FixedMul(z2, sin(i));
+                Spawn(particlename, x, y, z, tid, an);
+                SetActivator(tid);
+                Thing_ChangeTID(tid, 0);
+                SetActorVelocity(0, velx, vely, velz, 0, 0);
+                SetPointer(AAPTR_TARGET, 0, actorpointer);
+        }
+}

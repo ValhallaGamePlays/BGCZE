@@ -1,0 +1,189 @@
+// Gold gold gold gold gold gold gold gold. (Hey, you forgot the "gold" in between "gold" and "gold"!)
+// Most of the credit (and inspiration) for the money magnetization parts of this file goes to DoomRPG.
+// Thanks for all of the various information about giant arrays I gleaned from RPG.ds!
+// By Zhs2.
+
+#library "THEGOLDISGOOD"
+#include "zcommon.acs"
+
+#libdefine MAX_GOLD_ENTRIES 65535 // That's a lot of nuts!
+#libdefine MAX_PLAYERS 8 // don't need any magic numbers here
+
+int StashInitialized; // Because zero is a valid TID, how shit
+int DoshStash[MAX_GOLD_ENTRIES]; // hyueg categorization of gold items
+str playerpointers[MAX_PLAYERS] = {AAPTR_PLAYER1,AAPTR_PLAYER2,AAPTR_PLAYER3,AAPTR_PLAYER4,AAPTR_PLAYER5,AAPTR_PLAYER6,AAPTR_PLAYER7,AAPTR_PLAYER8};
+//destroys redundancy
+
+script "MoneySharing" (int min, int max) // Is caring
+{
+	int count;
+	if (max==0)
+	{
+		count = min;
+	}
+	else if (min>max && max!=0)
+	{
+		Log(s:"A gold amount is mucked up! Let the authors know!");
+		terminate;
+	}
+	else count = random(min, max);
+	
+	for(int i = 0; i<MAX_PLAYERS; i++)
+	{
+		if(SetActivator(0,playerpointers[i]))
+		{
+			//Log(s:"Gave ", i:count, s:" gold to player ", i:i);
+			GiveInventory("Dosh",count);
+		}
+	}
+}
+
+script "Categorization Initialization" ENTER // For your safety...
+{
+	for (int i = 0; i < MAX_GOLD_ENTRIES; i++)
+	{
+		DoshStash[i] = -1;
+		
+		if ((i % 15000) == 0)
+            Delay(1); // haha, avoiding the script kill
+	}
+	StashInitialized = 1;
+}
+
+script "I am Dosh" (void) // I'm the juggernaut!
+{
+	int error; // in case I need to return an error code!
+	while(!StashInitialized) {Delay(1);} // Wait for the array to be initialized
+	for (int arraypos = 0; arraypos < MAX_GOLD_ENTRIES; arraypos++)
+	{
+		if(DoshStash[arraypos] == -1)
+		{
+			if(ActivatorTID() == 0) // We probably don't have a TID at the start of a map, but just in case, assign one anyway
+			{
+				int thisTID = UniqueTID();
+				DoshStash[arraypos] = thisTID;
+				Thing_ChangeTID(0, thisTID);
+			}
+			else // And in case it does...
+			{
+				DoshStash[arraypos] = ActivatorTID();
+			}
+			
+			break;
+		}
+		if ((arraypos % 15000) == 0)
+            Delay(1); // just in case we have _so much_ gold
+	}
+}
+
+script "The Midas Touch" ENTER // Yeah, that'll make it really jewy
+{
+	delay(1);
+	if(CheckInventory("PowerMidasMode") || GetCVar("GC_Loadsamoney"))
+	{
+		ACS_NamedExecuteAlways("MoneyMagnet",0,0,0,0);
+		delay(14);
+	}
+	restart;
+}
+
+script "MoneyMagnet" (void) // Big Money Mix
+{
+	/* TOO SIMPLE AND CHEATY SEZ PILLOUGHW
+	while(ThingCount(T_NONE, DOSHTID))
+	{
+		SetActorPosition(DOSHTID, GetActorX(0), GetActorY(0), GetActorZ(0)+16, 0);
+		SetActorVelocity(DOSHTID, 0.0, 0.0, 1.0, false, false);
+		delay(1);
+	}
+	SetActorVelocity(0, 0.0, 0.1, 0.1, true, false); // Just to expedite the pickup
+	*/
+	
+	int playposX, playposY, goldposX, goldposY, goldposZ, totalposX, totalposY, tomed, grabme;
+	int killdodge = 15000; // It's a cool name, but all it really does is help avoid a script kill.
+	
+	if(!StashInitialized)
+	{
+		//Print(s:"\ccA mysterious force prevents you from being immediately greedy.");
+		// How are you supposed to know where the gold is if it hasn't been categorized yet?
+		terminate;
+	}
+	if(!CheckInventory("PowerMidasMode") && !GetCVar("GC_Loadsamoney") && !GetCVar("sv_infiniteammo")) // If not cast as a spell, don't worry about mana
+	{
+		if(!(CheckInventory("Mana") > 1)) // Do we have enough mana to begin?
+		{
+			Print(s:"\crInsufficient mana!");
+			terminate;
+		}
+	}
+	
+	// We use the initial position of the player to determine what gold he can grab.
+	// No being cheaty by casting the spell and continuing to move about for more results!
+	playposX = GetActorX(0);
+	playposY = GetActorY(0);
+	// also store the state of the player's toming
+	tomed = (CheckInventory("PowerMidasMode") + CheckInventory("PowerTomeEffect"));
+	
+	for(int arraypos = 0; arraypos < MAX_GOLD_ENTRIES; arraypos++)
+	{
+		if(DoshStash[arraypos] == -1) {continue;} // No entry here, no need to waste time.
+		if(ClassifyActor(DoshStash[arraypos]) == 0) // If, for some reason, the TID hasn't been properly cleared...
+		{
+			DoshStash[arraypos] = -1; // Clear it!
+			continue;
+		}
+		if(!CheckInventory("PowerMidasMode") && !GetCVar("GC_Loadsamoney") && !GetCVar("sv_infiniteammo")) // If it's not cast as a spell...
+		{
+			if(!(CheckInventory("Mana") > 1)) // Do we have enough mana to continue?
+			{
+				//Print(s:"\crMana depleted!");
+				terminate;
+			}
+		}
+		if(CheckInventory("Dosh") == 99999)
+		{
+			if(!CheckInventory("PowerMidasMode") && !GetCVar("GC_Loadsamoney"))
+			{
+				Print(s:"Do you really need more gold than this, mortal?");
+			}
+			break;
+		}
+		goldposX = GetActorX(DoshStash[arraypos]);
+		goldposY = GetActorY(DoshStash[arraypos]);
+		goldposZ = GetActorZ(DoshStash[arraypos]); // Used for an effect, not for calculation
+		totalposX = (goldposX - playposX) >> 16; // Yet again, fixed point ruins lives
+		totalposY = (goldposY - playposY) >> 16;
+		// And now check for the grab proper
+		if(tomed == 2) // A double-tomed grab has a ridiculous range
+		{
+			if(sqrt(totalposx*totalposx + totalposy*totalposy) <= 16384) {grabme = 1;}
+		}
+		else if(tomed) // A tomed grab has a bigger range
+		{
+			if(sqrt(totalposx*totalposx + totalposy*totalposy) <= 4096) {grabme = 1;}
+		}
+		else
+		{
+			if(sqrt(totalposx*totalposx + totalposy*totalposy) <= 512) {grabme = 1;}
+		}
+		
+		if(grabme)
+		{
+			if(SetActorPosition(DoshStash[arraypos], GetActorX(0), GetActorY(0), GetActorZ(0)+16.0, false))
+			// Drop it on the player, not his original position (he's probably moved since then)
+			{
+				SpawnForced("ShingSparkleSparkle", goldposX, goldposY, goldposZ);
+				SetActorVelocity(DoshStash[arraypos], 0.0, 0.0, 1.0, false, false); // Throw it just a bit.
+				if(!CheckInventory("PowerMidasMode") && !GetCVar("GC_Loadsamoney") && !GetCVar("sv_infiniteammo")) {TakeInventory("Mana", 2);} // Mana cost.
+				DoshStash[arraypos] = -1; // Clear the way for new gold items.
+			}
+			grabme = 0; // Wow, how did I forget to unset this? We don't want to grab all future gold!
+			delay(1); // Wait a tic just in case.
+			killdodge = 15000 + arraypos; // for below
+		}
+		
+		if ((arraypos % killdodge) == 0) // If we've seen 15000 entries from the last grab...
+			delay(1); // ...wait another tic
+	}
+}
+

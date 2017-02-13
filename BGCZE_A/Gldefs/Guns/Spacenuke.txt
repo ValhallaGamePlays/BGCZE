@@ -1,0 +1,73 @@
+//Space Nuke Sphere
+pulselight BLUESPACENUKESPHERE
+{
+    color 0.1 0.2 1.0
+    size 486
+    secondarySize 512
+    interval 0.9
+}
+
+pulselight GREENSPACENUKESPHERE
+{
+    color 0.1 1.0 0.2
+    size 486
+    secondarySize 512
+    interval 0.9
+}
+
+pulselight SPACENUKESPHEREINNER
+{
+    color 1.0 1.0 1.0
+    size 384
+    secondarySize 512
+    interval 0.9
+}
+
+Object BlueSpaceNukeSphere
+{
+    frame "#####" { light BLUESPACENUKESPHERE }
+    frame "####" { light SPACENUKESPHEREINNER }
+}
+
+Object GreenSpaceNukeSphere
+{
+    frame "#####" { light GREENSPACENUKESPHERE }
+    frame "####" { light SPACENUKESPHEREINNER }
+}
+
+//Space Missile
+pulselight BLUESPACEMISSILEBLAST
+{
+    color 0.1 0.2 1.0
+    size 128
+    secondarySize 512
+    interval 0.7
+}
+
+pulselight GREENSPACEMISSILEBLAST
+{
+    color 0.1 1.0 0.2
+    size 128
+    secondarySize 512
+    interval 0.7
+}
+
+pulselight SPACEMISSILEBLASTINNER
+{
+    color 1.0 1.0 1.0
+    size 64
+    secondarySize 512
+    interval 0.7
+}
+
+Object BlueSpaceMissileImpact
+{
+    frame TNT1A { light BLUESPACEMISSILEBLAST }
+    frame TNT1 { light SPACEMISSILEBLASTINNER }
+}
+
+Object GreenSpaceMissileImpact
+{
+    frame TNT1A { light GREENSPACEMISSILEBLAST }
+    frame TNT1 { light SPACEMISSILEBLASTINNER }
+}

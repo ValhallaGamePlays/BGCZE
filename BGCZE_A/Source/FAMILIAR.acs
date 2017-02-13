@@ -1,0 +1,29 @@
+//A check for familiar to check whether it's close to the player or not,
+//so it can return itself after meteor-slamming into some poor idiot.
+//straight-modified from TB's machete check by Zhs2!
+
+#library "FAMILIAR"
+#include "zcommon.acs"
+
+script "FamiliarSpot" (void)
+{
+	int machposx, machposy, playposx, playposy, totalposx, totalposy;
+	machposx = GetActorX(0); // First get the position...
+	machposy = GetActorY(0);
+	SetActivatorToTarget(0); // I didn't think this would work, but it's actually kind of simple.
+	playposx = GetActorX(0); // The player is now the activator so he needs no TID
+	playposy = GetActorY(0);
+	totalposx = (machposx - playposx) >> 16; // Fixed point will ruin our lives
+	totalposy = (machposy - playposy) >> 16;
+	if (sqrt(totalposx*totalposx + totalposy*totalposy) <= 72) // Bah, distance formulas
+	{
+		SetResultValue(True); // We're close enough!
+	}
+	else {SetResultValue(False);} // No we're not.
+}
+
+script "FamiliarCheck" (void)
+{
+	SetActivatorToTarget(0);
+	SetResultValue(GetCVar("GC_FamiliarMode"));
+}

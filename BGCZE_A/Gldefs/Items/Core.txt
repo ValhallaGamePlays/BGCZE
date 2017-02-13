@@ -1,0 +1,16 @@
+pointlight TIBCORELIGHT
+{
+    color 0.2 0.2 1.0
+    size 24
+    offset 0 8 0
+}
+
+object TibCore
+{
+    frame BTIBA { light TIBCORELIGHT }
+}
+
+object TibCoreBringer
+{
+    frame BTIBA { light TIBCORELIGHT }
+}

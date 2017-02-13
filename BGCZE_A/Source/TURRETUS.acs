@@ -1,0 +1,94 @@
+// Spiritus Turretus Gluteus Maximus. Or something like that. (Three turret limit.)
+// By Zhs2.
+
+#library "YOUCANKILLEVERYTHINGATONCEBUTONLYWITHTHREETURRETSATATIME"
+#include "zcommon.acs"
+
+// A single script is called upon to check the lifespan of all available turrets
+// via TIDs stored in user variables for their owner. The oldest one gets removed
+// to make way for the next one, as defined here.
+
+#libdefine MAX_TURRET_COUNT 3
+#libdefine DEFAULT_LIFESPAN 35*20
+#libdefine LIFESPAN_VARIABLE "User_Lifespan"
+#libdefine USER_TURRET_ARRAY "User_TurretIDs"
+// Apparently I can't check for a user variable because I can't initialize them when I declare them
+// and setting one in the player is futile.
+#libdefine TURRET_LIMIT_ITEM "TurretLimitCounter"
+
+script "Turret_Init" (void)
+{
+	int Turret_TID, Oldest_Turret, Oldest_Turret_TID, Least_Lifespan, TurretLimit;
+	// First, we try to identify our turret for future use.
+	Turret_TID = UniqueTID();
+	Thing_ChangeTID(0, Turret_TID);
+	// Second, we try to assign the turret by number into the user's library of currently active turrets.
+	if(IsPointerEqual(AAPTR_MASTER, AAPTR_NULL))
+	{
+		if(!SetActivator(0, AAPTR_TARGET))
+		{
+			HUDMessageBold(s:"Could not set turret's target as activator!";HUDMSG_FADEOUT|HUDMSG_LOG, 900, CR_GOLD, 0.5, 0.1, 3.0, 0.5);
+		}
+	}
+	else
+	{
+		if(!SetActivator(0, AAPTR_MASTER))
+		{
+			HUDMessageBold(s:"Could not set turret's master as activator!";HUDMSG_FADEOUT|HUDMSG_LOG, 900, CR_GOLD, 0.5, 0.1, 3.0, 0.5);
+		}
+	} // Check the turret summoner.
+	TurretLimit = CheckInventory(TURRET_LIMIT_ITEM);
+	if(!TurretLimit)
+	{
+		HUDMessageBold(s:"Could not retrieve turret limit count item!";HUDMSG_FADEOUT|HUDMSG_LOG, 900, CR_GOLD, 0.5, 0.1, 3.0, 0.5);
+	}
+	
+	for(int i = 0; i < TurretLimit; i++)
+	{
+		if(!GetUserArray(0, USER_TURRET_ARRAY, i))
+		{
+			SetUserArray(0, USER_TURRET_ARRAY, i, Turret_TID);
+			terminate; // We found a free slot to assign to. No more work needs doing
+		}
+	}
+	// Third, if this runs over we enter the second phase, where we solve the problem this script was
+	// written for: limiting only three actors to existence at any given time. There are no free slots,
+	// so the script has to remove the oldest turret to make room for a new one.
+	Least_Lifespan = DEFAULT_LIFESPAN;
+	for(int j = 0; j < TurretLimit; j++)
+	{
+		if(GetUserVariable(GetUserArray(0, USER_TURRET_ARRAY, j), LIFESPAN_VARIABLE) < Least_Lifespan)
+		{
+			Least_Lifespan = GetUserVariable(GetUserArray(0, USER_TURRET_ARRAY, j), LIFESPAN_VARIABLE);
+			Oldest_Turret = j;
+			Oldest_Turret_TID = GetUserArray(0, USER_TURRET_ARRAY, j); // Store its TID, avoid headaches
+		}
+	}
+	// Fourth, when we've reached this point we simply clear the oldest turret from existence.
+	SetUserArray(0, USER_TURRET_ARRAY, Oldest_Turret, Turret_TID); // The newest turret gets its spot
+	SetActivator(Oldest_Turret_TID); // Change to the oldest turret
+	SetActorState(0, "Death.Removed", TRUE); // Kill it
+}
+
+// Finally, when a turret removes itself naturally, it also needs to remove itself from the chain of command.
+script "Turret_Death" (void)
+{
+	int Turret_TID = ActivatorTID();
+	if(IsPointerEqual(AAPTR_MASTER, AAPTR_NULL))
+	{
+		SetActivator(0, AAPTR_TARGET);
+	}
+	else
+	{
+		SetActivator(0, AAPTR_MASTER);
+	}
+	int TurretLimit = CheckInventory(TURRET_LIMIT_ITEM);
+	for(int i = 0; i < TurretLimit; i++)
+	{
+		if(GetUserArray(0, USER_TURRET_ARRAY, i) == Turret_TID)
+		{
+			SetUserArray(0, USER_TURRET_ARRAY, i, 0);
+			terminate; // All clear here
+		}
+	}
+}

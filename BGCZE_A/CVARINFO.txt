@@ -1,0 +1,55 @@
+// -----------------------------------------------------------------------------
+//
+// Snake game by KeksDose
+//
+// Some console variables that store yer highscores.
+//
+// -----------------------------------------------------------------------------
+
+User	Int		KD_SnakeScore1 = 10;
+User	Int		KD_SnakeScore2 = 9;
+User	Int		KD_SnakeScore3 = 8;
+User	Int		KD_SnakeScore4 = 7;
+User	Int		KD_SnakeScore5 = 6;
+User	Int		KD_SnakeScore6 = 5;
+User	Int		KD_SnakeScore7 = 4;
+User	Int		KD_SnakeScore8 = 3;
+User	Int		KD_SnakeScore9 = 2;
+User	Int		KD_SnakeScore10 = 1;
+User	String	KD_SnakeName1 = "The Fishmaster";
+User	String	KD_SnakeName2 = "Ninja Galvatron";
+User	String	KD_SnakeName3 = "Guru Annihilator";
+User	String	KD_SnakeName4 = "Kodiak";
+User	String	KD_SnakeName5 = "Kyoji";
+User	String	KD_SnakeName6 = "Joanna Dark";
+User	String	KD_SnakeName7 = "MacGyver";
+User	String	KD_SnakeName8 = "Charizard";
+User	String	KD_SnakeName9 = "Kefka";
+User	String	KD_SnakeName10 = "Tri-Horned Dragon";
+
+//KeksDose started it! Now we have to add more CVARs! - Zhs2
+
+User	Int	GC_RestrictiveArmorBehavior = 0;
+server	Int	GC_Hammerspace = 1;
+
+//PILLOW: Yep.
+
+User	Int	GC_ShootableTNT = 1;
+User	Int	GC_QuakeStyle = 0;
+Server	Int	GC_Gunslinger = 0;
+User	Int	GC_FamiliarMode = 0;
+User	Int	GC_Crosshair = 0;
+User  	Int GC_MuteShotgun = 0;
+server	Int	GC_Loadsamoney = 0;
+server	Int	GC_Doshmeter = 400;
+server  Int GC_MoneyShare = 1;
+server	Int GC_KeyShare = 1;
+server	Int GC_PowersuitShare = 0;
+server	Int GC_ManaRegenSpeed = 2;
+Server  Int GC_ParticleChoke = 0;
+
+/*
+User	Float GC_RecoilFactor1 = 1.0;
+User	Float GC_RecoilFactor2 = 1.0;
+User	Int GC_RecoilFactor3 = 1;
+*/

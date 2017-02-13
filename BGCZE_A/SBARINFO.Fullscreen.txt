@@ -1,0 +1,425 @@
+monospacefonts true, "0";
+interpolatehealth true;
+interpolatearmor true;
+
+//HUD base by TheDarkArchon, seriously improved on the way!
+statusbar fullscreen, fullscreenoffsets 
+{
+
+	//Hud Overlay Images
+	InInventory DoomCounter
+	{
+		drawimage "GSHDDLFT", 0, -66;
+	}
+	InInventory HereticCounter
+	{
+		drawimage "GSHDLEFT", 0, -66;
+	}
+	InInventory HexenCounter
+	{
+		drawimage "GSHDLFT2", 0, -66;
+	}
+	drawimage "GSHDRGHT", -130, -66;
+
+	//Powerups affecting derg HUD mural's eyes
+	drawswitchableimage Invulnerable, "GODLEFT0", "nullimage",  0, -66;
+	drawswitchableimage Invulnerable, "GODRIGH0", "nullimage", -130, -66;
+	drawswitchableimage PowerExtremeDamage, "nullimage", "GODLEFT0", 0, -66;
+	drawswitchableimage PowerExtremeDamage, "nullimage", "GODRIGH0", -130, -66;
+	/*drawswitchableimage PowerIronLizard, "nullimage", "GODLEFT0", 0, -66;
+	drawswitchableimage PowerIronLizard, "nullimage", "GODRIGH0", -130, -66;*/
+	drawswitchableimage PowerGodMode, "nullimage", "GODLEFT0", 0, -66;
+	drawswitchableimage PowerGodMode, "nullimage", "GODRIGH0", -130, -66;
+	//drawswitchableimage PowerMidasMode, "nullimage", "GODLEFT0",  0, -66;
+	//drawswitchableimage PowerMidasMode, "nullimage", "GODRIGH0", -130, -66;
+	drawswitchableimage PowerTomeEffect, "nullimage", "TOMELFT0", 0, -66;
+	drawswitchableimage PowerTomeEffect, "nullimage", "TOMERIG0", -130, -66;
+	drawswitchableimage PowerGunzerking, "nullimage", "ZERKLFT0", 0, -66;
+	drawswitchableimage PowerBerserkDamage, "nullimage", "ZERKRIG0", -130, -66;
+	
+	//Left side:
+    //Health, Armor and Mana
+	drawbar "HLTBAR01", "HLTMPTY", health, horizontal, interpolate(8), 46, -31;
+	drawbar "ARMBAR01", "ARMMPTY", armor(ArmorPoints), horizontal, interpolate(8), 46, -20;
+	drawbar "MNABAR01", "MNAMPTY", Mana, horizontal, interpolate(8), 46, -9;
+	
+	InInventory DoomCounter
+	{
+		drawnumber 4, INDEXFONT_DOOM, untranslated, health, 96, -30;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, armor, 96, -19;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, Mana, 96, -8;
+	}
+	Else
+	{
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, health, 96, -30;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, armor, 96, -19;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, Mana, 96, -8;
+	}
+	
+	//Ammo counters
+	InInventory DoomCounter || HereticCounter
+	{
+		drawimage  "GSHDAMMO", 0, 0;
+		drawbar "REVLBAR", "GCBBAR", LonghornAmmo, horizontal, interpolate(8), 2, 2;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, LonghornAmmo, whennotzero, 51, 3;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, LonghornAmmo, whennotzero, 51, 3;
+		drawbar "SHOTBAR", "GCBBAR", ShotgunAmmo, horizontal, interpolate(8), 2, 13;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, ShotgunAmmo, whennotzero, 51, 14;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, ShotgunAmmo, whennotzero, 51, 14;
+		drawbar "BULLBAR", "GCBBAR", PulverizerAmmo, horizontal, interpolate(8), 2, 24;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, PulverizerAmmo, whennotzero, 51, 25;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, PulverizerAmmo, whennotzero, 51, 25;
+		drawbar "CANNBAR", "GCBBAR", MatriarchAmmo, horizontal, interpolate(8), 2, 35;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, MatriarchAmmo, whennotzero, 51, 36;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, MatriarchAmmo, whennotzero, 51, 36;
+		drawbar "SOVGBAR", "GCBBAR", SovereignAmmo, horizontal, interpolate(8), 2, 46;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, SovereignAmmo, whennotzero, 51, 47;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, SovereignAmmo, whennotzero, 51, 47;
+		drawbar "CAUTBAR", "GCBBAR", CauterizerAmmo, horizontal, interpolate(8), 2, 56;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, CauterizerAmmo, whennotzero, 51, 57;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, CauterizerAmmo, whennotzero, 51, 57;
+		drawbar "TIBRBAR", "GCBBAR", TiberiumAmmo, horizontal, interpolate(8), 2, 67;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, TiberiumAmmo, whennotzero, 51, 68;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, TiberiumAmmo, whennotzero, 51, 68;
+		drawbar "TNTBAR", "GCBBAR", TNTAmmo, horizontal, interpolate(8), 2, 78;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, TNTAmmo, whennotzero, 51, 79;
+		drawnumber 4, INDEXFONT_DOOM, untranslated, TNTAmmo, whennotzero, 51, 79;
+	}
+	
+	//Powerup timers
+	
+	//Extremesphere
+	InInventory PowerExtremeDamage
+	{
+		drawnumber 5, INDEXFONT, Red, PowerupTime ExtremePower, whennotzero, alignment(left), 58, 3;
+	}
+	Else //Berserk
+	{
+		drawnumber 5, INDEXFONT, GCFury, PowerupTime PowerBerserking, whennotzero, alignment(left), 58, 3;
+	}
+	
+	//Gunzerk
+	drawnumber 5, INDEXFONT, GCPurple, PowerupTime GunzerkingGiver, whennotzero, alignment(left), 58, 14;
+	
+	//Tome/Amplifier
+	drawnumber 5, INDEXFONT, Purple, PowerupTime Amplify, whennotzero, alignment(left), 58, 25;
+	
+	//Familiar
+	drawnumber 5, INDEXFONT, GCTeal, PowerupTime MinidergItem, whennotzero, alignment(left), 58, 36;
+	
+	//Reaver
+	drawnumber 5, INDEXFONT, Cyan, PowerupTime ReaverInvisibility1, whennotzero, alignment(left), 58, 47;
+	
+	//God Mode
+	drawnumber 5, INDEXFONT, Gold, PowerupTime InvulnerabilitySphere2, whennotzero, alignment(left), 58, 58;
+	
+	//Midas
+	drawnumber 5, INDEXFONT, Yellow, PowerupTime MidasPower, whennotzero, alignment(left), 58, 69;
+	
+	//Keys
+	drawswitchableimage KeyYellow, "TNT1A0", "YKEYICON", 46, -40;
+	drawswitchableimage KeyGreen, "TNT1A0", "GKEYICON", 60, -40;
+	drawswitchableimage KeyBlue, "TNT1A0", "BKEYICON", 74, -40;
+	drawswitchableimage YellowCard2 && YellowSkull2, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 47, -50;
+	drawswitchableimage RedCard2 && RedSkull2, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 61, -50;
+	drawswitchableimage BlueCard2 && BlueSkull2, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 75, -50;
+	
+	//Left just in case of give all.
+	drawswitchableimage YellowCard && YellowSkull, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 47, -50;
+	drawswitchableimage RedCard && RedSkull, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 61, -50;
+	drawswitchableimage BlueCard && BlueSkull, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 75, -50;
+	
+	//Ninja bar, Doom-only
+	InInventory DoomCounter
+	{
+		InInventory PowerRunDamage9
+		{
+			drawimage "SPDACTIV", 61, -39;
+		}
+
+		InInventory PowerRunDamage8
+		{
+			drawimage "SPDACTIV", 61, -39;
+			drawimage "SPDACTIV", 65, -39;
+		}
+
+		InInventory PowerRunDamage7
+		{
+			drawimage "SPDACTIV", 61, -39;
+			drawimage "SPDACTIV", 65, -39;
+			drawimage "SPDACTIV", 69, -39;
+		}
+
+		InInventory PowerRunDamage6
+		{
+			drawimage "SPDACTIV", 61, -39;
+			drawimage "SPDACTIV", 65, -39;
+			drawimage "SPDACTIV", 69, -39;
+			drawimage "SPDACTIV", 73, -39;
+		}
+
+		InInventory PowerRunDamage5
+		{
+			drawimage "SPDACTIV", 61, -39;
+			drawimage "SPDACTIV", 65, -39;
+			drawimage "SPDACTIV", 69, -39;
+			drawimage "SPDACTIV", 73, -39;
+			drawimage "SPDACTIV", 77, -39;
+		}
+
+		InInventory PowerRunDamage4
+		{
+			drawimage "SPDACTIV", 61, -39;
+			drawimage "SPDACTIV", 65, -39;
+			drawimage "SPDACTIV", 69, -39;
+			drawimage "SPDACTIV", 73, -39;
+			drawimage "SPDACTIV", 77, -39;
+			drawimage "SPDACTIV", 81, -39;
+		}
+
+		InInventory PowerRunDamage3
+		{
+			drawimage "SPDACTIV", 61, -39;
+			drawimage "SPDACTIV", 65, -39;
+			drawimage "SPDACTIV", 69, -39;
+			drawimage "SPDACTIV", 73, -39;
+			drawimage "SPDACTIV", 77, -39;
+			drawimage "SPDACTIV", 81, -39;
+			drawimage "SPDACTIV", 85, -39;
+		}
+
+		InInventory PowerRunDamage2
+		{
+			drawimage "SPDACTIV", 61, -39;
+			drawimage "SPDACTIV", 65, -39;
+			drawimage "SPDACTIV", 69, -39;
+			drawimage "SPDACTIV", 73, -39;
+			drawimage "SPDACTIV", 77, -39;
+			drawimage "SPDACTIV", 81, -39;
+			drawimage "SPDACTIV", 85, -39;
+			drawimage "SPDACTIV", 89, -39;
+		}
+
+		InInventory PowerRunDamage1
+		{
+			drawimage "SPDACTIV", 61, -39;
+			drawimage "SPDACTIV", 65, -39;
+			drawimage "SPDACTIV", 69, -39;
+			drawimage "SPDACTIV", 73, -39;
+			drawimage "SPDACTIV", 77, -39;
+			drawimage "SPDACTIV", 81, -39;
+			drawimage "SPDACTIV", 85, -39;
+			drawimage "SPDACTIV", 89, -39;
+			drawimage "SPDACTIV", 93, -39;
+		}
+	}
+	
+	//Inventory box
+	drawimage "INVBACK", 98, -30;
+	drawimage "DRAGBACK", 144, -30;
+	drawmugshot "DRG", 5, 143, -32;
+	
+	//Cooldowns
+	InInventory DynamiteTossTimer
+	{	
+		drawbar "DYNAA0", "DYNAB0", DynamiteTossTimer, vertical, interpolate(2), 182, -5;
+	}
+	
+	InInventory PowerMedbagFake
+	{
+		drawbar "MEDPTCHF", "MEDPTCHE", PowerupTime MedbagDelay, vertical, interpolate(2), 189, -15;
+	}
+	
+	InInventory MidasTimer
+	{
+		drawbar "MIDCA0", "MIDCB0", MidasTimer, vertical, interpolate(2), 203, -17;
+	}
+
+	//Inventory
+	InInventory DoomCounter
+	{
+			drawselectedinventory INDEXFONT_DOOM, 105, -30, 141, -8, untranslated, 1;
+	}
+	Else
+	{
+			drawselectedinventory INDEXFONT_RAVEN, 105, -30, 141, -8, untranslated, 1;
+	}
+	
+	//Extra inventory counters
+	InInventory Medbag
+	{
+		drawbar "MEDPTCHF", "MEDPTCHE", Medbag, vertical, interpolate(4), 17, -16;
+		InInventory DoomCounter
+		{
+			drawnumber 3, INDEXFONT_DOOM, untranslated, Medbag, 43, -15;
+		}
+		InInventory HereticCounter || HexenCounter
+		{
+			drawnumber 3, INDEXFONT_RAVEN, untranslated, Medbag, 43, -15;
+		}
+	}
+	
+	InInventory Envirosuit
+	{
+		drawbar "SUITMSKF", "SUITMSKE", Envirosuit, vertical, interpolate(4), -28, -20;
+		InInventory DoomCounter
+		{
+			drawnumber 3, INDEXFONT_DOOM, untranslated, Envirosuit, -30, -15;
+		}
+		InInventory HereticCounter || HexenCounter
+		{
+			drawnumber 3, INDEXFONT_RAVEN, untranslated, Envirosuit, -30, -15;
+		}
+	}
+	
+	//Right side:
+	//Ammo
+	InInventory DoomCounter
+	{
+		drawimage ammoicon1, -84, -10, center;
+		drawnumber 4, HUDFONT_GCDOOM, untranslated, ammo1, -91, -16;
+		drawnumber 4, HUDFONT_GCDOOM, untranslated, ammo1capacity, alignment(left), -79, -16;
+	}
+	
+	InInventory HereticCounter
+	{
+		drawimage ammoicon1, -84, -10, center;
+		drawnumber 4, HUDFONT_RAVEN, untranslated, ammo1, -91, -16;
+		drawnumber 4, HUDFONT_RAVEN, untranslated, ammo1capacity, alignment(left), -79, -16;
+	}
+	
+	InInventory HexenCounter
+	{	
+		drawimage "TNTUNIT", 2, 2;
+		drawnumber 4, INDEXFONT_RAVEN, untranslated, TNTAmmo, alignment(left), 10, 3;
+		
+		IsSelected DynamiteWeapon
+		{
+			drawimage ammoicon1, -84, -10, center;
+			drawnumber 4, HUDFONT_RAVEN, untranslated, ammo1, -95, -16;
+			drawnumber 4, HUDFONT_RAVEN, untranslated, ammo1capacity, alignment(left), -75, -16;
+		}
+		Else
+		{
+			drawnumber 4, HUDFONT_RAVEN, untranslated, BlueMana, -85, -16;
+			drawnumber 4, HUDFONT_RAVEN, untranslated, GreenMana, -48, -16;
+		}
+		
+		IsSelected Not DynamiteWeapon
+		{
+			weaponammo BlueMana
+			{
+				drawimage "MANABRT1", -115, -10, center;
+			}
+			else
+			{
+				drawimage "MANADIM1", -115, -10, center;
+			}
+			weaponammo GreenMana
+			{
+				drawimage "MANABRT2", -78, -10, center;
+			}
+			else
+			{
+				drawimage "MANADIM2", -78, -10, center;
+			}
+		}
+	}
+	
+	//Gold
+	InInventory DoomCounter
+	{
+		drawnumber 6, HUDFONT_GCDOOM, untranslated, Dosh, -61, -33;
+	}
+	Else
+	{
+		drawnumber 6, HUDFONT_RAVEN, untranslated, Dosh, -61, -33;
+	}
+	
+	//Spells
+	drawimage "BO2KZ0", -149, -23;		
+	ininventory SkullfireActive, 1
+	{
+		drawimage "BO2KA0", -149, -23;	
+	}
+	ininventory FrostbiteActive, 1
+	{
+		drawimage "BO2KB0", -149, -23;
+	}
+	ininventory SkypunchActive, 1
+	{
+		drawimage "BO2KF0", -149, -23;	
+	}
+	ininventory GumpopActive, 1
+	{
+		drawimage "BO2KC0", -149, -23;	
+	}
+	ininventory CrowsActive, 1
+	{
+		drawimage "BO2KG0", -149, -23;		
+	}
+	ininventory ThunderActive, 1
+	{
+		drawimage "BO2KD0", -149, -23;		
+	}
+	ininventory BreathActive, 1
+	{
+		drawimage "BO2KH0", -149, -23;		
+	}
+	ininventory CorpseActive, 1
+	{
+		drawimage "BO2KI0", -149, -23;		
+	}
+	ininventory ThreadcutterActive, 1
+	{
+		drawimage "BO2KE0", -149, -23;	
+	}
+	ininventory AnnihilationActive, 1
+	{
+		drawimage "BO2KJ0", -149, -23;	
+	}
+	ininventory FirebreathActive, 1
+	{
+		drawimage "BO2KK0", -149, -23;	
+	}
+	ininventory MeteorfistActive, 1
+	{
+		drawimage "BO2KL0", -149, -23;	
+	}
+	ininventory FlamewaveActive, 1
+	{
+		drawimage "BO2KM0", -149, -23;
+	}
+	ininventory ChillgraspActive, 1
+	{
+		drawimage "BO2KN0", -149, -23;	
+	}
+	ininventory SheepshieldActive, 1
+	{
+		drawimage "BO2KO0", -149, -23;	
+	}
+	ininventory SpiritcannonActive, 1
+	{
+		drawimage "BO2KP0", -149, -23;	
+	}
+	ininventory DarkvoidActive, 1
+	{
+		drawimage "BO2KQ0", -149, -23;	
+	}
+	ininventory PrismActive, 1
+	{
+		drawimage "BO2KR0", -149, -23;	
+	}
+}
+
+/*statusbar inventoryfullscreen, forcescaled
+{
+	drawinventorybar Doom, noartibox, 4, INDEXFONT, 110, 170;
+}*/
+
+createpopup keys, 200, 200, slideinbottom, 20;
+
+statusbar popupkeys
+{
+	DrawKeyBar 12, horizontal, auto, 0, 20, 0, 6, 4;
+}

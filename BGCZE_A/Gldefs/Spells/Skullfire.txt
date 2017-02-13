@@ -1,0 +1,36 @@
+object SkullfireProjectile
+{
+    frame EMBS { light SKULLSHOT }
+    frame TNT1 { light SKULLHIT }
+}
+
+object SkullfireTomedProjectile
+{
+    frame EMBS { light SKULLSHOT }
+    frame TNT1 { light SKULLHIT }
+}
+
+object SkullfireDrop
+{
+    frame FLME { light SKULLDROP }
+}
+
+pointlight SKULLSHOT
+{
+    color 1.0 0.4 0.1
+    size 64
+}
+
+pulselight SKULLHIT
+{
+    color 1.0 0.45 0.2
+    size 192
+    secondarySize 0
+    interval 1.0
+}
+
+pointlight SKULLDROP
+{
+    color 1.0 0.35 0.1
+    size 96
+}

@@ -1,0 +1,22 @@
+object LeadBall
+{
+    frame LDBF { light LEADPULSE }
+    frame LDBL { light LEADBALL }
+}
+
+pulselight LEADPULSE
+{
+    color 0.8 0.7 0.1
+    size 96
+    secondarySize 24
+    offset 0 28 0
+    interval 1.2
+}
+
+pointlight LEADBALL
+{
+    color 0.8 0.7 0.1
+    size 96
+    offset 0 28 0
+	dontlightself 1
+}

@@ -1,0 +1,442 @@
+actor MatriarchSlug : FastProjectile
+{
+  Radius 10
+  Height 14
+  Speed 125
+  Damage (20*random(2,3))
+  Projectile
+  ProjectileKickback 125
+  +NOGRAVITY
+  +THRUGHOST
+  +DONTSPLASH
+  +EXPLODEONWATER
+  +FORCERADIUSDMG //hurr.
+  +DONTREFLECT
+  DamageType Matriarch
+  DeathSound ""
+  Scale 0.6
+  MissileType "MatriarchTrailSpawner"
+  MissileHeight 14
+  Decal "BigScorch"
+  States
+  {
+  Spawn:
+    WINP A 0 NoDelay ThrustThingZ(0,15,0,1)
+  Looplet:
+    WINP A 0 A_SpawnItemEx("MatriarchSlugTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+    WINP A 0 A_PlaySound("Matriarch/Fly",5,0.4,1)
+    WINP A 1 ThrustThingZ(0,random(-1,-2),0,1)
+    Loop
+  Death:
+    TNT1 A 0 A_Quake (6, 25, 0, 256, none)
+    TNT1 A 0 A_Quake (2, 25, 0, 384, none)
+    TNT1 A 0 A_PlaySound("Matriarch/Hit",5,0.8)
+    TNT1 A 0 A_PlaySound("Matriarch/Exp",6,1.0)
+    TNT1 A 0 A_Explode((100*random(1,3)),192,1)
+    TNT1 A 0 A_AlertMonsters
+    TNT1 A 0 A_SpawnItemEx("Matriarch_Main",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    TNT1 A 0 A_SpawnItemEx("MatriarchFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    TNT1 A 15 A_Quake(3,12,0,512,"none")
+    Stop
+  }
+}
+
+//Rest
+
+ACTOR MatriarchFX
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+    States
+    {
+    Spawn:
+	  TNT1 A 28
+	  Stop
+    }
+}
+
+ACTOR MatriarchSlugTrail
+{ 
+    Scale 0.8
+    Alpha 0.75
+    Renderstyle Add
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+    States
+    {
+    Spawn:
+	  WINP A 1 A_FadeOut(0.1)
+	  Loop
+    }
+}
+
+Actor MatriarchTrailSpawner
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SpawnItemEx("MatriarchTrail",frandom(6.0,-6.0),frandom(6.0,-6.0),frandom(6.0,-6.0),frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(0.5,-0.3),frandom(135.0,225.0),SXF_CLIENTSIDE,0)
+	Stop
+	}
+}
+
+Actor MatriarchTrail
+{
+	Alpha 0.3
+	RenderStyle Translucent
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(256, "SpriteA", "SpriteB", "SpriteC", "SpriteD")
+		SpriteA:
+			DYMI A 0 A_Jump(256, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			DYMI B 0 A_Jump(256, "FadeIn")
+			Goto SpriteB
+		SpriteC:
+			DYMI C 0 A_Jump(256, "FadeIn")
+			Goto SpriteC
+		SpriteD:
+			DYMI D 0 A_Jump(256, "FadeIn")
+			Goto SpriteD
+		FadeIn:
+			"####" "#" 0 A_SetScale(FRandom(0.1, 0.05))
+		FadeOut:
+			"####" "#" 1 A_FadeOut(FRandom(0.0175,0.0125))
+			"####" "#" 0 A_ScaleVelocity(0.96)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.015, 0.02))
+			Loop
+	}
+}
+
+/*
+
+KeksDose's patented (not really) SFX-building method, hijacked by his best buddy (fucking traitor), PillowBlaster.
+Use with cause.
+
+*/
+
+Actor Matriarch_BaseParticle
+{
+	+NoInteraction
+	+ForceXYBillboard
+	RenderStyle Normal
+	Alpha 0.99
+	States
+	{
+		Spawn:				// Initialization goes here.
+			TNT1 A 0
+			Goto FadeIn
+		FadeIn:				// Optional fading in.
+			TNT1 A 0
+			Goto Idle
+		Idle:				// Fly around.
+			TNT1 A 0
+			Goto FadeOut
+		FadeOut:			// Dissipate.
+			TNT1 A 0
+			Stop
+	}
+}
+
+Actor Matriarch_BaseParticleMultiple : Matriarch_BaseParticle
+{
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(256, "SpriteA", "SpriteB", "SpriteC", "SpriteD")
+			Goto Spawn
+		SpriteA:
+			TNT1 A 0 A_Jump(256, "FadeIn")
+			Stop
+		SpriteB:
+			TNT1 A 0 A_Jump(256, "FadeIn")
+			Stop
+		SpriteC:
+			TNT1 A 0 A_Jump(256, "FadeIn")
+			Stop
+		SpriteD:
+			TNT1 A 0 A_Jump(256, "FadeIn")
+			Stop
+		FadeIn:				// Optional fading in.
+			TNT1 A 0
+			Goto Idle
+		Idle:				// Fly around.
+			TNT1 A 0
+			Goto FadeOut
+		FadeOut:			// Dissipate.
+			TNT1 A 0
+			Stop
+	}
+}
+
+Actor Matriarch_BaseEmitter
+{
+	Var Int User_SpawnCount;
+	
+	+NoInteraction
+	
+	States
+	{
+		Spawn:				// Initialize particle counter.
+			TNT1 AA 0 A_SetUserVar("User_SpawnCount", 10)
+			Goto Emit
+		Emit:				// Emit particles.
+			TNT1 A 0 A_Jump(0xFF, "Count") // You MUST use A_Jump.
+			Goto Count
+		Count:				// Emit until SpawnCount <= 0.
+			TNT1 A 0 A_SetUserVar("User_SpawnCount", User_SpawnCount - 1)
+			TNT1 A 0 A_JumpIf(User_SpawnCount <= 0, "NULL")
+			TNT1 A 0 A_Jump(0xFF, "Emit")
+			Goto Emit
+	}
+}
+
+Actor Matriarch_Cloud : Matriarch_BaseParticleMultiple
+{
+	Alpha 0.65
+	RenderStyle Add
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(256, "SpriteA", "SpriteB", "SpriteC", "SpriteD",
+								 "SpriteE", "SpriteF", "SpriteG", "SpriteH")
+		SpriteA:
+			CLOD A 0 A_Jump(256, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			CLOD B 0 A_Jump(256, "FadeIn")
+			Goto SpriteB
+		SpriteC:
+			CLOD C 0 A_Jump(256, "FadeIn")
+			Goto SpriteC
+		SpriteD:
+			CLOD D 0 A_Jump(256, "FadeIn")
+			Goto SpriteD
+		SpriteE:
+			CLOD E 0 A_Jump(256, "FadeIn")
+			Goto SpriteE
+		SpriteF:
+			CLOD F 0 A_Jump(256, "FadeIn")
+			Goto SpriteF
+		SpriteG:
+			CLOD G 0 A_Jump(256, "FadeIn")
+			Goto SpriteG
+		SpriteH:
+			CLOD H 0 A_Jump(256, "FadeIn")
+			Goto SpriteH
+		FadeIn:
+			"####" "#" 0 Bright A_SetScale(FRandom(1.0, 0.9))
+			Goto Idle
+		Idle:
+			"####" "#" 2 Bright A_Jump(190, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 Bright A_FadeOut(0.035)
+			"####" "#" 0 A_ScaleVelocity(FRandom(1.01, 1.03))
+			"####" "#" 0 A_SetScale(ScaleX - FRandom(0.01, 0.03))
+			Loop
+	}
+}
+
+Actor Matriarch_Smoke : Matriarch_BaseParticleMultiple
+{
+	Alpha 0.0
+	RenderStyle Translucent
+	States
+	{
+		Spawn:
+		    TNT1 A 4
+			TNT1 AA 0 A_Jump(256, "SpriteA", "SpriteB", "SpriteC", "SpriteD")
+		SpriteA:
+			DYMI A 0 A_Jump(256, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			DYMI B 0 A_Jump(256, "FadeIn")
+			Goto SpriteB
+		SpriteC:
+			DYMI C 0 A_Jump(256, "FadeIn")
+			Goto SpriteC
+		SpriteD:
+			DYMI D 0 A_Jump(256, "FadeIn")
+			Goto SpriteD
+		FadeIn:
+			"####" "#" 0 A_SetScale(FRandom(0.5, 0.4))
+			Goto RealFadeIn
+		RealFadeIn:
+			"####" "#" 1 A_FadeIn(FRandom(0.01, 0.03))
+			"####" "#" 0 A_JumpIf(Alpha >= 0.35, "Idle")
+			Loop
+		Idle:
+			"####" "#" 5 A_Jump(200, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 A_FadeOut(FRandom(0.02,0.025))
+			"####" "#" 0 A_ScaleVelocity(0.96)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.02, 0.025))
+			Loop
+	}
+}
+
+Actor Matriarch_Ember : Matriarch_BaseParticleMultiple
+{
+	Alpha 0.99
+	RenderStyle Add
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(256, "SpriteA", "SpriteB", "SpriteC", "SpriteD", "SpriteE", "SpriteF")
+		SpriteA:
+			EMBR A 0 A_Jump(256, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			EMBR B 0 A_Jump(256, "FadeIn")
+			Goto SpriteB
+		SpriteC:
+			EMBR C 0 A_Jump(256, "FadeIn")
+			Goto SpriteC
+		SpriteD:
+			EMBR D 0 A_Jump(256, "FadeIn")
+			Goto SpriteD
+		SpriteE:
+			EMBR E 0 A_Jump(256, "FadeIn")
+			Goto SpriteE
+		SpriteF:
+			EMBR F 0 A_Jump(256, "FadeIn")
+			Goto SpriteF
+		FadeIn:
+			"####" "#" 0 Bright A_SetScale(FRandom(0.035, 0.055))
+			Goto Idle
+		Idle:
+			"####" "#" 2 Bright A_Jump(200, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 Bright A_Weave(FRandom(0.9, 1.0), FRandom(0.9, 1.0),
+										FRandom(70, 90), FRandom(70, 90))
+			"####" "#" 0 A_JumpIf(ScaleX <= 0.0, "NULL")
+			"####" "#" 0 A_ChangeVelocity(VelX * FRandom(0.93, 0.99),
+										  VelY * FRandom(0.93, 0.99),
+										  VelZ - FRandom(0.1, 0.2),
+										  CVF_REPLACE)
+			"####" "#" 0 A_SetScale(ScaleX - FRandom(0.0025, 0.0015))
+			Loop
+	}
+}
+
+Actor Matriarch_Shockwave : Matriarch_BaseParticle
+{
+	RenderStyle Add
+	Scale 0.2
+	States
+	{
+		Spawn:
+			SHCK A 0
+			SHCK A 0 A_SetScale(ScaleX + FRandom(0.15, 0.2))
+			SHCK A 1 Bright A_FadeOut(0.075)
+			Loop
+	}
+}
+
+Actor Matriarch_Flare : Matriarch_BaseParticle
+{
+	RenderStyle Add
+	Scale 2.8
+	States
+	{
+		Spawn:
+			FLAR A 1 Bright A_FadeOut(0.03)
+			FLAR A 0 A_SetScale(ScaleX - FRandom(0.05, 0.15))
+			FLAR A 0 A_JumpIf(ScaleX <= 0.0, "NULL")
+			Loop
+	}
+}
+
+Actor Matriarch_Blast : Matriarch_BaseParticle
+{
+	RenderStyle Add
+	Scale 0.5
+	Alpha 0.7
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(256, "SpriteA", "SpriteB", "SpriteC", "SpriteD",
+								 "SpriteE", "SpriteF", "SpriteG", "SpriteH")
+		SpriteA:
+			BLST A 0 A_Jump(256, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			BLST B 0 A_Jump(256, "FadeIn")
+			Goto SpriteB
+		SpriteC:
+			BLST C 0 A_Jump(256, "FadeIn")
+			Goto SpriteC
+		SpriteD:
+			BLST D 0 A_Jump(256, "FadeIn")
+			Goto SpriteD
+		SpriteE:
+			BLST E 0 A_Jump(256, "FadeIn")
+			Goto SpriteE
+		SpriteF:
+			BLST F 0 A_Jump(256, "FadeIn")
+			Goto SpriteF
+		SpriteG:
+			BLST G 0 A_Jump(256, "FadeIn")
+			Goto SpriteG
+		SpriteH:
+			BLST H 0 A_Jump(256, "FadeIn")
+			Goto SpriteH
+		FadeIn:
+			"####" "#" 1 Bright A_FadeOut(0.04)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.08, 0.1))
+			Loop
+	}
+}
+
+Actor Matriarch_Impact : Matriarch_BaseEmitter
+{
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_SetUserVar("User_SpawnCount", 10)
+			Goto Emit
+		Emit:
+			TNT1 AAAAA 0 A_SpawnItemEx("Matriarch_Cloud", FRandom(-35, 35),
+									FRandom(-35, 35), FRandom(-35, 35),
+									FRandom(-2.0, -2.0), FRandom(-2.0, 2.0),
+									FRandom(-2.0, 2.0), FRandom(0.0,360.0), SXF_CLIENTSIDE, 10)
+			TNT1 AAAA 0 A_SpawnItemEx("Matriarch_Smoke", FRandom(-35, 35),
+									FRandom(-35, 35), FRandom(-25, 25),
+									FRandom(1.5, -2.5), FRandom(-1.0, 1.0),
+									FRandom(-1.0, 1.0), FRandom(0.0,360.0), SXF_CLIENTSIDE, 10)
+			TNT1 AA 0 A_SpawnItemEx("Matriarch_Ember", FRandom(-25, 25),
+									FRandom(-25, 25), FRandom(-25, 25),
+									FRandom(-3.0, -10.0), FRandom(-6.0, 6.0),
+									FRandom(1.0, 6.0), FRandom(0.0,360.0), SXF_CLIENTSIDE, 10)
+			/*TNT1 AA 0 A_SpawnItemEx("Matriarch_Flare", FRandom(-20, 20),
+									FRandom(-20, 20), FRandom(-20, 20),
+									0, 0, 0, 0, SXF_CLIENTSIDE)*/
+			TNT1 A random(1,2)
+			TNT1 A 0 A_Jump(0xFF, "Count")
+			Goto Count
+	}
+}
+
+Actor Matriarch_Main : Matriarch_BaseParticle
+{
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SpawnItemEx("Matriarch_Blast")
+	TNT1 A 0 A_SpawnItemEx("Matriarch_Impact")
+	TNT1 A 0 A_SpawnItemEx("Matriarch_Flare")
+	TNT1 A 0 A_SpawnItemEx("Matriarch_Shockwave")
+	Stop
+	}
+}

@@ -1,0 +1,67 @@
+graphic "WIZARD1", 45, 66
+{
+	XScale 3
+	YScale 3
+	Patch "WIZARD1", 0, 0
+}
+
+graphic "WIZARD2", 45, 66
+{
+	XScale 3
+	YScale 3
+	Patch "WIZARD2", 0, 0
+}
+
+graphic "BRTH1", 64, 64
+{
+	Offset 25, 20
+	Patch "FIREBRTH", 0, 0
+}
+
+graphic "BRTH2", 64, 64
+{
+	Offset 20, 25
+	Patch "FIREBRTH", 0, 0 { Rotate 90 }
+}
+
+graphic "BRTH3", 64, 64
+{
+	Offset 25, 20
+	Patch "FIREBRTH", 0, 0 { Rotate 180 }
+}
+
+graphic "BRTH4", 64, 64
+{
+	Offset 20, 25
+	Patch "FIREBRTH", 0, 0 { Rotate 270 }
+}
+
+graphic "SNAKETTL", 942, 358
+{
+	XScale 4.0
+	YScale 4.0
+	Patch "SNAKETTL", 0, 0
+}
+
+graphic "SNAKETBG", 512, 384
+{
+	XScale 2.0
+	YScale 2.0
+	Patch "SNAKETBG", 0, 0
+}
+
+graphic "SNAKESPL", 512, 384
+{
+	XScale 2.0
+	YScale 2.0
+	Patch "SNAKESPL", 0, 0
+}
+
+graphic "SNBOOM1", 64, 64 { XScale 2.0 YScale 2.0 Patch "SNBOOM1", 0, 0 }
+graphic "SNBOOM2", 64, 64 { XScale 2.0 YScale 2.0 Patch "SNBOOM2", 0, 0 }
+graphic "SNBOOM3", 64, 64 { XScale 2.0 YScale 2.0 Patch "SNBOOM3", 0, 0 }
+graphic "SNBOOM4", 64, 64 { XScale 2.0 YScale 2.0 Patch "SNBOOM4", 0, 0 }
+graphic "SNBOOM5", 64, 64 { XScale 2.0 YScale 2.0 Patch "SNBOOM5", 0, 0 }
+graphic "SNBOOM6", 64, 64 { XScale 2.0 YScale 2.0 Patch "SNBOOM6", 0, 0 }
+graphic "SNBOOM7", 64, 64 { XScale 2.0 YScale 2.0 Patch "SNBOOM7", 0, 0 }
+graphic "SNBOOM8", 64, 64 { XScale 2.0 YScale 2.0 Patch "SNBOOM8", 0, 0 }

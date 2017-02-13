@@ -1,0 +1,35 @@
+pointlight GREENSYRINGE
+{
+    color 0.0 1.0 0.0
+    size 36
+    offset 0 16 0
+}
+
+object PowerSurge
+{
+    frame SYRG { light GREENSYRINGE }
+}
+
+pointlight BLUESYRINGE
+{
+    color 0.0 0.0 1.0
+    size 36
+    offset 0 16 0
+}
+
+object PowerBooster
+{
+    frame SYRG { light BLUESYRINGE }
+}
+
+pointlight REDSYRINGE
+{
+    color 1.0 0.0 0.0
+    size 36
+    offset 0 16 0
+}
+
+object PowerStimulant
+{
+    frame SYRG { light REDSYRINGE }
+}

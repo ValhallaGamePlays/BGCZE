@@ -1,0 +1,8 @@
+brightmap sprite STCKA0 { map "bmaps/STCK.png" }
+brightmap sprite STCKB0 { map "bmaps/STCK.png" }
+brightmap sprite STCKC0 { map "bmaps/STCK.png" }
+brightmap sprite STCKD0 { map "bmaps/STCK.png" }
+brightmap sprite STCKE0 { map "bmaps/STCK.png" }
+brightmap sprite STCKF0 { map "bmaps/STCK.png" }
+brightmap sprite STCKG0 { map "bmaps/STCK.png" }
+brightmap sprite STCKH0 { map "bmaps/STCK.png" }

@@ -1,0 +1,89 @@
+ACTOR ReaverCounter : Inventory { Inventory.MaxAmount 0x7FFFFFFF }
+ACTOR ReaverActive : Inventory { Inventory.MaxAmount 1 }
+
+ACTOR Reaversphere : Megasphere
+{
+  Inventory.PickupMessage "Reaversphere!"
+  Inventory.PickupSound "Reaversphere/Pickup"
+  Renderstyle Add
+  +FLOATBOB
+  States
+  {
+  Spawn:
+    PINS AA 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS AAAA 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	PINS B 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS BBBB 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	PINS A 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS CCCC 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	PINS A 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS DDDD 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	PINS E 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS EEEE 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	PINS F 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS FFFF 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	PINS E 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS EEEE 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	PINS D 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS DDDD 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	PINS C 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS CCCC 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	PINS B 0 A_SpawnItemEx("ReaversphereFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    PINS BBBB 1 Bright A_SpawnItemEx("ReaversphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+  Pickup:
+    TNT1 A 0 A_GiveInventory("ReaverInvisibility1", 1)
+    TNT1 A 0 A_GiveInventory("ReaverInvisibility2", 1)
+    TNT1 A 0 A_GiveInventory("ReaverCounter",45)
+	TNT1 A 0 A_JumpIfInventory("ReaverActive",1,2) //Script's already running, no need for another one!
+	TNT1 A 0 ACS_NamedExecuteAlways("ReaverActive")
+	TNT1 A 0
+    Stop
+  }
+}
+
+ACTOR ReaversphereFade
+{
+  +NOGRAVITY
+  +NOINTERACTION
+  +NOTONAUTOMAP
+  Renderstyle Add
+  States
+  {
+  Spawn:
+	PINS C 1 A_FadeOut(0.12)
+	PINS C 0 A_SetScale(ScaleX+0.02,ScaleX)
+	Loop
+  }
+}
+
+ACTOR PowerIAmInvisibleDerg : PowerShadow
+{
+  Inventory.Icon "CLOAK0"
+  Powerup.Strength 80
+  Powerup.Mode "Fuzzy" 
+  +GHOST
+  +CANTSEEK
+}
+
+ACTOR ReaverInvisibility1 : PowerupGiver
+{
+	Powerup.Duration -45
+	Powerup.Type "IAmInvisibleDerg"
+	Inventory.MaxAmount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+
+ACTOR PowerSeeRightThroughMe : PowerFrightener
+{
+}
+
+ACTOR ReaverInvisibility2 : PowerupGiver
+{
+	Powerup.Duration -45
+	Powerup.Type "SeeRightThroughMe"
+	Inventory.MaxAmount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}

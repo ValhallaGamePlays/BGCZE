@@ -1,0 +1,1082 @@
+//[DoomKrakken]: It's BACK!  And with a vengeance! :D
+
+#include "Decorate/Guns/Projectile/Sovereign.txt"
+
+ACTOR SovereignSelected : Inventory { Inventory.MaxAmount 1 }
+
+//Roll Call!  Load Order!  Fire, Ice, Lightning, Breath, Acid, Darkness!
+ACTOR AcidPayload : GenericToken {}
+ACTOR BreathPayload : GenericToken {}
+ACTOR CryoPayload : GenericToken {}
+ACTOR DarknessPayload : GenericToken {}
+ACTOR ElectricPayload : GenericToken {}
+ACTOR FirePayload : GenericToken {} //Could've called it "Incendiary"... would've made it sound more badass.  Not like anyone's gonna notice, though. XD
+
+ACTOR Sovereign : GuncasterWeapon
+{
+   Game Doom
+   Game Heretic
+   Inventory.PickupSound "Guncaster/Laugh1"
+   Inventory.PickupMessage "$GOTSOVEREIGN"
+   Obituary "$KILLSOVEREIGN"
+   Weapon.UpSound "Sovereign/Up" 
+   Weapon.SelectionOrder 6
+   Weapon.AmmoGive 6
+   Weapon.AmmoType "SovereignAmmo"
+   Weapon.AmmoUse 1
+   Weapon.SlotNumber 5
+   Weapon.BobStyle InverseSmooth
+   Weapon.BobSpeed 1.5
+   Weapon.BobRangeY 0.8
+   Weapon.BobRangeX 1.3
+   +NOAUTOAIM
+   +NOALERT
+   Scale 0.9
+   States
+   {
+   Spawn:
+      SOVG X -1
+      Stop
+   Ready:
+	  TNT1 A 0 A_TakeInventory("RightFireToken")
+	  TNT1 A 0 A_JumpIfInventory("AcidPayload",1,"SuitChooseReadyA")
+	  TNT1 A 0 A_JumpIfInventory("BreathPayload",1,"SuitChooseReadyB")
+	  TNT1 A 0 A_JumpIfInventory("CryoPayload",1,"SuitChooseReadyC")
+	  TNT1 A 0 A_JumpIfInventory("DarknessPayload",1,"SuitChooseReadyD")
+	  TNT1 A 0 A_JumpIfInventory("ElectricPayload",1,"SuitChooseReadyE")
+	  TNT1 A 0 A_JumpIfInventory("FirePayload",1,"SuitChooseReadyF")
+   SuitChooseReadyA:
+	  SACG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SAUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SAVG A 0
+	  "####" "#" 0
+	  Goto ReadyContinue
+   SuitChooseReadyB:
+	  SBCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SBUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBVG A 0
+	  "####" "#" 0
+	  Goto ReadyContinue
+   SuitChooseReadyC:
+	  SCCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SCUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SCVG A 0
+	  "####" "#" 0
+	  Goto ReadyContinue
+   SuitChooseReadyD:
+	  SDCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SDUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SDVG A 0
+	  "####" "#" 0
+	  Goto ReadyContinue
+   SuitChooseReadyE:
+	  SECG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SEUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SEVG A 0
+	  "####" "#" 0
+	  Goto ReadyContinue
+   SuitChooseReadyF:
+	  SFCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SFUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SFVG A 0
+	  "####" "#" 0
+	  Goto ReadyContinue
+   ReadyContinue:
+   	  "####" "#" 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiReady")
+      "####" "#" 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiReady")
+   ReadyLoop:
+	  "####" "#" 0 A_TakeInventory("RightFireToken",1)
+	  TNT1 A 0 A_JumpIfInventory("AcidPayload",1,"SuitChooseIdleA")
+	  TNT1 A 0 A_JumpIfInventory("BreathPayload",1,"SuitChooseIdleB")
+	  TNT1 A 0 A_JumpIfInventory("CryoPayload",1,"SuitChooseIdleC")
+	  TNT1 A 0 A_JumpIfInventory("DarknessPayload",1,"SuitChooseIdleD")
+	  TNT1 A 0 A_JumpIfInventory("ElectricPayload",1,"SuitChooseIdleE")
+	  TNT1 A 0 A_JumpIfInventory("FirePayload",1,"SuitChooseIdleF")
+   SuitChooseIdleA:
+	  SACG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SAUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SAVG A 0
+	  "####" "#" 0
+	  Goto ReadyLoopContinue
+   SuitChooseIdleB:
+	  SBCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SBUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBVG A 0
+	  "####" "#" 0
+	  Goto ReadyLoopContinue
+   SuitChooseIdleC:
+	  SCCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SCUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SCVG A 0
+	  "####" "#" 0
+	  Goto ReadyLoopContinue
+   SuitChooseIdleD:
+	  SDCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SDUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SDVG A 0
+	  "####" "#" 0
+	  Goto ReadyLoopContinue
+   SuitChooseIdleE:
+	  SECG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SEUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SEVG A 0
+	  "####" "#" 0
+	  Goto ReadyLoopContinue
+   SuitChooseIdleF:
+	  SFCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SFUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SFVG A 0
+	  "####" "#" 0
+	  Goto ReadyLoopContinue
+   ReadyLoopContinue:
+   	  "####" "#" 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiReady")
+      "####" "#" 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiReady")
+      "####" "#" 1 A_WeaponReady(WRF_ALLOWZOOM|WRF_ALLOWRELOAD)
+      Goto ReadyLoop
+   DeselectMain:
+	  TNT1 A 0 A_JumpIfInventory("AcidPayload",1,"SuitChooseDeselectA")
+	  TNT1 A 0 A_JumpIfInventory("BreathPayload",1,"SuitChooseDeselectB")
+	  TNT1 A 0 A_JumpIfInventory("CryoPayload",1,"SuitChooseDeselectC")
+	  TNT1 A 0 A_JumpIfInventory("DarknessPayload",1,"SuitChooseDeselectD")
+	  TNT1 A 0 A_JumpIfInventory("ElectricPayload",1,"SuitChooseDeselectE")
+	  TNT1 A 0 A_JumpIfInventory("FirePayload",1,"SuitChooseDeselectF")
+   SuitChooseDeselectA:
+	  SACG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SAUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SAVG A 0
+	  "####" "#" 0
+	  Goto DeselectContinue
+   SuitChooseDeselectB:
+	  SBCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SBUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBVG A 0
+	  "####" "#" 0
+	  Goto DeselectContinue
+   SuitChooseDeselectC:
+	  SCCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SCUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SCVG A 0
+	  "####" "#" 0
+	  Goto DeselectContinue
+   SuitChooseDeselectD:
+	  SDCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SDUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SDVG A 0
+	  "####" "#" 0
+	  Goto DeselectContinue
+   SuitChooseDeselectE:
+	  SECG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SEUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SEVG A 0
+	  "####" "#" 0
+	  Goto DeselectContinue
+   SuitChooseDeselectF:
+	  SFCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SFUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SFVG A 0
+	  "####" "#" 0
+	  Goto DeselectContinue
+   DeselectContinue:
+      "####" A 0 A_TakeInventory("SovereignSelected")
+	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiDeselect")
+      "####" A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiDeselect")
+      "####" A 1 A_Lower
+      "####" A 0 A_Lower
+      Loop
+   Select:
+	  TNT1 A 0 A_JumpIfInventory("AcidPayload",1,"SuitChooseSelectA")
+	  TNT1 A 0 A_JumpIfInventory("BreathPayload",1,"SuitChooseSelectB")
+	  TNT1 A 0 A_JumpIfInventory("CryoPayload",1,"SuitChooseSelectC")
+	  TNT1 A 0 A_JumpIfInventory("DarknessPayload",1,"SuitChooseSelectD")
+	  TNT1 A 0 A_JumpIfInventory("ElectricPayload",1,"SuitChooseSelectE")
+	  TNT1 A 0 A_JumpIfInventory("FirePayload",1,"SuitChooseSelectF")
+   SuitChooseSelectA:
+	  "####" "#" 0 A_Print("\c[Green]Acid\c- payload ready.")
+	  SACG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SAUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SAVG A 0
+	  "####" "#" 0
+	  Goto SelectContinue
+   SuitChooseSelectB:
+	  "####" "#" 0 A_Print("\c[Red]''Nithor's Breath''\c- payload ready.")
+	  SBCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SBUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBVG A 0
+	  "####" "#" 0
+	  Goto SelectContinue
+   SuitChooseSelectC:
+	  "####" "#" 0 A_Print("\c[Cyan]Cryogenic\c- payload ready.")
+	  SCCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SCUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SCVG A 0
+	  "####" "#" 0
+	  Goto SelectContinue
+   SuitChooseSelectD:
+	  "####" "#" 0 A_Print("\c[Purple]Dark Matter\c- payload ready.")
+	  SDCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SDUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SDVG A 0
+	  "####" "#" 0
+	  Goto SelectContinue
+   SuitChooseSelectE:
+	  "####" "#" 0 A_Print("\c[Yellow]Electric\c- payload ready.")
+	  SECG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SEUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SEVG A 0
+	  "####" "#" 0
+	  Goto SelectContinue
+   SuitChooseSelectF:
+	  "####" "#" 0 A_Print("\c[Orange]Incendiary\c- payload ready.")
+	  SFCG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SFUG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SFVG A 0
+	  "####" "#" 0
+	  Goto SelectContinue
+   SelectContinue:
+      "####" "#" 0 A_GiveInventory("SovereignSelected")
+      "####" "#" 0 A_JumpIf(CallACS("CrosshairMode"), 2)
+      "####" "#" 0 A_SetCrosshair(52)
+	  "####" "#" 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiSelect")
+      "####" "#" 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiSelect")
+	  "####" "#" 0 A_Raise
+      "####" "#" 1 A_Raise
+      Loop
+   Fire:
+	  TNT1 A 0 A_GiveInventory("RightFireToken")
+      TNT1 A 0 A_PlaySound("Matriarch/Fire",1,0.8)
+      TNT1 A 0 A_PlaySound("Matriarch/Add",5,0.5)
+	  TNT1 A 0 A_JumpIfInventory("AcidPayload",1,"SuitChooseFireA")
+	  TNT1 A 0 A_JumpIfInventory("BreathPayload",1,"SuitChooseFireB")
+	  TNT1 A 0 A_JumpIfInventory("CryoPayload",1,"SuitChooseFireC")
+	  TNT1 A 0 A_JumpIfInventory("DarknessPayload",1,"SuitChooseFireD")
+	  TNT1 A 0 A_JumpIfInventory("ElectricPayload",1,"SuitChooseFireE")
+	  TNT1 A 0 A_JumpIfInventory("FirePayload",1,"SuitChooseFireF")
+   SuitChooseFireA:
+	  SACF A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SAUF A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SAVF A 0
+	  "####" "#" 0
+	  Goto FireA
+   SuitChooseFireB:
+	  SBCF A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SBUF A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBVF A 0
+	  "####" "#" 0
+	  Goto FireB
+   SuitChooseFireC:
+	  SCCF A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SCUF A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SCVF A 0
+	  "####" "#" 0
+	  Goto FireC
+   SuitChooseFireD:
+	  SDCF A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SDUF A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SDVF A 0
+	  "####" "#" 0
+	  Goto FireD
+   SuitChooseFireE:
+	  SECF A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SEUF A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SEVF A 0
+	  "####" "#" 0
+	  Goto FireE
+   SuitChooseFireF:
+	  SFCF A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SFUF A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SFVF A 0
+	  "####" "#" 0
+	  Goto FireF
+   FireA:
+      "####" A 0 A_SetBlend("Green",0.15,12)
+      "####" A 0 A_Recoil(9)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignAcidSlug",0,1,8,-4)
+	  Goto FireContinue
+   FireB:
+      "####" A 0 A_SetBlend("Red",0.15,12)
+      "####" A 0 A_Recoil(9)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignBreathSlug",0,1,8,-4)
+	  Goto FireContinue
+   FireC:
+      "####" A 0 A_SetBlend("Cyan",0.15,12)
+      "####" A 0 A_Recoil(9)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignCryoSlug",0,1,8,-4)
+	  Goto FireContinue
+   FireD:
+      "####" A 0 A_SetBlend("Purple",0.15,12)
+      "####" A 0 A_Recoil(9)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignDarknessSlug",0,1,8,-4)
+	  Goto FireContinue
+   FireE:
+      "####" A 0 A_SetBlend("Yellow",0.15,12)
+      "####" A 0 A_Recoil(9)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignElectricSlug",0,1,8,-4)
+	  Goto FireContinue
+   FireF:
+      "####" A 0 A_SetBlend("Orange",0.15,12)
+      "####" A 0 A_Recoil(9)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignFlameSlug",0,1,8,-4)
+	  Goto FireContinue
+   FireContinue:
+      "####" A 0 //A_SetPitch(pitch-0.5)
+      "####" A 0 //A_SetAngle(angle-0.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,2,2)
+      "####" A 1 Bright A_ZoomFactor(0.99)
+      "####" A 0 //A_SetPitch(pitch-2)
+      "####" A 0 //A_SetAngle(angle-2)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,4,4)
+      "####" B 1 Bright A_ZoomFactor(0.97)
+      "####" A 0 //A_SetPitch(pitch-3)
+      "####" A 0 //A_SetAngle(angle-3)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,5,5)
+	  TNT1 A 0 A_JumpIfInventory("AcidPayload",1,"SuitChooseFireA2")
+	  TNT1 A 0 A_JumpIfInventory("BreathPayload",1,"SuitChooseFireB2")
+	  TNT1 A 0 A_JumpIfInventory("CryoPayload",1,"SuitChooseFireC2")
+	  TNT1 A 0 A_JumpIfInventory("DarknessPayload",1,"SuitChooseFireD2")
+	  TNT1 A 0 A_JumpIfInventory("ElectricPayload",1,"SuitChooseFireE2")
+	  TNT1 A 0 A_JumpIfInventory("FirePayload",1,"SuitChooseFireF2")
+   SuitChooseFireA2:
+	  SACR A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SAUR A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SAVR A 0
+	  "####" "#" 0
+	  Goto FireContinue2
+   SuitChooseFireB2:
+	  SBCR A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SBUR A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBVR A 0
+	  "####" "#" 0
+	  Goto FireContinue2
+   SuitChooseFireC2:
+	  SCCR A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SCUR A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SCVR A 0
+	  "####" "#" 0
+	  Goto FireContinue2
+   SuitChooseFireD2:
+	  SDCR A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SDUR A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SDVR A 0
+	  "####" "#" 0
+	  Goto FireContinue2
+   SuitChooseFireE2:
+	  SECR A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SEUR A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SEVR A 0
+	  "####" "#" 0
+	  Goto FireContinue2
+   SuitChooseFireF2:
+	  SFCR A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SFUR A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SFVR A 0
+	  "####" "#" 0
+	  Goto FireContinue2
+   FireContinue2:
+      "####" A 1 A_ZoomFactor(0.94) //Sheesh.
+	  "####" A 0 A_PlaySound("Sovereign/Reload",6,0.3)
+      "####" A 0 //A_SetPitch(pitch-1.5)
+      "####" A 0 //A_SetAngle(angle-1.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,6,6)
+	  "####" B 1 A_ZoomFactor(0.93)
+      "####" A 0 //A_SetPitch(pitch-0.5)
+      "####" A 0 //A_SetAngle(angle-0.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,7,7)
+	  "####" D 1 A_ZoomFactor(0.92)
+      "####" A 0 //A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+1)
+	  /*"####" E 1 A_ZoomFactor(0.915)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+0.5)*/
+	  "####" F 1 A_ZoomFactor(0.92)
+      "####" A 0 //A_SetPitch(pitch+1.5)
+      "####" A 0 //A_SetAngle(angle+1.5)
+      "####" A 0 ////A_SetPitch(pitch+1)
+      "####" A 0 ////A_SetAngle(angle+1)
+	  "####" G 1 A_ZoomFactor(0.93)
+	  "####" A 0 //A_SetPitch(pitch+3)
+      "####" A 0 //A_SetAngle(angle+3)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+0.5)
+	  "####" A 0 A_FireCustomMissile("RedTankShellCasingSpawner",0,0,4,-10)
+	  /*"####" H 1 A_ZoomFactor(0.95)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+0.5)*/
+	  "####" I 1 A_ZoomFactor(0.97)
+      "####" A 0 //A_SetPitch(pitch+2)
+      "####" A 0 //A_SetAngle(angle+2)	  
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+0.5)
+	  "####" J 1 A_ZoomFactor(0.98)
+      "####" A 0 //A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" A 0 ////A_SetPitch(pitch+0.25)
+      "####" A 0 ////A_SetAngle(angle+0.25)
+	  "####" K 1 A_ZoomFactor(0.99)
+      "####" A 0 ////A_SetPitch(pitch+0.25)
+      "####" A 0 ////A_SetAngle(angle+0.25)
+	  "####" L 1 A_ZoomFactor(1)
+	  "####" MOPRS 1 //NQ
+	  "####" A 0 A_TakeInventory("RightFireToken")
+	  "####" A 0 A_ReFire 
+      Goto Ready
+	Reload: //[DoomKrakken]: This is where things get messy... what with the alphabetizing getting all screwed up. :(
+	  "####" "#" 8 //555
+	  "####" "#" 0 A_PlaySound("Sovereign/Strat",5,1.0)
+	  "####" "#" 0 A_JumpIfInventory("FirePayload",1,"CryoSelect")
+	  "####" "#" 0 A_JumpIfInventory("CryoPayload",1,"ElectricSelect")
+	  "####" "#" 0 A_JumpIfInventory("ElectricPayload",1,"BreathSelect")
+	  "####" "#" 0 A_JumpIfInventory("BreathPayload",1,"AcidSelect")
+	  "####" "#" 0 A_JumpIfInventory("AcidPayload",1,"DarknessSelect")
+	  "####" "#" 0 A_JumpIfInventory("DarknessPayload",1,"FireSelect")
+	CryoSelect:
+	  "####" "#" 0 A_TakeInventory("FirePayload")
+	  "####" "#" 0 A_GiveInventory("CryoPayload")
+	  "####" "#" 0 A_TakeInventory("ElectricPayload")
+	  "####" "#" 0 A_TakeInventory("BreathPayload")
+	  "####" "#" 0 A_TakeInventory("AcidPayload")
+	  "####" "#" 0 A_TakeInventory("DarknessPayload")
+	  "####" "#" 0 A_Print("\c[Cyan]Cryogenic\c- payload ready.")
+	  Goto Ready
+	ElectricSelect:
+	  "####" "#" 0 A_TakeInventory("FirePayload")
+	  "####" "#" 0 A_TakeInventory("CryoPayload")
+	  "####" "#" 0 A_GiveInventory("ElectricPayload")
+	  "####" "#" 0 A_TakeInventory("BreathPayload")
+	  "####" "#" 0 A_TakeInventory("AcidPayload")
+	  "####" "#" 0 A_TakeInventory("DarknessPayload")
+	  "####" "#" 0 A_Print("\c[Yellow]Electric\c- payload ready.")
+	  Goto Ready
+	BreathSelect:
+	  "####" "#" 0 A_TakeInventory("FirePayload")
+	  "####" "#" 0 A_TakeInventory("CryoPayload")
+	  "####" "#" 0 A_TakeInventory("ElectricPayload")
+	  "####" "#" 0 A_GiveInventory("BreathPayload")
+	  "####" "#" 0 A_TakeInventory("AcidPayload")
+	  "####" "#" 0 A_TakeInventory("DarknessPayload")
+	  "####" "#" 0 A_Print("\c[Red]''Nithor's Breath''\c- payload ready.")
+	  Goto Ready
+	AcidSelect:
+	  "####" "#" 0 A_TakeInventory("FirePayload")
+	  "####" "#" 0 A_TakeInventory("CryoPayload")
+	  "####" "#" 0 A_TakeInventory("ElectricPayload")
+	  "####" "#" 0 A_TakeInventory("BreathPayload")
+	  "####" "#" 0 A_GiveInventory("AcidPayload")
+	  "####" "#" 0 A_TakeInventory("DarknessPayload")
+	  "####" "#" 0 A_Print("\c[Green]Acid\c- payload ready.")
+	  Goto Ready
+	DarknessSelect:
+	  "####" "#" 0 A_TakeInventory("FirePayload")
+	  "####" "#" 0 A_TakeInventory("CryoPayload")
+	  "####" "#" 0 A_TakeInventory("ElectricPayload")
+	  "####" "#" 0 A_TakeInventory("BreathPayload")
+	  "####" "#" 0 A_TakeInventory("AcidPayload")
+	  "####" "#" 0 A_GiveInventory("DarknessPayload")
+	  "####" "#" 0 A_Print("\c[Purple]Dark Matter\c- payload ready.")
+	  Goto Ready
+	FireSelect:
+	  "####" "#" 0 A_GiveInventory("FirePayload")
+	  "####" "#" 0 A_TakeInventory("CryoPayload")
+	  "####" "#" 0 A_TakeInventory("ElectricPayload")
+	  "####" "#" 0 A_TakeInventory("BreathPayload")
+	  "####" "#" 0 A_TakeInventory("AcidPayload")
+	  "####" "#" 0 A_TakeInventory("DarknessPayload")
+	  "####" "#" 0 A_Print("\c[Orange]Incendiary\c- payload ready.")
+	  Goto Ready
+	  
+	AltFire:
+	  "####" A 0 A_GiveInventory("RightFireToken")
+	  TNT1 A 0 A_JumpIfInventory("AcidPayload",1,"SuitChooseMagicA")
+	  TNT1 A 0 A_JumpIfInventory("BreathPayload",1,"SuitChooseMagicB")
+	  TNT1 A 0 A_JumpIfInventory("CryoPayload",1,"SuitChooseMagicC")
+	  TNT1 A 0 A_JumpIfInventory("DarknessPayload",1,"SuitChooseMagicD")
+	  TNT1 A 0 A_JumpIfInventory("ElectricPayload",1,"SuitChooseMagicE")
+	  TNT1 A 0 A_JumpIfInventory("FirePayload",1,"SuitChooseMagicF")
+   SuitChooseMagicA:
+	  SACM A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SAUM A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SAVM A 0
+	  "####" "#" 0
+	  Goto Super::CheckForMagic
+   SuitChooseMagicB:
+	  SBCM A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SBUM A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBVM A 0
+	  "####" "#" 0
+	  Goto Super::CheckForMagic
+   SuitChooseMagicC:
+	  SCCM A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SCUM A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SCVM A 0
+	  "####" "#" 0
+	  Goto Super::CheckForMagic
+   SuitChooseMagicD:
+	  SDCM A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SDUM A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SDVM A 0
+	  "####" "#" 0
+	  Goto Super::CheckForMagic
+   SuitChooseMagicE:
+	  SECM A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SEUM A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SEVM A 0
+	  "####" "#" 0
+	  Goto Super::CheckForMagic
+   SuitChooseMagicF:
+	  SFCM A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SFUM A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SFVM A 0
+	  "####" "#" 0
+	  Goto Super::CheckForMagic
+	Zoom:
+	  "####" A 0 A_GiveInventory("RightFireToken")
+	  TNT1 A 0 A_JumpIfInventory("AcidPayload",1,"SuitChooseKickA")
+	  TNT1 A 0 A_JumpIfInventory("BreathPayload",1,"SuitChooseKickB")
+	  TNT1 A 0 A_JumpIfInventory("CryoPayload",1,"SuitChooseKickC")
+	  TNT1 A 0 A_JumpIfInventory("DarknessPayload",1,"SuitChooseKickD")
+	  TNT1 A 0 A_JumpIfInventory("ElectricPayload",1,"SuitChooseKickE")
+	  TNT1 A 0 A_JumpIfInventory("FirePayload",1,"SuitChooseKickF")
+	SuitChooseKickA:
+      TNT1 A 0 A_JumpIf(CallACS("GunslingerMode"),"GunzerkA")
+	  TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"GunzerkA")
+	  Goto RegularA
+	RegularA:
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  SACK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SAUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SAVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  SACK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SAUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SAMK A 0
+	  "####" A 0
+	  Goto Super::Zoom	  
+	GunzerkA:
+	  TNT1 A 0 A_GunFlash("LeftKickBudge",GFF_NOEXTCHANGE)
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  1ACK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1UAK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1AVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  1ACK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1UAK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1MAK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	SuitChooseKickB:
+      TNT1 A 0 A_JumpIf(CallACS("GunslingerMode"),"GunzerkB")
+	  TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"GunzerkB")
+	  Goto RegularB
+	RegularB:
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  SBCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SBUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  SBCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SBUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBMK A 0
+	  "####" A 0
+	  Goto Super::Zoom	  
+	GunzerkB:
+	  TNT1 A 0 A_GunFlash("LeftKickBudge",GFF_NOEXTCHANGE)
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  1BCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  U1BK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1BVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  1BCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  U1BK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1MBK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	SuitChooseKickC:
+      TNT1 A 0 A_JumpIf(CallACS("GunslingerMode"),"GunzerkC")
+	  TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"GunzerkC")
+	  Goto RegularC
+	RegularC:
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  SCCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SCUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SCVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  SCCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SCUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SCMK A 0
+	  "####" A 0
+	  Goto Super::Zoom	  
+	GunzerkC:
+	  TNT1 A 0 A_GunFlash("LeftKickBudge",GFF_NOEXTCHANGE)
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  1CCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1UCK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1VCK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  1CCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1UCK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1CMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	SuitChooseKickD:
+      TNT1 A 0 A_JumpIf(CallACS("GunslingerMode"),"GunzerkD")
+	  TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"GunzerkD")
+	  Goto RegularD
+	RegularD:
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  SDCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SDUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SDVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  SDCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SDUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SDMK A 0
+	  "####" A 0
+	  Goto Super::Zoom	  
+	GunzerkD:
+	  TNT1 A 0 A_GunFlash("LeftKickBudge",GFF_NOEXTCHANGE)
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  1DCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1DUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1DVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  1DCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1DUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1DMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	SuitChooseKickE:
+      TNT1 A 0 A_JumpIf(CallACS("GunslingerMode"),"GunzerkE")
+	  TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"GunzerkE")
+	  Goto RegularE
+	RegularE:
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  SECK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SEUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SEVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  SECK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SEUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SEMK A 0
+	  "####" A 0
+	  Goto Super::Zoom	  
+	GunzerkE:
+	  TNT1 A 0 A_GunFlash("LeftKickBudge",GFF_NOEXTCHANGE)
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  1ECK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1EUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1EVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  1ECK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1EUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1EMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	SuitChooseKickF:
+      TNT1 A 0 A_JumpIf(CallACS("GunslingerMode"),"GunzerkF")
+	  TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"GunzerkF")
+	  Goto RegularF
+	RegularF:
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  SFCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SFUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SFVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  SFCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SFUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SFMK A 0
+	  "####" A 0
+	  Goto Super::Zoom	  
+	GunzerkF:
+	  TNT1 A 0 A_GunFlash("LeftKickBudge",GFF_NOEXTCHANGE)
+	  TNT1 A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  1FCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1FUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1FVK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  1FCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1FUK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1FMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	LeftKickBudge:
+	  2AVK A 0 A_JumpIfInventory("AcidPayload",1,6)
+	  2BVK A 0 A_JumpIfInventory("BreathPayload",1,5)
+	  2CVK A 0 A_JumpIfInventory("CryoPayload",1,4)
+	  2DVK A 0 A_JumpIfInventory("DarknessPayload",1,3)
+	  2EVK A 0 A_JumpIfInventory("ElectricPayload",1,2)
+	  2FVK A 0 A_JumpIfInventory("FirePayload",1,1)
+	  "####" ABCDEFGHIHGFEDCBA 1
+	  "####" Z 10
+	  "####" Z 0 
+	  Stop
+	  
+	//Zweihander
+
+   ZweiSelect:
+	  SA3G A 0 A_JumpIfInventory("AcidPayload",1,6)
+	  SB3G A 0 A_JumpIfInventory("BreathPayload",1,5)
+	  SC3G A 0 A_JumpIfInventory("CryoPayload",1,4)
+	  SD3G A 0 A_JumpIfInventory("DarknessPayload",1,3)
+	  SE3G A 0 A_JumpIfInventory("ElectricPayload",1,2)
+	  SF3G A 0 A_JumpIfInventory("FirePayload",1,1)
+      "####" "#" 1 A_Raise
+      Loop
+   ZweiDeselect:
+	  "####" "#" 0 A_GunFlash("Nullify",GFF_NOEXTCHANGE)
+	  "####" "#" 0 A_TakeInventory("SynthFireActive",1)
+	  "####" "#" 0 A_TakeInventory("SynthFireLeft",1)
+	  "####" "#" 0 A_TakeInventory("SynthFireRight",1)
+   Zweihander:
+	  SA3G A 0 A_JumpIfInventory("AcidPayload",1,6)
+	  SB3G A 0 A_JumpIfInventory("BreathPayload",1,5)
+	  SC3G A 0 A_JumpIfInventory("CryoPayload",1,4)
+	  SD3G A 0 A_JumpIfInventory("DarknessPayload",1,3)
+	  SE3G A 0 A_JumpIfInventory("ElectricPayload",1,2)
+	  SF3G A 0 A_JumpIfInventory("FirePayload",1,1)
+	  "####" "#" 0 A_Lower
+	  "####" "#" 1 A_Lower
+	  Loop
+   ZweiReady:
+	  "####" A 0 A_GiveInventory("SynthFireActive",1)
+	  "####" A 0 ACS_NamedExecuteAlways("SynthLeft")
+	  "####" A 0 ACS_NamedExecuteAlways("SynthRight")
+	  "####" A 0 A_Gunflash("Flash",GFF_NOEXTCHANGE)
+	  Goto RIdle
+	  
+   //Right
+   
+   RIdle:
+	  TNT1 A 0 A_TakeInventory("RightFireToken")
+	  S1AG A 0 A_JumpIfInventory("AcidPayload",1,6)
+	  S1BG A 0 A_JumpIfInventory("BreathPayload",1,5)
+	  S1CG A 0 A_JumpIfInventory("CryoPayload",1,4)
+	  S1DG A 0 A_JumpIfInventory("DarknessPayload",1,3)
+	  S1EG A 0 A_JumpIfInventory("ElectricPayload",1,2)
+	  S1FG A 0 A_JumpIfInventory("FirePayload",1,1)
+	  "####" A 0 A_JumpIfInventory("SynthFireRight",1,"RFire")
+	  "####" A 0 A_JumpIfInventory("LeftFireToken",1,3)
+	  "####" A 1 A_WeaponReady(WRF_NOFIRE|WRF_ALLOWZOOM|WRF_ALLOWRELOAD)
+	  "####" A 0 A_Jump(256,2)
+	  "####" A 1 A_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH)
+	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),"RIdle")
+	  "####" A 0 A_JumpIfInventory("PowerGunzerking",1,"RIdle") 
+	  Goto BackToReady
+   BackToReady:
+	  "####" A 0 A_GunFlash("Nullify",GFF_NOEXTCHANGE)
+	  Goto Ready
+   Nullify:
+	  TNT1 A 0
+	  Stop
+   RFire:
+	  S1AG A 0 A_JumpIfInventory("AcidPayload",1,6)
+	  S1BG A 0 A_JumpIfInventory("BreathPayload",1,5)
+	  S1CG A 0 A_JumpIfInventory("CryoPayload",1,4)
+	  S1DG A 0 A_JumpIfInventory("DarknessPayload",1,3)
+	  S1EG A 0 A_JumpIfInventory("ElectricPayload",1,2)
+	  S1FG A 0 A_JumpIfInventory("FirePayload",1,1)
+	  "####" "#" 0 A_JumpIf(CallACS("GunslingerMode"),2)
+	  "####" "#" 0 A_JumpIfInventory("PowerGunzerking",1,1)
+	  Goto BackToReady
+	  "####" "#" 0 A_JumpIfInventory("HexenCounter",1,"HexenR")
+	  "####" "#" 1 A_JumpIfInventory("SovereignAmmo",1,"RConfirmed")
+	  Goto RIdle
+   HexenR:
+	  "####" "#" 1 A_JumpIfInventory("GreenMana",4,1)
+	  Goto RIdle
+   RConfirmed:
+	  TNT1 A 0 A_GiveInventory("RightFireToken",1)
+      TNT1 A 0 A_PlaySound("Matriarch/Fire",1,0.8)
+      TNT1 A 0 A_PlaySound("Matriarch/Add",5,0.5)
+	  S1AF A 0 A_JumpIfInventory("AcidPayload",1,"RFireA")
+	  S1BF A 0 A_JumpIfInventory("BreathPayload",1,"RFireB")
+	  S1CF A 0 A_JumpIfInventory("CryoPayload",1,"RFireC")
+	  S1DF A 0 A_JumpIfInventory("DarknessPayload",1,"RFireD")
+	  S1EF A 0 A_JumpIfInventory("ElectricPayload",1,"RFireE")
+	  S1FF A 0 A_JumpIfInventory("FirePayload",1,"RFireF")
+   RFireA:
+	  "####" A 0 A_SetBlend("Green",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignAcidSlug",0,1,10,-4)
+	  Goto RFireContinue
+   RFireB:
+	  "####" A 0 A_SetBlend("Red",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignBreathSlug",0,1,10,-4)
+	  Goto RFireContinue
+   RFireC:
+	  "####" A 0 A_SetBlend("Cyan",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignCryoSlug",0,1,10,-4)
+	  Goto RFireContinue
+   RFireD:
+	  "####" A 0 A_SetBlend("Purple",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignDarknessSlug",0,1,10,-4)
+	  Goto RFireContinue
+   RFireE:
+	  "####" A 0 A_SetBlend("Yellow",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignElectricSlug",0,1,10,-4)
+	  Goto RFireContinue
+   RFireF:
+	  "####" A 0 A_SetBlend("Orange",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignFlameSlug",0,1,10,-4)
+	  Goto RFireContinue
+   RFireContinue:
+	  S1AR A 0 A_JumpIfInventory("AcidPayload",1,6)
+	  S1BR A 0 A_JumpIfInventory("BreathPayload",1,5)
+	  S1CR A 0 A_JumpIfInventory("CryoPayload",1,4)
+	  S1DR A 0 A_JumpIfInventory("DarknessPayload",1,3)
+	  S1ER A 0 A_JumpIfInventory("ElectricPayload",1,2)
+	  S1FR A 0 A_JumpIfInventory("FirePayload",1,1)
+      //"####" A 0 A_TakeInventory("SovereignAmmo",1,TIF_NOTAKEINFINITE)
+      "####" A 0 //A_SetPitch(pitch-0.5)
+      "####" A 0 //A_SetAngle(angle-0.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,14,0)
+      "####" A 1 Bright A_ZoomFactor(0.99)
+      "####" A 0 //A_SetPitch(pitch-2)
+      "####" A 0 //A_SetAngle(angle-2)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,16,2)
+      "####" B 1 Bright A_ZoomFactor(0.97)
+      "####" A 0 //A_SetPitch(pitch-3)
+      "####" A 0 //A_SetAngle(angle-3)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,17,3)
+      "####" A 1 A_ZoomFactor(0.94) //Sheesh.
+	  "####" A 0 A_PlaySound("Sovereign/Reload",6,0.3)
+      "####" A 0 //A_SetPitch(pitch-1.5)
+      "####" A 0 //A_SetAngle(angle-1.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,18,4)
+	  "####" B 1 A_ZoomFactor(0.93)
+      "####" A 0 //A_SetPitch(pitch-0.5)
+      "####" A 0 //A_SetAngle(angle-0.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,19,5)
+	  "####" C 1 A_ZoomFactor(0.92)
+      "####" A 0 //A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+1)
+	  "####" D 1 A_ZoomFactor(0.915)
+      "####" A 0 //A_SetPitch(pitch+1.5)
+      "####" A 0 //A_SetAngle(angle+1.5)	  
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+0.5)
+	  /*"####" E 1 A_ZoomFactor(0.92)
+      "####" A 0 ////A_SetPitch(pitch+1)
+      "####" A 0 ////A_SetAngle(angle+1)*/
+	  "####" F 1 A_ZoomFactor(0.93)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+0.5)
+      "####" A 0 //A_SetPitch(pitch+3)
+      "####" A 0 //A_SetAngle(angle+3)
+	  "####" G 1 A_ZoomFactor(0.95)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+0.5)
+	  "####" A 0 A_FireCustomMissile("RedTankShellCasingSpawner",0,0,4,-10)
+	  /*"####" H 1 A_ZoomFactor(0.97)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle+0.5)*/
+	  "####" I 1 A_ZoomFactor(0.98)
+      "####" A 0 //A_SetPitch(pitch+2)
+      "####" A 0 //A_SetAngle(angle+2)
+      "####" A 0 ////A_SetPitch(pitch+0.25)
+      "####" A 0 ////A_SetAngle(angle+0.25)
+	  "####" J 1 A_ZoomFactor(0.99)
+      "####" A 0 //A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" A 0 ////A_SetPitch(pitch+0.25)
+      "####" A 0 ////A_SetAngle(angle+0.25)
+	  "####" K 1 A_ZoomFactor(1)
+	  "####" LMOPRS 1 //NQ
+	  "####" A 0 A_TakeInventory("RightFireToken")
+	  "####" A 0 A_JumpIfInventory("SynthFireRight",1,"RFire")
+	  Goto RIdle
+	  
+   //Left
+	  
+   Flash:
+	  "####" "#" 0 A_Light0
+   LIdle:
+	  S2AG A 0 A_JumpIfInventory("AcidPayload",1,6)
+	  S2BG A 0 A_JumpIfInventory("BreathPayload",1,5)
+	  S2CG A 0 A_JumpIfInventory("CryoPayload",1,4)
+	  S2DG A 0 A_JumpIfInventory("DarknessPayload",1,3)
+	  S2EG A 0 A_JumpIfInventory("ElectricPayload",1,2)
+	  S2FG A 0 A_JumpIfInventory("FirePayload",1,1)
+	  "####" A 1 A_JumpIfInventory("SynthFireLeft",1,"LFire")
+	  Loop
+   LFire:
+	  S2AG A 0 A_JumpIfInventory("AcidPayload",1,6)
+	  S2BG A 0 A_JumpIfInventory("BreathPayload",1,5)
+	  S2CG A 0 A_JumpIfInventory("CryoPayload",1,4)
+	  S2DG A 0 A_JumpIfInventory("DarknessPayload",1,3)
+	  S2EG A 0 A_JumpIfInventory("ElectricPayload",1,2)
+	  S2FG A 0 A_JumpIfInventory("FirePayload",1,1)
+   	  "####" "#" 0 A_JumpIf(CallACS("GunslingerMode"),2)
+	  "####" A 0 A_JumpIfInventory("PowerGunzerking",1,1) 
+	  Goto Nullify
+	  "####" A 0 A_JumpIfInventory("HexenCounter",1,"HexenL")
+	  "####" A 1 A_JumpIfInventory("SovereignAmmo",1,"LConfirmed")
+	  Goto LIdle
+   HexenL:
+	  "####" A 1 A_JumpIfInventory("GreenMana",4,1)
+	  Goto LIdle 
+   LConfirmed:
+	  TNT1 A 0 A_GiveInventory("LeftFireToken")
+      TNT1 A 0 A_PlaySound("Matriarch/Fire",1,0.8)
+      TNT1 A 0 A_PlaySound("Matriarch/Add",5,0.5)
+	  S2AF A 0 A_JumpIfInventory("AcidPayload",1,"LFireA")
+	  S2BF A 0 A_JumpIfInventory("BreathPayload",1,"LFireB")
+	  S2CF A 0 A_JumpIfInventory("CryoPayload",1,"LFireC")
+	  S2DF A 0 A_JumpIfInventory("DarknessPayload",1,"LFireD")
+	  S2EF A 0 A_JumpIfInventory("ElectricPayload",1,"LFireE")
+	  S2FF A 0 A_JumpIfInventory("FirePayload",1,"LFireF")
+   LFireA:
+      "####" A 0 A_SetBlend("Green",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignAcidSlug",0,1,-10,-4)
+	  Goto LFireContinue
+   LFireB:
+      "####" A 0 A_SetBlend("Red",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignBreathSlug",0,1,-10,-4)
+	  Goto LFireContinue
+   LFireC:
+      "####" A 0 A_SetBlend("Cyan",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignCryoSlug",0,1,-10,-4)
+	  Goto LFireContinue
+   LFireD:
+      "####" A 0 A_SetBlend("Purple",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignDarknessSlug",0,1,-10,-4)
+	  Goto LFireContinue
+   LFireE:
+      "####" A 0 A_SetBlend("Yellow",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignElectricSlug",0,1,-10,-4)
+	  Goto LFireContinue
+   LFireF:
+      "####" A 0 A_SetBlend("Orange",0.15,12)
+      "####" A 0 A_Recoil(4.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (7, 7, 0, 3, none)
+      "####" A 0 A_FireCustomMissile("SovereignFlameSlug",0,1,-10,-4)
+	  Goto LFireContinue
+   LFireContinue:
+	  S2AR A 0 A_JumpIfInventory("AcidPayload",1,6)
+	  S2BR A 0 A_JumpIfInventory("BreathPayload",1,5)
+	  S2CR A 0 A_JumpIfInventory("CryoPayload",1,4)
+	  S2DR A 0 A_JumpIfInventory("DarknessPayload",1,3)
+	  S2ER A 0 A_JumpIfInventory("ElectricPayload",1,2)
+	  S2FR A 0 A_JumpIfInventory("FirePayload",1,1)
+      //"####" A 0 A_TakeInventory("SovereignAmmo",1,TIF_NOTAKEINFINITE)
+      "####" A 0 //A_SetPitch(pitch-0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,-14,0)
+      "####" A 1 Bright A_ZoomFactor(0.99)
+      "####" A 0 //A_SetPitch(pitch-2)
+      "####" A 0 //A_SetAngle(angle+2)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,-16,2)
+      "####" B 1 Bright A_ZoomFactor(0.97)
+      "####" A 0 //A_SetPitch(pitch-3)
+      "####" A 0 //A_SetAngle(angle+3)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,-17,3)
+      "####" A 1 A_ZoomFactor(0.94) //Sheesh.
+	  "####" A 0 A_PlaySound("Sovereign/Reload",6,0.3)
+      "####" A 0 //A_SetPitch(pitch-1.5)
+      "####" A 0 //A_SetAngle(angle+1.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,-18,4)
+	  "####" B 1 A_ZoomFactor(0.93)
+      "####" A 0 //A_SetPitch(pitch-0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Large",0,0,-19,5)
+	  "####" C 1 A_ZoomFactor(0.92)
+      "####" A 0 //A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle-0.5)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle-1)
+	  "####" D 1 A_ZoomFactor(0.915)
+      "####" A 0 //A_SetPitch(pitch+1.5)
+      "####" A 0 //A_SetAngle(angle-1.5)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle-0.5)
+	  /*"####" E 1 A_ZoomFactor(0.92)
+      "####" A 0 ////A_SetPitch(pitch+1)
+      "####" A 0 ////A_SetAngle(angle-1)*/
+	  "####" F 1 A_ZoomFactor(0.93)
+      "####" A 0 //A_SetPitch(pitch+3)
+      "####" A 0 //A_SetAngle(angle-3)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle-0.5)
+	  "####" G 1 A_ZoomFactor(0.95)
+      "####" A 0 //A_SetPitch(pitch+2)
+      "####" A 0 //A_SetAngle(angle-2)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle-0.5)
+	  "####" A 0 A_FireCustomMissile("RedTankShellCasingSpawnerLeft",0,0,-4,-10)
+	  /*"####" H 1 A_ZoomFactor(0.97)
+      "####" A 0 ////A_SetPitch(pitch+0.5)
+      "####" A 0 ////A_SetAngle(angle-0.5)*/
+	  "####" I 1 A_ZoomFactor(0.98)
+      "####" A 0 //A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle-0.5)
+      "####" A 0 ////A_SetPitch(pitch+0.25)
+      "####" A 0 ////A_SetAngle(angle-0.25)
+	  "####" J 1 A_ZoomFactor(0.99)
+      "####" A 0 ////A_SetPitch(pitch+0.25)
+      "####" A 0 ////A_SetAngle(angle-0.25)
+	  "####" K 1 A_ZoomFactor(1)
+	  "####" LMOPRS 1 //NQ
+	  "####" A 0 A_TakeInventory("LeftFireToken")
+	  "####" A 0 A_JumpIfInventory("SynthFireLeft",1,"LFire")
+	  Goto LIdle
+	}
+}

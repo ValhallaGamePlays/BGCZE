@@ -1,0 +1,801 @@
+/*
+Property of Stan423321 - All wrongs reversed. Ask before using it,
+OR ELSE YOU WILL DIE! (Enforced by Pillow. Just so you know
+who is the bad guy here :3)
+*/
+
+/*
+Slightly (eeeeeehhhhh) modified for use with user buttons by Zhs2.
+Stanley did all the hard work, he's pretty cool. I am welding this door!
+*/
+
+#library "UFOPORNO" //Don't ask, unless you want to enter that weird part of polish youtube.
+#include "zcommon.acs"
+
+#define MASK (-1.0)
+
+str CASH_ACTOR = "Dosh";
+str SHOPFONT = "SMALLFONT";
+str CURSORFONT = "WHELCURS"; //CURSOR
+str SLOTBGBUY = "LOL0";
+str SLOTBGBUYFOCUS = "LOL3";
+str SLOTBGPICK = "LOL2";
+str SLOTBGPICKFOCUS = "LOL4";
+str SLOTSELECTED = "LOL5";
+str TOTAL_BG = "TNT1A0";
+str ARROW_L = "LOLL";
+str SCRIPT_L = "AMULET_ITEM";
+str ARROW_R = "LOLR";
+str SCRIPT_R = "AMULET_COVER";
+
+#define X_MULTIPLIER (-3200.0)
+#define Y_MULTIPLIER (-4000.0)
+#define XRH 800.0
+#define YRH 600.0
+#define INNER_SLOTS 0 //12 //if 1 ring then 0
+#define INNER_DISP_R 280.5 //255.0
+#define OUTER_SLOTS 18//20
+#define OUTER_DISP_R 445.5 //405.0
+#define INTRO_OUTRO_LEN 10
+#define INFO_WAIT_LEN 70
+#define TIP_WAIT_LEN 210
+#define LAG_LEN 0.04
+
+#define OUTER_LOGIC_R ((INNER_DISP_R+OUTER_DISP_R)/2)
+//#define INNER_LOGIC_R ((3*INNER_DISP_R-OUTER_DISP_R)/2) //unlock when 2 rings
+#define INNER_LOGIC_R (OUTER_LOGIC_R+1) //unlock when 1 ring
+#define ARROW_DISP_R (2*OUTER_DISP_R-INNER_DISP_R)
+#define ARROW_LOGIC_R ((3*OUTER_DISP_R-INNER_DISP_R)/2)
+
+str SOUND_INTRO = "menu/activate";
+str SOUND_OUTRO = "menu/clear";
+str SOUND_HOVER_BUY = "Spell/Move";
+str SOUND_HOVER_PICK = "Spell/Move";
+str SOUND_BUY = "Spell/Buy";
+str SOUND_CANNOT = "menu/invalid";
+
+#define TOTAL_SLOTS (INNER_SLOTS+OUTER_SLOTS)
+//for one ring please define 0 inner slots
+
+script "UFOPORNO" (void) {
+	GiveInventory(CASH_ACTOR, 3000);
+	delay(1);
+	ACS_NamedExecuteAlways("AMULET", 0, 0, 0, 0);
+}
+
+str ownership_tokens[TOTAL_SLOTS] = {
+	"SkullfireTome", "FrostbiteTome", "SkypunchTome", "GumpopTome", "CrowsTome",
+	"ThunderTome", "BreathTome", "CorpseTome", "ThreadcutterTome", "AnnihilationTome",
+	"FirebreathTome", "MeteorfistTome", "FlamewaveTome", "ChillgraspTome", "SheepshieldTome",
+	"SpiritcannonTome", "DarkvoidTome", "PrismTome",/*"BULION16", "BULION17", "BULION18", "BULION19",
+	"BULION20", "BULION21", "BULION22", "BULION23", "BULION24",
+	"BULION25", "BULION26", "BULION27", "BULION28", "BULION29",
+	"BULION30", "BULION31"*/
+};
+
+str selection_tokens[TOTAL_SLOTS] = {
+	"SkullfireActive", "FrostbiteActive", "SkypunchActive", "GumpopActive", "CrowsActive",
+	"ThunderActive", "BreathActive", "CorpseActive", "ThreadcutterActive", "AnnihilationActive",
+	"FirebreathActive", "MeteorfistActive", "FlamewaveActive", "ChillgraspActive", "SheepshieldActive",
+	"SpiritcannonActive", "DarkvoidActive", "PrismActive",/*"BBULION16", "BBULION17", "BBULION18", "BBULION19",
+	"BBULION20", "BBULION21", "BBULION22", "BBULION23", "BBULION24",
+	"BBULION25", "BBULION26", "BBULION27", "BBULION28", "BBULION29",
+	"BBULION30", "BBULION31"*/
+};
+
+str spell_icons[TOTAL_SLOTS] = {
+	"BULION00", "BULION01", "BULION02", "BULION03", "BULION04",
+	"BULION05", "BULION06", "BULION07", "BULION08", "BULION09",
+	"BULION10", "BULION11", "BULION12", "BULION13", "BULION14",
+	"BULION15", "BULION16", "BULION17", /*"BULION18", "BULION19",
+	"BULION20", "BULION21", "BULION22", "BULION23", "BULION24",
+	"BULION25", "BULION26", "BULION27", "BULION28", "BULION29",
+	"BULION30", "BULION31"*/
+};
+
+str spell_sounds[TOTAL_SLOTS] = {
+	"Spell/Active1", "Spell/Active2", "Spell/Active3", "Spell/Active4", "Spell/Active5",
+	"Spell/Active6", "Spell/Active7", "Spell/Active8", "Spell/Active9", "Spell/Active10",
+	"Spell/Active11", "Spell/Active12", "Spell/Active13", "Spell/Active14", "Sheep/Noise",
+	"Spell/Active16", "DarkVoid/Blast", "Spell/Active18", /*"world/barrelx", "caco/death", "baby/attack", "cyber/sight",
+	"spider/attack", "brain/cubeboom", "world/barrelx", "caco/death", "baby/attack",
+	"cyber/sight", "spider/attack", "brain/cubeboom", "world/barrelx", "caco/death",
+	"baby/attack", "cyber/sight"*/
+};
+
+str spell_names[TOTAL_SLOTS] = {
+	"Skullfire",
+	"Frostbite",
+	"Skypunch",
+	"Gumpop",
+	"Hitchcock's Birds",
+	"Thunderstruck",
+	"Scourgebreath",
+	"Corpse Blast",
+
+	"Threadcutter",
+	"Annihilation",
+	"Firebreath",
+	"Rachmaninov's Punch",
+	"Flamewave",
+	"Chillgrasp",
+	"Sheep Shield",
+	"Spiritcannon",
+
+	"Darkvoid",
+	"Prism Laser",
+	/*"The King Is Dead, Long Live The King",
+	"The Tetris Effect",
+	"Injustice for All",
+	"Magnificent Mustard",
+	"Save Import",
+	"Advanced Action Control Script",
+	"Landed Down Under",
+	"DRoMMFSWaTHFP",
+
+	"Noclip",
+	"Party Blender",
+	"Achievement Unblocker",
+	"The Gatorade",
+	"Recyclinator",
+	"Digital Eclipse",
+	"Cooloonatic",
+	"Neckromancey"*/
+};
+
+int spell_prices[TOTAL_SLOTS] = {
+	1000, 1200, 1200, 800, 2000,
+	1500, 4000, 2000, 1500, 8000,
+	600, 7000, 3000, 8000, 10000,
+	2400, 10000, 20000/*5682, 3333, 7747, 3333,
+	5846, 7777, 256, 512, 128,
+	0, 6666, 1314, 1410, 1994,
+	6862, 4450*/
+};
+
+str spell_info[TOTAL_SLOTS] = {
+	"Your most classic and standard fire-flinging goodness spell.\nFires a slow, molten bomb that eviscerates targets upon impact\nalso leaves flames behind.",
+	"Bouncy ice bomb that goes through enemies and spits a lot of shards around.\nIt also bounces towards enemies.\nWhen bouncing off icy floors,\nit gains more power with each bounce\nand also shatters into way more shards\non contact with lava.\nAlt-mode turns it into a frozen orb. If you don't know what this frozen orb is - shame on you!",
+	"Send your enemies up into the wild, blue yonder!\nIt blasts monsters and projectiles away.\nAlt-mode keeps them levitating shortly, turning them into sitting ducks.\nIt also makes them run away if they can\nand, overall, attack less frequently.\nRegardless, someone's getting sucker-punched.",
+	"Lob a handful of acid into a monster's face!\nIt increases damage received by monsters from your weapons\nand also makes them pop gruesomely on death, hence the name.\nIt makes short work of armoured targets.\nAlt-Mode yields a nerfed Gumpod nova. Enough said.",
+	"Bizarre, scary and cruel spell!\nSend flocks of ravens that eat poor suckers around you!\nGreat at dispatching groups of those pesky imps.",
+	"A powerful, albeit tricky to use spell.\nCalls a fierce lightning from the sky.\nThe best part of it? It works indoors.\nAim at the water near your foes for best effect.\nAlt-Mode grants you a spiral-lightning storm.\nIt drops a lightning every once in a while on any monster within contact\nBe warned that you can't control it,\nso you won't be able to use it too much with other spells running,\nnot to mention, it can wind up being pretty costly mana-wise.\nCasting it again, whichever mode you're in, deactivates the thunder-halo.",
+	"This one enables you to spit some insanely powerful flame of some kind...\nI'd advise you to expand your mana limit first to use it effectively.\nEach kill caused by it refills your health a little.",
+	"One odd fruit of necromantic magic research.\nLobs an energy projectile that causes an eruption of flesh.\nEach affected corpse carries the reaction on,\ncausing even more meat blasts.\nThe explosion power depends on the type of dead monster.\nAlso releases homing Hadeium projectiles that attack other monsters.\nAlt-Mode is just a large, no-damage blast radius that detonates corpses all around you, in the same fashion.",
+	"Kitchen appliance to the face!\nThis spell fires a continuous stream of daggers... perfect for scrapbooking!\nAlt-Mode shotguns bladed weapons\ninto monsters at high speed\and it really shines under the tome effects.\nCauses a stackable bleed effect.",
+	"If you're looking for a total wipeout, this spell is for you!\nCondenses a major chunk of your energy into raw, destructive potential.\nAlso take note that shooting it too close to the monsters\nresults in a mildly satisfying dud.\nAlt-Mode sets up a deflector field, which constantly costs mana to maintain.",
+	"Dragons breathe fire, so I hope you aren't an exception.\nIf that's so, I've got something that should fix it for you.",
+	"This handy spell will help you unleash the power of cosmic proportions!\nWell, not really, but you can turn yourself into a living meteor.\nDeath from above!\nAlt-Mode turns you into Captain Falcon!  No, not really,\nbut you can launch a powerful phoenix from your fist...",
+	"If a firebreath just doesn't make the cut, call in a real sweeper!\nsummons an arc of flame that scorches through adversaries.",
+	"Become the coldest of Vaders!\nThis spell lets you freeze your enemies inside out\nand turn them into nice statues.\nYou can toss them around, and they explode when shattered.",
+	"Ever heard the legend of the Wawel dragon?\nThat's one of reasons why you shouldn't eat those sheeps.\nEitherway, this spell grants you an unstoppable stampede of sheeps,\nblocking shots and generally tearing everything in their way apart.",
+	"This spell lets you give yourself up to three turrets\nthat will unleash high-power lead upon your foes.\nThey cost a lot to set up,\nso be warned.",
+	"Afraid of the dark?  This spell isn't for you.\nLaunches a dark matter matter-eater projectile \nthat eats everything in its path.\nAlt-Mode launches a black hole projectile that creates... well, a black hole.",
+	"A be-all end-all in rainbow laser technology!\nA powerful spell that lets you cast elemental,\nrotating laser of doom.",
+
+	/*"Use it immediately before your minion\nor teammate dies. They'll be\bback. Like Gandalf. Except\nmore more powerful.",
+	"Sometimes, all you need to win a game\nis to provide your rival\nwith some entertainment. Like\na game. We cannot guarantee it\nwill be Tetris though!",
+	"Makes your enemies play an early prototype\nversion of that recent DC fighter.\nThis proto is so awful loser will die.\nOf laughter.",
+	"This mustard knows its destiny. It actually\nwants to enter your enemies' throat.\nIt even won't mind to give you\na lift to them.",
+	"Ever wanted to switch make ammo\nhealth, health grass, and grass\ncrazy monsters? USE THIS!\nNo idea what exactly will happen though.",
+	"This magick makes you able to control\nyour foes actions - during your\nfight, yet in advance! How cool\nis that, huh?",
+	"This spell opens portals to random\ndimentions. Pretty cool as last\nresort. DISCLAIMER: We cannot\nguarantee there are infinite\ndimensions available.",
+	"Covers area with multiple bags\ncontaining meat. Utilizable both as\ncover and as health pickup.\nFact: scientists still argue\nabout name's nature.",
+
+	"Struck with this, your foe can't\nclip to walls. Also, this magick\eats shells for some reason.",
+	"If your party becomes too stagnant,\nuse this magick to mix everyone's\npositions. Some of our\ncustomers use it during fights though.",
+	"Here's something they don't want you\nto know: this game has achievements!\nIf you ever feel mercy to your foes,\nunblock them for them with this.",
+	"This spell can summon really cool monsters!\nBut for some reason, it needs stuff\nto splash in order to work.",
+	"Grab waste from around you and create\ncool minions out of it! It fails\nspectacularly without waste though.",
+	"Disables any Russian technology in radius\nof Norwegian mile. No side effects\nand minimal holding cost\nwill cause a nasty surprise!\nDisclaimer: works against you too.",
+	"Ever thought that you would own that enemy\nin one on one fight? Go and check that!\nDisclaimer: dimension warping features\nofthis magick may feature some abberations.",
+	"Allows you to grab your enemies necks. And\nthen kiss them. This will cause them to die.\nIt's that simple."*/
+};
+
+str spell_tips[TOTAL_SLOTS] = {
+	"Empower makes it enter volcano mode.\nAfter hitting something, it suspends in midair,\nstarts spitting chunks and grows in size\nuntil it results in eruption.",
+	"Empower makes both modes last longer and deal loads more damage.",
+	"Empower creates a megawave that pushes everything away, or sends everything into the air.\nIt also amplifies the spirit punching.",
+	"Empower makes your standard acid projectile spawn a rainstorm of acid.\nEmpowered Alt-Mode in essence does a little-more-than-double-damage Gumpod nova\n which is spawned from an acid projectile.",
+	"Empower makes the ravens stay around their victims\nIf another monster get near, they get attacked.\nInitial ravens also have boosted damage.",
+	"Empower modifies lightning bolts from both modes to be much more powerful.",
+	"Empower doesn't grant it any special additions, other than\ndecreasing mana cost and boosting the healing factor.\nIt's whoppingly powerful, anyway.",
+	"Empower grants the user the ability to explode same corpses repeatedly.\nIt also boosts the projectile's initial damage, and severely increases its range.\nOh, and it makes the monsters serve as Hadeium pools.\nTheir output is limited to what they contain.",
+	"Empower gives the utensils homing ability\nand no gravity on projectiles at the cost of fire rate.\nThe most frightening part?\nThe spell stops time while in use.\nZA WARUDO!  TOKI WO TOMARE!",
+	"Empower makes it siphon even more energy than before,\nensuring total devastation on impact and burst.\nEmpowered Alt-Mode simply makes the sanctum cost less.",
+	"Empower makes it... well, empowered.\nYou get a wide firesweep, instead of a laughable belch.",
+	"Empower gives it even more ridiclous strength.\nEmpowered Alt-Mode has more power too...",
+	"Empower makes the flamewave expand in size,\n...and it bounces. Trust me, this is\nmuch more deadly than it actually sounds.",
+	"Empower makes the spell carry over\nthe initial blast onto further victims,\ncausing chain reactions.",
+	"Empower gives you only three sheeps...\nbut what kind of sheeps!",
+	"Empower grants a triple-shot\nwith slightly reduced mana cost,\ncompared to non-tomed shot.",
+	"Empower increases the might of your dark void matter-eater.\nEmpowered Alt-Mode launches a cluster black hole spawner.",
+	"Like with Scourgebreath, it doesn't need extra power.\nEmpower shirks the mana cost over time.",
+
+	/*"Use it immediately before your minion\nor teammate dies. They'll be\bback. Like Gandalf. Except\nmore more powerful.",
+	"Sometimes, all you need to win a game\nis to provide your rival\nwith some entertainment. Like\na game. We cannot guarantee it\nwill be Tetris though!",
+	"Makes your enemies play an early prototype\nversion of that recent DC fighter.\nThis proto is so awful loser will die.\nOf laughter.",
+	"This mustard knows its destiny. It actually\nwants to enter your enemies' throat.\nIt even won't mind to give you\na lift to them.",
+	"Ever wanted to switch make ammo\nhealth, health grass, and grass\ncrazy monsters? USE THIS!\nNo idea what exactly will happen though.",
+	"This magick makes you able to control\nyour foes actions - during your\nfight, yet in advance! How cool\nis that, huh?",
+	"This spell opens portals to random\ndimentions. Pretty cool as last\nresort. DISCLAIMER: We cannot\nguarantee there are infinite\ndimensions available.",
+	"Covers area with multiple bags\ncontaining meat. Utilizable both as\ncover and as health pickup.\nFact: scientists still argue\nabout name's nature.",
+
+	"Struck with this, your foe can't\nclip to walls. Also, this magick\eats shells for some reason.",
+	"If your party becomes too stagnant,\nuse this magick to mix everyone's\npositions. Some of our\ncustomers use it during fights though.",
+	"Here's something they don't want you\nto know: this game has achievements!\nIf you ever feel mercy to your foes,\nunblock them for them with this.",
+	"This spell can summon really cool monsters!\nBut for some reason, it needs stuff\nto splash in order to work.",
+	"Grab waste from around you and create\ncool minions out of it! It fails\nspectacularly without waste though.",
+	"Disables any Russian technology in radius\nof Norwegian mile. No side effects\nand minimal holding cost\nwill cause a nasty surprise!\nDisclaimer: works against you too.",
+	"Ever thought that you would own that enemy\nin one on one fight? Go and check that!\nDisclaimer: dimension warping features\nofthis magick may feature some abberations.",
+	"Allows you to grab your enemies necks. And\nthen kiss them. This will cause them to die.\nIt's that simple."*/
+};
+//////////////////////////////////////////////////////////////////
+//Found by googling on stackoverflow. Weirdest idea ever.
+function int insane_len(int x, int y) {
+	if (x<0) {
+		x = -x;
+	}
+	if (y<0) {
+		y = -y;
+	}
+	if (x<y) {
+		return y+FixedMul(x, 0.41421);
+	}
+	return x+FixedMul(y, 0.41421);
+}
+
+
+function void quiet_display(int x, int y, int num) {
+	int disp_x = x & MASK;
+	int disp_y = y & MASK;
+	SetFont(spell_icons[num]);
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1100+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+	if (CheckInventory(ownership_tokens[num])<=0) {
+		SetFont(SLOTBGBUY);
+	} else {
+		SetFont(SLOTBGBUYFOCUS);
+	}
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1300+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+}
+function void featured_display(int x, int y, int num) {
+	int disp_x = x & MASK;
+	int disp_y = y & MASK;
+	SetFont(spell_icons[num]);
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1100+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+	if (CheckInventory(ownership_tokens[num])<=0) {
+		SetFont(SLOTBGPICK);
+	} else {
+		SetFont(SLOTBGPICKFOCUS);
+	}
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1300+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+}
+function void mark_select(int x, int y) {
+	int disp_x = x & MASK;
+	int disp_y = y & MASK;
+	SetFont(SLOTSELECTED);
+	HudMessage(s:"A"; HUDMSG_PLAIN, 800, CR_GREEN, XRH+disp_x, YRH+disp_y, LAG_LEN);
+}
+
+function int try_to_buy(int num) {
+//0 - bought earlier
+//1 - not enough cash
+//2 - bought
+//PLACEHOLDER
+	if (CheckInventory(ownership_tokens[num])>0) {
+		return 0;
+	}
+	if (CheckInventory(CASH_ACTOR)<spell_prices[num]) {
+		return 1;
+	}
+	TakeInventory(CASH_ACTOR, spell_prices[num]);
+	GiveInventory(ownership_tokens[num], 1);
+	return 2;
+}
+
+function int try_to_select(int num, int sel) {
+//4 - selected
+//5 - not bought
+	if (CheckInventory(ownership_tokens[num])<=0) {
+		return 5;
+	}
+	if (num==sel) {
+		return 4;
+	}
+	GiveInventory(selection_tokens[num], 1);
+	if (sel>-1) {
+		TakeInventory(selection_tokens[sel], 1);
+	}
+	return 4;
+}
+
+function int power_selected(void) {
+	int i;
+	int ret = -1;
+	for (i = 0; i<INNER_SLOTS+OUTER_SLOTS; i++) {
+		if (CheckInventory(selection_tokens[i])>0) {
+			if (ret!=-1) {
+				print(s:"error -404: too much found");
+			}
+			ret = i;
+		}
+	}
+	return ret;
+}
+
+function int shopkeeper_str(int sh, int sel, int wt) {
+	str stru;
+
+	if (wt==0) {
+		if (sel==-1) {
+			sh = 8;
+		} else if (sel==-2) {
+			sh = 9;
+		} else if (sel==-3) {
+			sh = 10;
+		} else if (sel>-1 && CheckInventory(ownership_tokens[sel])<=0) {
+			sh = 7;
+		} else {
+			sh = 6;
+		}
+	}
+
+	int cash = CheckInventory(CASH_ACTOR);
+	if (sh==-1) {
+		stru = "Greetings mortal! Are you ready to buy?";
+	} else if (sh==3) {
+		stru = "Welcome to the spell section. Here you can buy end-user license agreements for mana spells.\nDISCLAIMER: Don't expect spells to work without mana, even if it would make sense.";
+	} else if (sh==0) {
+		stru = "You already got this one in your deck, mortal.";
+	} else if (sh==1) {
+		stru = "Not enough gold for that one, dragon.";//have only, i:cash, s:" gold.");
+	} else if (sh==2 && sel>-1) {
+		stru = StrParam(s:"\c[cyan]", s:spell_names[sel] ,s:"\n\cjenters your deck, mortal.");
+	} else if (sh==4 && sel>-1) {
+		stru = StrParam(s:"\c[cyan]", s:spell_names[sel], s:"\cj selected.");
+	} else if (sh==5) {
+		stru = "You need to buy the spell first before you can use it.";
+	} else if (sh==6 && sel>-1) {
+		stru = StrParam(s:"\c[cyan]", s:spell_names[sel]); //to w sumie jest niepotrzebne, bo jest graficzny indykator zakupu.
+	} else if (sh==7 && sel>-1) {
+		stru = StrParam(s:"\c[cyan]", s:spell_names[sel], s:"\n\cjavailable for \cf", i:spell_prices[sel], s:"\cj gold.");
+	} else if (sh==8) {
+        stru = "";
+    } else if (sh==9 /*LEFT*/ || sh==10 /*RIGHT*/) {
+		stru = StrParam(s:"You can enter this way to the item section. Use \cd", k:"+attack", s:"\cj to do that.");
+	// BEGIN ZHS2 INVASION STRINGS
+	} else if (sh==11) {
+		stru = "Spell equipped to custom button!";
+	} else if (sh==12) {
+		stru = "That spell already occupies that button!";
+	// Now back to your regularly scheduled programming. (Oh god, the programming.)
+	} else {
+		stru = "Lorem ipsum..?";
+	}
+
+	SetHudSize(0, 0, FALSE);
+	SetFont(SHOPFONT);
+	if (sel<0) {
+		HudMessage(s:"\cjGold: \cf", i:cash, s:"\n\cj", s:stru,
+                        s:"\n\cjHover over a spell for a while to learn more about it.\n\cjPress \cd", k:"+attack", s:"\cj to equip the spell.\n\cjPress \cd", k:"+altattack", s:"\cj to buy the spell.\n\cjPress \cd", k:"+moveleft", s:"\cj or \cd", k:"+moveright", s:"\cj to switch shelves.\n\cjPress \cd", k:"+Gimbostratus", s:"\cj to return to your everyday slaughter.";
+			HUDMSG_PLAIN, 950, CR_WHITE, 1.5, 0.5, LAG_LEN);
+	} else {
+		if (wt>(INFO_WAIT_LEN+TIP_WAIT_LEN) && sel>-1) {
+			HudMessage(s:spell_tips[sel]; HUDMSG_PLAIN, 950, CR_CYAN, 1.5, 0.5, LAG_LEN);
+        } else if (wt>(INFO_WAIT_LEN) && sel>-1) {
+			HudMessage(s:spell_info[sel]; HUDMSG_PLAIN, 950, CR_WHITE, 1.5, 0.5, LAG_LEN);
+		} else {
+			HudMessage(s:stru; HUDMSG_PLAIN, 950, CR_WHITE, 1.5, 0.5, LAG_LEN);
+		}
+	}
+	SetHudSize((XRH)>>15, (YRH)>>15, FALSE);
+	return sh;
+}
+
+function void miniview(int factor, int an_s1, int an_s2) {
+	int i, an, px, py;
+	int ir = FixedMul(INNER_DISP_R, factor);
+	for (i = 0; i<INNER_SLOTS; i++) {
+		an = (i*1.0)/INNER_SLOTS + an_s1;
+		px = FixedMul(ir, cos(an));
+		py = FixedMul(ir, sin(an));
+		quiet_display(px, py, i);
+	}
+	ir = FixedMul(OUTER_DISP_R, factor);
+	for (i = 0; i<OUTER_SLOTS; i++) {
+		an = (i*1.0)/OUTER_SLOTS + an_s2;
+		px = FixedMul(ir, cos(an));
+		py = FixedMul(ir, sin(an));
+		quiet_display(px, py, i+INNER_SLOTS);
+	}
+	SetFont(TOTAL_BG);
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1400, 0, XRH, YRH, LAG_LEN);
+}
+
+function int are_we_crazy(void) {
+	return 0;
+}
+
+script "AMULET" (int entry) {
+	SetHudSize((XRH)>>15, (YRH)>>15, FALSE);
+	//int player_no = PlayerNumber();
+	SetPlayerProperty(0, 1, PROP_TOTALLYFROZEN);
+
+	int mouse_x = 0.0, mouse_y = 0.0;
+	int disp_x, disp_y, px, py;
+	int i, len, an, this_i;
+	int last_i = -1, last_sho = 3, last_len = 0.0, wt = 10;
+	int pulldown = 1.0;
+	int i_troll = 0.0, o_troll = 0.0;
+	int i_md = 0.0, o_md = 0.0, i_tmd = 0.0, o_tmd = 0.0;
+	int pressed_input = 0;
+	int shopkeeper = -1;
+	int movescript = 0;
+	int selected = power_selected();
+	
+	SetUserVariable(0, "user_amuletopen", 1);
+	
+	if (entry==1) {
+		shopkeeper = 3;
+	}
+	
+	int crazy = are_we_crazy();
+
+	if (crazy==0) {
+		i_md = 0.01;
+		o_md = -0.01;
+		i_troll = (-i_md) * INTRO_OUTRO_LEN;
+		o_troll = (-o_md) * INTRO_OUTRO_LEN;
+	} else if (crazy==1) {
+		i_tmd = 0.003; o_tmd =-0.003;
+		i_md = 0.003; o_md =-0.003;
+	}
+	ActivatorSound(SOUND_INTRO, 89);
+ 
+	for (i = 0; i<INTRO_OUTRO_LEN; i++) {
+		delay(1);
+		miniview(sin((i*0.25)/INTRO_OUTRO_LEN), i_troll, o_troll);
+		i_troll += i_md; o_troll += o_md;
+		SetFont("SMALLFONT");
+	}
+	
+	if (crazy==0) {
+		i_md = 0.0;
+		o_md = 0.0;
+	}
+	//print(f:INNER_LOGIC_R, s:" ", f:OUTER_LOGIC_R, s:" ", f:ARROW_LOGIC_R);
+	while (1) {
+		delay(1);
+		pressed_input = GetPlayerInput(-1, INPUT_BUTTONS);
+		pressed_input&= ~(GetPlayerInput(-1, INPUT_OLDBUTTONS));
+		if (pressed_input&(BT_LEFT|BT_MOVELEFT|BT_RIGHT|BT_MOVERIGHT)) {
+			if (pressed_input&(BT_LEFT|BT_MOVELEFT)) {
+				movescript = -1;
+			} else if (pressed_input&(BT_RIGHT|BT_MOVERIGHT)) {
+				movescript = 1;
+			}
+			break;
+		}
+		if(!CheckInventory("MenuWheelActive"))
+		{
+			break;
+		}
+		mouse_x+= FixedMul(X_MULTIPLIER, GetPlayerInput(-1, INPUT_YAW));
+		mouse_x = FixedMul(pulldown, mouse_x);
+		if (GetCVar("invertmouse")) {
+		mouse_y+=FixedMul(-(Y_MULTIPLIER), GetPlayerInput(-1, INPUT_PITCH));
+		} else {
+		mouse_y+=FixedMul(Y_MULTIPLIER, GetPlayerInput(-1, INPUT_PITCH));
+		}
+		mouse_y = FixedMul(pulldown, mouse_y);
+
+		disp_x = mouse_x & mask;
+		disp_y = mouse_y & mask;
+		i_troll+=i_md; o_troll+=o_md;
+		len = insane_len(mouse_x, mouse_y);
+		SetFont(CURSORFONT);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 900, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+		//SetFont("BIGFONT");
+		//HudMessage(f:len; HUDMSG_PLAIN, 899, 0, XRH, YRH, LAG_LEN);
+
+		if (len<INNER_LOGIC_R) {
+			this_i = -1;
+		} else if (INNER_SLOTS>0 && len<OUTER_LOGIC_R) {
+			an = (VectorAngle(mouse_x, mouse_y)-i_troll)&(~MASK);
+			an = (an*INNER_SLOTS*2)/1.0;
+			this_i = (((an+1)/2))%INNER_SLOTS;
+		} else if (len < ARROW_LOGIC_R) {
+			an = (VectorAngle(mouse_x, mouse_y)-o_troll)&(~MASK);
+			an = (an*OUTER_SLOTS*2)/1.0;
+			this_i = (((an+1)/2))%OUTER_SLOTS + INNER_SLOTS;
+		} else {
+			this_i = -1;
+			if (pressed_input&(BT_ATTACK|BT_ALTATTACK)) {
+				if (mouse_x<0) {
+					movescript = -1;
+				} else {
+					movescript = 1;
+				}
+				break;
+			} else if (mouse_x<0) {
+				this_i = -2;	
+			} else {
+				this_i = -3;
+			}
+		}
+		if (last_i!=this_i) {
+			wt = 0; last_i = this_i; last_sho = shopkeeper;
+		} else if (last_sho!=shopkeeper) {
+			wt = 1; last_sho = shopkeeper;
+		} else if (wt<400) {
+			wt++;
+		}
+		shopkeeper = shopkeeper_str(shopkeeper, this_i, wt);
+
+		if (crazy==1) {
+			if ((last_len<INNER_LOGIC_R && len>INNER_LOGIC_R)
+			|| (last_len>INNER_LOGIC_R && len<INNER_LOGIC_R)
+			|| (last_len<OUTER_LOGIC_R && len>OUTER_LOGIC_R)
+			|| (last_len>OUTER_LOGIC_R && len<OUTER_LOGIC_R)
+			|| (last_len<ARROW_LOGIC_R && len>ARROW_LOGIC_R)
+			|| (last_len>ARROW_LOGIC_R && len<ARROW_LOGIC_R)
+			|| Random(0,65535)==0) {
+				i_tmd = (1-2*Random(0,1))*Random(0.0002, 0.015);
+				o_tmd = (1-2*Random(0,1))*Random(0.0002, 0.015);
+			}
+		}
+		last_len = len;
+		i_md = (19*i_md+i_tmd)/20;
+		o_md = (19*o_md+o_tmd)/20;
+
+		SetFont(ARROW_L);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 910, 0, XRH-ARROW_DISP_R, YRH, LAG_LEN);
+		SetFont(ARROW_R);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 911, 0, XRH+ARROW_DISP_R, YRH, LAG_LEN);
+		for (i = 0; i<TOTAL_SLOTS; i++) {
+			if (i<INNER_SLOTS) {
+				an = (i*1.0)/INNER_SLOTS + i_troll;
+				px = FixedMul(INNER_DISP_R, cos(an));
+				py = FixedMul(INNER_DISP_R, sin(an));
+			} else {
+				an = ((i-INNER_SLOTS)*1.0)/OUTER_SLOTS + o_troll;
+				px = FixedMul(OUTER_DISP_R, cos(an));
+				py = FixedMul(OUTER_DISP_R, sin(an));
+			}
+			if (this_i==i) {
+				featured_display(px, py, i);
+				if (wt==0) {
+					if (CheckInventory(ownership_tokens[i])<=0) {
+						ActivatorSound(SOUND_HOVER_BUY, 75);
+					} else {
+						ActivatorSound(SOUND_HOVER_PICK, 75);
+					}
+				}
+				if (pressed_input & BT_ALTATTACK) {
+					shopkeeper = try_to_buy(i);
+					if (shopkeeper==2) {
+						ActivatorSound(SOUND_BUY, 89);
+					} else {
+						ActivatorSound(SOUND_CANNOT, 89);
+					}
+				} else if (pressed_input & BT_ATTACK) {
+					shopkeeper = try_to_select(i, selected);
+					if (shopkeeper==4) {
+						selected = i;
+						ActivatorSound(spell_sounds[i], 89);
+					} else {
+						ActivatorSound(SOUND_CANNOT, 89);
+					}
+				// Next part by Zhs2. Let's just add some button checking here...
+				} else if (pressed_input & (BT_USER1 | BT_USER2 | BT_USER3 | BT_USER4))
+				{
+					shopkeeper = try_to_userbutton(i, pressed_input);
+					if(shopkeeper==11)
+					{
+						ActivatorSound(spell_sounds[i], 89);
+					}
+					else
+					{
+						ActivatorSound(SOUND_CANNOT, 89);
+					} 
+				} // end my insidious influence
+				
+			} else {
+				quiet_display(px, py, i);
+			}
+			if (i==selected) {
+				mark_select(px, py);
+			}
+		}
+		SetFont(TOTAL_BG);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 1400, 0, XRH, YRH, LAG_LEN);
+		SetFont("SMALLFONT");
+	}
+
+	if (crazy==0) {
+		i_md =-0.01;
+		o_md = 0.01;
+	}
+	ActivatorSound(SOUND_OUTRO, 89);
+	for (i = 0; i<INTRO_OUTRO_LEN; i++) {
+		delay(1);
+		miniview(cos((i*0.25)/INTRO_OUTRO_LEN), i_troll, o_troll);
+		i_troll += i_md; o_troll += o_md;
+		SetFont("SMALLFONT");
+	}
+
+	if (movescript==-1) {
+		ACS_NamedExecuteAlways(SCRIPT_L, 0, 1, 0, 0);
+	} else if (movescript==1) {
+		ACS_NamedExecuteAlways(SCRIPT_R, 0, 1, 0, 0);
+	} else {
+		SetFont("SMALLFONT");
+		SetPlayerProperty(0, 0, PROP_TOTALLYFROZEN);
+		SetHudSize(0, 0, FALSE);
+		SetUserVariable(0, "user_amuletopen", 0); // I am so smart. Gets nuked whenever you die
+	}
+}
+
+// All functions after this by Zhs2. Killing off vermin, one tower at a time!
+function int try_to_userbutton (int whichspell, int whatbutton) // Check if we can assign a spell to a quick key. Simple, right?
+{ // Yes, I put this on the next line. Then code starts on the line after. The curly brackets are an endangered species! They should be left to their natural habitats! (It's also easier to read.)
+	/*  Return codes:
+		5 = As per Stanley's own try_to_select function, we don't actually own that spell yet 
+		11 = Successful.
+		12 = Button already has that spell equipped.
+		13 = What the hell are you doing?
+    */
+	if(!CheckInventory(ownership_tokens[whichspell])) { return 5; } // Because Stanley's try_to_select function makes a fatal assumption, and that's giving you the inventory token on every run
+	int thatbutton = -1; //to compare the user button to our player spell array
+	if(whatbutton & BT_USER1) { thatbutton = 0; } // Switch statements are overrated and I'm too lazy to change this back to one also lawl 0 indexed arrays
+	else if(whatbutton & BT_USER2) { thatbutton = 1; }
+	else if(whatbutton & BT_USER3) { thatbutton = 2; }
+	else if(whatbutton & BT_USER4) { thatbutton = 3; }
+	if(thatbutton == -1) { return 13; }
+	if(GetUserArray(0, "user_spellbuttons", thatbutton) == (whichspell + 1)) { return 12; }
+	SetUserArray(0, "user_spellbuttons", thatbutton, whichspell + 1);
+	return 11;
+}
+
+script "The Ultimate Button Checker Of Ultimate Destiny" ENTER // Good spells, bad spells, and explosions, as far as the eye can see
+{ // Or more importantly, this is what handles quick spell switching
+	int buttonsareme, thatbutton, nextspell; // initialize
+	str whattosay;
+	
+	if(!GetUserVariable(0, "user_amuletopen"))
+	{
+		buttonsareme = GetPlayerInput(-1, INPUT_BUTTONS); // declare
+		thatbutton = -1;
+	
+		if(buttonsareme & BT_USER1) { thatbutton = 0; } // And only one can be picked, I wonder which it will be
+        	else if(buttonsareme & BT_USER2) { thatbutton = 1; }
+        	else if(buttonsareme & BT_USER3) { thatbutton = 2; }
+        	else if(buttonsareme & BT_USER4) { thatbutton = 3; }
+		if(thatbutton>-1) // don't do anything because this script is invincible but buttons are not
+		{
+			nextspell = GetUserArray(0, "user_spellbuttons", thatbutton); // grab from user array for specified button...
+			if(nextspell>0) // make sure it's actually defined...
+			{
+				if(CheckInventory(selection_tokens[nextspell-1])) // You already have it selected, mortal!
+				{
+					whattosay = StrParam(s:"\c[cyan]",s:spell_names[nextspell-1],s:"\cj is already selected!");
+					ActivatorSound(SOUND_CANNOT, 89);
+					delay(5);
+				}
+				else // Equip it already!
+				{
+					for(int i = 0; i < TOTAL_SLOTS; i++)
+					{
+						TakeInventory(selection_tokens[i], 1); // Just take them already! I didn't need them anyway!
+					}
+					GiveInventory(selection_tokens[nextspell-1], 1); // Gimme dat grip!
+					whattosay = StrParam(s:"\c[cyan]",s:spell_names[nextspell-1],s:"\cj at the ready!");
+					ActivatorSound(spell_sounds[nextspell-1], 89);
+					delay(5);
+				}
+			}
+			else // not defined, tell the user
+			{
+				whattosay = "Custom spell slot not defined! Pick one from bought spells in the radial menu!";
+				ActivatorSound(SOUND_CANNOT, 89);
+				delay(5);
+			}
+			HudMessage(s:whattosay; HUDMSG_PLAIN, 950, CR_WHITE, 1.5, 0.7, 2.0);
+		}
+	}
+	delay(1);
+	restart;
+}
+
+script "DeckShuffling" (int forward) net // For my next trick... a script that would allow you to bind spell selection to the mouse wheel if you wanted! Or simply go "next spell" at will. Whatever.
+{
+	int gotanyspells = 0;
+	int whatscurrent = 0;
+	int whatsnext;
+	
+	if(GetUserVariable(0, "user_amuletopen")) { Terminate; } // Do nothing while the spell ring is open.
+	for(int i = 0; i < TOTAL_SLOTS; i++) // If we don't check whether the player has any spells, it could get ugly. Like infinite-loop ugly.
+	{
+		if(CheckInventory(ownership_tokens[i])) { gotanyspells++; } // So you do have spells!
+	}
+	if(gotanyspells) // Where the real work happens. We don't want this to do anything until spells are achieved.
+	{
+		until(CheckInventory(selection_tokens[whatscurrent])) // In the spirit of making no assumptions, what's currently selected for the player right now?
+		{
+			whatscurrent++; // Count up
+			if(whatscurrent > TOTAL_SLOTS) // Whoops, none are selected
+			{
+				whatscurrent = 0; // But we obviously got this far because we own a spell
+				break;
+			}
+		}
+		if(forward) // Variable set, search forward for the next spell
+		{
+			whatsnext=whatscurrent; // start searching from...
+			if((whatsnext+1)>=TOTAL_SLOTS) { whatsnext = 0; } // the beginning! also oops this should now correctly check whether whatsnext is too high
+			else { whatsnext++; } // the next spell over!
+			until(CheckInventory(ownership_tokens[whatsnext])) // Continue search!
+			{
+				if((whatsnext+1)>=TOTAL_SLOTS) { whatsnext = 0; } // start over
+				else { whatsnext++; }
+			}
+			// Switch to the next spell
+			for(i = 0; i < TOTAL_SLOTS; i++)
+			{
+				TakeInventory(selection_tokens[i], 1); // Let's take all of the previous ones, just in case.
+			}
+			GiveInventory(selection_tokens[whatsnext], 1); // And finally switch to the next.
+			ActivatorSound(spell_sounds[whatsnext], 89); // Play a sound just so we know shit happened.
+		}
+		else // Same exact thing, only backwards
+		{
+			whatsnext=whatscurrent; // start searching from...
+			if((whatsnext-1)<0) { whatsnext = TOTAL_SLOTS-1; } // the end!
+			else { whatsnext--; } // the next spell behind!
+			until(CheckInventory(ownership_tokens[whatsnext])) // Continue search!
+			{
+				if((whatsnext-1)<0) { whatsnext = TOTAL_SLOTS-1; } // start over
+				else { whatsnext--; }
+			}
+			// Switch to the next spell
+			for(i = 0; i < TOTAL_SLOTS; i++)
+			{
+				TakeInventory(selection_tokens[i], 1); // Let's take all of the previous ones, just in case.
+			}
+			GiveInventory(selection_tokens[whatsnext], 1); // And finally switch to the next.
+			ActivatorSound(spell_sounds[whatsnext], 89); // Play a sound just so we know shit happened.
+		}
+	}
+}
+
+int player_spell_selection[8][4];
+
+script "Lawful Rememberance" DEATH // Unfortunately user variables get reinitialized on respawn. Store them temporarily...
+{
+	for(int i = 0; i < 4; i++)
+	{
+		player_spell_selection[PlayerNumber()][i] = GetUserArray(0, "user_spellbuttons", i);
+	}
+}
+
+script "Gimme Dat Shit Foo" RESPAWN // ... And hand them back to a fresh player.
+{
+	for(int i = 0; i < 4; i++)
+	{
+		SetUserArray(0, "user_spellbuttons", i, player_spell_selection[PlayerNumber()][i]);
+	}
+	SetPlayerProperty(0, 0, PROP_TOTALLYFROZEN);
+}
+
+script "Shop Activation Sensation" (void) net // Can a script be called when frozen? Yes it can.
+{
+	if(CheckInventory("MenuWheelActive"))
+	{
+		TakeInventory("MenuWheelActive", 1);
+	}
+	else
+	{
+		GiveInventory("MenuWheelActive", 1);
+		ACS_NamedExecuteAlways("AMULET", 0, 0, 0, 0);
+	}
+}

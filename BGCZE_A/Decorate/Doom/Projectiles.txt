@@ -1,0 +1,19 @@
+ACTOR CacodemonBall2 : CacodemonBall replaces CacodemonBall
+{
+  DamageType Fire
+}
+
+ACTOR FatShot2 : FatShot replaces FatShot
+{
+  DamageType Fire
+}
+
+ACTOR DoomImpBall2 : DoomImpBall replaces DoomImpBall
+{
+  DamageType Fire
+}
+
+ACTOR RevenantTracer2 : RevenantTracer replaces RevenantTracer
+{
+  DamageType FuckRevenants
+}

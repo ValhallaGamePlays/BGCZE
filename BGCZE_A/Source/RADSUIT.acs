@@ -1,0 +1,23 @@
+// A script that manages the length of the radsuit powerup.
+// By Zhs2
+
+#library "DoingItDukeStyleMothaBrotha"
+#include "zcommon.acs"
+
+#libdefine RADSUIT_UNIT 100 // One unit of radsuit equates to 5/3 of a second of powerup time.
+
+script "ARadsuitThing" (void)
+{
+	int radtimer;
+	TakeInventory("Envirosuit", 1); // To discourage repeatedly removing the suit.
+	while (CheckInventory("PowerSuitProtect"))
+	{
+		radtimer++;
+		if(!(radtimer % RADSUIT_UNIT)) { TakeInventory("Envirosuit", 1); }
+		if(!CheckInventory("Envirosuit")) { break; } // Whoops, we ran out of suit.
+		delay(1);
+	}
+	TakeInventory("PowerSuitProtect", 1); // In case we ran out of suit.
+}
+
+// Well, that was easy.

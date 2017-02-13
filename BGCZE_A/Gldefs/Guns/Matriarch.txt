@@ -1,0 +1,17 @@
+object MatriarchSlug
+{
+    frame WINPA { light ROCKET }
+}
+
+object MatriarchFX //Aaaand here.
+{
+    frame TNT1A { light MATRIARCHFLASH }
+}
+
+pulselight MATRIARCHFLASH
+{
+    color 1.0 0.35 0.0
+    size 256
+    secondarySize 0
+    interval 1.0
+}

@@ -1,0 +1,40 @@
+//Cauterizer Ammo
+brightmap sprite CAUAA0
+{
+    map "bmaps/CAUAA.png"
+}
+
+brightmap sprite CAUBA0
+{
+    map "bmaps/CAUBA.png"
+}
+
+brightmap sprite CAUBB0
+{
+    map "bmaps/CAUBA.png"
+}
+
+brightmap sprite CAUBC0
+{
+    map "bmaps/CAUBA.png"
+}
+
+brightmap sprite CAUBD0
+{
+    map "bmaps/CAUBA.png"
+}
+
+brightmap sprite CAUBE0
+{
+    map "bmaps/CAUBA.png"
+}
+
+brightmap sprite CAUBF0
+{
+    map "bmaps/CAUBA.png"
+}
+
+brightmap sprite CAUBG0
+{
+    map "bmaps/CAUBA.png"
+}

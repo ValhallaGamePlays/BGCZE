@@ -1,0 +1,104 @@
+ACTOR MonsterShock
+{
+	+NOINTERACTION
+	DamageType Lightning
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(72,2)
+		TNT1 A 0 A_Explode((10),8,1,0,8)
+		TNT1 A 0 A_SpawnItemEx("TheLightningMonster",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(60.0,-10.0),0,0,0,0,SXF_CLIENTSIDE,48)
+		TNT1 A 0 A_SpawnItemEx("LightningEffectMonster",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(60.0,-10.0),frandom(1.5,0.5),frandom(1.5,0.5),frandom(1.5,-1.5),frandom(0.0,360.0),SXF_CLIENTSIDE,48)
+		TNT1 A 6
+		Stop
+	}
+}
+
+ACTOR TheLightningMonster : TheLightning
+{
+	Scale 0
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.25,0.2))
+	TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+	Loop
+	Main:
+	"####" "#" 0 A_SetScale(ScaleX + frandom(0.01,0.005))
+	"####" "#" 1 Bright A_FadeOut(frandom(0.3,0.33))
+	Loop
+	}
+}
+
+
+ACTOR LightningEffectMonster : LightningEffect3
+{
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_SetScale(frandom(0.3,0.7))
+	TNT1 A 0 A_Jump(256,"Main")
+	}
+}
+
+ACTOR CauterMonsterShock
+{
+	+NOINTERACTION
+	DamageType LightningBlue
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(72,2)
+		TNT1 A 0 A_Explode((10),8,1,0,8)
+		TNT1 A 0 A_SpawnItemEx("TheLightningCauter",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(60.0,-10.0),frandom(1.5,0.5),frandom(1.5,0.5),frandom(1.5,-1.5),frandom(0.0,360.0),SXF_CLIENTSIDE,48)
+		TNT1 A 0 A_SpawnItemEx("LightningEffectCauter",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(60.0,-10.0),frandom(1.5,0.5),frandom(1.5,0.5),frandom(1.5,-1.5),frandom(0.0,360.0),SXF_CLIENTSIDE,48)
+		TNT1 A 6
+		Stop
+	}
+}
+
+ACTOR TheLightningCauter : TheLightning
+{
+	Scale 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.25,0.2))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+		Loop
+	SpriteA:
+		LLIT A 0 A_Jump(256,"Main")
+	SpriteB:
+		LLIT B 0 A_Jump(256,"Main")
+	SpriteC:
+		LLIT C 0 A_Jump(256,"Main")
+	SpriteD:
+		LLIT D 0 A_Jump(256,"Main")
+	SpriteE:
+		LLIT E 0 A_Jump(256,"Main")
+	SpriteF:
+		LLIT F 0 A_Jump(256,"Main")
+	SpriteG:
+		LLIT G 0 A_Jump(256,"Main")
+	SpriteH:
+		LLIT H 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.01,0.005))
+		"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.15))
+		Loop
+	}
+}
+
+
+ACTOR LightningEffectCauter : LightningEffect3
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(frandom(0.3,0.7))
+		TNT1 A 0 A_Jump(256,"Main")
+	Main:
+		LLTP AABBCCDDEEFF 1 Bright A_FadeOut(frandom(0.025,0.075))
+		Stop
+	}
+}

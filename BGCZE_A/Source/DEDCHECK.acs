@@ -1,0 +1,16 @@
+// A simple check. Makes sure our target (actually, a tracer for a seeker missile) is dead.
+// By Zhs2.
+
+#library "ItisamissilecheckokayIhavenoideawhyIamputtingsomestupidrandomlibrarynamehere"
+#include "zcommon.acs"
+
+script "TracerDeathCheck" (void)
+{
+	if(!SetActivator(0, AAPTR_TRACER))
+	{
+		// If our tracer was removed somehow, we still want this check to be valid.
+		SetResultValue(TRUE);
+		terminate;
+	}
+	SetResultValue(ClassifyActor(0) & ACTOR_DEAD);
+}

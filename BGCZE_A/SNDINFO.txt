@@ -1,0 +1,1195 @@
+//Dear reader of this SNDINFO, if you recognize any of those sounds that I didn't share the source of because I didn't know it,
+//please share that knowledge to me via private message, so I can add that in nearest update. Thanks in advance!
+
+Korax/Speech KORAX1
+$volume Korax/Speech 0.6
+
+//Misc. changes
+$ifheretic
+misc/secret			HRSECRET //Wolfenstein 3 - Raven Software
+$endif
+$ifdoom
+misc/secret			DMSECRET //Gmod Idiot Box 12 - Dasboschitt
+$endif
+$volume misc/secret 0.6
+
+misc/chat	newchat
+$volume misc/chat 0.5
+
+$volume world/watersplash 0.5
+
+//Propane
+Propane/Pick	PROPPICK	//ID Soft./Doom 3
+$random Propane/Hit { Propane/Hit1 Propane/Hit2 Propane/Hit3 } //Valve/Turtle Rock: Left 4 Dead 2
+Propane/Hit1	PROPHIT1
+Propane/Hit2	PROPHIT2
+Propane/Hit3	PROPHIT3
+Propane/Leak	PROPOHNO //Valve/Turtle Rock: Left 4 Dead 2
+
+$volume Propane/Pick 0.7
+
+//Pods
+Pod/Explode	PODBLST
+$volume Pod/Explode 0.7
+
+//Player - Marty Kirra's voice work
+$playeralias	Guncaster	male	*death		Guncaster/Death
+$playeralias	Guncaster	male	*xdeath		Guncaster/XDeath
+$playersounddup	Guncaster	male	*gibbed		*death
+$playersounddup	Guncaster	male	*wimpydeath	*death
+$playersounddup	Guncaster	male	*crazydeath	*death
+$playersounddup	Guncaster	male	*burndeath	*death
+$playeralias	Guncaster	male	*pain100	Guncaster/Pain/100
+$playeralias	Guncaster	male	*pain75 	Guncaster/Pain/100
+$playeralias	Guncaster	male	*pain50 	Guncaster/Pain/50
+$playeralias	Guncaster	male	*pain25 	Guncaster/Pain/25
+$playeralias	Guncaster	male	*grunt		Guncaster/Oof
+$playeralias	Guncaster	male	*land		Guncaster/Land
+$playeralias	Guncaster	male	*jump		Guncaster/Jump
+$playersound	Guncaster	male	*fist		dsnone
+$playeralias	Guncaster	male	*usefail	Guncaster/Nope
+$playeralias	Guncaster	male	*weaponlaugh	Guncaster/Laugh1
+$playersounddup	Guncaster	male	*evillaugh	*weaponlaugh
+$playersound	Guncaster	male	*falling	dsempty
+$playeralias	Guncaster	male	*usefail	Guncaster/Nope
+$playeralias	Guncaster	male	*puzzfail	Guncaster/Nope
+
+Guncaster/Land DRAGLAND
+
+$volume Guncaster/Jump 0.8
+$random Guncaster/Jump	{ Guncaster/Jump1 Guncaster/Jump2 Guncaster/Jump3 }
+Guncaster/Jump1	DRAGJMP1
+Guncaster/Jump2	DRAGJMP2
+Guncaster/Jump3	DRAGJMP3
+
+$volume Guncaster/Oof 0.8
+$random Guncaster/Oof	{ Guncaster/Oof1 Guncaster/Oof2 Guncaster/Oof3 Guncaster/Oof4 }
+
+Guncaster/Oof1	DRAGOOF1
+Guncaster/Oof2	DRAGOOF2
+Guncaster/Oof3	DRAGOOF3
+Guncaster/Oof4	DRAGOOF4
+
+$volume Guncaster/Nope 0.9
+$random Guncaster/Nope	{ Guncaster/Nope1 Guncaster/Nope2 }
+
+Guncaster/Nope1	DRAGNPE1
+Guncaster/Nope2	DRAGNPE2
+
+$volume Guncaster/Pain/100 0.8
+$random Guncaster/Pain/100	{ Guncaster/Pain/100/1 Guncaster/Pain/100/2 Guncaster/Pain/100/3 Guncaster/Pain/100/4 Guncaster/Pain/100/5 }
+Guncaster/Pain/100/1 1DRP100
+Guncaster/Pain/100/2 2DRP100
+Guncaster/Pain/100/3 3DRP100
+Guncaster/Pain/100/4 4DRP100
+Guncaster/Pain/100/5 5DRP100
+
+$volume Guncaster/Pain/50 0.8
+$random Guncaster/Pain/50	{ Guncaster/Pain/50/1 Guncaster/Pain/50/2 Guncaster/Pain/50/3  }
+Guncaster/Pain/50/1 1DRP50
+Guncaster/Pain/50/2 2DRP50
+Guncaster/Pain/50/3 3DRP50
+
+$volume Guncaster/Pain/25 0.8
+$random Guncaster/Pain/25	{ Guncaster/Pain/25/1 Guncaster/Pain/25/2 Guncaster/Pain/25/3 }
+Guncaster/Pain/25/1 1DRP25
+Guncaster/Pain/25/2 2DRP25
+Guncaster/Pain/25/3 3DRP25
+
+$volume Guncaster/Death 0.8
+$random Guncaster/Death { Guncaster/Death1 Guncaster/Death2 }
+Guncaster/Death1 DRAGDTH1
+Guncaster/Death2 DRAGDTH2
+
+$volume Guncaster/XDeath 0.8
+Guncaster/XDeath DRAGXDTH
+
+$volume Guncaster/Laugh 0.8
+$random Guncaster/Laugh	{ Guncaster/Laugh1 Guncaster/Laugh2 }
+Guncaster/Laugh1 DRAGHAR1
+Guncaster/Laugh2 DRAGHAR2
+
+$volume  Guncaster/Meh 0.8
+Guncaster/Meh	DRAGMEH
+
+$volume Guncaster/Kick 0.8
+$random Guncaster/Kick { Guncaster/Kick1 Guncaster/Kick2 Guncaster/Kick3 Guncaster/Kick4 }
+Guncaster/Kick1	KICKYEL1
+Guncaster/Kick2	KICKYEL2
+Guncaster/Kick3 KICKYEL3
+Guncaster/Kick4 KICKYEL4
+
+$volume Guncaster/Jump 0.7
+
+Kick/Init	KICKINIT
+$random Kick/Extra	{ Kick/Init1 Kick/Init2 Kick/Init3 Kick/Init4 Kick/Init5 }
+Kick/Init1	KICKINT1
+Kick/Init2	KICKINT2
+Kick/Init3	KICKINT3
+Kick/Init4	KICKINT4
+Kick/Init5	KICKINT5
+Kick/Hit	KICKHIT
+
+Stomp/Use		STMPUSE
+Stomp/Impact	STMPHIT
+
+$volume Stomp/Use 0.7
+
+$random Guncaster/Unusual { Guncaster/Unusual1 Guncaster/Unusual2 }
+Guncaster/Unusual1 DASUNUSL
+Guncaster/Unusual2 DASUNUS2
+
+//That's a one foul mouth, heh.
+Guncaster/Taunt01	DRAGTN01
+Guncaster/Taunt02	DRAGTN02
+Guncaster/Taunt03	DRAGTN03
+Guncaster/Taunt04	DRAGTN04
+Guncaster/Taunt05	DRAGTN05
+Guncaster/Taunt06	DRAGTN06
+Guncaster/Taunt07	DRAGTN07
+Guncaster/Taunt08	DRAGTN08
+Guncaster/Taunt09	DRAGTN09
+Guncaster/Taunt10	DRAGTN10
+Guncaster/Taunt11	DRAGTN11
+Guncaster/Taunt12	DRAGTN12
+Guncaster/Taunt13	DRAGTN13
+Guncaster/Taunt14	DRAGTN14
+Guncaster/Taunt15	DRAGTN15
+Guncaster/Taunt16	DRAGTN16
+Guncaster/Taunt17	DRAGTN17
+Guncaster/Taunt18	DRAGTN18
+Guncaster/Taunt19	DRAGTN19
+Guncaster/Taunt20	DRAGTN20
+Guncaster/Taunt21	DRAGTN21
+Guncaster/Taunt22	DRAGTN22
+Guncaster/Taunt23	DRAGTN23
+Guncaster/Taunt24	DRAGTN24
+Guncaster/Taunt25	DRAGTN25
+Guncaster/Taunt26	DRAGTN26
+Guncaster/Taunt27	DRAGTN27
+Guncaster/Taunt28	DRAGTN28
+Guncaster/Taunt29	DRAGTN29
+Guncaster/Taunt30	DRAGTN30
+Guncaster/Taunt31	DRAGTN31
+Guncaster/Taunt32	DRAGTN32
+Guncaster/Taunt33	DRAGTN33
+Guncaster/Taunt34	DRAGTN34
+Guncaster/Taunt35	DRAGTN35
+
+
+//Wolfenstein 3/Raven Soft.
+$random Guncaster/Move { GC/Move1 GC/Move2 GC/Move3 GC/Move4 GC/Move5 GC/Move6
+						GC/Move7 GC/Move8 GC/Move9 GC/Move10 GC/Move11 GC/Move12
+						GC/Move13 GC/Move14 GC/Move15 GC/Move16 GC/Move17
+						GC/Move18 GC/Move19 GC/Move20 }
+GC/Move1	GCMOVE1
+GC/Move2	GCMOVE2
+GC/Move3	GCMOVE3
+GC/Move4	GCMOVE4
+GC/Move5	GCMOVE5
+GC/Move6	GCMOVE6
+GC/Move7	GCMOVE7
+GC/Move8	GCMOVE8
+GC/Move9	GCMOVE9
+GC/Move10	GCMOVE10
+GC/Move11	GCMOVE11
+GC/Move12	GCMOVE12
+GC/Move13	GCMOVE13
+GC/Move14	GCMOVE14
+GC/Move15	GCMOVE15
+GC/Move16	GCMOVE16
+GC/Move17	GCMOVE17
+GC/Move18	GCMOVE18
+GC/Move19	GCMOVE19
+GC/Move20	GCMOVE20
+
+$limit Guncaster/Move 2
+
+Guncaster/Step	DRAGSTEP
+
+$volume Guncaster/Step 0.3
+$limit Guncaster/Step 0
+
+Berserk/Step	BRSKSTEP
+
+$volume Berserk/Step 0.4
+$limit Berserk/Step 0
+
+Wings/Movement WINGMOVE
+Veilvision/Active VEILVISN
+
+//ID Software (ET: Quake Wars)
+$random Move/Step { Move/Step1 Move/Step2 Move/Step3 Move/Step4 Move/Step5 Move/Step6 }
+Move/Step1	MOVESTP1
+Move/Step2	MOVESTP2
+Move/Step3	MOVESTP3
+Move/Step4	MOVESTP4
+Move/Step5	MOVESTP5
+Move/Step6	MOVESTP6
+
+$volume Move/Step 0.3
+
+//Monolith (FEAR)
+$random Move/Slide { Move/Slide1 Move/Slide2 Move/Slide3 }
+Move/Slide1	MOVESLD1
+Move/Slide2	MOVESLD2
+Move/Slide3	MOVESLD3
+
+//Skill Wheel - Blizzard (Diablo 2), Irrational Games (Bioshock Infinite)
+Spell/Yes		SPELYES
+Spell/Move		SPELMOVE
+Spell/Buy		SPELBUY
+
+$volume	Spell/Yes 0.7
+$volume	Spell/Move 1.0
+$volume	Spell/Buy 0.8
+
+Spell/Active1	BULSEL01 //Skullfire
+Spell/Active2	BULSEL02 //Frostbite
+Spell/Active3	BULSEL03 //Skypunch
+Spell/Active4	BULSEL04 //Gumpop
+Spell/Active5	BULSEL05 //Hitchcock's Birds
+Spell/Active6	BULSEL06 //Thunderstruck
+Spell/Active7	BULSEL07 //Scourgebreath
+Spell/Active8	BULSEL08 //Corpse Blast
+Spell/Active9	BULSEL09 //Threadcutter
+Spell/Active10	BULSEL10 //Anushilation
+Spell/Active11	BULSEL11 //Firebreath
+Spell/Active12	BULSEL12 //Meteorfist
+Spell/Active13	BULSEL13 //Flamewave
+Spell/Active14	BULSEL14 //Chillgrasp
+//Space reserved for sheeps
+Spell/Active16	BULSEL16 //Spiritcannon
+//Space reserved for Darkvoid
+Spell/Active18	BULSEL18 //Prism
+
+
+//Menu - Raven (Wolfenstein 3), Firefly Studios (Stronghold)
+menu/activate		MENUSND1
+menu/backup			MENUSND2
+menu/prompt			MENUSND2
+menu/choose			MENUSND1
+menu/cursor			MENUSND3
+menu/change			MENUSND3
+menu/invalid		MENUSND2
+menu/dismiss		MENUSND4
+menu/clear			MENUSND4
+menu/quit			MENUQUIT
+
+$volume menu/activate 0.7
+$volume menu/backup 0.7
+$volume menu/prompt 0.7
+$volume menu/choose 0.7
+$volume menu/cursor 0.7
+$volume menu/change 0.7
+$volume menu/invalid 0.7
+$volume menu/dismiss 0.7
+$volume menu/clear 0.7
+$volume menu/quit 0.8
+
+$volume menu/secret 0.9
+
+intermission/tick		SPELMOVE
+intermission/nextstage	MENUSND1
+
+$random intermission/paststats		{ scream/next1 scream/next2 scream/next3 scream/next4 }
+$random intermission/pastcoopstats	{ scream/next1 scream/next2 scream/next3 scream/next4 }
+
+scream/next1	SCRMNXT1
+scream/next2	SCRMNXT2
+scream/next3	SCRMNXT3
+scream/next4	SCRMNXT4
+
+//Bishop Powersuit
+
+//contemporary hackery
+/*$random Guncaster/Jump	{ Bishop/Jump1 Bishop/Jump2 Bishop/Jump3 }	//Irrational Games - Bioshock Infinite. I think.
+Bishop/Jump1	BISHJMP1
+Bishop/Jump2	BISHJMP2
+Bishop/Jump3	BISHJMP3
+Guncaster/Land	BISHLAND
+Wings/Movement	BISHWING*/
+//////////////////////
+
+Bishop/Pickup	BISHPICK		//EA - C&C3, Raven Soft. - Wolfenstein 2009
+Bishop/Use		BISHUSE			//EA - C&C3
+
+Bishop/Mode		BISHMODE		//Epic Games - Unreal
+Bishop/Fire		BISHFIRE		//Westwood - C&C Tiberian Sun, ID Soft. - Quake 3
+Bishop/Explode	BISHEXP			//Westwood - C&C Renegade
+
+Bishop/Open		BISHOPEN		//NOH EINE IDEE but it sounds cool.
+Bishop/MissileMain	BISHRCKT	//Raven Soft. - Wolfenstein 2009
+$random Bishop/Missile { Bishop/Missile1 Bishop/Missile2 }	//Blizzard - Starcraft 2
+Bishop/Missile1	BISHRKT1
+Bishop/Missile2	BISHRKT2
+
+$rolloff Bishop/MissileMain 400 1600
+$volume Bishop/Pickup 0.8
+
+Bishop/Activate1	BISHACT1	//Splash Damage, ID Soft. - ET: Quake Wars
+Bishop/Activate2	BISHACT2	//Valve, Team Fortress 2
+
+Bishop/Move		BISHMOVE		//ID Soft. - Quake 2
+Bishop/Fist		BISHFIST		//Raven Soft. - Wolfenstein 2009
+Bishop/Step		BISHSTEP		//Eeeee~
+Bishop/Land		BISHLAND		//Uhhhhh... Some Doom 3 bit was there, I think? That's what I get for frankensounding and not writing down sources.
+
+$limit Bishop/Step 0
+
+$random Bishop/Thud	{ Bishop/Thud1 Bishop/Thud2 Bishop/Thud3 Bishop/Thud4 }
+Bishop/Thud1	BISHTHD1
+Bishop/Thud2	BISHTHD2
+Bishop/Thud3	BISHTHD3
+Bishop/Thud4	BISHTHD4
+
+$random Bishop/Jump	{ Bishop/Jump1 Bishop/Jump2 Bishop/Jump3 }	//Irrational Games - Bioshock Infinite. I think.
+Bishop/Jump1	BISHJMP1
+Bishop/Jump2	BISHJMP2
+Bishop/Jump3	BISHJMP3
+
+Bishop/Wings	BISHWING
+Bishop/Land		BISHLAND
+Bishop/Glide	BISHFLOP
+
+$volume Bishop/Jump 0.6
+$volume Bishop/Land 0.7
+
+$random Bishop/Kick { Bishop/Kick1 Bishop/Kick2 }	//Croteam - Serious Sam 3
+Bishop/Kick1	BISHKIK1
+Bishop/Kick2	BISHKIK2
+
+Bishop/Wave		BISHWAVE	//Certain Wildweasel could probably tell you, as I snug it in as some kind of a reference easter egg, heh.
+
+$random Bishop/Hit { Bishop/Hit1 Bishop/Hit2 }	//Raven Soft. - Wolfenstein 2009. I think.
+Bishop/Hit1	BISHHIT1
+Bishop/Hit2	BISHHIT2
+
+$random Bishop/Pain { Bishop/Pain1 Bishop/Pain2 Bishop/Pain3 }	//Raven Soft. - Wolfenstein 2009
+Bishop/Pain1	BISHPAI1
+Bishop/Pain2	BISHPAI2
+Bishop/Pain3	BISHPAI3
+
+/*-------------------------------
+								-
+								-
+			  GUNS!				-
+		   (and melee)			-
+								-
+-------------------------------*/
+
+//Melee - Valve (Left 4 Dead), Croteam (Serious Sam SE & BFE), Raven (Wolfenstein 3)
+Melee/Crack	MELECRCK
+
+$random Melee/Swing { Melee/Swing1 Melee/Swing2 Melee/Swing3 }
+Melee/Swing1	MELSWNG1
+Melee/Swing2	MELSWNG2
+Melee/Swing3	MELSWNG3
+
+Punch/Hit PUNCHHIT
+$limit Punch/Hit 0
+
+$random Punch/Flesh { Punch/Flesh1 Punch/Flesh2 Punch/Flesh3 Punch/Flesh4 }
+Punch/Flesh1	PNCHFLS1
+Punch/Flesh2	PNCHFLS2
+Punch/Flesh3	PNCHFLS3
+Punch/Flesh4	PNCHFLS4
+
+$random Claw/Hit { Claw/Hit1 Claw/Hit2 Claw/Hit3 Claw/Hit4 Claw/Hit5 Claw/Hit6 Claw/Hit7 Claw/Hit8 Claw/Hit9 Claw/Hit0 }
+Claw/Hit1	CLAWHIT1
+Claw/Hit2	CLAWHIT2
+Claw/Hit3	CLAWHIT3
+Claw/Hit4	CLAWHIT4
+Claw/Hit5	CLAWHIT5
+Claw/Hit6	CLAWHIT6
+Claw/Hit7	CLAWHIT7
+Claw/Hit8	CLAWHIT8
+Claw/Hit9	CLAWHIT9
+Claw/Hit0	CLAWHIT0
+
+$limit Claw/Hit 0
+
+$random Claw/Wall { Claw/Wall1 Claw/Wall2 Claw/Wall3 }
+Claw/Wall1	CLAWWAL1
+Claw/Wall2	CLAWWAL2
+Claw/Wall3	CLAWWAL3
+
+$limit Claw/Wall 0
+
+SuperPunch/Hit	SPNCHHIT
+SuperKick/Init	SKICKINT
+SuperKick/Hit	SKICKHIT
+
+$limit SuperPunch/Hit 0
+
+//Longhorn - Well, guess what - this one is a one hell of a mystery, even to me. Albeit I believe I got bits from one of Sangelothi's mods here, albeit I messed here with them beyond comprehension, so feel free to credit that fellow.
+Longhorn/Up		LGHGUP
+Longhorn/Ammo	LGHGAMMO
+Longhorn/Fire	LGHGFIRE
+Longhorn/Add	LGHGADD
+Longhorn/Load	LGHGLOAD
+$random Longhorn/Alt { Longhorn/Alt1 Longhorn/Alt2 Longhorn/Alt3 }
+Longhorn/Alt1	LGHGALT1
+Longhorn/Alt2	LGHGALT2
+Longhorn/Alt3	LGHGALT3
+
+$volume Longhorn/Up 0.4
+$volume Longhorn/Ammo 0.8
+
+//Strucker - Valve\EA (Left 4 Dead\C&C3, Up), Volition (Red Faction, Firing), Tripwire (Killing Floor, Add), Croteam (Serious Sam 2, Ammo)
+Strucker/Up		STRUP
+$random Strucker/Fire { Strucker/Fire1 Strucker/Fire2 }
+Strucker/Fire1	STRFIRE1
+Strucker/Fire2	STRFIRE2
+$random Strucker/AltFire { Strucker/AltFire1 Strucker/AltFire2 Strucker/AltFire3 }
+Strucker/AltFire1	STRFALT1
+Strucker/AltFire2	STRFALT2
+Strucker/AltFire3	STRFALT3
+//Strucker/Add	STRADD
+Strucker/Load	STRLOAD
+
+/*$random Strucker/Add { Strucker/Add1 Strucker/Add2 }
+Strucker/Add1	STRADD1
+Strucker/Add2	STRADD2*/
+
+Strucker/Add STRADD
+
+$random Strucker/Ammo { Strucker/Ammo1 Strucker/Ammo2 Strucker/Ammo3 Strucker/Ammo4 }
+Strucker/Ammo1	STRAMMO1
+Strucker/Ammo2	STRAMMO2
+Strucker/Ammo3	STRAMMO3
+Strucker/Ammo4	STRAMMO4
+
+$volume Strucker/Up 0.6
+$volume Strucker/Ammo 0.5
+
+//Ironblast - Firing sound is unknown, but the rest surely got mostly bits of Valve (Left 4 Dead) or Epic Games/People can Fly (Bulletstorm), Impact - ID Soft. (Quake 3:TA)
+Ironblast/Up		IRNGUP
+Ironblast/Fire		IRNGFIRE
+Ironblast/Add		IRNGADD
+Ironblast/Pump/Out	IRNGOUT
+Ironblast/Pump/In	IRNGIN
+Ironblast/Hit		IRNGHIT
+
+$volume Ironblast/Up 0.6
+$limit Ironblast/Hit 5
+
+//Iron Spirit
+
+//Idle, Release, Spawn, Syringe - Raven (Wolf 3), Activate - Blizzard (Diablo 2)
+Ironspirit/Syringe	SPRTSYRN
+Ironspirit/Activate	SPRTACTV
+Ironspirit/Loop		SPRTLOOP
+Ironspirit/Release	SPRTRLSE
+Ironspirit/Spawn	SPRTSPWN
+
+//Voicecast by Icytux!
+$random Ironspirit/Ready { Ironspirit/Ready1 Ironspirit/Ready2 Ironspirit/Ready3
+						   Ironspirit/Ready4 Ironspirit/Ready5 Ironspirit/Ready6 }
+
+Ironspirit/Ready1	SPRTRDY1
+Ironspirit/Ready2	SPRTRDY2
+Ironspirit/Ready3	SPRTRDY3
+Ironspirit/Ready4	SPRTRDY4
+Ironspirit/Ready5	SPRTRDY5
+Ironspirit/Ready6	SPRTRDY6
+
+$random Ironspirit/Idle { Ironspirit/Idle1 Ironspirit/Idle2 Ironspirit/Idle3
+						  Ironspirit/Idle4 Ironspirit/Idle5 Ironspirit/Idle6
+						  Ironspirit/Idle7 Ironspirit/Idle8 Ironspirit/Idle9
+						  Ironspirit/Idle0 }
+
+Ironspirit/Idle1	SPRTIDL1
+Ironspirit/Idle2	SPRTIDL2
+Ironspirit/Idle3	SPRTIDL3
+Ironspirit/Idle4	SPRTIDL4
+Ironspirit/Idle5	SPRTIDL5
+Ironspirit/Idle6	SPRTIDL6
+Ironspirit/Idle7	SPRTIDL7
+Ironspirit/Idle8	SPRTIDL8
+Ironspirit/Idle9	SPRTIDL9
+Ironspirit/Idle0	SPRTIDL0
+
+$random Ironspirit/Attack { Ironspirit/Attack1 Ironspirit/Attack2 Ironspirit/Attack3
+							Ironspirit/Attack4 Ironspirit/Attack5 Ironspirit/Attack6
+							Ironspirit/Attack7 Ironspirit/Attack8 Ironspirit/Attack9
+							Ironspirit/Attack0 Ironspirit/AttackA Ironspirit/AttackB
+							Ironspirit/AttackC Ironspirit/AttackD Ironspirit/AttackE }
+
+Ironspirit/Attack1	SPRTATK1
+Ironspirit/Attack2	SPRTATK2
+Ironspirit/Attack3	SPRTATK3
+Ironspirit/Attack4	SPRTATK4
+Ironspirit/Attack5	SPRTATK5
+Ironspirit/Attack6	SPRTATK6
+Ironspirit/Attack7	SPRTATK7
+Ironspirit/Attack8	SPRTATK8
+Ironspirit/Attack9	SPRTATK9
+Ironspirit/Attack0	SPRTATK0
+Ironspirit/AttackA	SPRTATKA
+Ironspirit/AttackB	SPRTATKB
+Ironspirit/AttackC	SPRTATKC
+Ironspirit/AttackD	SPRTATKD
+Ironspirit/AttackE	SPRTATKE
+
+$random Ironspirit/Nope { Ironspirit/Nope1 Ironspirit/Nope2 Ironspirit/Nope3
+						  Ironspirit/Nope4 Ironspirit/Nope5 Ironspirit/Nope6
+						  Ironspirit/Nope7 Ironspirit/Nope8 }
+
+Ironspirit/Nope1	SPRTNOP1
+Ironspirit/Nope2	SPRTNOP2
+Ironspirit/Nope3	SPRTNOP3
+Ironspirit/Nope4	SPRTNOP4
+Ironspirit/Nope5	SPRTNOP5
+Ironspirit/Nope6	SPRTNOP6
+Ironspirit/Nope7	SPRTNOP7
+Ironspirit/Nope8	SPRTNOP8
+
+$random Ironspirit/End { Ironspirit/End1 Ironspirit/End2 Ironspirit/End3
+						  Ironspirit/End4 Ironspirit/End5 Ironspirit/End6
+						  Ironspirit/End7 }
+
+Ironspirit/End1	SPRTEND1
+Ironspirit/End2	SPRTEND2
+Ironspirit/End3	SPRTEND3
+Ironspirit/End4	SPRTEND4
+Ironspirit/End5	SPRTEND5
+Ironspirit/End6	SPRTEND6
+Ironspirit/End7	SPRTEND7
+
+//Pulverizer - Bethesda/Westwood (Fallout: New Vegas/Red Alert 2:YR, Down), Epic Games (UT:2004, Fire), EA (C&C3, Up, Ammo), Valve/EA (Left 4 Dead/C&C3, Up), Westwood (Red Alert 2:YR, Add)
+Pulverizer/Up	PLVGUP
+Pulverizer/Fire	PLVGFIRE
+Pulverizer/Add	PLVGADD
+Pulverizer/Down	PLVGDOWN
+Pulverizer/Ammo	PLVGAMMO
+Pulverizer/Button	PLVGPUSH
+Pulverizer/Slap	PLVGSLAP	//Raven Soft./Wolf3
+Pulverizer/Loop	PLVGLOOP
+
+$volume Pulverizer/Ammo 0.8
+
+LeadBall/Bounce	LDBLBNC		//Ubisoft/Will Rock
+$random LeadBall/Release { LeadBall/Release1 LeadBall/Release2 LeadBall/Release3 } //EA/C&C3
+LeadBall/Release1	LDBLFIR1
+LeadBall/Release2	LDBLFIR2
+LeadBall/Release3	LDBLFIR3
+$random LeadBullet/Hit { LeadBullet/Hit1 LeadBullet/Hit2 LeadBullet/Hit3 } //Tripwire Ent./Killing Floor
+LeadBullet/Hit1	LDBTHIT1
+LeadBullet/Hit2	LDBTHIT2
+LeadBullet/Hit3	LDBTHIT3
+LeadBall/Roll	LDBLROLL	//Croteam/Serious Sam 3
+
+$volume LeadBall/Bounce	0.7
+
+//Matriarch - Raven (Wolfenstein 3, up sound, explosion add), Croteam (Serious Sam 3, Reload), ID Software (Quake 4, Add fire... I think), Tripwire (Pull, Killing Floor) Fire and ammo are from unknown source to me.
+Matriarch/Up		WINUP
+Matriarch/Fire		WINFIRE
+Matriarch/Add		WINADD
+Matriarch/Reload	WINREL
+Matriarch/Load		WINLOAD
+Matriarch/Pull		WINPULL
+
+Matriarch/Fly	WINFLY
+$random Matriarch/Hit { Matriarch/Hit1 Matriarch/Hit2 Matriarch/Hit3 }
+Matriarch/Hit1	WINHIT1
+Matriarch/Hit2	WINHIT2
+Matriarch/Hit3	WINHIT3
+Matriarch/Exp	WINEXP
+
+//$rolloff Matriarch/Hit 300 1300
+//$rolloff Matriarch/Explode 300 1300
+
+Matriarch/Ammo	WINAMMO
+
+$limit Matriarch/Load 0
+$volume Matriarch/Up 0.4
+$volume Matriarch/Ammo 0.4
+
+//Sovereign - Uses many of the same sounds as the Matriarch, plus these two from the Gurumaster (wherever those are from)...
+
+Sovereign/Up	SOVUP
+Sovereign/Strat SOVSTRAT
+
+//Dynamite - ID Soft. (Pick, Toss, Bounce, Add, Far), Tripwire Ent. (Exp) Blizzard (Ignition), Burn and grab are uhhh.. from somewhere! ;-;
+TNT/Pick		TNTPICK
+TNT/Grab		TNTGRAB
+$random TNT/Ignition { TNT/Ignition1 TNT/Ignition2 }
+TNT/Ignition1	TNTIGNI1
+TNT/Ignition2	TNTIGNI2
+TNT/Toss		TNTTOSS
+TNT/Burn		TNTLONT
+TNT/Bounce		TNTBNC
+TNT/Explosion	TNTEXP
+TNT/Add			TNTADD
+TNT/Far			TNTFAR
+
+$volume TNT/Pick 0.8
+
+$rolloff TNT/Explosion 400 1600
+$rolloff TNT/Add 500 1800
+$rolloff TNT/Far 1900 7000
+
+//Cauterizer - ID Software (Quake 3, Quake 4, Quake Wars, majority of sounds.), Up and ammo is from unknown source.
+Cauterizer/Up		CAUTUP
+Cauterizer/Fire		CAUTFIRE
+Cauterizer/Add		CAUTADD
+
+Cauterizer/Fly		CAUTFLY
+Cauterizer/Hit		CAUTHIT
+Cauterizer/Blast	CAUTBLST
+Cauterizer/Ammo		CAUTAMMO
+
+Cauterizer/Loop		CAUTLOOP
+Cauterizer/End		CAUTEND
+Cauterizer/StratUp	CAUTSTUP
+Cauterizer/Initialize CAUTINIT
+
+
+$volume Cauterizer/Up 0.5
+$volume Cauterizer/Ammo 0.5
+
+$rolloff Cauterizer/Blast 150 1200
+$rolloff Cauterizer/Hit 150 1200
+
+//Old Dreadful - Microsoft (Windows XP lol), ID Software (Quake 2, charge up), Blizzard (Starcraft 1, the up sound), Raven (Wolf3, loop2), Valve (Half-Life 2, launch sound part)... and it's overall gigantic mashup of sounds, sigh.
+Dreadful/Up			DREDUP
+Dreadful/Loop		DREDLOOP
+Dreadful/Fire		DREDFIRE
+Dreadful/Add		DREDADD
+Dreadful/Fly		DREDFLY
+Dreadful/Exp		DREDEXP
+Dreadful/Ammo		DREDAMMO
+
+Dreadful/Supercharge	DREDCHRG
+Dreadful/AltFire		DREDAFIR
+Dreadful/Loop2			DREDLOP2
+Dreadful/Reboot			DREDSTRT
+Dreadful/Reboot2		DREDSTR2
+
+$volume Dreadful/Up 0.55
+$volume Dreadful/Ammo 0.4
+
+$rolloff Dreadful/Fly 300 1400
+$rolloff Dreadful/Exp 2300 8800
+
+$limit Dreadful/Fire 3
+
+Tiberium/Meltdown		TIBRMELT	//C&C Renegade\Westwood
+
+//Space nuke
+SpaceNuke/Init		SNINIT
+SpaceNuke/Active	SNACTIVE
+SpaceNuke/BigBang	SNBGBANG
+
+$rolloff SpaceNuke/Active 2500 17500
+
+SpaceMissile/Fly	SNMFLY
+SpaceMissile/Blast SNMBLAST
+//$random SpaceMissile/Blast { SpaceMissile/Blast1 SpaceMissile/Blast2 SpaceMissile/Blast3}
+SpaceMissile/Blast1	SNMBLST1
+SpaceMissile/Blast2	SNMBLST2
+SpaceMissile/Blast3	SNMBLST3
+
+$rolloff SpaceMissile/Fly 1000 4000
+$rolloff SpaceMissile/Blast 1900 7000
+
+//Bullet casings
+$random Casing/Bullet { Casing/Bullet0 Casing/Bullet1 Casing/Bullet2 Casing/Bullet3 Casing/Bullet4 Casing/Bullet5 Casing/Bullet6 Casing/Bullet7 Casing/Bullet8 Casing/Bullet9 }
+Casing/Bullet0 CASING0
+Casing/Bullet1 CASING1
+Casing/Bullet2 CASING2
+Casing/Bullet3 CASING3
+Casing/Bullet4 CASING4
+Casing/Bullet5 CASING5
+Casing/Bullet6 CASING6
+Casing/Bullet7 CASING7
+Casing/Bullet8 CASING8
+Casing/Bullet9 CASING9
+
+$volume Casing/Bullet 0.05
+$limit Casing/Bullet 0
+
+//Shotgun casings
+$random Casing/Shotgun { Casing/Shotgun1 Casing/Shotgun2 Casing/Shotgun3 }
+Casing/Shotgun1	SHTGCAS1
+Casing/Shotgun2	SHTGCAS2
+Casing/Shotgun3	SHTGCAS3
+
+$volume Casing/Shotgun 0.3
+$limit Casing/Shotgun 0
+
+//Autocannon casings
+$random Casing/TankShell { Casing/TankShell1 Casing/TankShell2 Casing/TankShell3 }
+Casing/TankShell1 SHELCAS1
+Casing/TankShell2 SHELCAS2
+Casing/TankShell3 SHELCAS3
+
+$volume Casing/TankShell 0.3
+$limit Casing/TankShell 0
+
+/*-------------------------------
+								-
+								-
+			SPELLS!				-
+								-
+								-
+-------------------------------*/
+
+//Skullfire - Blizzard, mainly (Diablo 2)
+Skullfire/Launch	FBALLNCH
+Skullfire/Fly		FBALFLY
+$random Skullfire/Hit { Skullfire/Hit1 Skullfire/Hit2 Skullfire/Hit3 }
+Skullfire/Hit1		FBALHIT1
+Skullfire/Hit2		FBALHIT2
+Skullfire/Hit3		FBALHIT3
+Skullfire/Boom		FBALBOOM
+
+$rolloff Skullfire/Hit 300 1300
+$rolloff Firepillar/Boom 300 1300
+
+Skullfire/Whizz		FBALWHIZ
+$random Skullchunk/Impact { Skullchunk/Impact1 Skullchunk/Impact2 Skullchunk/Impact3 }
+Skullchunk/Impact1	PILEHIT1
+Skullchunk/Impact2	PILEHIT2
+Skullchunk/Impact3	PILEHIT3
+
+$rolloff Skullchunk/Impact 300 1300
+
+FireMine/Loop		MINELOOP
+
+//Frostbite - Blizzard (Diablo 2)
+Frostbite/Spell	ICESPELL
+$random Frostbite/Launch { Frostbite/Launch1 Frostbite/Launch2 Frostbite/Launch3 }
+Frostbite/Launch1	ICELNCH1
+Frostbite/Launch2	ICELNCH2
+Frostbite/Launch3	ICELNCH3
+Frostbite/Fly	ICEFLY
+Frostbite/Blast	ICEBLAST
+$random Frostbite/Hit { Frostbite/Hit1 Frostbite/Hit2 Frostbite/Hit3 }
+Frostbite/Hit1	ICEHIT1
+Frostbite/Hit2	ICEHIT2
+Frostbite/Hit3	ICEHIT3
+
+FrozenOrb/Fly	ORBFLY
+$random FrozenOrb/Hit { FrozenOrb/Hit1 FrozenOrb/Hit2 FrozenOrb/Hit3 }
+FrozenOrb/Hit1	ORBHIT1
+FrozenOrb/Hit2	ORBHIT2
+FrozenOrb/Hit3	ORBHIT3
+
+//Gumpop - Blizzard (Starcraft), Epic Games (UT2004), Saber (Will Rock)
+Gumpop/Cast	GPOPCAST
+Gumpop/Fade	GPOPFADE
+$random Gumpop/Hit { Gumpop/Hit1 Gumpop/Hit2 }
+Gumpop/Hit1	GPOPHIT1
+Gumpop/Hit2	GPOPHIT2
+Gumpop/Expand	GPOPXPND
+Gumpop/Pop		GPOPYEES
+Toxicoil/Rain	ACIDRAIN
+Toxicoil/End	ACIDEND
+
+//Skypunch - EA (C&C3)
+$random Skypunch/Blast { Skypunch/Blast1 Skypunch/Blast2 Skypunch/Blast3 Skypunch/Blast4 Skypunch/Blast5 Skypunch/Blast6 }
+Skypunch/Blast1	SKYBLST1
+Skypunch/Blast2	SKYBLST2
+Skypunch/Blast3	SKYBLST3
+Skypunch/Blast4	SKYBLST4
+Skypunch/Blast5	SKYBLST5
+Skypunch/Blast6	SKYBLST6
+
+$random Skypunch/Layer { Skypunch/Layer1 Skypunch/Layer2 Skypunch/Layer3 Skypunch/Layer4 Skypunch/Layer5 Skypunch/Layer6 }
+Skypunch/Layer1	SKYLAYR1
+Skypunch/Layer2	SKYLAYR2
+Skypunch/Layer3	SKYLAYR3
+Skypunch/Layer4	SKYLAYR4
+Skypunch/Layer5	SKYLAYR5
+Skypunch/Layer6	SKYLAYR6
+
+Skypunch/Loop	SKYLOOP
+
+$random SpiritFist/Spawn { SpiritFist/Spawn1 SpiritFist/Spawn2 SpiritFist/Spawn3 SpiritFist/Spawn4 SpiritFist/Spawn5 }
+SpiritFist/Spawn1	SPFSSPW1
+SpiritFist/Spawn2	SPFSSPW2
+SpiritFist/Spawn3	SPFSSPW3
+SpiritFist/Spawn4	SPFSSPW4
+SpiritFist/Spawn5	SPFSSPW5
+
+//Crows - Irrational Games (Bioshock Infinite), Tripwire Entertainment (Killing Floor)
+$random Crows/Launch { Crows/Launch1 Crows/Launch2 Crows/Launch3 }
+Crows/Launch1	CROWFIR1
+Crows/Launch2	CROWFIR2
+Crows/Launch3	CROWFIR3
+
+$random Crows/Scream { Crows/Scream1 Crows/Scream2 Crows/Scream3 }
+Crows/Scream1	CROWSCR1
+Crows/Scream2	CROWSCR2
+Crows/Scream3	CROWSCR3
+
+Crows/Add	CROWADD
+Crows/Fly	CROWFLY
+Crows/Flock	CROWFLCK
+
+$random Crows/Dissipate { Crows/Dissipate1 Crows/Dissipate2 Crows/Dissipate3 }
+Crows/Dissipate1	CROWDIS1
+Crows/Dissipate2	CROWDIS2
+Crows/Dissipate3	CROWDIS3
+
+$random Crows/Idle { Crows/Idle1 Crows/Idle2 Crows/Idle3 Crows/Idle4 Crows/Idle5 }
+Crows/Idle1	CROWIDL1
+Crows/Idle2	CROWIDL2
+Crows/Idle3	CROWIDL3
+Crows/Idle4	CROWIDL4
+Crows/Idle5	CROWIDL5
+
+$volume Crows/Fly 0.5
+
+//Thunderstruck - Blizzard (Diablo 1 & 2)
+Thunderstruck/Use	THNDUSE
+Thunderstruck/Bolt	THNDBOLT
+Thunderstorm/Loop	STRMLOOP
+Thunderstorm/Stop	STRMSTOP
+
+//Idle - Raven Soft. (Wolfenstein 3)
+$random Thunderstorm/Idle { Thunderstorm/Idle1 Thunderstorm/Idle2 }
+Thunderstorm/Idle1	STRMIDL1
+Thunderstorm/Idle2	STRMIDL2
+
+$rolloff Thunderstruck/Bolt 300 1400
+
+Thunderstruck/Shocked	THNDSHCK	//C&C Renegade\Westwood
+
+//Chillgrasp - Quake 2, Doom 3 (ID Soft.), JK3: Jedi Academy (Raven Soft.), plus some ??
+Chillgrasp/Blast	AJSPANCZ
+Chillgrasp/Launch	CHILSTRT
+Chillgrasp/Loop		CHILLOOP
+Chillgrasp/End		CHILEND
+
+//Scourgebreath - Blizzard (Diablo 1 & 2)
+Breath/Start	BRTHSTRT
+Breath/Loop		BRTHLOOP
+Breath/End		BRTHEND
+
+//Corpseblast - Blizzard (Diablo 1 & 2, Warcraft 3)
+Corpseblast/Use	CRPBUSE
+
+$random Corpseblast/Hit { Corpseblast/Hit1 Corpseblast/Hit2 Corpseblast/Hit3 Corpseblast/Hit4 Corpseblast/Hit5 Corpseblast/Hit6 }
+Corpseblast/Hit1	CRPBHIT1
+Corpseblast/Hit2	CRPBHIT2
+Corpseblast/Hit3	CRPBHIT3
+Corpseblast/Hit4	CRPBHIT4
+Corpseblast/Hit5	CRPBHIT5
+Corpseblast/Hit6	CRPBHIT6
+
+$rolloff Corpseblast/Hit 300 1400
+
+Corpsespirit/Release	CRPSRLSE
+Corpsespirit/Loop		CRPSLOOP
+Corpsespirit/Hit		CRPSHIT
+
+//Threadcutter - Raven Software (Wolfenstein 2009), Epic Games (Unreal Tournament), Tripwire (Killing Floor)
+Threadcutter/Use	THRDUSE
+Threadcutter/Loop	THRDLOOP
+$random Threadcutter/Fly { Threadcutter/Fly1 Threadcutter/Fly2 Threadcutter/Fly3 }
+Threadcutter/Fly1	THRDFLY1
+Threadcutter/Fly2	THRDFLY2
+Threadcutter/Fly3	THRDFLY3
+Threadcutter/Cleaver THRDFLY
+$random Threadcutter/Hit { Threadcutter/Hit1 Threadcutter/Hit2 Threadcutter/Hit3 }
+Threadcutter/Hit1	THRDHIT1
+Threadcutter/Hit2	THRDHIT2
+Threadcutter/Hit3	THRDHIT3
+
+$volume Threadcutter/Fly 0.6
+
+//Annihilation - ID Software (Quake 4), and I am yet to confirm the rest.
+Annihilation/Use	ANIHUSE
+
+Annihilation/Loop1	ANIHLOP1
+Annihilation/Loop2	ANIHLOP2
+
+Annihilation/Hit1	ANIHHIT1
+Annihilation/Hit2	ANIHHIT2
+Annihilation/Hit3	ANIHHIT3
+Annihilation/Hit4	ANIHHIT4
+
+$rolloff Annihilation/Use 600 2100
+$rolloff Annihilation/Hit2 600 2100
+$rolloff Annihilation/Hit3 600 2100
+$rolloff Annihilation/Hit4 2700 6000
+
+Annihilation/End			ANNIEND
+Annihilation/Deploy			ANNIDEPL
+Annihilation/Sanctum		ANNISNCT
+Annihilation/SanctExp		ANNISEXP
+
+//Sheep Shield - Team17 (Original noises from WR:Armageddon), Blizzard (Diablo 2), Bullfrog (Dungeon Keeper)
+Sheepshield/Launch	SSLDLNCH
+Sheepshield/Loop	SSLDLOOP
+Sheepshield/Stop	SSLDSTOP
+
+Sheep/Spawn			SHEPSPWN
+Sheep/Noise			SHEPBAA
+Sheep/Blast			SHEPBLST
+
+SuperSheep/Release	SSHPRLSE
+SuperSheep/Whoosh	SSHPWHSH
+
+//Spirit Cannon - Blizzard (Diablo 2), Westwood (C&C), pluuuus... some forgotten source as usual. (My best bet would be Call of Duty one or two.)
+Spiritcannon/Use	SPIRUSE
+$random Spiritcannon/Fire	{ Spiritcannon/Fire1 Spiritcannon/Fire2 Spiritcannon/Fire3 }
+Spiritcannon/Fire1	SPIRFIR1
+Spiritcannon/Fire2	SPIRFIR2
+Spiritcannon/Fire3	SPIRFIR3
+Spiritcannon/Main	SPIRMAIN
+
+//Meteorfist
+Weapons/KAPOOW		KAPOOW
+
+//Darkvoid
+DarkVoid/Charge		VODGCHRG
+DarkVoid/Fire		VODGFIRE
+DarkVoid/Add1		VODGADD1
+DarkVoid/Add2		VODGADD2
+DarkVoid/Suck		VODGSUCK
+DarkVoid/SuperSuck	VODGSSUK
+DarkVoid/Explode	VODGEXP
+DarkVoid/Blast		VODGBLST
+DarkVoid/Death		VODGDEAD
+
+$rolloff DarkVoid/SuperSuck 2100 7200
+$rolloff DarkVoid/Explode 2100 7200
+$rolloff DarkVoid/Blast 2100 7200
+
+//Darkvoid II (for Sovereign mini black holes...)
+DarkVoid2/SuperSuck	VODGSSUK
+DarkVoid2/Explode	VODGEXP
+DarkVoid2/Blast		VODGBLST
+
+//Rave Lazer - EA Games (C&C Generals), Relogic (Terraria), El Mudo & Icytux (Ravemaccaron)
+Prism/Start		PRSMSTRT
+Prism/Loop		PRSMLOOP
+Prism/End		PRSMEND
+Prism/Maccaron	MACCARON
+
+$rolloff Prism/Start 600 2100
+$rolloff Prism/Loop 600 2100
+$rolloff Prism/End 600 2100
+$rolloff Prism/Maccaron 600 2100
+
+
+/*-------------------------------
+								-
+								-
+			PICKUPS!			-
+								-
+								-
+-------------------------------*/
+
+//ID Soft.\Quake 2
+misc/w_pkup	GUNPICK
+
+//Le Mudcrab from Freesound
+$random Money/Pickup { Money/Pickup1 Money/Pickup2 }
+Money/Pickup1	DOSHUP1
+Money/Pickup2	DOSHUP2
+$volume Money/Pickup 0.6
+
+//Raven\Wolfenstein 3
+$random Gem/Pickup { Gem/Pickup1 Gem/Pickup2 Gem/Pickup3 Gem/Pickup4 }
+Gem/Pickup1 GEMPICK1
+Gem/Pickup2	GEMPICK2
+Gem/Pickup3	GEMPICK3
+Gem/Pickup4	GEMPICK4
+$volume Gem/Pickup 0.5
+
+//Croteam\Serious Sam 2
+Armor/Pickup	ARMRPICK
+$volume Armor/Pickup 0.6
+
+//Croteam\Serious Sam 2
+Backpack/Pickup	BPAKPICK
+$volume Backpack/Pickup 0.6
+
+//Blizzard\Diablo 2
+Tome/Pickup		TOMEPICK
+Tome/Use		TOMEUSE
+Tome/Return		TOMERTRN
+$volume Tome/Pickup 0.6
+$volume Tome/Use 0.6
+
+//Blizzard\Diablo 2
+Wings/Pickup	WINGPICK
+$volume Wings/Pickup 0.6
+
+//Blizzard\Diablo 2
+Pot/Pickup		POTPICK
+Pot/Use			POTUSE
+$volume Pot/Pickup 0.6
+$volume Pot/Use 0.6
+
+//Irrational Games\BS:Infinite, ID Soft.\RTCW
+Health/Pickup		HLTHPICK
+Health/Use		HLTHUSE
+$volume Health/Pickup 0.6
+
+//Blizzard\Diablo 1
+Map/Pickup		MAPPICK
+$volume Map/Pickup 0.8
+
+//Black Legion Development\Tremulous
+Syringe/Pickup	SYRGPICK
+
+//EA\C&C3
+Gunzerk/Use		ZERKUSE
+$volume Gunzerk/Use 0.8
+
+//ID Soft.\Doom 3, People Can Fly\Painkiller
+Berserk/Use		BERZUSE
+
+//ID Soft.\Quake 3 Team Arena
+Extreme/Pickup	XTRMPICK
+
+//Three Inches of Blood - Deadly Sinners
+ExtremeSphere/RockOn  XTRMROCK
+
+//ID Soft.\EA, Quake 4\C&C3
+IronLizard/Use	IRONUSE
+
+//Might & Magic\3DO
+WizardsEye/Pickup WIZEPICK
+
+//Blizzard\EA, Diablo 2\C&C3
+Reaversphere/Pickup BLURPICK
+
+//ID Soft.\Doom 3
+Reaversphere/Active	BLURACTV
+
+//EA\C&C3
+Stratocaster/Pickup	STRTPICK
+$volume Stratocaster/Pickup 0.8
+
+
+//Bullfrog\Dungeon Keeper, Blizzard\Diablo 2
+MidasSphere/Pickup	MIDSPICK
+//Valve\TF2
+Midas/Touched MIDSTCHD
+
+//Bullfrog\Dungeon Keeper
+$random Midas/CoinBounce { Midas/CoinBounce1 Midas/CoinBounce2 Midas/CoinBounce3
+						   Midas/CoinBounce4 Midas/CoinBounce5 Midas/CoinBounce6
+						   Midas/CoinBounce7 Midas/CoinBounce7 Midas/CoinBounce8
+						   Midas/CoinBounce9 Midas/CoinBounce0 }
+
+Midas/CoinBounce1	COINBNC1
+Midas/CoinBounce2	COINBNC2
+Midas/CoinBounce3	COINBNC3
+Midas/CoinBounce4	COINBNC4
+Midas/CoinBounce5	COINBNC5
+Midas/CoinBounce6	COINBNC6
+Midas/CoinBounce7	COINBNC7
+Midas/CoinBounce8	COINBNC8
+Midas/CoinBounce9	COINBNC9
+Midas/CoinBounce0	COINBNC0
+
+$volume Midas/Touched 0.8
+$volume Midas/CoinBounce 0.6
+
+//Wyvern Idol
+CasterFamiliar/Pickup	DFAMPICK	//Raven Soft./Wolfenstein 3
+CasterFamiliar/Use		DFAMUSE		//Raven Soft./Wolfenstein 3
+CasterFamiliar/Spawn	DFAMSPWN	//Blizzard/Warcaft 3
+$random CasterFamiliar/Fly { CasterFamiliar/Fly1 CasterFamiliar/Fly2 CasterFamiliar/Fly3 } //Croteam/Serious Sam 3
+CasterFamiliar/Fly1	DFAMFLY1
+CasterFamiliar/Fly2	DFAMFLY2
+CasterFamiliar/Fly3	DFAMFLY3
+
+$volume CasterFamiliar/Use 0.7
+
+//Doom stuff ahead
+Bonus/Pickup		BNSPICK //Irrational Games\BS: Infinite
+Amplifier/Pickup	AMPFPICK //EA, C&C3
+Amplifier/Use		AMPFUSE //EA, C&C3
+Gunzerk/Pickup		ZERKPICK //EA, C&C3
+Berserk/Pickup		BERZPICK //EA, C&C3
+Suit/Pickup		SUITPICK //Tripwire Ent., Killing Floor
+Suit/In			SUITIN //Dunno
+Suit/Out		SUITOUT //Same here
+Boots/Pickup		BOOTPICK //4D Rulers, Gore: Ultimate Soldiers (I presume)
+Capsule/Pickup		CAPSPICK //Croteam\Epic Games, Serious Sam2\UT2004
+Capsule/Use			CAPSUSE //Iguana Ent.\ID Soft., Turok\Doom 3
+Soulsphere/Pickup	SOULPICK //Blizzard\Diablo 2
+Megasphere/Pickup	MEGAPICK //Blizzard\Diablo 2
+Invulnerability/Pickup	INVLPICK //Blizzard\Diablo 2
+Fullmap/Pickup	MAPPICK2	//ID Soft.\Westwood, Doom 3\C&C Renegade
+KeyCard/Pickup	CRDPICK	//EA\C&C3
+SkullKey/Pickup	SKLPICK //EA\C&C3, Irrational Games\BS:Infinite
+
+$volume misc/w_pkup 0.7
+$volume Amplifier/Pickup 0.8
+$volume Amplifier/Use 0.8
+$volume Gunzerk/Pickup 0.8
+$volume Berserk/Pickup 0.8
+$volume Suit/Pickup	0.7
+$volume Suit/In	0.8
+$volume Suit/Out 0.8
+$volume Boots/Pickup 0.7
+$volume Capsule/Pickup 0.7
+$volume Capsule/Use 0.7
+$volume Soulsphere/Pickup 1.0
+$volume Megasphere/Pickup 1.0
+$volume Invulnerability/Pickup 1.0
+$volume Fullmap/Pickup 0.8
+$volume KeyCard/Pickup 0.6
+$volume SkullKey/Pickup 0.8
+
+$random Barrel/Exp { Barrel/Exp1 Barrel/Exp2 Barrel/Exp3 }
+Barrel/Exp1	BAREXP_1
+Barrel/Exp2	BAREXP_2
+Barrel/Exp3	BAREXP_3
+
+$volume Barrel/Exp 0.8
+
+//Hexen-related stuff
+
+//Quake2\ID Soft.
+Flechette/Throw	PBAGTHRW
+
+/*-------------------------------
+								-
+								-
+		   BLOODY MESS!			-
+	  Courtesy of Sgt_Mark_IV	-
+Dunno where he got all of that.	-
+-------------------------------*/
+
+blooddrop		bloddrop
+
+$random misc/xdeath		{ misc/xdeath1a misc/xdeath1b misc/xdeath1c misc/xdeath1d misc/xdeath1e misc/xdeath1f misc/xdeath2a misc/xdeath2b misc/xdeath2c misc/xdeath2d misc/xdeath2e misc/xdeath2f misc/xdeath3a misc/xdeath3b misc/xdeath3c misc/xdeath4a misc/xdeath4b misc/xdeath4c }
+misc/xdeath1a			dsxdth1a
+misc/xdeath1b			dsxdth1b
+misc/xdeath1c			dsxdth1c
+misc/xdeath1d			dsxdth1d
+misc/xdeath1e			dsxdth1e
+misc/xdeath1f			dsxdth1f
+$random misc/xdeath1		{ misc/xdeath1a misc/xdeath1b misc/xdeath1c misc/xdeath1d misc/xdeath1e misc/xdeath1f }
+misc/xdeath2a			dsxdth2a
+misc/xdeath2b			dsxdth2b
+misc/xdeath2c			dsxdth2c
+misc/xdeath2d			dsxdth2d
+misc/xdeath2e			dsxdth2e
+misc/xdeath2f			dsxdth2f
+$random misc/xdeath2		{ misc/xdeath2a misc/xdeath2b misc/xdeath2c misc/xdeath2d misc/xdeath2e misc/xdeath2f }
+misc/xdeath3a			dsxdth3a
+misc/xdeath3b			dsxdth3b
+misc/xdeath3c			dsxdth3c
+$random misc/xdeath3		{ misc/xdeath3a misc/xdeath3b misc/xdeath3c }
+misc/xdeath4a			dsxdth4a
+misc/xdeath4b			dsxdth4b
+misc/xdeath4c			dsxdth4c
+$random misc/xdeath4		{ misc/xdeath4a misc/xdeath4b misc/xdeath4c }
+
+$volume misc/xdeath 0.5
+$volume misc/xdeath1 0.5
+$volume misc/xdeath2 0.5
+$volume misc/xdeath3 0.5
+$volume misc/xdeath4 0.5

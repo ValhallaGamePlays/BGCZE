@@ -1,0 +1,317 @@
+Actor TurretLimitCounter : Inventory { Inventory.MaxAmount 3 } // grr
+
+ACTOR SpiritCannonSpawner : FastProjectile
+{
+	Radius 20
+	Height 16
+	Projectile
+	Speed 300
+	+SKYEXPLODE
+	+EXPLODEONWATER
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		Loop
+	Death:
+		TNT1 A 0 A_SpawnItemEx("SpiritCannon",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+ACTOR SpiritCannon
+{
+	Radius 16
+	Height 12
+	Speed 0
+	var int User_Lifespan;
+	var int User_Shotspan;
+	var int User_Powershot;
+	PROJECTILE
+	+NOEXPLODEFLOOR
+	-NOGRAVITY
+	+SEEKERMISSILE
+	+CANBOUNCEWATER
+	+FORCEXYBILLBOARD
+	+FLOORCLIP
+	+THRUACTORS
+	//Renderstyle Add
+	States
+	{
+	Spawn:
+		"####" "#" 0 NoDelay A_JumpIfInTargetInventory("PowerExtremeDamage",1,2) //If there's extremesphere running - SUSPEND THE LIMIT.
+		"####" "#" 0 ACS_NamedExecuteAlways("Turret_Init")
+		"####" "#" 0 A_SpawnItemEx("SpirytusRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SetUserVar("User_Lifespan", 35*20)
+	Main:
+		"####" "#" 0 A_JumpIf(User_Lifespan > 0, 1)
+		Goto Death
+		CTRT A 1
+		"####" "#" 0 A_SetUserVar("User_Lifespan", User_Lifespan - 1)
+		"####" "#" 0 A_SetUserVar("User_Shotspan", User_Shotspan - 1)
+		"####" "#" 0 A_CheckFloor(2) //You'd better check for that floor or else if turret will still have velocity by flying downward, expect some funny shit happening due to seekermissile.
+		"####" "#" 0 A_Jump(256,3)
+		"####" "#" 0 A_Warp(AAPTR_DEFAULT,0,0,0,0,WARPF_TOFLOOR)
+		"####" "#" 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256,12)
+	CheckForTarget:
+		"####" "#" 0 A_JumpIf(User_Shotspan > 0, "Main")
+		"####" "#" 0 A_JumpIf(CallACS("TracerDeathCheck"),"ClearTracer")
+		"####" "#" 0 A_CheckFloor(2)
+		"####" "#" 0 A_Jump(256,"Main")
+		"####" "#" 0 A_JumpIfTargetInLOS("FireYourGuns", 0, JLOSF_PROJECTILE, 64*16, 0)
+		Goto Main
+	FireYourGuns:
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerTomeEffect",1,"FirepowerYourGuns")
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",20,1)
+		Goto Main
+		"####" "####" 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256,12)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_TakeFromTarget("Mana",15,TIF_NOTAKEINFINITE)
+		"####" "#" 0 A_SetUserVar("User_Shotspan", 35)
+		"####" "#" 0 A_PlaySound("SpiritCannon/Fire",6,0.9)
+		"####" "#" 0 A_PlaySound("SpiritCannon/Main",5,0.8)
+		"####" B 1 Bright A_CustomMissile("SpiritCannonProjectile",35,0,0,CMF_TRACKOWNER,0,AAPTR_TRACER)
+		"####" CDEEEDC 1
+		"####" A 1
+	ClearTracer:
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		Goto Main
+	FirepowerYourGuns:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana", 15, 1)
+		Goto Main
+		"####" "#" 0 A_SetUserVar("User_Powershot", 3)
+		"####" "####" 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256,12)
+		"####" "#" 0 A_SetUserVar("User_Shotspan", 35)
+	FirepowerYourLoop:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana", 15, 1)
+		Goto ClearTracer
+		"####" "#" 0 A_TakeFromTarget("Mana",10,TIF_NOTAKEINFINITE)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Powershot", User_Powershot - 1)
+		"####" "#" 0 A_PlaySound("SpiritCannon/Fire",6,0.9)
+		"####" "#" 0 A_PlaySound("SpiritCannon/Main",5,0.8)
+		"####" B 1 Bright A_CustomMissile("SpiritCannonProjectile",35,0,0,CMF_TRACKOWNER,0,AAPTR_TRACER)
+		"####" CDEEEDC 1
+		"####" A 1
+		"####" A 0 A_JumpIf(User_Powershot > 0, "FirepowerYourLoop")
+		Goto ClearTracer
+	Death:
+		"####" "#" 0 ACS_NamedExecuteAlways("Turret_Death")
+	Death.Removed:
+		"####" "#" 0 A_SpawnItemEx("SpirytusRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+	DeathLoop:
+		"####" "#" 0 A_SetScale(ScaleX - 0.01)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		CTRT A 1 Bright A_FadeOut(0.05)
+		Loop
+	}
+}
+
+actor SpiritCannonProjectile : FastProjectile
+{
+  Radius 10
+  Height 14
+  Speed 125
+  Damage (10*random(2,3))
+  Projectile
+  ProjectileKickback 125
+  +NOGRAVITY
+  +THRUGHOST
+  +DONTSPLASH
+  +EXPLODEONWATER
+  +FORCERADIUSDMG //hurr.
+  +DONTREFLECT
+  DamageType Matriarch
+  DeathSound ""
+  Scale 0.6
+  MissileType "MatriarchTrailSpawner"
+  MissileHeight 14
+  Decal "BigScorch"
+  States
+  {
+  Spawn:
+    WINP A 0 NoDelay ThrustThingZ(0,15,0,1)
+  Looplet:
+    WINP A 0 A_SpawnItemEx("MatriarchSlugTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+    WINP A 0 A_PlaySound("Matriarch/Fly",5,0.4,1)
+    WINP A 1 ThrustThingZ(0,random(-1,-2),0,1)
+    Loop
+  Death:
+    TNT1 A 0 A_Quake (6, 25, 0, 256, none)
+    TNT1 A 0 A_Quake (2, 25, 0, 384, none)
+    TNT1 A 0 A_PlaySound("Matriarch/Hit",5,0.8)
+    TNT1 A 0 A_PlaySound("Matriarch/Exp",6,1.0)
+    TNT1 A 0 A_Explode((80*random(1,3)),192,0)
+    TNT1 A 0 A_AlertMonsters
+    TNT1 A 0 A_SpawnItemEx("Matriarch_Main",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    TNT1 A 0 A_SpawnItemEx("MatriarchFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    TNT1 A 15 A_Quake(3,12,0,512,"none")
+    Stop
+  }
+}
+
+//Moi drodzy polacy - nalewka time!
+ACTOR SpirytusRelease
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	var int User_Cycle;
+	var int User_MainCycle;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_MainCycle", 7)
+		TNT1 A 0 A_PlaySound("CasterFamiliar/Spawn",5)
+	CycleParticle:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 40)
+	Particle:
+		TNT1 A 0 A_SpawnItemEx("SpirytusEffectParticle2",0,0,0,frandom(4.0,-4.0),frandom(4.0,-4.0),frandom(4.0,-4.0),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleLightning")
+		Loop
+	CycleLightning:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 15)
+	Lightning:
+		TNT1 A 0 A_SpawnItemEx("SpirytusEffectLightning",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(4.0,1.5),frandom(4.0,1.5),frandom(4.0,-4.0),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleCloud")
+		Loop
+	CycleCloud:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 15)
+	Cloud:
+		TNT1 A 0 A_SpawnItemEx("SpirytusEffectCloud",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(5.5,1.5),frandom(5.5,1.5),frandom(5.5,-5.5),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "RinseAndRepeat")
+		Loop
+	RinseAndRepeat:
+		TNT1 A 0 A_SetUserVar("User_MainCycle", User_MainCycle - 1)
+		TNT1 A random(1,2)
+		TNT1 A 0 A_JumpIf(User_MainCycle <= 0, "Death")
+		Goto CycleParticle
+	Death:
+		TNT1 A 15
+		Stop
+	}
+}
+
+ACTOR SpirytusEffect
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	Scale 0
+	Alpha 0.99
+	Renderstyle Add
+}
+
+ACTOR SpirytusEffectLightning : SpirytusEffect
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.075,0.1))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+		LLIT A 0 A_Jump(256,"Main")
+	SpriteB:
+		LLIT B 0 A_Jump(256,"Main")
+	SpriteC:
+		LLIT C 0 A_Jump(256,"Main")
+	SpriteD:
+		LLIT D 0 A_Jump(256,"Main")
+	SpriteE:
+		LLIT E 0 A_Jump(256,"Main")
+	SpriteF:
+		LLIT F 0 A_Jump(256,"Main")
+	SpriteG:
+		LLIT G 0 A_Jump(256,"Main")
+	SpriteH:
+		LLIT H 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5),CVF_RELATIVE)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.004,0.002))
+		"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.05))
+		Loop
+	}
+}
+
+ACTOR SpirytusEffectCloud : SpirytusEffect
+{
+	Alpha 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.3,0.4))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+		LLOD A 0 A_Jump(256,"Main")
+	SpriteB:
+		LLOD B 0 A_Jump(256,"Main")
+	SpriteC:
+		LLOD C 0 A_Jump(256,"Main")
+	SpriteD:
+		LLOD D 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.004,0.002))
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(-0.2,0.2),CVF_RELATIVE)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.075,0.05))
+		Loop
+	}
+}
+
+
+ACTOR SpirytusEffectParticle : SpirytusEffect
+{
+	Alpha 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.025,0.035))
+	Sprite:
+		LPRT A 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_JumpIf(Alpha >= 0.98,"Main2")
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeIn(frandom(0.1,0.04))
+		Loop
+	Main2:
+		"####" "#" 0 A_ScaleVelocity(random(-1.05,-1.02))
+	Main3:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.05,0.03))
+		Loop
+	}
+}
+
+ACTOR SpirytusEffectParticle2 : SpirytusEffect
+{
+	Alpha 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.025,0.035))
+	Sprite:
+		LPRT A 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_JumpIf(Alpha >= 0.98,"Main2")
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeIn(frandom(0.1,0.04))
+		Loop
+	Main2:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.05,0.03))
+		Loop
+	}
+}

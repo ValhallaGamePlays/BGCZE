@@ -1,0 +1,125 @@
+//Pulverizer
+
+//Kick
+brightmap sprite PCVKA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVKB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVKC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVKD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVKE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVKF0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVKG0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVKH0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVKI0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVKZ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Cast
+brightmap sprite PCVMA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVME0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMF0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMG0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMH0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMI0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMJ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMK0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVML0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMM0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMN0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCVMZ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+
+
+
+
+//Stratocaster
+brightmap sprite PCBGA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+//Recoil
+brightmap sprite PCBRA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBRB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBRC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBRD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBRE0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+brightmap sprite PCBEA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBEB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBEC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBED0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBEE0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+brightmap sprite PCBUA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCBUB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCBUC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBUD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCBUE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCBUF0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCBUG0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUH0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUI0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUJ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUK0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUL0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUM0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUN0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUO0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUP0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUQ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUR0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUS0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUT0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUU0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUV0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUW0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUX0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUY0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBUZ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+brightmap sprite PCBDA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBDB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBDC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBDD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBDE0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBDF0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBDG0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBDH0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCBDI0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCBDJ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PCBDK0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Kick
+brightmap sprite PCBKA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBKB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBKC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBKD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBKE0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBKF0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBKG0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBKH0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBKI0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBKZ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+//Cast
+brightmap sprite PCBMA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBME0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMF0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMG0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMH0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMI0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMJ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMK0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBML0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMM0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMN0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PCBMZ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+//Meteor Fist
+brightmap sprite PC1GA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PC1GB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PC1GC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PC1GD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PC1GZ0 { map "Bmaps/Pulverizer/CHNGD.png" }

@@ -1,0 +1,38 @@
+//Because we can.
+//By Pillow, with little of Zhs2's assistance, as usual!
+
+#library "REAVERPW"
+#include "zcommon.acs"
+
+script "ReaverActive" (void)
+{
+	GiveInventory("ReaverActive",1);
+	PlaySound(0,"Reaversphere/Active",7,0.4,1,1.5);
+	SetPlayerProperty(0,1,PROP_NOTARGET);
+
+	while(CheckInventory("ReaverCounter"))
+	{
+		TakeInventory("ReaverCounter", 1);
+		Delay(const:35);
+	}
+	TakeInventory("ReaverActive",1);
+	StopSound(0,7);
+	SetPlayerProperty(0,0,PROP_NOTARGET);
+}
+
+ //just so no nothing will screw up in case of changing map or dying in multi.
+ //And I hope that 0 will remove everything, rather than nothing, heh.
+ 
+script "ReaverFlushEnter" enter
+{
+		TakeInventory("ReaverActive",1);
+		TakeInventory("ReaverCounter",0x7FFFFFFF);
+		SetPlayerProperty(0,0,PROP_NOTARGET);
+}
+
+script "ReaverFlushRespawn" respawn
+{
+		TakeInventory("ReaverActive",1);
+		TakeInventory("ReaverCounter",0x7FFFFFFF);
+		SetPlayerProperty(0,0,PROP_NOTARGET);
+}

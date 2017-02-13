@@ -1,0 +1,40 @@
+SUMMON
+"I LIVE AGAAAAIN."
+"I'm bound to your will."
+"IT IS MY TIME AGAIN."
+"I shall have my vengeance."
+"SHOTGUNS DOT PK3 ENGAGED."
+"What is your wish, master?"
+
+IDLE
+"My barrels hunger for more."
+"Heh... heh... heh..."
+"We bear the mark."
+"I'm growing impatient."
+"Souls of steel."
+"Yes? Yes. Kill."
+"The lamentations of thousands..."
+"I think something itches me around the trigger..."
+"I'd kill for a cheeseburger."
+
+COMBAT ENGAGED
+"I'LL BURY YOU IN A LUNCH BOX."
+"NON OMNIS MORIAR."
+"NO ESCAPE FROM YOUR FATE."
+"HIGH ALERT."
+"I CAME BACK TO REAP YOU ALL."
+"EIGHT BARRELS OF DEATH."
+"AAAAERRGHHHHH!!"
+"DEATH IS LIFE."
+"IT IS I, LECLERC!"
+"ANOTHER ONE BITES THE DUST."
+
+DESPAWN
+"AVENGE ME."
+"I'll be back."
+"Life is a rhetorical question..."
+"I hope I served you well."
+"Always a pleasure to serve you."
+"My time will come again."
+
+Unlisted stuff came on 2nd batch that I didn't quite control.

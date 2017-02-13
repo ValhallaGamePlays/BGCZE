@@ -1,0 +1,15 @@
+ACTOR BrutalHBulletPuff : HBulletPuff replaces HBulletPuff
+{
+	DamageType "Cutless"
+	-THRUGHOST
+}
+
+ACTOR BrutalInvisPuff : InvisPuff replaces InvisPuff
+{
+	-THRUGHOST
+}
+
+ACTOR BrutalHuegPuff : HuegPuff replaces HuegPuff
+{
+	-THRUGHOST
+}

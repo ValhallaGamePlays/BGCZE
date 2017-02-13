@@ -1,0 +1,13 @@
+pointlight TOMELIGHT
+{
+    color 0.6 0.6 0.6
+    size 64
+    offset 0 16 0
+    subtractive 1
+    dontlightself 1
+}
+
+object TomeOfPowah
+{
+    frame TOME { light TOMELIGHT }
+}

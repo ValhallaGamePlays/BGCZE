@@ -1,0 +1,13 @@
+#library "TNTSPAM"
+#include "zcommon.acs"
+
+script "TNT Blockade" (void)
+{
+	while(CheckInventory("DynamiteTossTimer"))
+	{
+		TakeInventory("DynamiteTossTimer",1);
+		delay(const:1);
+		restart;
+	}
+	TakeInventory("DynamiteTossCounter",1);
+}

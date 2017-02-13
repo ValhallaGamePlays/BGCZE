@@ -1,0 +1,527 @@
+//Skypunch
+ACTOR SkypunchLauncher
+{
+  Radius 1
+  Height 1
+  Projectile
+  +NOINTERACTION
+  +DONTBLAST
+  States
+  {
+  Spawn:
+	//TNT1 AA 0 A_SpawnItemEx("SkypunchSpanner",0,85,0,60,20,0,0,SXF_TRANSFERPOINTERS)
+	//TNT1 A 0 A_SpawnItemEx("SkypunchSpanner",0,-85,0,60,-20,0,0,SXF_TRANSFERPOINTERS)
+  	TNT1 A 1 A_SpawnItemEx("SkypunchSpannerForward",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS)
+	Stop
+  }
+}
+
+ACTOR SkypunchSpanner
+{
+  Damage 0
+  Speed 20
+  +MISSILE
+  +STEPMISSILE
+  +DROPOFF
+  +NOEXPLODEFLOOR
+  +RIPPER
+  +DONTREFLECT
+  +DONTBLAST
+  MaxStepHeight 32
+  ReactionTime 3
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_SpawnItemEx("SkypunchWave",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS)
+	TNT1 A 7 A_Countdown
+	Loop
+  Death:  
+	stop
+  }
+}
+
+ACTOR SkypunchSpannerForward : SkypunchSpanner
+{
+  ReactionTime 1
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_SpawnItemEx("SkypunchWave",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS)
+	TNT1 A 7
+	stop
+  }
+}
+
+Actor SkypunchWave 
+{
+  Speed 60
+  Radius 11
+  Height 8
+  Damage 0
+  Obituary "%o was launched skyward and died at the hands of %k's magical wave."
+  +DONTBLAST
+  +RIPPER
+  +MISSILE
+  +STEPMISSILE
+  +DROPOFF
+  +NOEXPLODEFLOOR
+  +THRUACTORS
+  +FORCERADIUSDMG
+  +BLOODLESSIMPACT
+  -THRUGHOST
+  +EXPLODEONWATER
+  -NOGRAVITY
+  +BLOODLESSIMPACT
+  +DONTREFLECT
+  MaxStepHeight 36
+  Gravity 1.0
+  states
+  {
+  Spawn:
+    TNT1 A 0 A_PlaySound("Skypunch/Loop",5,0.6,1)
+    TNT1 A 0 A_RadiusGive("SkypunchItem",96,RGF_MONSTERS,1)
+    TNT1 A 0 A_Quake(6,1,0,256,"none")
+    TNT1 A 0 A_SpawnItemEx("SkypunchGLDEF",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS) 
+    TNT1 A 0 A_SpawnItemEx("SkypunchRingSpawner",random(10,-10),random(10,-10),random(0,15),frandom(0.1,0.15),frandom(0.1,0.15),frandom(0.1,0.25),frandom(0.0,360.0),SXF_TRANSFERPOINTERS|SXF_CLIENTSIDE,0)
+	TNT1 A 1 A_Explode(5,128,0,0)
+	TNT1 A 0 A_CheckFloor("IzSpeedCorrect")
+    Loop
+  IzSpeedCorrect:
+	"####" "#" 0 A_JumpIf(Velx < 60,1)
+	Goto Spawn
+	"####" "#" 0 A_SetPitch(0)
+	"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 60, sin(angle) * cos(pitch) * 60, sin(pitch) * 60, CVF_REPLACE)
+	Goto Spawn
+  Crash:
+  Death:
+    TNT1 A 1 A_StopSound(5)
+    stop
+  }
+}
+
+ACTOR SkypunchRing
+{
+  +NOINTERACTION
+  +NOGRAVITY
+  +NOTONAUTOMAP
+  +FORCEXYBILLBOARD
+  +DONTBLAST
+  Renderstyle Add
+  Scale 2
+  States
+  {
+  Spawn:
+    SKYR A 0 A_SetScale(ScaleX-random(0.5,0.25))
+	SKYR C 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"Looplet")
+	SKYR B 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"Looplet")
+    SKYR A 0
+  Looplet:
+    "####" "#" 0 A_JumpIf(ScaleX <= 0,"Null")
+    "####" "#" 0 A_FadeOut(0.05)
+    "####" "#" 1 A_SetScale(ScaleX-0.1)
+    Loop
+  }
+}
+
+ACTOR SkypunchRingSpawner
+{
+  +NOINTERACTION
+  +NOGRAVITY
+  +NOTONAUTOMAP
+  +DONTBLAST
+  ReactionTime 5
+  States
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_Countdown
+    TNT1 A 3 A_SpawnItemEx("SkypunchRing",random(15,-15),random(15,-15),random(1,15),frandom(0.5,-0.5),frandom(0.5,-0.5),random(1,10),random(0.0,360.0),SXF_TRANSFERPOINTERS|SXF_CLIENTSIDE,0)
+    Loop
+  Death:
+    TNT1 A 1
+    Stop
+  }
+}
+
+ACTOR SkypunchGLDEF
+{
+  +NOINTERACTION
+  +NOGRAVITY
+  +NOTONAUTOMAP
+  +DONTBLAST
+  States
+  {
+  Spawn:
+	TNT1 C 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"Main")
+	TNT1 B 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"Main")
+	TNT1 A 0
+	Goto Main
+  Main:
+	"####" "#" 30
+    Stop
+  }
+}
+
+ACTOR SkypunchItem : CustomInventory
+{
+   Inventory.Amount 0
+   +INVENTORY.ALWAYSPICKUP
+   +INVENTORY.AUTOACTIVATE
+   States
+   {
+   Spawn:
+	TNT1 A -1
+	Stop
+   Use:
+	TNT1 A 0 ACS_NamedExecuteAlways("KD Amazing Levitation")
+	TNT1 A 0 A_ChangeVelocity (0, 0, 20.0, CVF_REPLACE)
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerTomeEffect",1,"SuperPuncher")
+	TNT1 A 0 A_JumpIfInventory("PowerSkyPunched",1,"Null")
+	TNT1 A 0 A_GiveInventory("SpiritPunchActive")
+	TNT1 A 0 A_SpawnItemEx("SpiritPuncher",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_SETTRACER)
+	Stop
+   SuperPuncher:
+	TNT1 A 0 A_JumpIfInventory("PowerSkyPunched",1,"Null")
+	TNT1 A 0 A_GiveInventory("SpiritPunchActive")
+	TNT1 A 0 A_SpawnItemEx("SpiritPuncher2",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_SETTRACER)
+	Stop
+   }
+}
+
+ACTOR SkypunchTrigger : Inventory { Inventory.MaxAmount 1 }
+
+ACTOR SkypunchLauncher2
+{
+  Radius 1
+  Height 1
+  Projectile
+  +NOINTERACTION
+  States
+  {
+  Spawn:
+	TNT1 A 0 A_SpawnItemEx("SkypunchSpanner",0,85,0,60,20,0,0,SXF_TRANSFERPOINTERS)
+	TNT1 A 0 A_SpawnItemEx("SkypunchSpanner",0,-85,0,60,-20,0,0,SXF_TRANSFERPOINTERS)
+  	TNT1 A 0 A_SpawnItemEx("SkypunchSpannerForward",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS)
+	Stop
+  }
+}
+
+//Way of thousand fists
+ACTOR SpiritPunchActive : PowerupGiver
+{
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	//+INVENTORY.ADDITIVETIME
+	powerup.duration -5
+	Powerup.Type SkyPunched
+	Powerup.Color None 0.0
+	Inventory.PickupMessage "WAY OF THOUSAND FISTS - ALL UP YOUR ARSE."
+	States
+	{
+	Spawn:
+		TNT1 A -1
+		Stop
+	}
+}
+
+actor PowerSkyPunched : PowerDamage
+{
+	DamageFactor Normal, 1.0
+}
+	
+ACTOR SpiritPuncher
+{
+	+DONTBLAST
+	+NOINTERACTION
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 15  A_SetUserVar("User_Counter",10)
+		Goto Looplet
+	Looplet:
+		TNT1 A 0 A_Warp(AAPTR_TRACER,0,0,20,0,WARPF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("SpiritFistLauncher",0,0,frandom(10.0,-10.0),
+													 20.0,0,0,
+													 frandom(0.0,360.0),SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_Jump(256,"Main")
+	Main:
+		TNT1 A 0 A_JumpIf(CallACS("TracerDeathCheck"), "Null")
+		TNT1 A 0 A_JumpIf(User_Counter <= 0, "Null")
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 10
+		Goto Looplet
+	}
+}
+
+ACTOR SpiritPuncher2 : SpiritPuncher
+{
+	States
+	{
+	Spawn:
+		TNT1 A 15  A_SetUserVar("User_Counter",20)
+		Goto Looplet
+	Main: 
+		TNT1 A 5
+		TNT1 A 0 A_JumpIf(CallACS("TracerDeathCheck"), "Null")
+		TNT1 A 0 A_JumpIf(User_Counter <= 0, "Null")
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		Goto Looplet
+	}
+}
+
+ACTOR SpiritFistLauncher
+{
+	Radius 16
+	Height 20
+	Speed 20
+	Projectile
+	+THRUACTORS
+	+SKYEXPLODE
+	+DONTBLAST
+	States
+	{
+	Spawn:
+		TNT1 A random(4,6)
+	Death:
+		TNT1 A 0 A_PlaySound("SpiritFist/Spawn",4,0.8)
+		//TNT1 A 0 A_SpawnItemEx("SpiritFistSpawnRing",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"ZerkMode")
+		TNT1 A 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"MidasMode")
+		TNT1 A 0 A_SpawnItemEx("SpiritFist",0,0,0,20.0,0,0,180.0,SXF_TRANSFERPOINTERS)
+		Stop
+	ZerkMode:
+		TNT1 A 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"MidasZerkMode")
+		TNT1 A 0 A_SpawnItemEx("ZerkSpiritFist",0,0,0,20.0,0,0,180.0,SXF_TRANSFERPOINTERS)
+		Stop
+	MidasMode:
+		TNT1 A 0 A_SpawnItemEx("MidasSpiritFist",0,0,0,20.0,0,0,180.0,SXF_TRANSFERPOINTERS)
+		Stop
+	MidasZerkMode:
+		TNT1 A 0 A_SpawnItemEx("MidasZerkSpiritFist",0,0,0,20.0,0,0,180.0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+ACTOR SpiritFist : SpiritFistLauncher
+{
+	Damage 5
+	Renderstyle Add
+	Alpha 0.99
+	var int User_Counter;
+	DamageType CloseCombat
+	-THRUACTORS
+	States
+	{
+	Spawn:
+		SKYF A 0  A_SetUserVar("User_Counter",25)
+	Looplet:
+		SKYF A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		SKYF A 1 Bright A_SpawnItemEx("SpiritFistTrail",0,0,0,1,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERSPRITEFRAME)
+		SKYF A 0 A_JumpIf(User_Counter <= 0, "FadeOut")
+		Loop
+	Death:
+		TNT1 A 0 A_PlaySound("Punch/Hit",4,0.8)
+		Goto Main
+	XDeath:
+		TNT1 A 0 A_PlaySound("Punch/Flesh",4,0.8)
+	Main:
+		TNT1 A 0 A_SpawnItemEx("SpiritFistImpact",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	FadeOut:
+		TNT1 A 0 A_SpawnItemEx("SpiritFistFadeOut",0,0,0,20.0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+ACTOR ZerkSpiritFist : SpiritFist
+{
+	DamageType SuperCloseCombat
+	States
+	{
+	Spawn:
+		SKYF B 0  A_SetUserVar("User_Counter",25)
+	Looplet:
+		SKYF B 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		SKYF B 1 Bright A_SpawnItemEx("SpiritFistTrail",0,0,0,1,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERSPRITEFRAME)
+		SKYF B 0 A_JumpIf(User_Counter <= 0, "FadeOut")
+		Loop
+	Death:
+	XDeath:
+		TNT1 A 0 A_PlaySound("SuperPunch/Hit",0,0.8)
+		TNT1 A 0 A_SpawnItemEx("SuperPunchPuff_Shock",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperPunchPuff_Impact",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperPunchPuff_Wave",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_Explode(20,48,0)
+		TNT1 A 15 A_Quake(3,10,0,384,"none")
+		Goto Main
+	}
+}
+
+ACTOR MidasSpiritFist : SpiritFist
+{
+	DamageType MidasCloseCombat
+	States
+	{
+	Spawn:
+		SKYF C 0  A_SetUserVar("User_Counter",25)
+	Looplet:
+		SKYF C 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		SKYF C 1 Bright A_SpawnItemEx("SpiritFistTrail",0,0,0,1,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERSPRITEFRAME)
+		SKYF C 0 A_JumpIf(User_Counter <= 0, "FadeOut")
+		Loop
+	}
+}
+
+ACTOR MidasZerkSpiritFist : SpiritFist
+{
+	DamageType SuperMidasCloseCombat
+	States
+	{
+	Spawn:
+		SKYF C 0  A_SetUserVar("User_Counter",25)
+	Looplet:
+		SKYF C 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		SKYF C 1 Bright A_SpawnItemEx("SpiritFistTrail",0,0,0,1,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERSPRITEFRAME)
+		SKYF C 0 A_JumpIf(User_Counter <= 0, "FadeOut")
+		Loop
+	Death:
+	XDeath:
+		TNT1 A 0 A_PlaySound("SuperPunch/Hit",0,0.8)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasPunchPuff_Shock",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasPunchPuff_Impact",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasPunchPuff_Wave",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_Explode(20,48,0)
+		TNT1 A 15 A_Quake(3,10,0,384,"none")
+		Goto Main
+	}
+}
+
+ACTOR SpiritFistFadeOut
+{
+	Renderstyle Add
+	Alpha 0.99
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		SKYF A 0  A_SpawnItemEx("SpiritFistTrail",0,0,0,1,0,0,0,SXF_TRANSFERPOINTERS)
+		SKYF C 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"Main")
+		SKYF B 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"Main")
+		SKYF A 0
+	Main:
+		"####" "#" 1 Bright A_FadeOut(0.1)
+		Loop
+	}
+}
+
+ACTOR SpiritFistBase
+{
+	+NOINTERACTION
+	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+}
+
+ACTOR SpiritFistTrail : SpiritFistBase
+{
+	Alpha 0.99
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		"####" "#" 0  A_SetUserVar("User_Counter",random(2,4))
+	Looplet1:
+		"####" "#" 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		"####" "#" 0 A_SpawnItemEx("SpiritFistParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(2.0,1.0),0,random(frandom(-2.0,-1.0),frandom(2.0,1.0)),frandom(0.0,360.0),SXF_TRANSFERPOINTERS,20)
+		"####" "#" 0 A_JumpIf(User_Counter <= 0, "Looplet1")
+	Looplet2:
+		"####" "#" 0 A_SetScale(ScaleX + 0.07)
+		"####" "#" 1 Bright A_FadeOut(0.15)
+		Loop
+	}
+}
+
+ACTOR SpiritFistSpawnRing : SpiritFistBase
+{
+	Scale 0.5
+	Alpha 0.99
+	States
+	{
+	Spawn:
+		SHCK C 0  A_JumpIfInTargetInventory("PowerMidasMode",1,"Main")
+		SHCK D 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"Main")
+		SHCK B 0
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX-0.01)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 1 A_FadeOut(frandom(0.05,0.075))
+		Loop
+	}
+}
+
+ACTOR SpiritFistParticle : SpiritFistBase
+{
+	Alpha 0
+	States
+	{
+	Spawn:
+		WPRT A 0  A_SetScale(frandom(0.1,0.15))
+		WPRT A 0 A_FadeIn(frandom(0.8,0.99))
+		YPRT A 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"Looplet")
+		EMBR E 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"Looplet")
+		WPRT A 0
+	Looplet:
+		"####" "##" 0 A_FadeOut(0.03)
+		"####" "##" 0 A_SetScale(ScaleX - frandom(0.001,0.002))
+		"####" "##" 0 A_ChangeVelocity(frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(0.5,-0.2), CVF_RELATIVE)		
+		"####" "##" 1 Bright
+		"####" "#" 0 A_FadeIn(0.02)
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.001,0.002))
+		"####" "#" 0 A_ChangeVelocity(frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(0.5,-0.2), CVF_RELATIVE)
+		"####" "#" 1 Bright
+		Loop
+	}
+}
+
+ACTOR SpiritFistImpact
+{
+	+NOINTERACTION
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		SKYF A 0  A_SetUserVar("User_Counter",random(8,12))
+		SKYF A 0 A_SpawnItemEx("SpiritFistImpactRing",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		SKYF C 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"Looplet1")
+		SKYF B 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"Looplet1")
+		SKYF A 0
+	Looplet1:
+		"####" "#" 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		"####" "#" 0 A_SpawnItemEx("SpiritFistParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(35.0,5.0),0,random(frandom(-35.0,-5.0),frandom(35.0,5.0)),frandom(0.0,360.0),SXF_TRANSFERPOINTERS,20)
+		"####" "#" 0 A_JumpIf(User_Counter <= 0, "Looplet1")
+			
+		"####" "#" 0 A_SetUserVar("User_Counter",random(10,12))
+	Looplet2:
+		"####" "#" 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		"####" "#" 0 A_SpawnItemEx("SpiritFistParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(35.0,5.0),0,random(frandom(-35.0,-5.0),frandom(35.0,5.0)),frandom(0.0,360.0),SXF_TRANSFERPOINTERS,20)
+		"####" "#" 1 A_JumpIf(User_Counter <= 0, "Looplet2")
+		Stop
+	}
+}
+
+ACTOR SpiritFistImpactRing : SpiritFistBase
+{
+	Scale 0.1
+	Alpha 0.99
+	States
+	{
+	Spawn:
+		SHCK C 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"Main")
+		SHCK D 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"Main")
+		SHCK B 0
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX+0.03)
+		"####" "#" 1 A_FadeOut(frandom(0.05,0.075))
+		Loop
+	}
+}

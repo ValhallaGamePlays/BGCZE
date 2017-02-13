@@ -1,0 +1,780 @@
+ACTOR StruckerSelected : GenericToken {}
+ACTOR StruckerAltFire : GenericToken {}
+ACTOR StruckerAltFire2 : GenericToken {}
+
+#include "Decorate/Guns/Projectile/Strucker.txt"
+
+ACTOR Strucker : GuncasterWeapon replaces Crossbow
+{
+   Inventory.PickupSound "Guncaster/Laugh1"
+   Inventory.PickupMessage "$GOTSTRUCKER"
+   Obituary "$KILLSTRUCKER"
+   Weapon.UpSound "Strucker/Up" 
+   Weapon.SelectionOrder 2
+   Weapon.AmmoGive 12
+   Weapon.AmmoType "ShotgunAmmo"
+   Weapon.AmmoUse 1
+   Weapon.SlotNumber 3
+   Weapon.BobStyle InverseSmooth
+   Weapon.BobSpeed 1.8
+   Weapon.BobRangeY 0.4
+   Weapon.BobRangeX 0.9
+   Scale 1.1
+   +NOALERT
+   +NOAUTOAIM
+   States
+   {
+   Spawn:
+      STRG X -1
+      Stop
+   Ready:
+	  TNT1 A 0 A_TakeInventory("RightFireToken")
+      SCRG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRG A 0
+   	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiReady")
+      "####" A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiReady")
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,"StratReady")
+   ReadyLoop:
+	  TNT1 A 0 A_TakeInventory("RightFireToken")
+      SCRG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRG A 0
+   	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiReady")
+      "####" A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiReady")
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,"StratActivate")
+      "####" A 1 A_WeaponReady(WRF_ALLOWZOOM|WRF_ALLOWRELOAD)
+      Loop
+   StratActivate:
+   	  TNT1 A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiStratActivate")
+      TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiStratActivate")
+      SC1G A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SS1G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  ST1G A 0
+	  "####" DCBA 1
+	  "####" Z 4
+      SCRB A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRB A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRB A 0
+	  "####" BCDEFFF 1
+	  "####" F 0 A_PlaySound("Punch/Hit",5,0.7)
+	  "####" F 0 A_PlaySound("Strucker/Load",6,0.8)
+	  "####" F 0 A_GiveInventory("StruckerStratActive",1)
+	  "####" GHIJKLMNOPQ 1
+   StratReady:
+	  TNT1 A 0 A_TakeInventory("RightFireToken")
+      SCRB R 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRB R 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRB R 0
+   	  "####" R 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiReady")
+      "####" R 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiReady")
+	  "####" R 0 A_JumpIfInventory("StruckerStratActive",1,1)
+	  Goto StratDeactivate
+	  "####" R 1 A_WeaponReady(WRF_ALLOWZOOM|WRF_ALLOWRELOAD)
+	  Loop
+   StratDeactivate:
+   	  TNT1 A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiStratDeactivate")
+      TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiStratDeactivate")
+      SC2P A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SS2G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SP2G A 0
+	  "####" DCBA 1
+	  "####" Z 4
+	  SCPB A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSDB A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STPB A 0
+	  "####" BCDEFFF 1
+	  "####" F 0 A_PlaySound("Punch/Hit",5,0.7)
+	  "####" F 0 A_PlaySound("Strucker/Load",6,0.8)
+	  "####" F 0 A_TakeInventory("StruckerStratActive",1)
+	  "####" GHIJKL 1
+      SC2B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SS3B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  ST2B A 0
+	  "####" ABCDE 1
+      SC1G A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SS1G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  ST1G A 0
+	  "####" Z 4
+	  "####" ABCD 1
+	  Goto Ready
+   DeselectMain:
+      SCRG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRG A 0
+      "####" A 0 A_TakeInventory("StruckerSelected")
+	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiDeselect")
+      "####" A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiDeselect")
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,"StratDeselect")
+      "####" A 1 A_Lower
+      "####" A 0 A_Lower
+      Loop
+   StratDeselect:
+      SCRB R 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRB R 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRB R 0
+      "####" R 1 A_Lower
+      "####" R 0 A_Lower
+      Loop
+   Select:
+      SCRG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRG A 0
+      "####" A 0 A_GiveInventory("StruckerSelected")
+      "####" A 0 A_JumpIf(CallACS("CrosshairMode"), 2)
+      "####" A 0 A_SetCrosshair(54)
+      "####" A 0 A_JumpIf(CallACS("GunslingerMode"),2)
+	  "####" A 0 A_JumpIfInventory("PowerGunzerking",1,1) 
+	  "####" A 0 A_GunFlash("Nullify")
+	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiSelect")
+      "####" A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiSelect")
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,"StratSelect")
+      "####" A 1 A_Raise
+      "####" A 0 A_Raise
+      Loop  
+   StratSelect:
+      SCRB R 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRB R 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRB R 0
+	  "####" R 1 A_Raise
+	  "####" R 0 A_Raise
+	  Loop
+   Fire:
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,"StratFire")
+	  "####" A 0 A_JumpIfInventory("HexenCounter",1,2)
+	  "####" A 0 A_JumpIfInventory("ShotgunAmmo",2,2)
+	  Goto Ready
+	  "####" A 0 A_JumpIfInventory("BlueMana",2,1)
+	  Goto Ready
+   FireCont:
+	  "####" A 0 A_GiveInventory("RightFireToken")
+      SCRF A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRF A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRF A 0
+      "####" A 0 A_PlaySound("Strucker/Fire",1,0.6)
+      "####" A 0 A_PlaySound("Strucker/Add",5,0.4)
+      "####" A 0 A_SetBlend("Yellow",0.1,7)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (4, 8, 0, 3, none)
+      "####" AA 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-500, 500), 1, 6, 6, FPF_NOAUTOAIM, 0.01*random(-200, 200))
+	  "####" AAAAAAAAAAAAAAAAAA 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-500,500), 0, 6, 6, FPF_NOAUTOAIM, 0.01*random(-200,200))
+//A_FireBullets(5,2,12,5*random(1.0,3.0),"HBulletPuff",FBF_USEAMMO|FBF_NORANDOM)
+      "####" A 0 A_SetPitch(pitch-4)//A_SetPitch(pitch-0.75)
+      "####" A 0 //A_SetAngle(angle-0.75)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,3,0)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,10,0)
+      "####" A 1 Bright A_ZoomFactor(0.995)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch-1.5)
+      "####" A 0 //A_SetAngle(angle-1.5)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,3,0)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,10,0)
+      "####" A 1 Bright A_ZoomFactor(0.99) //Sheesh.
+	  
+      SCRT A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRT A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRT A 0
+      "####" A 1 A_ZoomFactor(0.98)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch-1)
+      "####" A 0 //A_SetAngle(angle-1)
+      "####" B 1 A_ZoomFactor(0.97)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch-0.5)
+      "####" A 0 //A_SetAngle(angle-0.5)
+      "####" C 1 A_ZoomFactor(0.96)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch-0.25)
+      "####" A 0 //A_SetAngle(angle-0.25)
+      "####" D 1 A_ZoomFactor(0.955)
+      "####" A 0 A_PlaySound("Strucker/Load",6,0.5)
+	  "####" A 0 A_FireCustomMissile("ShottyCasingSpawner",0,0,20,-12)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle+0.25)
+      "####" E 1 A_ZoomFactor(0.95)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" F 1 A_ZoomFactor(0.96)
+	  "####" A 0 A_FireCustomMissile("ShottyCasingSpawner",0,0,20,-12)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" G 1 A_ZoomFactor(0.97)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" H 1 A_ZoomFactor(0.98)
+      "####" A 0 //A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" I 1 A_ZoomFactor(0.99)
+      "####" A 0 //A_SetPitch(pitch+0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" J 1 A_ZoomFactor(1)
+      "####" A 0 //A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle+0.25)
+	  "####" KLMNO 1
+      "####" A 0 A_ReFire("FireCont")
+      SCRG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRG A 0
+	  "####" A 0 A_TakeInventory("RightFireToken")
+	  "####" A 1
+      Goto ReadyLoop
+   StratFire:
+      "####" R 0 A_JumpIfInventory("HexenCounter",1,"HexenCheck")
+      "####" R 0 A_JumpIfInventory("ShotgunAmmo",1,"StratMain")
+	  Goto Ready
+   HexenCheck:
+      "####" R 0 A_JumpIfInventory("BlueMana",1,"StratMain")
+   StratMain:
+      SCRB S 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRB S 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRB S 0
+	  "####" A 0 A_GiveInventory("RightFireToken")
+	  "####" S 0 A_JumpIfInventory("StruckerAltFire",1,"StratMain2")
+	  "####" S 0 A_GiveInventory("StruckerAltFire",1)
+      "####" S 0 A_PlaySound("Strucker/AltFire",1,0.5)
+      "####" S 0 A_SetBlend("Yellow",0.05,7)
+      "####" S 0 A_AlertMonsters
+      //"####" S 0 A_Recoil(0.5)
+      "####" S 0 A_Quake (1, 6, 0, 3, none)
+	  //"####" S 0 A_JumpIfInventory("HexenCounter",1,3)
+	  //"####" S 0 A_TakeInventory("ShotgunAmmo",1,TIF_NOTAKEINFINITE)
+	  //"####" S 0 A_Jump(256,2)
+	  //"####" S 0 A_TakeInventory("BlueMana",1,TIF_NOTAKEINFINITE)
+      "####" S 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 1, 6, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+	  "####" SSSSSSSSS 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 0, 6, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+//A_FireBullets(10,4,6,5*random(1.0,3.0),"HBulletPuff",FBF_NORANDOM)
+	  "####" S 0 A_JumpIfInventory("StruckerStrat",1,4)
+      "####" S 0 A_SetPitch(pitch-0.75)
+      "####" S 0 A_SetAngle(angle-0.75)
+	  "####" S 0 A_Jump(256,3)
+      "####" S 0 A_SetPitch(pitch-0.375)
+      "####" S 0 A_SetAngle(angle-0.375)	  
+	  "####" S 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,3,0)
+      "####" S 1 Bright A_ZoomFactor(0.9925)
+	  "####" T 1 A_ZoomFactor(0.995)
+  	  "####" T 0 A_JumpIfInventory("StruckerStrat",1,4)
+      "####" T 0 A_SetPitch(pitch-0.375)
+      "####" T 0 A_SetAngle(angle-0.375)
+	  "####" S 0 A_Jump(256,3)
+      "####" T 0 A_SetPitch(pitch-0.1875)
+      "####" T 0 A_SetAngle(angle-0.1875)
+	  "####" U 1 A_ZoomFactor(0.9975)
+	  "####" V 1 A_ZoomFactor(1)
+	  "####" A 0 A_FireCustomMissile("ShottyCasingSpawner",0,0,20,-12)
+	  "####" A 0 A_TakeInventory("RightFireToken")
+	  "####" R 0 A_ReFire("StratFire")
+	  "####" R 1
+      Goto StratReady
+	StratMain2:
+	  "####" A 0 A_GiveInventory("RightFireToken")
+	  "####" W 0 A_TakeInventory("StruckerAltFire",1)
+      "####" W 0 A_PlaySound("Strucker/AltFire",5,0.5)
+      "####" W 0 A_SetBlend("Yellow",0.05,7)
+      "####" W 0 A_AlertMonsters
+      //"####" S 0 A_Recoil(0.5)
+      "####" W 0 A_Quake (1, 6, 0, 3, none)
+	  //"####" S 0 A_JumpIfInventory("HexenCounter",1,3)
+	  //"####" S 0 A_TakeInventory("ShotgunAmmo",1,TIF_NOTAKEINFINITE)
+	  //"####" S 0 A_Jump(256,2)
+	  //"####" S 0 A_TakeInventory("BlueMana",1,TIF_NOTAKEINFINITE)
+      "####" W 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 1, 6, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+	  "####" WWWWWWWWW 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 0, 6, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+//A_FireBullets(10,4,6,5*random(1.0,3.0),"HBulletPuff",FBF_NORANDOM)
+	  "####" W 0 A_JumpIfInventory("StruckerStrat",1,4)
+      "####" W 0 A_SetPitch(pitch-0.75)
+      "####" W 0 A_SetAngle(angle-0.75)
+	  "####" W 0 A_Jump(256,3)
+      "####" W 0 A_SetPitch(pitch-0.375)
+      "####" W 0 A_SetAngle(angle-0.375)	  	  
+	  "####" W 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,10,0)
+      "####" W 1 Bright A_ZoomFactor(0.9925)
+	  "####" X 1 A_ZoomFactor(0.995)
+	  "####" X 0 A_JumpIfInventory("StruckerStrat",1,4)
+      "####" X 0 A_SetPitch(pitch-0.375)
+      "####" X 0 A_SetAngle(angle-0.375)
+	  "####" X 0 A_Jump(256,3)
+      "####" X 0 A_SetPitch(pitch-0.1875)
+      "####" X 0 A_SetAngle(angle-0.1875)	  
+	  "####" Y 1 A_ZoomFactor(0.9975)
+	  "####" Z 1 A_ZoomFactor(1)
+	  "####" A 0 A_FireCustomMissile("ShottyCasingSpawner",0,0,20,-12)
+	  "####" A 0 A_TakeInventory("RightFireToken")
+	  "####" R 0 A_ReFire("StratFire")
+	  "####" R 1
+      Goto StratReady
+	  
+	AltFire:
+	  "####" A 0 A_GiveInventory("RightFireToken")
+      SCRM A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRM A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+      STRM A 0
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,1)
+	  Goto Super::CheckForMagic
+      SCBM A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSBM A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STBM A 0
+	  "####" A 0
+	  Goto Super::CheckForMagic
+	  
+	Zoom:
+	  "####" A 0 A_GiveInventory("RightFireToken")
+      "####" A 0 A_JumpIf(CallACS("GunslingerMode"),"Gunzerk")
+	  "####" A 0 A_JumpIfInventory("PowerGunzerking",1,"Gunzerk")
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,"Strat")
+	  Goto Regular
+	Regular:
+	  "####" A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  SCRK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STRK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  SCRK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSRK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  
+	Strat:
+	  "####" A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  SCBK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSBK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  STBK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  SCBK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  SSBK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  SBMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  
+	Gunzerk:
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,"GunzerkStrat")
+	  "####" A 0 A_GunFlash("LeftKickBudge",GFF_NOEXTCHANGE)
+	  "####" A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  1TCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1SRK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1TRK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  1TCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1SRK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1TMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+
+	GunzerkStrat:
+	  "####" A 0 A_GunFlash("LeftKickBudge",GFF_NOEXTCHANGE)
+	  "####" A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  1PCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1SSK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1PRK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  1PCK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  1SSK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  1PMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+
+	LeftKickBudge:
+	  2PRK A 0 A_JumpIfInventory("StruckerStratActive",1,2)
+	  2TRK A 0 
+	  "####" ABCDEFGHIHGFEDCBA 1
+	  "####" Z 10
+	  "####" Z 0 	  
+	  Stop	  
+
+	//Zweihander
+
+   ZweiSelect:
+	  3TCG A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  3TRG A 0
+      "####" A 0 A_Raise
+      "####" A 1 A_Raise
+      Loop
+   ZweiDeselect:
+	  3TRB A 0 A_JumpIfInventory("StruckerStratActive",1,3)
+	  3TCG A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  3TRG A 0
+	  "####" A 0 A_TakeInventory("SynthFireActive",1)
+	  "####" A 0 A_TakeInventory("SynthFireLeft",1)
+	  "####" A 0 A_TakeInventory("SynthFireRight",1)
+	  "####" A 0 A_GunFlash("Nullify",GFF_NOEXTCHANGE)
+   Zweihander:
+	  "####" A 0 A_Lower
+	  "####" A 1 A_Lower
+	  Loop
+   ZweiReady:
+	  "####" A 0 A_GiveInventory("SynthFireActive",1)
+	  "####" A 0 ACS_NamedExecuteAlways("SynthLeft")
+	  "####" A 0 ACS_NamedExecuteAlways("SynthRight")
+	  "####" A 0 A_GunFlash("Flash",GFF_NOEXTCHANGE)
+	  Goto RIdle
+   ZweiStratActivate:
+      STB1 A 0 A_Gunflash("LeftStratToggle",GFF_NOEXTCHANGE)
+	  STB1 A 0 A_PlaySound("Strucker/Load",6,0.8)
+	  STB1 A 0 A_GiveInventory("StruckerStratActive",1)
+	  STB1 ABCDEFGHIJKLMN 1
+	  Goto RIdle
+   ZweiStratDeactivate:
+      STP1 A 0 A_Gunflash("LeftStratToggle",GFF_NOEXTCHANGE)
+	  STP1 A 0 A_PlaySound("Strucker/Load",6,0.8)
+	  STP1 A 0 A_TakeInventory("StruckerStratActive",1)
+	  STP1 ABCDEFGHIJKLMNZ 1
+	  Goto RIdle
+   LeftStratToggle:
+	  STB2 A 0 A_JumpIfInventory("StruckerStratActive",1,2)
+	  STP2 A 0 
+	  "####" ABCDEFGHIJKLMNZ 1
+	  "####" Z 0
+	  Stop
+	  
+   //Right
+   
+   RIdle:
+	  TNT1 A 0 A_TakeInventory("RightFireToken")
+	  1PRG A 0 A_JumpIfInventory("StruckerStratActive",1,3)
+	  1TCG A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  1TRG A 0
+	  "####" A 0 A_JumpIfInventory("SynthFireRight",1,"RFire")
+	  "####" A 0 A_JumpIfInventory("LeftFireToken",1,3)
+	  "####" A 1 A_WeaponReady(WRF_NOFIRE|WRF_ALLOWZOOM|WRF_ALLOWRELOAD)
+	  "####" A 0 A_Jump(256,2)
+	  "####" A 1 A_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH)
+	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),"RIdle")
+	  "####" A 0 A_JumpIfInventory("PowerGunzerking",1,"RIdle") 
+	  Goto BackToReady
+   BackToReady:
+	  TNT1 A 0 A_GunFlash("Nullify",GFF_NOEXTCHANGE)
+	  Goto Ready
+   RFire:
+   	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),2)
+	  "####" A 0 A_JumpIfInventory("PowerGunzerking",1,1) 
+	  Goto BackToReady
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,"RStratFire")
+	  "####" A 0 A_JumpIfInventory("HexenCounter",1,"HexenR")
+	  "####" A 1 A_JumpIfInventory("ShotgunAmmo",2,"RConfirmed")
+	  Goto RIdle
+   HexenR:
+	  "####" A 1 A_JumpIfInventory("BlueMana",2,1)
+	  Goto RIdle
+   RConfirmed:
+	  1TCF A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  1TRF A 0
+	  "####" A 0 A_GiveInventory("RightFireToken")
+      "####" A 0 A_PlaySound("Strucker/Fire",1,0.6)
+      "####" A 0 A_PlaySound("Strucker/Add",5,0.4)
+      "####" A 0 A_SetBlend("Yellow",0.1,7)
+      //"####" A 0 A_Recoil(1.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (4, 8, 0, 3, none)
+	  //1TRF A 0 A_TakeInventory("ShotgunAmmo",2,TIF_NOTAKEINFINITE)
+      "####" AA 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-500, 500), 1, 8, 6, FPF_NOAUTOAIM, 0.01*random(-200, 200))
+	  "####" AAAAAAAAAAAAAAAAAA 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-500,500), 0, 8, 6, FPF_NOAUTOAIM, 0.01*random(-200,200))
+//A_FireBullets(5,2,12,5*random(1.0,3.0),"HBulletPuff",FBF_NORANDOM|FBF_USEAMMO)
+      "####" A 0 A_SetPitch(pitch-0.375)//A_SetPitch(pitch-0.375)
+      "####" A 0 //A_SetAngle(angle-0.375)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,11,-2)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,18,-2)
+      "####" A 1 Bright A_ZoomFactor(0.995)
+      "####" A 0 A_SetPitch(pitch-0.75)//A_SetPitch(pitch-0.75)
+      "####" A 0 //A_SetAngle(angle-0.75)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,11,-2)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,18,-2)
+      "####" A 1 Bright A_ZoomFactor(0.99)
+	  
+	  1TCT A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  1TRT A 0
+      "####" A 1 A_ZoomFactor(0.98)
+      "####" A 0 A_SetPitch(pitch-0.5)//A_SetPitch(pitch-0.5)
+      "####" A 0 //A_SetAngle(angle-0.5)
+      "####" B 1 A_ZoomFactor(0.97)
+      "####" A 0 A_SetPitch(pitch-0.25)//A_SetPitch(pitch-0.25)
+      "####" A 0 //A_SetAngle(angle-0.25)
+      "####" C 1 A_ZoomFactor(0.96)
+      "####" A 0 A_SetPitch(pitch-0.125)//A_SetPitch(pitch-0.125)
+      "####" A 0 //A_SetAngle(angle-0.125)
+      "####" D 1 A_ZoomFactor(0.955)
+      "####" A 0 A_PlaySound("Strucker/Load",6,0.5)
+	  "####" A 0 A_FireCustomMissile("ShottyCasingSpawner",0,0,30,-12)
+      "####" A 0 A_SetPitch(pitch+0.125)//A_SetPitch(pitch+0.125)
+      "####" A 0 //A_SetAngle(angle+0.125)
+      "####" E 1 A_ZoomFactor(0.95)
+      "####" A 0 A_SetPitch(pitch+0.25)//A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle+0.25)
+      "####" F 1 A_ZoomFactor(0.96)
+	  "####" A 0 A_FireCustomMissile("ShottyCasingSpawner",0,0,30,-12)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle+0.25)
+      "####" G 1 A_ZoomFactor(0.97)
+      "####" A 0 A_SetPitch(pitch+0.75)//A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle+0.25)
+      "####" H 1 A_ZoomFactor(0.98)
+      "####" A 0 A_SetPitch(pitch+0.375)//A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle+0.25)
+      "####" I 1 A_ZoomFactor(0.99)
+      "####" A 0 //A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle+0.25)
+      "####" J 1 A_ZoomFactor(1)
+      "####" A 0 //A_SetPitch(pitch+0.125)
+      "####" A 0 //A_SetAngle(angle+0.125)
+	  "####" KLMNO 1
+	  1TCG A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  1TRG A 0
+	  "####" A 0 A_TakeInventory("RightFireToken")
+	  "####" A 0 A_JumpIfInventory("SynthFireRight",1,"RFire")
+	  Goto RIdle
+   RStratFire:
+      "####" A 0 A_JumpIfInventory("HexenCounter",1,"HexenR2")
+      "####" A 0 A_JumpIfInventory("ShotgunAmmo",1,"RStratMain")
+	  Goto RIdle
+   HexenR2:
+      "####" Z 0 A_JumpIfInventory("BlueMana",1,"RStratMain")
+   RStratMain:
+	  "####" A 0 A_GiveInventory("RightFireToken")
+	  STF1 A 0 A_JumpIfInventory("StruckerAltFire",1,"RStratMain2")
+	  STF1 A 0 A_GiveInventory("StruckerAltFire",1)
+      STF1 A 0 A_PlaySound("Strucker/AltFire",1,0.5)
+      STF1 A 0 A_SetBlend("Yellow",0.05,7)
+      STF1 A 0 A_AlertMonsters
+      //STF1 A 0 A_Recoil(0.5)
+      STF1 A 0 A_Quake (1, 6, 0, 3, none)
+	  //STF1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+	  //STF1 A 0 A_TakeInventory("ShotgunAmmo",1,TIF_NOTAKEINFINITE)
+	  //STF1 A 0 A_Jump(256,2)
+	  //STF1 A 0 A_TakeInventory("BlueMana",1,TIF_NOTAKEINFINITE)
+      STF1 A 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 1, 8, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+	  STF1 AAAAAAAAA 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 0, 8, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+//A_FireBullets(10,4,6,5*random(1.0,3.0),"HBulletPuff",FBF_NORANDOM)
+	  STF1 A 0 A_JumpIfInventory("StruckerStrat",1,4)
+      STF1 A 0 A_SetPitch(pitch-0.75)
+      STF1 A 0 A_SetAngle(angle-0.75)
+	  STF1 A 0 A_Jump(256,3)
+      STF1 A 0 A_SetPitch(pitch-0.375)
+      STF1 A 0 A_SetAngle(angle-0.375)	  
+	  STF1 A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,11,-2)
+      STF1 A 1 Bright A_ZoomFactor(0.9925)
+	  STF1 B 1 A_ZoomFactor(0.995)
+  	  STF1 B 0 A_JumpIfInventory("StruckerStrat",1,4)
+      STF1 B 0 A_SetPitch(pitch-0.375)
+      STF1 B 0 A_SetAngle(angle-0.375)
+	  STF1 A 0 A_Jump(256,3)
+      STF1 B 0 A_SetPitch(pitch-0.1875)
+      STF1 B 0 A_SetAngle(angle-0.1875)
+	  STF1 C 1 A_ZoomFactor(0.9975)
+	  STF1 D 1 A_ZoomFactor(1)
+	  STF1 A 0 A_FireCustomMissile("ShottyCasingSpawner",0,0,30,-12)
+	  "####" A 0 A_TakeInventory("RightFireToken")
+	  STP1 Z 0 A_JumpIfInventory("SynthFireRight",1,"RFire")
+	  STP1 Z 1
+      Goto RIdle
+	RStratMain2:
+	  "####" A 0 A_GiveInventory("RightFireToken")
+	  STF1 E 0 A_TakeInventory("StruckerAltFire",1)
+      STF1 E 0 A_PlaySound("Strucker/AltFire",5,0.5)
+      STF1 E 0 A_SetBlend("Yellow",0.05,7)
+      STF1 E 0 A_AlertMonsters
+      //"####" S 0 A_Recoil(0.5)
+      STF1 E 0 A_Quake (1, 6, 0, 3, none)
+	  //"####" S 0 A_JumpIfInventory("HexenCounter",1,3)
+	  //"####" S 0 A_TakeInventory("ShotgunAmmo",1,TIF_NOTAKEINFINITE)
+	  //"####" S 0 A_Jump(256,2)
+	  //"####" S 0 A_TakeInventory("BlueMana",1,TIF_NOTAKEINFINITE)
+      STF1 E 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 1, 8, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+	  STF1 EEEEEEEEE 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 0, 8, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+//A_FireBullets(10,4,6,5*random(1.0,3.0),"HBulletPuff",FBF_NORANDOM)
+	  STF1 E 0 A_JumpIfInventory("StruckerStrat",1,4)
+      STF1 E 0 A_SetPitch(pitch-0.75)
+      STF1 E 0 A_SetAngle(angle-0.75)
+	  STF1 E 0 A_Jump(256,3)
+      STF1 E 0 A_SetPitch(pitch-0.375)
+      STF1 E 0 A_SetAngle(angle-0.375)	  	  
+	  STF1 E 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,18,-2)
+      STF1 E 1 Bright A_ZoomFactor(0.9925)
+	  STF1 F 1 A_ZoomFactor(0.995)
+	  STF1 F 0 A_JumpIfInventory("StruckerStrat",1,4)
+      STF1 F 0 A_SetPitch(pitch-0.375)
+      STF1 F 0 A_SetAngle(angle-0.375)
+	  STF1 F 0 A_Jump(256,3)
+      STF1 F 0 A_SetPitch(pitch-0.1875)
+      STF1 F 0 A_SetAngle(angle-0.1875)	  
+	  STF1 G 1 A_ZoomFactor(0.9975)
+	  STF1 H 1 A_ZoomFactor(1)
+	  STF1 A 0 A_FireCustomMissile("ShottyCasingSpawner",0,0,30,-12)
+	  "####" A 0 A_TakeInventory("RightFireToken")
+	  STP1 Z 0 A_JumpIfInventory("SynthFireRight",1,"RFire")
+	  STP1 Z 1
+      Goto RIdle
+	
+   //Left
+	 
+   Nullify:
+	  TNT1 A 0 A_TakeInventory("LeftFireToken",1)
+	  Stop
+   Flash:
+	  TNT1 A 0 A_Light0
+   LIdle:
+	  2PRG A 0 A_JumpIfInventory("StruckerStratActive",1,3)
+	  2TCG A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  2TRG A 0
+	  "####" A 1 A_JumpIfInventory("SynthFireLeft",1,"LFire")
+	  Loop
+   LFire:
+   	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),2)
+	  "####" A 0 A_JumpIfInventory("PowerGunzerking",1,1) 
+	  Goto Nullify
+	  "####" A 0 A_JumpIfInventory("StruckerStratActive",1,"LStratFire")
+	  "####" A 0 A_JumpIfInventory("HexenCounter",1,"HexenL")
+	  "####" A 1 A_JumpIfInventory("ShotgunAmmo",2,"LConfirmed")
+	  Goto LIdle
+   HexenL:
+	  "####" A 1 A_JumpIfInventory("BlueMana",2,1)
+	  Goto LIdle
+   LConfirmed:
+	  2TCF A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  2TRF A 0
+	  "####" A 0 A_GiveInventory("LeftFireToken",1)
+      "####" A 0 A_PlaySound("Strucker/Fire",1,0.6)
+      "####" A 0 A_PlaySound("Strucker/Add",5,0.4)
+      "####" A 0 A_SetBlend("Yellow",0.1,7)
+      //"####" A 0 A_Recoil(1.5)
+      "####" A 0 A_AlertMonsters
+      "####" A 0 A_Quake (4, 8, 0, 3, none)
+	  //"####" A 0 A_TakeInventory("ShotgunAmmo",2,TIF_NOTAKEINFINITE)
+      "####" AA 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-500, 500), 1, -8, 6, FPF_NOAUTOAIM, 0.01*random(-200, 200))
+	  "####" AAAAAAAAAAAAAAAAAA 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-500,500), 0, -8, 6, FPF_NOAUTOAIM, 0.01*random(-200,200))
+//A_FireBullets(5,2,12,5*random(1.0,3.0),"HBulletPuff",FBF_NORANDOM|FBF_USEAMMO)
+      "####" A 0 A_SetPitch(pitch-0.375)//A_SetPitch(pitch-0.375)
+      "####" A 0 //A_SetAngle(angle+0.375)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,-11,-2)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,-18,-2)
+      "####" A 1 Bright A_ZoomFactor(0.995)
+      "####" A 0 A_SetPitch(pitch-0.75)//A_SetPitch(pitch-0.75)
+      "####" A 0 //A_SetAngle(angle+0.75)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,-11,-2)
+	  "####" A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,-18,-2)
+      "####" A 1 Bright A_ZoomFactor(0.99) 
+	  2TCT A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  2TRT A 0
+      "####" A 1 A_ZoomFactor(0.98)
+      "####" A 0 A_SetPitch(pitch-0.5)//A_SetPitch(pitch-0.5)
+      "####" A 0 //A_SetAngle(angle+0.5)
+      "####" B 1 A_ZoomFactor(0.97)
+      "####" A 0 A_SetPitch(pitch-0.25)//A_SetPitch(pitch-0.25)
+      "####" A 0 //A_SetAngle(angle+0.25)
+      "####" C 1 A_ZoomFactor(0.96)
+      "####" A 0 A_SetPitch(pitch-0.125)//A_SetPitch(pitch-0.125)
+      "####" A 0 //A_SetAngle(angle+0.125)
+      "####" D 1 A_ZoomFactor(0.955)
+      "####" A 0 A_PlaySound("Strucker/Load",6,0.5)
+	  "####" A 0 A_FireCustomMissile("ShottyCasingSpawnerLeft",0,0,-30,-12)
+      "####" A 0 A_SetPitch(pitch+0.125)//A_SetPitch(pitch+0.125)
+      "####" A 0 //A_SetAngle(angle-0.125)
+      "####" E 1 A_ZoomFactor(0.95)
+      "####" A 0 A_SetPitch(pitch+0.25)//A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle-0.25)
+      "####" F 1 A_ZoomFactor(0.96)
+	  "####" A 0 A_FireCustomMissile("ShottyCasingSpawnerLeft",0,0,-30,-12)
+      "####" A 0 A_SetPitch(pitch+0.5)//A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle-0.25)
+      "####" G 1 A_ZoomFactor(0.97)
+      "####" A 0 A_SetPitch(pitch+0.75)//A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle-0.25)
+      "####" H 1 A_ZoomFactor(0.98)
+      "####" A 0 A_SetPitch(pitch+0.375)//A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle-0.25)
+      "####" I 1 A_ZoomFactor(0.99)
+      "####" A 0 //A_SetPitch(pitch+0.25)
+      "####" A 0 //A_SetAngle(angle-0.25)
+      "####" J 1 A_ZoomFactor(1)
+      "####" A 0 //A_SetPitch(pitch+0.125)
+      "####" A 0 //A_SetAngle(angle-0.125)
+	  "####" KLMNO 1
+	  2TCG A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  2TRG A 0 
+	  "####" A 0 A_TakeInventory("LeftFireToken",1)
+	  "####" A 0 A_JumpIfInventory("SynthFireLeft",1,"LFire")
+	  Goto LIdle
+   LStratFire:
+   	  "####" A 0 A_JumpIf(CallACS("GunslingerMode"),2)
+	  "####" A 0 A_JumpIfInventory("PowerGunzerking",1,1) 
+	  Goto Nullify
+      "####" A 0 A_JumpIfInventory("HexenCounter",1,"HexenL2")
+      "####" A 0 A_JumpIfInventory("ShotgunAmmo",1,"LStratMain")
+	  Goto LIdle
+   HexenL2:
+      "####" Z 0 A_JumpIfInventory("BlueMana",1,"LStratMain")
+   LStratMain:
+	  STF2 A 0 A_GiveInventory("LeftFireToken",1)
+	  STF2 A 0 A_JumpIfInventory("StruckerAltFire2",1,"LStratMain2")
+	  STF2 A 0 A_GiveInventory("StruckerAltFire2",1)
+      STF2 A 0 A_PlaySound("Strucker/AltFire",1,0.5)
+      STF2 A 0 A_SetBlend("Yellow",0.05,7)
+      STF2 A 0 A_AlertMonsters
+      //STF2 A 0 A_Recoil(0.5)
+      STF2 A 0 A_Quake (1, 6, 0, 3, none)
+	  //STF2 A 0 A_JumpIfInventory("HexenCounter",1,3)
+	  //STF2 A 0 A_TakeInventory("ShotgunAmmo",1,TIF_NOTAKEINFINITE)
+	  //STF2 A 0 A_Jump(256,2)
+	  //STF2 A 0 A_TakeInventory("BlueMana",1,TIF_NOTAKEINFINITE)
+      STF2 A 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 1, -8, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+	  STF2 AAAAAAAAA 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 0, -8, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+//A_FireBullets(10,4,6,5*random(1.0,3.0),"HBulletPuff",FBF_NORANDOM)
+	  STF2 A 0 A_JumpIfInventory("StruckerStrat",1,4)
+      STF2 A 0 A_SetPitch(pitch-0.75)
+      STF2 A 0 A_SetAngle(angle+0.75)
+	  STF2 A 0 A_Jump(256,3)
+      STF2 A 0 A_SetPitch(pitch-0.375)
+      STF2 A 0 A_SetAngle(angle+0.375)	  
+	  STF2 A 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,-11,-2)
+      STF2 A 1 Bright A_ZoomFactor(0.9925)
+	  STF2 B 1 A_ZoomFactor(0.995)
+  	  STF2 B 0 A_JumpIfInventory("StruckerStrat",1,4)
+      STF2 B 0 A_SetPitch(pitch-0.375)
+      STF2 B 0 A_SetAngle(angle+0.375)
+	  STF2 A 0 A_Jump(256,3)
+      STF2 B 0 A_SetPitch(pitch-0.1875)
+      STF2 B 0 A_SetAngle(angle+0.1875)
+	  STF2 C 1 A_ZoomFactor(0.9975)
+	  STF2 D 1 A_ZoomFactor(1)
+	  STF2 A 0 A_FireCustomMissile("ShottyCasingSpawnerLeft",0,0,-30,-12)
+	  STP2 Z 0 A_JumpIfInventory("SynthFireLeft",1,"LFire")
+	  STP2 Z 0 A_TakeInventory("LeftFireToken",1)
+	  STP2 Z 1
+      Goto LIdle
+	LStratMain2:
+	  STF2 E 0 A_GiveInventory("LeftFireToken",1)
+	  STF2 E 0 A_TakeInventory("StruckerAltFire2",1)
+      STF2 E 0 A_PlaySound("Strucker/AltFire",5,0.5)
+      STF2 E 0 A_SetBlend("Yellow",0.05,7)
+      STF2 E 0 A_AlertMonsters
+      //"####" S 0 A_Recoil(0.5)
+      STF2 E 0 A_Quake (1, 6, 0, 3, none)
+	  //"####" S 0 A_JumpIfInventory("HexenCounter",1,3)
+	  //"####" S 0 A_TakeInventory("ShotgunAmmo",1,TIF_NOTAKEINFINITE)
+	  //"####" S 0 A_Jump(256,2)
+	  //"####" S 0 A_TakeInventory("BlueMana",1,TIF_NOTAKEINFINITE)
+      STF2 E 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 1, -8, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+	  STF2 EEEEEEEEE 0 A_FireCustomMissile("StruckerPellet", 0.01*random(-1000,1000), 0, -8, 6, FPF_NOAUTOAIM, 0.01*random(-400,400))
+//A_FireBullets(10,4,6,5*random(1.0,3.0),"HBulletPuff",FBF_NORANDOM)
+	  STF2 E 0 A_JumpIfInventory("StruckerStrat",1,4)
+      STF2 E 0 A_SetPitch(pitch-0.75)
+      STF2 E 0 A_SetAngle(angle+0.75)
+	  STF2 E 0 A_Jump(256,3)
+      STF2 E 0 A_SetPitch(pitch-0.375)
+      STF2 E 0 A_SetAngle(angle+0.375)	  	  
+	  STF2 E 0 A_FireCustomMissile("GunsmokeSpawner_Small",0,0,-18,-2)
+      STF2 E 1 Bright A_ZoomFactor(0.9925)
+	  STF2 F 1 A_ZoomFactor(0.995)
+	  STF2 F 0 A_JumpIfInventory("StruckerStrat",1,4)
+      STF2 F 0 A_SetPitch(pitch-0.375)
+      STF2 F 0 A_SetAngle(angle+0.375)
+	  STF2 F 0 A_Jump(256,3)
+      STF2 F 0 A_SetPitch(pitch-0.1875)
+      STF2 F 0 A_SetAngle(angle+0.1875)	  
+	  STF2 G 1 A_ZoomFactor(0.9975)
+	  STF2 H 1 A_ZoomFactor(1)
+	  STF2 A 0 A_FireCustomMissile("ShottyCasingSpawnerLeft",0,0,-30,-12)
+	  STP2 Z 0 A_JumpIfInventory("SynthFireLeft",1,"LFire")
+	  STP2 Z 0 A_TakeInventory("LeftFireToken",1)
+	  STP2 Z 1
+      Goto LIdle
+	}
+}

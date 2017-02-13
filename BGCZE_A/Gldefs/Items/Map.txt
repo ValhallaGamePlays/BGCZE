@@ -1,0 +1,11 @@
+pointlight FLOATYMAP
+{
+    color 0.6 0.6 0.1
+    size 48
+    offset 0 16 0
+}
+
+object MapScroll
+{
+    frame SPMP { light FLOATYMAP }
+}

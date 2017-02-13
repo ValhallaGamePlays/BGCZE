@@ -1,0 +1,73 @@
+object AnnihilationShot
+{
+    frame ANNH { light ANNOSHOT }
+}
+
+pointlight ANNOSHOT
+{
+    color 0.1 0.2 1.0
+    size 72
+}
+
+object AnnihilationShotGLDEF
+{
+    frame TNT1A { light ANNOIMPACT }
+}
+
+pulselight ANNOIMPACT
+{
+    color 0.1 0.2 1.0
+    size 0
+    secondarySize 192
+    interval 0.75
+}
+
+//Tomed
+
+object TomedAnnihilationShot
+{
+    frame ANNH { light ANNOSHOT2 }
+}
+
+pointlight ANNOSHOT2
+{
+    color 0.1 0.2 1.0
+    size 128
+}
+
+object TomedAnnihilationShotGLDEF
+{
+    frame TNT1A { light ANNOIMPACT2 }
+}
+
+pulselight ANNOIMPACT2
+{
+    color 0.1 0.2 1.0
+    size 0
+    secondarySize 384
+    interval 0.9
+}
+
+//Alternate Mode
+object AnnihilationSanctumProjectile
+{
+	frame ANNH { light ANNOSHOT }
+}
+
+object RepulsionBall
+{
+	frame ANNH { light ANNOSHOT }
+}
+
+pulselight BLASTERRING
+{
+    color 0.0 0.0 1.0
+    size 92
+    secondarySize 0
+    interval 0.6
+} 
+
+object BlasterRing
+{
+    frame BLSR { light BLASTERRING }
+}

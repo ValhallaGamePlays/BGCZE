@@ -1,0 +1,106 @@
+pulselight SKAJPANCZ
+{
+    color 1.0 1.0 1.0
+    size 128
+    secondarySize 0
+    interval 1.1
+}
+
+pulselight SKAJPANCZZERK
+{
+    color 1.0 0.2 0.1
+    size 128
+    secondarySize 0
+    interval 1.1
+}
+
+pulselight SKAJPANCZMIDAS
+{
+    color 1.0 0.8 0.1
+    size 128
+    secondarySize 0
+    interval 1.1
+}
+
+object SkypunchGLDEF
+{
+    frame TNT1A { light SKAJPANCZ }
+    frame TNT1B { light SKAJPANCZZERK }
+    frame TNT1C { light SKAJPANCZMIDAS }
+}
+
+pointlight SPIRITPANCZ
+{
+    color 0.7 0.7 0.7
+    Size 32
+}
+
+pointlight SPIRITPANCZZERK
+{
+    color 0.7 0.1 0.05
+    Size 32
+}
+
+pointlight SPIRITPANCZMIDAS
+{
+    color 0.7 0.5 0.05
+    Size 32
+}
+
+object SpiritFist
+{
+  frame SKYFA { light SPIRITPANCZ }
+}
+
+object ZerkSpiritFist
+{
+    frame SKYFB { light SPIRITPANCZZERK }
+}
+
+object MidasSpiritFist
+{
+    frame SKYFC { light SPIRITPANCZMIDAS }
+}
+
+object MidasZerkSpiritFist
+{
+    frame SKYFC { light SPIRITPANCZMIDAS }
+}
+
+object SpiritFistFadeOut
+{
+    frame SKYFA { light SPIRITPANCZ }
+    frame SKYFB { light SPIRITPANCZZERK }
+    frame SKYFC { light SPIRITPANCZMIDAS }
+}
+
+pulselight SPIRITPANCZHIT
+{
+    color 1.0 1.0 1.0
+    size 0
+    secondarySize 96
+    interval 1.1
+}
+
+pulselight SPIRITPANCZHITZERK
+{
+    color 1.0 0.2 0.1
+    size 0
+    secondarySize 96
+    interval 1.1
+}
+
+pulselight SPIRITPANCZHITMIDAS
+{
+    color 1.0 0.8 0.1
+    size 0
+    secondarySize 96
+    interval 1.1
+}
+
+object SpiritFistImpact
+{
+    frame SHCKB { light SPIRITPANCZHIT }
+    frame SHCKD { light SPIRITPANCZHITZERK }
+	frame SHCKC { light SPIRITPANCZHITMIDAS }
+}

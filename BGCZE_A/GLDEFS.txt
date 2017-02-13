@@ -1,0 +1,67 @@
+#include "Gldefs/Hexen.txt"
+#include "Gldefs/Glowjob.txt" //Hue.
+#include "Gldefs/Props.txt"
+#include "Gldefs/Midas.txt"
+#include "Gldefs/Afflictions.txt"
+#include "Gldefs/Suit.txt"
+
+//Guns
+#include "Gldefs/Guns/Cauterizer.txt"
+#include "Gldefs/Guns/Ironblast.txt"
+#include "Gldefs/Guns/Matriarch.txt"
+#include "Gldefs/Guns/Dreadful.txt"
+#include "Gldefs/Guns/Puffs.txt"
+#include "Gldefs/Guns/Melee.txt"
+#include "Gldefs/Guns/Dynamite.txt"
+#include "Gldefs/Guns/Pulverizer.txt"
+#include "Gldefs/Guns/Spacenuke.txt"
+
+//Spells
+#include "Gldefs/Spells/Skullfire.txt"
+#include "Gldefs/Spells/Flamewave.txt"
+#include "Gldefs/Spells/Frostbite.txt"
+#include "Gldefs/Spells/Chillgrasp.txt"
+#include "Gldefs/Spells/Skypunch.txt"
+#include "Gldefs/Spells/Gumpop.txt"
+#include "Gldefs/Spells/Crows.txt"
+#include "Gldefs/Spells/Thunderstruck.txt"
+#include "Gldefs/Spells/Scourgebreath.txt"
+#include "Gldefs/Spells/Corpseblast.txt"
+#include "Gldefs/Spells/Annihilation.txt"
+#include "Gldefs/Spells/Sheepshield.txt"
+#include "Gldefs/Spells/Spiritcannon.txt"
+#include "Gldefs/Spells/Meteorfist.txt"
+#include "Gldefs/Spells/Darkvoid.txt"
+#include "Gldefs/Spells/Prism.txt"
+
+//Items
+#include "Gldefs/Items/Money.txt"
+#include "Gldefs/Items/Tome.txt"
+#include "Gldefs/Items/Wings.txt"
+#include "Gldefs/Items/Pots.txt"
+#include "Gldefs/Items/Tomes.txt"
+#include "Gldefs/Items/Map.txt"
+#include "Gldefs/Items/Medbag.txt"
+#include "Gldefs/Items/Syringes.txt"
+#include "Gldefs/Items/Core.txt"
+#include "Gldefs/Items/Extreme.txt"
+#include "Gldefs/Items/Doom.txt"
+#include "Gldefs/Items/Idol.txt"
+
+//Brightmaps
+#include "Brightmaps/Misc.txt"
+#include "Brightmaps/Caster.txt"
+#include "Brightmaps/Doom.txt"
+
+//Bmaps-Guns
+#include "Brightmaps/Longhorn.txt"
+#include "Brightmaps/Strucker.txt"
+#include "Brightmaps/Ironblast.txt"
+#include "Brightmaps/Pulverizer.txt"
+#include "Brightmaps/Matriarch.txt"
+
+#include "Brightmaps/SuitLonghorn.txt"
+#include "Brightmaps/SuitStrucker.txt"
+#include "Brightmaps/SuitPulverizer.txt"
+#include "Brightmaps/SuitIronblast.txt"
+#include "Brightmaps/SuitMatriarch.txt"

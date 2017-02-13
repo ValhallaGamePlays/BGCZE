@@ -1,0 +1,159 @@
+object FrostbiteProjectile
+{
+    frame SHEXA { light BIGFROSTFX2 }
+    frame SHEXB { light BIGFROSTFX1 }
+    frame SHEXC { light BIGFROSTFX2 }
+    frame SHEXD { light BIGFROSTFX3 }
+    frame SHEXE { light BIGFROSTFX4 }
+}
+
+object FrostbiteShard
+{
+    frame ICPRA { light FROSTFX1 }
+    frame ICPRB { light FROSTFX1 }
+    frame ICPRC { light FROSTFX1 }
+    frame ICPRD { light FROSTFX1 }
+    frame ICPRE { light FROSTFX1 }
+    frame ICPRF { light FROSTFX2 }
+    frame ICPRG { light FROSTFX3 }
+    frame ICPRH { light FROSTFX4 }
+}
+
+//Alternate Mode...
+
+object FrozenOrbProjectile
+{
+    frame SBLL { light BIGFROSTFX1 }
+}
+
+object FrozenOrbShard
+{
+    frame SHRDA { light FROSTFX1 }
+    frame SHRDB { light FROSTFX1 }
+    frame SHRDC { light FROSTFX1 }
+    frame ICPRD { light FROSTFX1 }
+    frame ICPRE { light FROSTFX1 }
+    frame ICPRF { light FROSTFX2 }
+    frame ICPRG { light FROSTFX3 }
+    frame ICPRH { light FROSTFX4 }
+}
+
+object FrozenOrbShardNoGrav
+{
+    frame SHRDA { light FROSTFX1 }
+    frame SHRDB { light FROSTFX1 }
+    frame SHRDC { light FROSTFX1 }
+    frame ICPRD { light FROSTFX1 }
+    frame ICPRE { light FROSTFX1 }
+    frame ICPRF { light FROSTFX2 }
+    frame ICPRG { light FROSTFX3 }
+    frame ICPRH { light FROSTFX4 }
+}
+
+//Tomed
+
+object TomedFrostbiteProjectile
+{
+    frame SHEXA { light BIGFROSTFX2 }
+    frame SHEXB { light BIGFROSTFX1 }
+    frame SHEXC { light BIGFROSTFX2 }
+    frame SHEXD { light BIGFROSTFX3 }
+    frame SHEXE { light BIGFROSTFX4 }
+}
+
+object TomedFrostbiteShard
+{
+    frame ICPRA { light FROSTFX1 }
+    frame ICPRB { light FROSTFX1 }
+    frame ICPRC { light FROSTFX1 }
+    frame ICPRD { light FROSTFX1 }
+    frame ICPRE { light FROSTFX1 }
+    frame ICPRF { light FROSTFX2 }
+    frame ICPRG { light FROSTFX3 }
+    frame ICPRH { light FROSTFX4 }
+}
+
+//Tomed Alternate Mode...
+
+object TomedFrozenOrbProjectile
+{
+    frame SBLL { light BIGFROSTFX1 }
+}
+
+object TomedFrozenOrbShard
+{
+    frame SHRDA { light FROSTFX1 }
+    frame SHRDB { light FROSTFX1 }
+    frame SHRDC { light FROSTFX1 }
+    frame ICPRD { light FROSTFX1 }
+    frame ICPRE { light FROSTFX1 }
+    frame ICPRF { light FROSTFX2 }
+    frame ICPRG { light FROSTFX3 }
+    frame ICPRH { light FROSTFX4 }
+}
+
+object TomedFrozenOrbShardNoGrav
+{
+    frame SHRDA { light FROSTFX1 }
+    frame SHRDB { light FROSTFX1 }
+    frame SHRDC { light FROSTFX1 }
+    frame ICPRD { light FROSTFX1 }
+    frame ICPRE { light FROSTFX1 }
+    frame ICPRF { light FROSTFX2 }
+    frame ICPRG { light FROSTFX3 }
+    frame ICPRH { light FROSTFX4 }
+}
+
+pointlight FROSTFX1
+{
+    color 0.4 0.4 1.0
+    size 32
+}
+
+pointlight FROSTFX2
+{
+    color 0.3 0.3 0.8
+    size 24
+}
+
+pointlight FROSTFX3
+{
+    color 0.2 0.2 0.6
+    size 16
+}
+
+pointlight FROSTFX4
+{
+    color 0.1 0.1 0.4
+    size 8
+}
+
+pointlight BIGFROSTFX1
+{
+    color 0.4 0.4 1.0
+    size 56
+}
+
+pointlight BIGFROSTFX2
+{
+    color 0.3 0.3 0.8
+    size 48
+}
+
+pointlight BIGFROSTFX3
+{
+    color 0.2 0.2 0.6
+    size 40
+}
+
+pointlight BIGFROSTFX4
+{
+    color 0.1 0.1 0.4
+    size 32
+}
+
+pointlight BIGFROSTFX5
+{
+    color 0.0 0.0 0.2
+    size 24
+}

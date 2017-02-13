@@ -1,0 +1,8 @@
+ACTOR Longhorn2 : Longhorn replaces MWeapFrost
+{
+   Game Hexen
+   Weapon.AmmoGive 30
+   Weapon.AmmoType "BlueMana"
+   Weapon.AmmoUse 2
+   Tag "Longhorn"
+}

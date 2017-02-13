@@ -1,0 +1,362 @@
+//Bonuses
+pulselight PURPLEBONUS
+{
+    color 0.8 0.1 0.6
+    interval 1.9
+    size 12
+    secondarysize 8
+    offset 0 5 0
+}
+
+object PurpleBonus
+{
+    frame BONAA { light PURPLEBONUS }
+}
+
+pulselight BLACKBONUS
+{
+    color 0.8 0.8 0.8
+    interval 1.9
+    size 12
+	secondarysize 8
+    offset 0 5 0
+	subtractive 1
+}
+
+object BlackBonus
+{
+    frame BONBA { light BLACKBONUS }
+}
+
+
+//Rejuvenation capsule
+pointlight REJUVCAPS
+{
+    color 0.8 0.8 0.1
+    size 16
+    offset 0 9 0
+	dontlightself 1
+}
+
+object RejuvCaps
+{
+    frame MPOD { light REJUVCAPS }
+}
+
+//Mana capsule
+pointlight MANACAPS
+{
+    color 0.1 0.1 0.8
+    size 16
+    offset 0 9 0
+	dontlightself 1
+}
+
+object MinorManaPod
+{
+    frame MPOD { light MANACAPS }
+}
+
+//Mana pod
+pointlight MANACAPS2
+{
+    color 0.1 0.1 0.8
+    size 20
+    offset 0 12 0
+	dontlightself 1
+}
+
+object MajorManaPod
+{
+    frame MPOD { light MANACAPS2 }
+}
+
+//Stimpack
+pointlight HEALCAPS
+{
+    color 0.8 0.1 0.1
+    size 16
+    offset 0 9 0
+	dontlightself 1
+}
+
+object MediCaps
+{
+    frame STIMA { light HEALCAPS }
+}
+
+//Medikit
+pointlight HEALCAPS2
+{
+    color 0.8 0.1 0.1
+    size 20
+    offset 0 12 0
+	dontlightself 1
+}
+
+object MediPod
+{
+    frame MEDIA { light HEALCAPS2 }
+}
+
+//Gunzerk pack
+pointlight ZERKGLOW
+{
+    color 0.5 0.0 0.9
+    size 20
+    offset 0 12 0
+    dontlightself 1
+}
+
+object Gunzerk
+{
+    frame PSTRA { light ZERKGLOW }
+}
+
+//Berserk pack
+pointlight SERKGLOW
+{
+    color 0.7 0.1 0.1
+    size 20
+    offset 0 12 0
+    dontlightself 1
+	subtractive 1
+}
+
+object Berserk2
+{
+    frame BERZA { light SERKGLOW }
+}
+
+//Lifter
+pointlight YELLOWSYRINGE
+{
+    color 1.0 1.0 0.0
+    size 36
+    offset 0 16 0
+}
+
+object PowerLifter
+{
+    frame SYRG { light YELLOWSYRINGE }
+}
+
+
+object LifterBringer
+{
+    frame SYRG { light YELLOWSYRINGE }
+}
+
+//Syringes
+object SurgeBringer
+{
+    frame SYRG { light GREENSYRINGE }
+}
+
+object BoosterBringer
+{
+    frame SYRG { light BLUESYRINGE }
+}
+
+object StimulantBringer
+{
+    frame SYRG { light REDSYRINGE }
+}
+
+//Amplifier
+pointlight AMPLIGHT
+{
+    color 0.5 0.0 0.9
+    size 48
+    offset 0 16 0
+    dontlightself 1
+}
+
+object Amplifier
+{
+    frame AMPF { light AMPLIGHT }
+}
+
+//Soulsphere
+pointlight SOULLIGHT
+{
+    color 0.1 0.1 0.9
+    size 48
+    offset 0 16 0
+    dontlightself 1
+}
+
+object Soulsphere2
+{
+    frame SOUL { light SOULLIGHT }
+}
+
+//Megasphere
+pointlight MEGALIGHT
+{
+    color 0.8 0.8 0.6
+    size 48
+    offset 0 16 0
+    dontlightself 1
+}
+
+object Megasphere2
+{
+    frame MEGA { light MEGALIGHT }
+}
+
+//Invulsphere
+pointlight INVULLIGHT
+{
+    color 0.1 0.8 0.1
+    size 48
+    offset 0 16 0
+    dontlightself 1
+}
+
+object InvulnerabilitySphere2
+{
+    frame PINV { light INVULLIGHT }
+}
+
+//Reaversphere
+pointlight REAVERLIGHT
+{
+    color 0.1 0.4 0.8
+    size 48
+    offset 0 16 0
+    dontlightself 1
+}
+
+object ReaverSphere
+{
+    frame PINS { light REAVERLIGHT }
+}
+
+//Allmap
+pointlight MAPGLOW
+{
+    color 0.0 0.8 0.8
+    size 18
+    offset 0 8 0
+    dontlightself 1
+}
+
+object Fullmap
+{
+    frame PMAP { light MAPGLOW }
+}
+
+//Red keys
+pointlight REDKEY
+{
+    color 0.6 0.1 0.1
+    size 16
+    offset 0 4 0
+}
+
+pointlight REDKEY1
+{
+    color 0.5 0.1 0.4
+    size 6
+    offset 0 4 0
+}
+
+pointlight REDKEY2
+{
+    color 0.5 0.1 0.4
+    size 10
+    offset 0 4 0
+}
+
+object RedCard2
+{
+    frame RCRD { light REDKEY }
+	
+    frame RCRDA { light REDKEY1 }
+    frame RCRDB { light REDKEY2 }
+}
+
+object RedSkull2
+{
+    frame RSKL { light REDKEY }
+	
+    frame RSKLA { light REDKEY1 }
+    frame RSKLB { light REDKEY2 }
+}
+
+//Yellow keys
+pointlight YELLOWKEY
+{
+    color 0.6 0.6 0.1
+    size 16
+    offset 0 4 0
+}
+
+pointlight YELLOWKEY1
+{
+    color 0.6 0.4 0.1
+    size 6
+    offset 0 4 0
+}
+
+pointlight YELLOWKEY2
+{
+    color 0.6 0.4 0.1
+    size 10
+    offset 0 4 0
+}
+
+object YellowCard2
+{
+    frame YCRD { light YELLOWKEY }
+	
+    frame YCRDA { light YELLOWKEY1 }
+    frame YCRDB { light YELLOWKEY2 }
+}
+
+object YellowSkull2
+{
+    frame YSKL { light YELLOWKEY }
+	
+    frame YSKLA { light YELLOWKEY1 }
+    frame YSKLB { light YELLOWKEY2 }
+}
+
+//Blue keys
+pointlight BLUEKEY
+{
+    color 0.1 0.1 0.6
+    size 16
+    offset 0 4 0
+}
+
+pointlight BLUEKEY1
+{
+    color 0.1 0.4 0.6
+    size 6
+    offset 0 4 0
+}
+
+pointlight BLUEKEY2
+{
+    color 0.1 0.4 0.6
+    size 10
+    offset 0 4 0
+}
+
+object BlueCard2
+{
+    frame BCRD { light BLUEKEY }
+	
+    frame BCRDA { light BLUEKEY1 }
+    frame BCRDB { light BLUEKEY2 }
+}
+
+object BlueSkull2
+{
+    frame BSKL { light BLUEKEY }
+	
+    frame BSKLA { light BLUEKEY1 }
+    frame BSKLB { light BLUEKEY2 }
+}

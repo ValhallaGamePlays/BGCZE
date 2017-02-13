@@ -1,0 +1,68 @@
+#library "levitate"
+#include "zcommon.acs"
+
+// ------------------------------------------------------------------------------------------------
+//
+// Actor levitation script
+//
+// Written by KeksDose
+//
+// 13 / July / 2013
+//
+// This script makes all affected actors float above the ground. It's likely that the only way
+// around it is a flying artifact. Nevertheless, using this on monsters should prove to make them
+// very easy targets.
+//
+// Reuse the script as you wish, but include this source file and credit me somewhere.
+//
+// ------------------------------------------------------------------------------------------------
+
+// Now with a few more rough extensions on Keks' work to support some fun tomed effects.
+// If I can work out how to invent projectiles that retain their owner and only pick one
+// specific monster target. - Zhs2
+
+// Keks' constants
+#define	LE_FLOATINGTIME 175		// int, time in tics you want affected actors to levitate
+#define LE_FLOATSPEED	4.0		// fixed, how fast the affected actors ascend to floating height
+#define	LE_WOBBLETICS	35		// int, how many tics for each complete back and forth motion
+#define LE_WOBBLEACCEL	0.5		// fixed, how fast the wobble accelerates
+#define LE_WOBBLEHEIGHT	110.0	// fixed, how high above the ground affected actors levitate
+
+// Zhs2's constants
+#define LE_TOMEFLOATINGTIME 105 // int, same as FLOATINGTIME above but for the tomed effect
+#define LE_FINALWOBBLEACCEL 2.0 // fixed, wobble acceleration before release
+#define LE_FINALCOUNTDOWN   35  // int, the length of time at the end before the slam
+
+script "KD Amazing Levitation" (void)
+{
+	if(CheckInventory("SkypunchTrigger") > 0)
+    terminate;
+	GiveInventory("SkypunchTrigger", 1);
+	
+	int tics = LE_FLOATINGTIME;
+	int vz = 0.0;
+	int gravity = GetActorProperty(0, APROP_GRAVITY);
+	int frightened = GetActorProperty(0, APROP_FRIGHTENED);
+	
+	SetActorProperty(0, APROP_GRAVITY, 0.0);
+	SetActorProperty(0, APROP_FRIGHTENED, true);
+	SetActorVelocity(0, 0.0, 0.0, LE_FLOATSPEED, false, false);
+	
+     while(GetActorZ(0) - GetActorFloorZ(0) < LE_WOBBLEHEIGHT && 
+            GetActorZ(0) + GetActorProperty(0, APROP_HEIGHT) < GetActorCeilingZ(0)) 
+	Delay(const:1);
+	
+	SetActorVelocity(0, 0.0, 0.0, 0.0, false, false);
+	
+	while(--tics)
+	{
+		vz = FixedMul(sin((Timer() << 16) / LE_WOBBLETICS), LE_WOBBLEACCEL);
+		
+		SetActorVelocity(0, 0.0, 0.0, vz, false, true);
+		
+		Delay(const:1);
+	}
+	TakeInventory("SkypunchTrigger", 1);
+	SetActorProperty(0, APROP_GRAVITY, gravity);
+	SetActorProperty(0, APROP_FRIGHTENED, frightened);
+}

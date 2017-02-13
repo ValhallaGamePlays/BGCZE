@@ -1,0 +1,491 @@
+//RED CARD
+
+ACTOR NewRedCard : CustomInventory replaces RedCard
+{
+	+DONTGIB
+	+NOTDMATCH
+	Inventory.PickupSound "Keycard/Pickup"
+	Inventory.PickupMessage "Picked up a Red Card."
+	States
+	{
+	Spawn:
+		RCRD A 0 NODELAY A_SpawnItemEx("NewRedCardSpecialTrigger",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		RCRD A 10 Bright A_CheckFlag("DROPPED","Dropped")
+		RCRD B 10 Bright
+		Goto Spawn+1
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("RedCard")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("RedCard",1,2)
+		TNT1 A 0 A_SpawnItemEx("NewRedCardDummy")
+		Fail
+		TNT1 A 0
+		Fail
+	Dropped:
+		TNT1 A 0 A_SpawnItemEx("RedCard2",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		Stop
+	}
+}
+ACTOR RedCard2 : NewRedCard
+{
+	States
+	{
+	Spawn:
+		RCRD A 10 Bright
+		RCRD B 10 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("RedCard")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("RedCard",1,2)
+		TNT1 A 0 A_GiveInventory("RedCard")
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//For the pickup message and screen flash in multiplayer
+ACTOR NewRedCardDummy : NewRedCard
+{
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		Stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("RedCard")
+		Stop
+	}
+}
+
+ACTOR NewRedCardSpecialTrigger : CustomInventory
+{
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupSound ""
+	Inventory.PickupMessage ""
+	+INVENTORY.NOSCREENFLASH
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),1)
+		Stop
+		TNT1 A 0 A_JumpIfInventory("RedCard",1,1)
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//BLUE CARD
+
+ACTOR NewBlueCard : CustomInventory replaces BlueCard
+{
+	+DONTGIB
+	+NOTDMATCH
+	Inventory.PickupSound "keycard/pickup"
+	Inventory.PickupMessage "Picked up a Blue Card."
+	States
+	{
+	Spawn:
+		BCRD A 0 NODELAY A_SpawnItemEx("NewBlueCardSpecialTrigger",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		BCRD A 10 Bright A_CheckFlag("DROPPED","Dropped")
+		BCRD B 10 Bright
+		Goto Spawn+1
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("BlueCard")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("BlueCard",1,2)
+		TNT1 A 0 A_SpawnItemEx("NewBlueCardDummy")
+		Fail
+		TNT1 A 0
+		Fail
+	Dropped:
+		TNT1 A 0 A_SpawnItemEx("BlueCard2",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		Stop
+	}
+}
+ACTOR BlueCard2 : NewBlueCard
+{
+	States
+	{
+	Spawn:
+		BCRD A 10 Bright
+		BCRD B 10 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("BlueCard")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("BlueCard",1,2)
+		TNT1 A 0 A_GiveInventory("BlueCard")
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//For the pickup message and screen flash in multiplayer
+ACTOR NewBlueCardDummy : NewBlueCard
+{
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		Stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("BlueCard")
+		Stop
+	}
+}
+
+ACTOR NewBlueCardSpecialTrigger : CustomInventory
+{
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupSound ""
+	Inventory.PickupMessage ""
+	+INVENTORY.NOSCREENFLASH
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),1)
+		Stop
+		TNT1 A 0 A_JumpIfInventory("BlueCard",1,1)
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//YELLOW CARD
+
+ACTOR NewYellowCard : CustomInventory replaces YellowCard
+{
+	+DONTGIB
+	+NOTDMATCH
+	Inventory.PickupSound "keycard/pickup"
+	Inventory.PickupMessage "Picked up a Yellow Card."
+	States
+	{
+	Spawn:
+		YCRD A 0 NODELAY A_SpawnItemEx("NewYellowCardSpecialTrigger",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		YCRD A 10 Bright A_CheckFlag("DROPPED","Dropped")
+		YCRD B 10 Bright
+		Goto Spawn+1
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("YellowCard")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("YellowCard",1,2)
+		TNT1 A 0 A_SpawnItemEx("NewYellowCardDummy")
+		Fail
+		TNT1 A 0
+		Fail
+	Dropped:
+		TNT1 A 0 A_SpawnItemEx("YellowCard2",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		Stop
+	}
+}
+ACTOR YellowCard2 : NewYellowCard
+{
+	States
+	{
+	Spawn:
+		YCRD A 10 Bright
+		YCRD B 10 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("YellowCard")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("YellowCard",1,2)
+		TNT1 A 0 A_GiveInventory("YellowCard")
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//For the pickup message and screen flash in multiplayer
+ACTOR NewYellowCardDummy : NewYellowCard
+{
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		Stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("YellowCard")
+		Stop
+	}
+}
+
+ACTOR NewYellowCardSpecialTrigger : CustomInventory
+{
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupSound ""
+	Inventory.PickupMessage ""
+	+INVENTORY.NOSCREENFLASH
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),1)
+		Stop
+		TNT1 A 0 A_JumpIfInventory("YellowCard",1,1)
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//RED SKULL
+
+ACTOR NewRedSkull : CustomInventory replaces RedSkull
+{
+	+DONTGIB
+	+NOTDMATCH
+	Inventory.PickupSound "skullkey/pickup"
+	Inventory.PickupMessage "Picked up a Red Skull Key."
+	States
+	{
+	Spawn:
+		RSKL A 0 NODELAY A_SpawnItemEx("NewRedSkullSpecialTrigger",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		RSKL A 10 Bright A_CheckFlag("DROPPED","Dropped")
+		RSKL B 10 Bright
+		Goto Spawn+1
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("RedSkull")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("RedSkull",1,2)
+		TNT1 A 0 A_SpawnItemEx("NewRedSkullDummy")
+		Fail
+		TNT1 A 0
+		Fail
+	Dropped:
+		TNT1 A 0 A_SpawnItemEx("RedSkull2",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		Stop
+	}
+}
+ACTOR RedSkull2 : NewRedSkull
+{
+	States
+	{
+	Spawn:
+		RSKL A 10 Bright
+		RSKL B 10 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("RedSkull")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("RedSkull",1,2)
+		TNT1 A 0 A_GiveInventory("RedSkull")
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//For the pickup message and screen flash in multiplayer
+ACTOR NewRedSkullDummy : NewRedSkull
+{
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		Stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("RedSkull")
+		Stop
+	}
+}
+
+ACTOR NewRedSkullSpecialTrigger : CustomInventory
+{
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupSound ""
+	Inventory.PickupMessage ""
+	+INVENTORY.NOSCREENFLASH
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),1)
+		Stop
+		TNT1 A 0 A_JumpIfInventory("RedSkull",1,1)
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//BLUE SKULL
+
+ACTOR NewBlueSkull : CustomInventory replaces BlueSkull
+{
+	+DONTGIB
+	+NOTDMATCH
+	Inventory.PickupSound "skullkey/pickup"
+	Inventory.PickupMessage "Picked up a Blue Skull Key."
+	States
+	{
+	Spawn:
+		BSKL A 0 NODELAY A_SpawnItemEx("NewBlueSkullSpecialTrigger",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		BSKL A 10 Bright A_CheckFlag("DROPPED","Dropped")
+		BSKL B 10 Bright
+		Goto Spawn+1
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("BlueSkull")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("BlueSkull",1,2)
+		TNT1 A 0 A_SpawnItemEx("NewBlueSkullDummy")
+		Fail
+		TNT1 A 0
+		Fail
+	Dropped:
+		TNT1 A 0 A_SpawnItemEx("BlueSkull2",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		Stop
+	}
+}
+ACTOR BlueSkull2 : NewBlueSkull
+{
+	States
+	{
+	Spawn:
+		BSKL A 10 Bright
+		BSKL B 10 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("BlueSkull")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("BlueSkull",1,2)
+		TNT1 A 0 A_GiveInventory("BlueSkull")
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//For the pickup message and screen flash in multiplayer
+ACTOR NewBlueSkullDummy : NewBlueSkull
+{
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		Stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("BlueSkull")
+		Stop
+	}
+}
+
+ACTOR NewBlueSkullSpecialTrigger : CustomInventory
+{
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupSound ""
+	Inventory.PickupMessage ""
+	+INVENTORY.NOSCREENFLASH
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),1)
+		Stop
+		TNT1 A 0 A_JumpIfInventory("BlueSkull",1,1)
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//YELLOW SKULL
+
+ACTOR NewYellowSkull : CustomInventory replaces YellowSkull
+{
+	+DONTGIB
+	+NOTDMATCH
+	Inventory.PickupSound "skullkey/pickup"
+	Inventory.PickupMessage "Picked up a Yellow Skull Key."
+	States
+	{
+	Spawn:
+		YSKL A 0 NODELAY A_SpawnItemEx("NewYellowSkullSpecialTrigger",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		YSKL A 10 Bright A_CheckFlag("DROPPED","Dropped")
+		YSKL B 10 Bright
+		Goto Spawn+1
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("YellowSkull")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("YellowSkull",1,2)
+		TNT1 A 0 A_SpawnItemEx("NewYellowSkullDummy")
+		Fail
+		TNT1 A 0
+		Fail
+	Dropped:
+		TNT1 A 0 A_SpawnItemEx("YellowSkull2",0,0,0,velx,vely,velz,0,SXF_TRANSFERSPECIAL|SXF_CLEARCALLERSPECIAL,0,tid)
+		Stop
+	}
+}
+ACTOR YellowSkull2 : NewYellowSkull
+{
+	States
+	{
+	Spawn:
+		YSKL A 10 Bright
+		YSKL B 10 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),2)
+		TNT1 A 0 A_GiveInventory("YellowSkull")
+		Stop
+		TNT1 A 0 A_JumpIfInventory("YellowSkull",1,2)
+		TNT1 A 0 A_GiveInventory("YellowSkull")
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}
+
+//For the pickup message and screen flash in multiplayer
+ACTOR NewYellowSkullDummy : NewYellowSkull
+{
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		Stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("YellowSkull")
+		Stop
+	}
+}
+
+ACTOR NewYellowSkullSpecialTrigger : CustomInventory
+{
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupSound ""
+	Inventory.PickupMessage ""
+	+INVENTORY.NOSCREENFLASH
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("CheckGameType"),1)
+		Stop
+		TNT1 A 0 A_JumpIfInventory("YellowSkull",1,1)
+		Stop
+		TNT1 A 0
+		Fail
+	}
+}

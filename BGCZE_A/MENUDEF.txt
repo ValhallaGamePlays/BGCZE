@@ -1,0 +1,396 @@
+DEFAULTLISTMENU
+{
+	Font "BigFont", "Untranslated"
+
+	IfGame(Heretic, Hexen)
+	{
+		Selector "GCHEAD1", -28, -3 //-28, -1
+		Linespacing 20
+		Font "BigFont", "Red"
+	}
+	IfGame(Doom, Chex)
+	{
+		Selector "GCHEAD1", -28, -6
+		Linespacing 16
+		Font "BigFont", "Red"
+	}
+}
+
+LISTMENU "MainMenu"
+{
+	IfGame(Heretic, Hexen)
+	{
+		StaticPatch 108, 0, "GUNCLOGO"
+		Position 110, 56
+		Font "BigFont", "Red"	
+		
+		TextItem "New Quest",   "n",	"PlayerclassMenu"
+		TextItem "Options",	    "o",	"OptionsMenu"
+		TextItem "Here be Dragons", "d", "CasterMenu"
+		TextItem "Load",        "l",	"LoadGameMenu"
+		TextItem "Save",        "s",	"SaveGameMenu"
+		TextItem "Postpone",	"q",	"QuitMenu"
+	}
+	IfGame(Doom, Chex)
+	{
+		StaticPatch 108, 0, "GUNCLOGO"
+		Position 97, 72
+		IfOption(ReadThis)
+		{
+			Position 97, 64
+		}
+	}
+	IfGame(Doom)
+	{
+		TextItem "Asskick",  "n", "PlayerclassMenu"
+		ifOption(SwapMenu)
+		{
+			TextItem "Load", "l", "LoadGameMenu"
+			TextItem "Save", "s", "SaveGameMenu"
+			TextItem "Options", "o", "OptionsMenu"
+			TextItem "Here be Dragons", "d", "CasterMenu"
+		}
+		else
+		{
+			TextItem "Here be Dragons", "d", "CasterMenu"
+			TextItem "Options", "o", "OptionsMenu"
+			TextItem "Load", "l", "LoadGameMenu"
+			TextItem "Save", "s", "SaveGameMenu"
+		}
+		TextItem "Chicken Out", "q", "QuitMenu"
+		
+		/*PatchItem "M_NGAME", "n", "PlayerclassMenu"
+		ifOption(SwapMenu)
+		{
+			PatchItem "M_LOADG", "l", "LoadGameMenu"
+			PatchItem "M_SAVEG", "s", "SaveGameMenu"
+			PatchItem "M_OPTION","o", "OptionsMenu"
+		}
+		else
+		{
+			PatchItem "M_OPTION","o", "OptionsMenu"
+			PatchItem "M_LOADG", "l", "LoadGameMenu"
+			PatchItem "M_SAVEG", "s", "SaveGameMenu"
+		}
+		PatchItem "M_QUITG", "q", "QuitMenu"*/
+	}
+}
+
+ListMenu "PlayerclassMenu"
+{
+	NetgameMessage "$NEWGAME"
+	
+	IfGame(Heretic, Hexen)
+	{
+		StaticTextCentered 160, 15, "$MNU_CHOOSECLASS"
+		Position 80, 50
+		PlayerDisplay 220, 50, "20 00 00", "80 00 40"
+		MouseWindow 0, 220
+		Font "BigFont", "Red"
+	}
+	IfGame(Doom)
+	{
+		StaticTextCentered 160, 15, "$MNU_CHOOSECLASS"
+		Position 48, 63
+		PlayerDisplay 220, 63, "20 00 00", "80 00 40"
+		MouseWindow 0, 220
+	}
+}
+
+ListMenu "EpisodeMenu"
+{
+	NetgameMessage "$NEWGAME"
+	
+	IfGame(Doom, Chex)
+	{
+		Position 48, 63
+		StaticPatch 54, 38, "M_EPISOD"
+	}
+	IfGame(Heretic, Hexen)
+	{
+		Position 80, 50
+		Font "BigFont", "Red"
+	}
+}
+
+ListMenu "SkillMenu"
+{
+	IfGame(Doom, Chex)
+	{
+		StaticPatch 96, 14, "M_NEWG"
+	}
+	IfGame(Doom, Strife, Chex)
+	{
+		StaticPatch 54, 38, "M_SKILL"
+		Position 48, 63
+	}
+	IfGame (Heretic, Hexen)
+	{
+		Position 118, 50
+		Font "BigFont", "Red"
+	}
+}
+
+OptionMenu "CasterMenu"
+{
+	Title "GAMEPLAY EXTRA STUFFS"
+	StaticText ""
+	StaticText ""
+	StaticText "Because we all love hoarding", 1
+	Submenu "Loot Options",			"LootMenu"
+	StaticText ""
+	StaticText ""
+	Option "Mana Regeneration", "GC_ManaRegenSpeed", "ManaRegenSettings"
+	StaticText "Remove Magic, Dragon Stronk", 1
+	StaticText "This setting reflects the speed at which your mana passively"
+	StaticText "regenerates on its own, and affects the total effectiveness"
+	StaticText "of having full PowerSurges. Turn it off if for some reason"
+	StaticText "you think those new mana pickups are pretty great ammo"
+	StaticText "supplies, or crank it up if you love casting a whole lot."
+	StaticText ""
+	Option "Armor Restriction", "GC_RestrictiveArmorBehavior", "OnOff"
+	StaticText "I dun wanna dis bagpipe yet", 1
+	StaticText "When on, armor pickup follows more strict behaviour;"
+	StaticText "i.e. higher quality armor cannot be replaced with one of lower"
+	StaticText "quality until it has degraded enough. Use it only when you feel"
+	StaticText "sorry for picking up armor you didn't want yet."
+	StaticText ""
+	Option "Shootable Dynamite", "GC_ShootableTNT", "DynamiteSettings"
+	StaticText "Blast it or keep it", 1
+	StaticText "By default, your dynamite can't be shot - a preventive"
+	StaticText "measure to keep it in check like any other projectile."
+	StaticText "But if you wanna make things more silly and realistic,"
+	StaticText "disable this one."
+	StaticText ""
+	Option "Familiar Casting Mode", "GC_FamiliarMode", "FamiliarSettings"
+	StaticText "All along the watchtower!", 1
+	StaticText "The familiar sticks to the spell you are currently using."
+	StaticText "However, it can be ordered to cast any spell you currently have"
+	StaticText "in your roster, with exception for sheeps and chillgrasp,"
+	StaticText "just so you won't randomly blow up your explosives"
+	StaticText "off the frozen monster or the sheep stampede."
+	StaticText ""
+	Option "Mute Ironblast Spirit", "GC_MuteShotgun", "OnOff"
+	StaticText "Its still creepy enough, isn't it?", 1
+	StaticText "Feeling like the fact that it hovers near your face"
+	StaticText "is enough? With this option here, you can make it"
+	StaticText "cease the talkshow. (But it's not the same without him.)"
+	StaticText ""
+	Option "Gunslinger Mode", "GC_Gunslinger", "OnOff"
+	StaticText "Going guns-blazing", 1
+	StaticText "Feeling like magic is for wazards?"
+	StaticText "This will let you dual-wield your guns regardless"
+	StaticText "of whether you're gunzerking or not!"
+	StaticText "(Warning: does not come with ammo regen.)"
+	StaticText ""
+	Option "Crosshair Mode", "GC_Crosshair", "OnOff"
+	StaticText "Standard crosshair", 1
+	StaticText "Feeling annoyed by the customized crosshairs?"
+	StaticText "You can toggle back to your stock one here."
+	StaticText "It activates when you change your weapon."
+	StaticText "(If it screws up, going to the next level,"
+	StaticText "or loading game should make it work.)"
+	StaticText ""
+	Option "Quake-style Tilt", "GC_QuakeStyle", "OnOff"
+	StaticText "Quake-style Tilt", 1
+	StaticText "Makes your screen tilt, adding some nice touch to motion"
+	StaticText "while moving around. Might make you dizzy, so don't"
+	StaticText "use it if you get motion sickness! Courtesy of Nash."
+	StaticText ""
+	Option "Particle Choke", "GC_ParticleChoke", "OnOff"
+	StaticText "#2AWESOME4U...", 1
+	StaticText "Is Guncaster too awesome for your computer?"
+	StaticText "Click here to nerf some of the awesomeness..."
+	StaticText "It just snuffs out a bunch of the particles."
+	/*StaticText ""
+	StaticText "Recoil Controls", 1
+	Slider "Gun Recoil Factor", "GC_RecoilFactor1", 0.0, 2.0, 0.1, 1
+	Slider "Knockback Recoil Factor", "GC_RecoilFactor2", 0.0, 2.0, 0.1, 1
+	Option "FOV Recoil", "GC_RecoilFactor3", "OnOff" */
+}
+
+OptionValue "DynamiteSettings"
+{
+	0, "Shootable"
+	1, "Non-shootable"
+}
+
+OptionValue "FamiliarSettings"
+{
+	0, "Selective"
+	1, "Random"
+}
+
+OptionValue "ManaRegenSettings"
+{
+	0, "Off"
+	1, "Low"
+	2, "Default"
+	3, "Extreme"
+}
+
+OptionMenu "LootMenu"
+{
+	Title "LOOT OPTIONS"
+	StaticText ""	
+	Option "Hammerspace Backpack", "GC_Hammerspace", "OnOff"
+	StaticText "Gib me all teh lootz", 1
+	StaticText "Expands your backpack by 10% each time you pick up another"
+	StaticText "after getting your first one. If you feel like you have too much"
+	StaticText "ammo, disable that feature here."
+	StaticText ""
+	Option "Money Sharing", "GC_MoneyShare", "OnOff"
+	StaticText "Sharing is caring!", 1
+	StaticText "Picking up any gold while this is on gives all players"
+	StaticText "the amount picked up. Turn this off to revert to"
+	StaticText "greedy bastard mode."
+	StaticText ""
+	Option "Powersuit Sharing", "GC_PowersuitShare", "OnOff"
+	StaticText "MECHA CRAB.", 1
+	StaticText "In case you feel like one ton of a dragon is not enough"
+	StaticText "(ergo, you feel like me), this cvar is for you."
+	StaticText "If you wanna make finding it in multi first more rewarding,"
+	StaticText "keep this one off."
+	StaticText ""
+	Option "Key Sharing", "GC_KeyShare", "OnOff"
+	StaticText "I want my friends' keys!", 1
+	StaticText "Picking up a key grants every player the access codes"
+	StaticText "they need to continue the mission. (Access codes?"
+	StaticText "I thought this mod was for Heretic!)"
+	StaticText ""
+	Option "Loadsamoney Mode", "GC_Loadsamoney", "OnOff"
+	StaticText "WOP YOUR WAD!", 1
+	StaticText "If you feel like you don't earn enough for your hoard,"
+	StaticText "activate this to make everything literally bleed gold."
+	StaticText "Also gives you a permanent money magnet."
+	StaticText "What's that spell? LOADSAMONEY! Prob'ly."
+	StaticText ""
+	TextField "Starting Dosh", "GC_Doshmeter" //Slider "Starting Dosh", "GC_Doshmeter", 0, 99999, 1, 0
+	StaticText "WOP YOUR WAD ON THE COUNTER!", 1
+	StaticText "Need to start with more money than a measly 400?"
+	StaticText "You can change that here."
+}
+
+OptionMenu "CustomizeControls"
+{
+	Title 	"CUSTOMIZE CONTROLS"
+	ScrollTop 2
+	StaticTextSwitchable 	"ENTER to change, BACKSPACE to clear", "Press new key for control, ESC cancels.", "ControlMessage"
+	StaticText 	""
+	StaticText "Main Controls", 1
+	StaticText 	"Necessary to make full use of this mod."
+	StaticText 	""
+	Control 	"Fire",					"+attack"
+	Control 	"Altfire / Cast Spell",	"+altattack"
+	Control 	"Toggle Stratocaster Mode",	"+reload"
+	Control 	"Kick",					"+zoom"
+	Control		"Quick Alternate Spell Mode", "AltMode"
+	Control 	"Call Shopkeeper",		"+Gimbostratus"
+	StaticText 	""
+	Control 	"Jump / Flight",		"+jump"
+	Control 	"Crouch / Pound",		"+crouch"
+	Control 	"Use / Open",			"+use"
+	Control 	"Move forward",			"+forward"
+	Control 	"Move backward",		"+back"
+	Control 	"Strafe left",			"+moveleft"
+	Control 	"Strafe right",			"+moveright"
+	StaticText 	""
+	Control 	"Nightvision",			"Vision"
+	Control 	"TNT Quick-Toss",		"+Quicktoss"
+	Control 	"Quick Ironblast Revert","ShotgunExorcism"
+	StaticText 	""
+	StaticText 	"Weapons", 1
+	Control 	"Next weapon",			"weapnext"
+	Control 	"Previous weapon",		"weapprev"
+	StaticText 	""
+	Control		"Weapon Slot 1",		"slot 1"
+	Control		"Weapon Slot 2",		"slot 2"
+	Control		"Weapon Slot 3",		"slot 3"
+	Control		"Weapon Slot 4",		"slot 4"
+	Control		"Weapon Slot 5",		"slot 5"
+	Control		"Weapon Slot 6",		"slot 6"
+	Control		"Weapon Slot 7",		"slot 7"
+	Control		"Weapon Slot 8",		"slot 8"
+	Control		"Weapon Slot 9",		"slot 9"
+	Control		"Weapon Slot 0",		"slot 0"
+	StaticText 	""
+	StaticText 	"Inventory", 1
+	StaticText 	"Inventory comes handy in here."
+	StaticText 	""
+	Control 	"Activate item",		"invuse"
+	//Control 	"Activate all items",	"invuseall"
+	Control 	"Next item",			"invnext"
+	Control 	"Previous item",		"invprev"
+	StaticText 	""
+	Control 	"Drop item",			"invdrop"
+	Control		"Query item",			"invquery"
+	Control 	"Drop weapon",			"weapdrop"
+	StaticText 	""
+	StaticText 	"In case of Hexen, check your keyring."
+	Control 	"Keys list",			"showpop 2"
+	StaticText 	""
+	StaticText  "In case of giant hole or co-op trap..."
+	Control		"Teleport to Start",	"QuickEscape"
+	StaticText  ""
+	StaticText 	"Quick Spellcasting", 1
+	StaticText 	"Remove wazards, dragon stronk!..."
+	StaticText 	"Now seriously, you can access spells"
+	StaticText 	"quicker, thanks to these buttons."
+	StaticText 	""
+	Control 	"Next Spell",			"deckforward"
+	Control 	"Previous Spell",		"deckbackward"
+	StaticText 	""
+	Control 	"Quick Spell 1",		"+user1"
+	Control 	"Quick Spell 2",		"+user2"
+	Control 	"Quick Spell 3",		"+user3"
+	Control 	"Quick Spell 4",		"+user4"
+	StaticText 	""
+	StaticText 	"Quick Item Usage", 1
+	StaticText 	"In case you need something immediately."
+	StaticText 	""
+	Control 	"Tome of Power/Amplifier",	"+PowerOverwhelming"
+	Control 	"Health Potion",		"PatchMeUpScotty"
+	Control 	"Rejuvenation Potion/Capsule",	"+ItsOver9000"
+	Control 	"Asbestos Suit",		"Rubberfruit"
+	Control 	"Medbag",				"UbermenschUnlimited"
+	Control 	"Gunzerk",				"HolyDogShit"
+	Control 	"Berserk",				"TentativeButtsecks"
+	Control		"Bishop Powersuit",		"Powersuit"
+	StaticText 	""
+	StaticText "Nonsensical stuff", 1
+	StaticText 	"Not necessary, but feel free to be dumb."
+	StaticText 	""
+	Control 	"Taunt",				"DragonBragon"
+	Control 	"Taunt Unusually",		"DancingDerg"
+	StaticText 	""
+	StaticText 	"Chat", 1
+	Control 	"Say",					"messagemode"
+	Control 	"Team say",				"messagemode2"
+	StaticText 	""
+	StaticText 	"Miscellaneous", 1
+	Control 	"Toggle automap",		"togglemap"
+	Control 	"Chasecam",				"chase"
+	Control 	"Coop spy",				"spynext"
+	Control 	"Screenshot",			"screenshot"
+	Control  	"Open console",			"toggleconsole"
+	StaticText 	""
+	StaticText 	"The Rest", 1
+	Control 	"Turn left",			"+left"
+	Control 	"Turn right",			"+right"
+	Control 	"Crouch Toggle",		"crouch"
+	Control 	"Swim up",				"+moveup"
+	Control 	"Swim down",			"+movedown"
+	Control 	"Stop flying",			"land"
+	Control 	"Mouse look",			"+mlook"
+	Control 	"Keyboard look",		"+klook"
+	Control 	"Look up",				"+lookup"
+	Control 	"Look down",			"+lookdown"
+	Control 	"Center view",			"centerview"
+	Control 	"Run",					"+speed"
+	Control 	"Strafe",				"+strafe"
+	Control 	"Show Scoreboard",		"+showscores"
+	/*StaticText 	""
+	StaticText 	"Strife Popup Screens", 1
+	Control 	"Mission objectives",	"showpop 1"
+	Control 	"Weapons/ammo/stats",	"showpop 3"*/
+}

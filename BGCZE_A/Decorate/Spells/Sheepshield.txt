@@ -1,0 +1,704 @@
+//I wish luck to anyone who'll try to make anything out of this mess.
+
+Actor GenericTrigger : Inventory { Inventory.MaxAmount 1 }
+
+Actor SheepGuidance : GenericToken {}
+Actor SheepActive : GenericToken {}
+Actor SheepOut : GenericCounter { Inventory.MaxAmount 25 }
+Actor SuperSheepOut : GenericCounter { Inventory.MaxAmount 3 }
+Actor SheepOut1 : GenericToken {}
+Actor SheepOut2 : GenericToken {}
+Actor SheepOut3 : GenericToken {}
+
+Actor SheepCircleSpawner
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	Var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("SheepOut",0,"Null")
+		TNT1 A 0 A_SetUserVar("User_Counter", 1) //In case I'd like to spawn more sheeps at once.
+	Looplet:
+		TNT1 A 0 A_SpawnItemEx("ExplosiveSheep",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_JumpIf(User_Counter <= 0, "Null")
+		Loop
+	}
+}
+
+Actor SheepCollider
+{
+  	Radius 32
+ 	Height 26
+	Projectile
+	+NOGRAVITY
+	+MTHRUSPECIES
+   	+NOTONAUTOMAP
+	Species "Sheepola"
+	States
+	{
+	Spawn:
+	TNT1 A 5
+	Stop
+	Death:
+	TNT1 A 0
+	Stop
+	}
+}
+
+Actor ExplosiveSheep
+{
+  	Radius 24
+ 	Height 20
+	Speed 20
+	Damage 20
+	Var int User_Angle;
+	Var int User_Frame;
+	Var int User_Timer;
+	Var int User_Baa;
+	Var int User_Released;
+	Var int User_Superposition;
+  	MaxStepHeight 32
+	Gravity 0.35
+	Scale 0.8
+	+MISSILE
+	ProjectileKickback 200
+	+INVULNERABLE
+	+STEPMISSILE
+	+DROPOFF
+	+NOEXPLODEFLOOR
+	+FORCERADIUSDMG
+	+ISMONSTER
+	+FRIENDLY
+	+NOINTERACTION
+	+NOCLIP
+	+THRUSPECIES
+	+DONTHURTSPECIES
+	+SKYEXPLODE
+	Species "Sheepola"
+	States
+	{
+	Spawn:
+    	"####" "#" 0 NoDelay A_SetUserVar("User_Superposition",30.0+frandom(180.0,0.0))
+		"####" "#" 0 A_GiveToTarget("SheepOut",1)
+    	"####" "#" 0 A_SetUserVar("User_Angle",random(0,360))
+	ISetMySightsOnYou:
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 7, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "#" 0 A_SpawnItemEx("SheepSpawnGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SheepSpawnShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SheepSpawnFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_PlaySound("Sheep/Spawn",5,0.4)
+  	YouSpinMeRound:
+		"####" "#" 0 A_JumpIf(User_Baa >= 105, "GiveItANoise")
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 7, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE) //
+		"####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetUserVar("User_Angle", User_Angle + 10)
+		"####" "#" 0 A_Explode(8,64,0)
+		//"####" "#" 0 A_SpawnItemEx("SheepTrail",0,0,0,0,0,0,90,SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 1 A_SetAngle(Angle + 90)
+		"####" "#" 0 A_SpawnItemEx("SheepBlock",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_SetUserVar("User_Baa", User_Baa + random(1,2))
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepActive",1,1)
+		Goto UnleashTheShitstorm
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1") //I am so infuriated on repeating functions with each frame that I decided to come up with this convoluted piece of shit just to not repeat frames. D'oh.
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+
+	UnleashTheShitstorm:
+		"####" "#" 0 A_SetPitch(-CallACS("Pitchfork Simulation"))
+		"####" "#" 0 A_SetUserVar("User_Timer", random(210,245))
+		"####" "#" 0 A_SetUserVar("User_Released",1)
+		"####" "#" 0 A_ChangeFlag("NOINTERACTION",0)
+		"####" "#" 0 A_ChangeFlag("NOCLIP",0)
+		"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 20, sin(angle) * cos(pitch) * 20, sin(pitch) * 20, CVF_REPLACE)
+	LikeARecordBaby: //RELEASE THE SHEEPS.
+		"####" "#" 0 A_CheckFloor("IzSpeedCorrect")
+	HereICome:
+		"####" "#" 0 A_JumpIf(User_Baa >= 140, "GiveItANoise")
+		//"####" "#" 0 A_SpawnItemEx("SheepCollider",25,0,-15,0,0,0,0,SXF_TRANSFERPOINTERS) ..hoped this would work, but it doesn't. Shame on me.
+		"####" "#" 1 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetUserVar("User_Timer", User_Timer - 1)
+		"####" "#" 0 A_JumpIf(User_Timer <= 0, "Death")
+		"####" "#" 0 A_SetUserVar("User_Baa", User_Baa + random(1,2))
+		//"####" "#" 0 A_SpawnItemEx("SheepTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME)
+		//"####" "#" 0 A_JumpIf(CallACS("Large Sheep Collider") == true, "Jump")
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+		Loop
+	GiveItANoise:
+		"####" "#" 0 A_SetUserVar("User_Baa", 0)
+		"####" "#" 0 A_Jump(128,2)
+		"####" "#" 0 A_PlaySound("Sheep/Noise",6,0.6)
+		"####" "#" 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Jump:
+		"####" "#" 0 A_PlaySound("Sheep/Noise",6)
+		"####" "#" 0 A_ChangeVelocity(25,0,25,CVF_RELATIVE)
+		Goto LikeARecordBaby
+	Frame1:
+		SHEP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame2:
+		SHEP B 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame3:
+		SHEP C 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame4:
+		SHEP D 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Reset:
+		SHEP A 0 A_SetUserVar("User_Frame", 0)
+		SHEP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	IzSpeedCorrect:
+		"####" "#" 0 A_JumpIf(Velx < 20,1)
+		Goto HereICome
+		"####" "#" 0 A_SetPitch(0)
+		"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 20, sin(angle) * cos(pitch) * 20, sin(pitch) * 20, CVF_REPLACE)
+		Goto HereICome
+	Death:
+		TNT1 A 0 A_TakeFromTarget("SheepOut",1)
+		TNT1 A 0 A_PlaySound("Sheep/Blast",4,0.6)
+		TNT1 A 0 A_SpawnItemEx("SheepBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor SheepBlast
+{
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Quake (6, 25, 0, 256, none)
+		TNT1 A 0 A_Quake (2, 25, 0, 384, none)
+		TNT1 A 0 A_PlaySound("Matriarch/Hit",5,0.5)
+		TNT1 A 0 A_PlaySound("Matriarch/Exp",6,0.7)
+		TNT1 A 0 A_Explode((40*random(2,3)),192,0,1)
+		TNT1 A 0 A_Explode((60*random(2,3)),128,0)
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_SpawnItemEx("Matriarch_Blast")
+		TNT1 A 0 A_SpawnItemEx("Sheep_Impact")
+		TNT1 A 0 A_SpawnItemEx("Matriarch_Flare")
+		TNT1 A 0 A_SpawnItemEx("Matriarch_Shockwave")
+		TNT1 A 0 A_SpawnItemEx("MatriarchFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 15 A_Quake(3,12,0,512,"none")
+		Stop
+	}
+}
+
+Actor Sheep_Impact
+{
+	+NOINTERACTION
+	Var Int User_SpawnCount;
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetUserVar("User_SpawnCount", 7)
+			Goto Emit
+		Emit:
+			TNT1 AA 0 A_SpawnItemEx("Matriarch_Cloud", FRandom(-35, 35),
+									FRandom(-35, 35), FRandom(-35, 35),
+									FRandom(-2.0, -2.0), FRandom(-2.0, 2.0),
+									FRandom(-2.0, 2.0), FRandom(0.0,360.0), SXF_CLIENTSIDE, 10)
+			TNT1 AA 0 A_SpawnItemEx("Matriarch_Smoke", FRandom(-35, 35),
+									FRandom(-35, 35), FRandom(-25, 25),
+									FRandom(1.5, -2.5), FRandom(-1.0, 1.0),
+									FRandom(-1.0, 1.0), FRandom(0.0,360.0), SXF_CLIENTSIDE, 10)
+			TNT1 A 0 A_SpawnItemEx("Matriarch_Ember", FRandom(-25, 25),
+									FRandom(-25, 25), FRandom(-25, 25),
+									FRandom(-3.0, -10.0), FRandom(-6.0, 6.0),
+									FRandom(1.0, 6.0), FRandom(0.0,360.0), SXF_CLIENTSIDE, 10)
+			/*TNT1 AA 0 A_SpawnItemEx("Matriarch_Flare", FRandom(-20, 20),
+									FRandom(-20, 20), FRandom(-20, 20),
+									0, 0, 0, 0, SXF_CLIENTSIDE)*/
+			TNT1 A random(1,2)
+			Goto Count
+		Count:
+			TNT1 A 0 A_SetUserVar("User_SpawnCount", User_SpawnCount - 1)
+			TNT1 A 0 A_JumpIf(User_SpawnCount <= 0, "NULL")
+			TNT1 A 0 A_Jump(0xFF, "Emit")
+			Goto Emit
+	}
+}
+
+Actor SheepBlock
+{
+  	Radius 48
+ 	Height 64
+	+MISSILE
+	+NOGRAVITY
+	+INVULNERABLE
+	+SHOOTABLE
+	+MTHRUSPECIES
+   	+NOTONAUTOMAP
+	Species "Sheepola"
+	States
+	{
+	Spawn:
+		TNT1 A random(2,3)
+		Stop
+	}
+}
+
+Actor SheepTrail
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	Renderstyle Translucent
+	Alpha 0.6
+	Scale 0.8
+	States
+	{
+	Spawn:
+		"####" "#" 1 A_FadeOut(0.1)
+		Loop
+	}
+}
+
+Actor SheepSpawnGlow
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+	Alpha 0.0
+	Scale 0.0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(frandom(0.35,0.3))
+		TNT1 A 0 A_FadeIn(frandom(0.9,0.99))
+		TNT1 A 0 A_Jump(256,"Spawn1","Spawn2","Spawn3","Spawn4")
+	Spawn1:
+		SHPS A 0
+		Goto Main
+	Spawn2:
+		SHPS B 0
+		Goto Main
+	Spawn3:
+		SHPS C 0
+		Goto Main
+	Spawn4:
+		SHPS D 0
+		Goto Main
+	Main:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.01,0.03))
+		"####" "#" 1 Bright A_FadeOut(0.05)
+		Loop
+	}
+}
+
+Actor SheepSpawnShock
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	Renderstyle Add
+	Alpha 0.0
+	Scale 0.0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(frandom(0.1,0.08))
+		TNT1 A 0 A_FadeIn(frandom(0.9,0.99))
+	Spawn1:
+		SHCK B 0
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX + 0.07)
+		"####" "#" 1 Bright A_FadeOut(0.1)
+		Loop
+	}
+}
+
+Actor SheepSpawnFX
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	States
+	{
+	Spawn:
+	TNT1 A 20
+	Stop
+	}
+}
+
+//POWERED MODE
+Actor SheepPointer : BulletPuff
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	States
+	{
+		Spawn:
+			TNT1 A 10
+			Stop
+	}
+}
+
+Actor SuperSheepCircleSpawner
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	Var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("SheepOut",0,"NULL")
+		TNT1 A 0 A_SetUserVar("User_Counter", 3)
+	Looplet:
+		TNT1 A 0 A_GiveToTarget("SheepOut",1)
+		TNT1 A 0 A_SpawnItemEx("SuperExplosiveSheep",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_JumpIf(User_Counter <= 0, "Null")
+		Loop
+	}
+}
+
+Actor SuperSheepCircleSpawner1 : SuperSheepCircleSpawner
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("SheepOut1",1,"NULL")
+		TNT1 A 0 A_GiveToTarget("SheepOut1")
+		TNT1 A 0 A_SpawnItemEx("SuperExplosiveSheep1",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+Actor SuperSheepCircleSpawner2 : SuperSheepCircleSpawner1
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("SheepOut2",1,"NULL")
+		TNT1 A 0 A_GiveToTarget("SheepOut2")
+		TNT1 A 0 A_SpawnItemEx("SuperExplosiveSheep2",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+Actor SuperSheepCircleSpawner3 : SuperSheepCircleSpawner1
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("SheepOut3",1,"NULL")
+		TNT1 A 0 A_GiveToTarget("SheepOut3")
+		TNT1 A 0 A_SpawnItemEx("SuperExplosiveSheep3",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+Actor SuperExplosiveSheep : ExplosiveSheep
+{
+	Speed 25
+	Scale 0.8
+	Damage 200 //Ouch.
+	-STEPMISSILE
+	-DROPOFF
+	-NOEXPLODEFLOOR
+	-SHOOTABLE
+	-ISMONSTER
+	+NOGRAVITY
+	Var Int User_MaxSpeed;
+	Var Int User_Acceleration;
+	States
+	{
+	Spawn:
+    	"####" "#" 0 NoDelay A_SetUserVar("User_Superposition",40.0+frandom(180.0,0.0))
+	ISetMySightsOnYou:
+		"####" "#" 0 A_GiveToTarget("SuperSheepOut",1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 15, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "#" 0 A_SpawnItemEx("SuperSheepSpawnGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SuperSheepSpawnShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SuperSheepSpawnFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_PlaySound("Sheep/Spawn",5,0.4)
+  	YouSpinMeRound:
+		"####" "#" 0 A_PlaySound("SuperSheep/Whoosh",6,0.7,1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 15, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE) //
+		"####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetUserVar("User_Angle", User_Angle + 10)
+		"####" "#" 0 A_Explode(30,64,0)
+		"####" "#" 0 A_SpawnItemEx("SheepReflector",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "###" 0 A_SpawnItemEx("SuperSheepStarTrail",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(1.0,-0.5),frandom(225.0,315.0),SXF_CLIENTSIDE,64)
+		//"####" "#" 0 A_SpawnItemEx("SuperSheepTrail",0,0,0,0,0,0,90,SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 1 A_SetAngle(Angle + 90)
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepActive",1,1)
+		Goto UnleashTheShitstorm
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+
+	UnleashTheShitstorm:
+		"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 25, sin(angle) * cos(pitch) * 25, sin(pitch) * 25, CVF_REPLACE)
+		"####" "#" 0 A_SetUserVar("User_Released", 1)
+		"####" "#" 0 A_SetUserVar("User_MaxSpeed", 30 << 16)
+		"####" "#" 0 A_SetUserVar("User_Acceleration", 1.3 * 65535)
+		"####" "#" 0 A_ChangeFlag("NOINTERACTION",0)
+		"####" "#" 0 A_ChangeFlag("NOCLIP",0)
+		"####" "#" 0 ACS_NamedExecuteAlways("KD Laser Track", 0)
+	LikeARecordBaby:
+	HereICome:
+
+		"####" "###" 0 A_SpawnItemEx("SuperSheepStarTrail",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(1.0,-0.5),frandom(225.0,315.0),SXF_CLIENTSIDE,64)
+		"####" "#" 1 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_FaceTracer
+		//"####" "#" 0 A_SpawnItemEx("SheepTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME)
+		 //A_JumpIf(CallACS("Large Sheep Collider") == true, "Jump")
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+		Loop
+	Frame1:
+		SSHP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame2:
+		SSHP B 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame3:
+		SSHP C 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame4:
+		SSHP D 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Reset:
+		SSHP A 0 A_SetUserVar("User_Frame", 0)
+		SSHP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Death:
+		TNT1 A 0
+		Goto RestOfDeath
+	RestOfDeath:
+		TNT1 A 0 A_StopSound(6)
+		TNT1 A 0 A_TakeFromTarget("SuperSheepOut", 1)
+		TNT1 A 0 A_SpawnItemEx("SuperSheepBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor SuperSheepBlast
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	Var Int User_Lifespan;
+	States
+	{
+	Spawn:
+			TNT1 A 0 NoDelay A_SetUserVar("User_Lifespan",14)
+			TNT1 A 0 A_PlaySound("TNT/Explosion",5,0.9)
+			TNT1 A 0 A_PlaySound("TNT/Add",7)
+			TNT1 A 0 A_PlaySound("TNT/Far",6,0.8)
+			TNT1 A 0 A_SpawnItemEx("TNTMain",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+			TNT1 A 0 A_Quake(3,55,0,768,"none")
+			TNT1 A 0 A_Quake(7,55,0,384,"none")
+			TNT1 A 0 A_Explode(500,364,0,1) //Pretty hard to hit with them, so let's make it ridiculous.
+			TNT1 A 0 A_Explode(300,256,0)
+		DeathLoop:
+			TNT1 A 0 A_SetUserVar("User_Lifespan",User_Lifespan - 1)
+			TNT1 A 4 A_Explode(40,364,0,1)
+			TNT1 A 0 A_Explode(20,256,0)
+			TNT1 A 0 A_JumpIf(User_Lifespan <= 0, 1)
+			Loop
+			TNT1 A 6
+			Stop
+	}
+}
+
+Actor SheepReflector : SheepBlock
+{
+  	//+REFLECTIVE
+}
+
+Actor SuperSheepSpawnGlow
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	Renderstyle Add
+	Alpha 0.0
+	Scale 0.0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(frandom(0.35,0.3))
+		TNT1 A 0 A_FadeIn(frandom(0.9,0.99))
+		TNT1 A 0 A_Jump(256,"Spawn1","Spawn2","Spawn3","Spawn4")
+	Spawn1:
+		BRWV A 0
+		Goto Main
+	Spawn2:
+		BRWV B 0
+		Goto Main
+	Spawn3:
+		BRWV C 0
+		Goto Main
+	Spawn4:
+		BRWV D 0
+		Goto Main
+	Main:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.01,0.03))
+		"####" "#" 1 Bright A_FadeOut(0.05)
+		Loop
+	}
+}
+
+Actor SuperSheepSpawnShock
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	Renderstyle Add
+	Alpha 0.0
+	Scale 0.0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(frandom(0.1,0.08))
+		TNT1 A 0 A_FadeIn(frandom(0.9,0.99))
+	Spawn1:
+		SHCK D 0
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX + 0.07)
+		"####" "#" 1 Bright A_FadeOut(0.1)
+		Loop
+	}
+}
+
+Actor SuperSheepSpawnFX
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	States
+	{
+	Spawn:
+	TNT1 A 20
+	Stop
+	}
+}
+
+Actor SuperExplosiveSheep1 : SuperExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	SSHP A 0 NoDelay A_SetUserVar("User_Superposition",60.0)
+		SSHP A 0 A_SetUserVar("User_Angle",0)
+		Goto ISetMySightsOnYou
+	Death:
+		TNT1 A 0 A_TakeFromTarget("SheepOut1",1)
+		Goto RestOfDeath
+	}
+}
+
+Actor SuperExplosiveSheep2 : SuperExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	SSHP A 0 NoDelay A_SetUserVar("User_Superposition",60.0)
+    	SSHP A 0 A_SetUserVar("User_Angle",120)
+		Goto ISetMySightsOnYou
+	Death:
+		TNT1 A 0 A_TakeFromTarget("SheepOut2",1)
+		Goto RestOfDeath
+	}
+}
+
+Actor SuperExplosiveSheep3 : SuperExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	SSHP A 0 NoDelay A_SetUserVar("User_Superposition",60.0)
+    	SSHP A 0 A_SetUserVar("User_Angle",240)
+		Goto ISetMySightsOnYou
+	Death:
+		TNT1 A 0 A_TakeFromTarget("SheepOut3",1)
+		Goto RestOfDeath
+	}
+}
+
+Actor SuperSheepStarTrail
+{
+	+NOINTERACTION
+   	+NOTONAUTOMAP
+	Renderstyle Add
+	Scale 0.0
+	Alpha 0.0
+	Var Int User_Frame;
+	States
+	{
+	Spawn:
+		REDS A 0 NoDelay A_SetScale(ScaleX + frandom(0.04,0.06))
+		REDS A 0 A_FadeIn(frandom(0.8,1.0))
+		REDS A 0 A_SetUserVar("User_Frame", random(1,8))
+	YouSpinMeRound:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "NULL")
+		"####" "#" random(1,2) Bright
+		SSHP A 0 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.002,0.005))
+		"####" "#" 0 A_FadeOut(0.05)
+		
+		"####" "#" 0 A_JumpIf(User_Frame <= 2, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 6, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 8, "Reset")
+	
+	Frame1:
+		REDS A 0
+		Goto YouSpinMeRound
+	Frame2:
+		REDS B 0
+		Goto YouSpinMeRound
+	Frame3:
+		REDS C 0
+		Goto YouSpinMeRound
+	Frame4:
+		REDS D 0
+		Goto YouSpinMeRound
+	Reset:
+		REDS A 0 A_SetUserVar("User_Frame", 0)
+		Goto YouSpinMeRound
+	}
+}
+		
+Actor CattleProd : BulletPuff
+{
+	+ALWAYSPUFF
+	+PUFFGETSOWNER
+	+BLOODLESSIMPACT
+	+PUFFONACTORS
+	+SKYEXPLODE
+	+DONTSPLASH
+	+NOTRIGGER
+   	+NOTONAUTOMAP
+	-ALLOWPARTICLES
+	States
+	{
+		Spawn:
+		Crash:
+		Death:
+		XDeath:
+			TNT1 A 0 NoDelay ACS_NamedExecuteAlways("KD Laser Assign Tid", 0)
+			TNT1 A 4
+			Stop
+	}
+}

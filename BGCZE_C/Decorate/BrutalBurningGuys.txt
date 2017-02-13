@@ -1,0 +1,2080 @@
+actor GC_BurningImp: BurningImp replaces BurningImp
+{   Radius 1
+    Height 1
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    Mass 1000
+    Health 100
+	var int User_Smoke;
+	var int User_SmokeLoop;
+	States    
+	{
+    Spawn:
+		IZD4 CCC 2 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 DDD 2 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 CCC 3 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 DDD 2 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 CCC 3 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 DDD 2 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 CCC 3 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 DDD 3 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 CCC 3 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 DDD 3 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 CCC 3 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 DDD 3 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		
+		
+		TROO LLLL 2 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		
+        TNT1 A 0 A_ChangeFlag("CORPSE",1)
+		TNT1 A 0 A_Playsound("props/redfire")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",81) //Simulates total number of iterations...
+	Flaming:
+		BOSB F 0 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_JumpIf(User_SmokeLoop == 0, "Smoking")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	Smoking:
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",71) //Simulates total number of iterations...
+		TNT1 A 0 A_SetUserVar("User_Smoke",20) //Simulates tic delay per state...
+	SmokeLoop:
+		BOSB F 0 A_JumpIf(User_SmokeLoop == 0, "Looplet")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop		
+	Smoke:
+        "####" "#" 0 A_CustomMissile ("SmallSmoke", 25, 0, random (0, 360), 2, random (70, 110))
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		"####" "#" 0 A_SetUserVar("User_Smoke",20)
+		Goto SmokeLoop
+	Looplet:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("PimpBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("PimpBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop")
+		Goto Looplet
+	Raise:
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		TNT1 A 0 A_SpawnItem("Imp")
+		Stop
+	}
+}
+
+actor GC_BurningDemon2: BurningDemon2 replaces BurningDemon2
+{   Radius 22
+    Height 52
+    +NOTELEPORT
+	+SHOOTABLE
+    +MOVEWITHSECTOR
+	+SOLID
+	+NOBLOCKMONST
+	PainChance 0
+	Speed 15
+	damagefactor "Blood", 0.0 damagefactor "BlueBlood", 0.0 damagefactor "GreenBlood", 0.0
+    damagefactor "Shrapnel", 0.3
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	damagefactor "Burn", 0.0
+	damagefactor "SSG", 5.0
+	damagefactor "Explosive", 5.0
+	damagefactor "ExplosiveImpact", 2.0
+    Mass 1000
+    Health 100
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	States    
+	{
+    Spawn:
+		CRB7 M 3 A_Wander
+		TNT1 A 0 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		CRB7 N 3 A_Wander
+		TNT1 A 0 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		CRB7 O 3 A_Wander
+		TNT1 A 0 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		CRB7 P 3 A_Wander
+		TNT1 A 0 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_playsound ("demon/pain")		
+		TNT1 A 0 A_GiveInventory("DeathTimer1", 1)
+		TNT1 A 0 A_JumpIfInventory("DeathTimer1", 20, "Death")
+		Loop
+		
+	Death:
+		TNT1 A 0 A_SpawnItem ("BurnedDemon")
+		Stop
+
+	XDeath:
+	Death.SSG:
+	Death.Explosive:
+		TNT1 AAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 AA 0 A_CustomMissile ("XDeathBurnedDemonArm", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeathBurnedDemonLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("MuchMeatDeath", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("BurningFlyingMeatPiece", 64, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("CrueltyBonus5Health")
+		Stop
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Spawn
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto Spawn
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("demon/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Demon",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("demon/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Demon",0,0,0,frandom(-13.0,-17.0),0,frandom(10.0,12.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Spawn
+	Death.Acid:
+		"####" "#" 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 
+			{
+			A_SetScale(ScaleX+frandom(0.01,0.025));
+			A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130));
+			}
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+	}
+}
+
+Actor GC_BurnedDemon: BurnedDemon replaces BurnedDemon
+{
+	Radius 1
+	Height 1
+	var int User_Smoke;
+	var int User_SmokeLoop;
+	States
+	{
+	Spawn:
+        CRB7 Q 2
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_playsound ("demon/death")
+        CRB7 QQQQ 2 A_CustomMissile ("FlameTrails", 45, 0, random (0, 360), 2, random (50, 130))
+		CRB7 RRRR 2 A_CustomMissile ("FlameTrails", 30, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_ChangeFlag("CORPSE",1)
+        TNT1 A 0 A_Playsound("props/redfire")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",79)
+	Flaming:
+		CARB J 0 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_JumpIf(User_SmokeLoop == 0, "Smoking")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	Smoking:
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",51) //Simulates total number of iterations...
+		TNT1 A 0 A_SetUserVar("User_Smoke",20) //Simulates tic delay per state...
+	SmokeLoop:
+		CARB J 0 A_JumpIf(User_SmokeLoop == 0, "Looplet")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop		
+	Smoke:
+        "####" "#" 0 A_CustomMissile ("SmallSmoke", 35, 0, random (0, 360), 2, random (70, 110))
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		"####" "#" 0 A_SetUserVar("User_Smoke",20)
+		Goto SmokeLoop
+	Looplet:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("DemonBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("DemonBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop")
+		Goto Looplet
+	Raise:
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		TNT1 A 0 A_SpawnItem("Demon")
+		Stop
+	}
+}
+
+ACTOR GC_DyingZombiemanInFlames: DyingZombiemanInFlames replaces DyingZombiemanInFlames
+{
+    Radius 12
+    Height 30
+    Speed 5
+	Health 20
+	PainSound "grunt/pain"
+	DeathSound "grunt/death"
+	+SHOOTABLE
+    +FLOORCLIP
+	//+NOBLOCKMAP
+	+NOICEDEATH
+    +LOOKALLAROUND
+	+FRIGHTENED
+	-SOLID
+	damagefactor "Burn", 0.0
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	var int User_SmokeLoop;
+	var int User_Smoke;
+    States
+    {
+
+    Spawn:
+		TNT1 A 0
+		ZMAB A 1 A_Look
+		Loop
+    See:
+		TNT1 A 0
+		TNT1 A 0 A_Playsound("BurnZom")
+		Goto See2
+	See2:
+		ZMAB A 5 A_Chase
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        ZMAB A 5 A_Chase
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		
+		ZMAB B 5 A_Chase
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        ZMAB B 5 A_Chase
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_SpawnItem("Brutal_BloodSpot")
+	    TNT1 A 0 A_GiveInventory("DeathTimer1", 1)
+		TNT1 A 0 A_JumpIfInventory("DeathTimer1", 15, "GotoDeath")
+		Loop
+		
+	GotoDeath:
+		TNT1 A 0
+		Goto Death
+	
+	Death:
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("CORPSE",1)
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 41)
+	Flaming:
+		BRZ3 H 1 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_JumpIf(User_SmokeLoop == 0, "Smoking")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	Smoking:
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",24) //Simulates total number of iterations...
+		TNT1 A 0 A_SetUserVar("User_Smoke",10) //Simulates tic delay per state...
+	SmokeLoop:
+		BRZ3 H 0 A_JumpIf(User_SmokeLoop == 0, "Looplet")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop		
+	Smoke:
+        "####" "#" 0 A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		"####" "#" 0 A_SetUserVar("User_Smoke",10)
+		Goto SmokeLoop
+	Looplet:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+    Crush:
+        TNT1 A 0 A_PlaySound("misc/xdeath4")
+        CRS2 A 5
+        CRS2 A -1
+        Stop
+	
+	Death.Stomp:
+	Death.SSG:
+	XDeath:
+		TNT1 AAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 AAAAAA 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 AA 0 bright A_CustomMissile ("XDeath2", 55, 0, random (0, 360), 2, random (30, 180))
+		TNT1 AA 0 bright A_CustomMissile ("XDeath3", 55, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 A_SpawnItem ("CrushedRemains")
+		TNT1 A 1
+		TNT1 A 0 ACS_Execute(477, 0, 0, 0, 0)
+		TNT1 A 1 A_XScream
+		TNT1 A 1 A_NoBlocking
+		Stop
+		
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Spawn
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto Spawn
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Zombieman",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Zombieman",0,0,0,frandom(-13.0,-17.0),0,frandom(10.0,12.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("ZombiemanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("ZombiemanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop")
+		Goto Looplet
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Spawn
+	Death.Acid:
+		"####" "#" 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 
+			{
+			A_SetScale(ScaleX+frandom(0.01,0.025));
+			A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130));
+			}
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+	Raise:
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		TNT1 A 0 A_SpawnItem("Zombieman")
+		Stop
+	}
+}
+
+ACTOR GC_DyingSergeantNoLegInFlames: DyingSergeantNoLegInFlames replaces DyingSergeantNoLegInFlames
+{
+    Radius 12
+    Height 30
+    Speed 5
+	Health 20
+	PainSound "grunt/pain"
+	DeathSound "grunt/death"
+	+SHOOTABLE
+    +FLOORCLIP
+	//+NOBLOCKMAP
+    +LOOKALLAROUND
+	+NOICEDEATH
+	+FRIGHTENED
+	-SOLID
+	
+	damagefactor "Burn", 0.0
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	var int User_SmokeLoop;
+	var int User_Smoke;
+	
+    States
+    {
+
+    Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Playsound("BurnZom")
+		ZMAB A 1 A_Look
+		Loop
+    See:
+		SMBM A 5 A_Chase
+		TNT1 A 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        SMBM A 5 A_Chase
+		TNT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		
+		SMBM B 5 A_Chase
+		TNT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        SMBM B 5 A_Chase
+		TNT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+
+	    TNT1 A 0 A_GiveInventory("DeathTimer1", 1)
+		TNT1 A 0 A_JumpIfInventory("DeathTimer1", 15, "GotoDeath")
+		Loop
+		
+	GotoDeath:
+		TNT1 A 0
+		Goto Death
+	Death:
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE",0)
+		TNT1 A 0 A_ChangeFlag("CORPSE",1)
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 41)
+	Flaming:
+		BRZ3 H 1 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_JumpIf(User_SmokeLoop == 0, "Smoking")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	Smoking:
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",24) //Simulates total number of iterations...
+		TNT1 A 0 A_SetUserVar("User_Smoke",10) //Simulates tic delay per state...
+	SmokeLoop:
+		BRZ3 H 0 A_JumpIf(User_SmokeLoop == 0, "Looplet")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop		
+	Smoke:
+        "####" "#" 0 A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		"####" "#" 0 A_SetUserVar("User_Smoke",10)
+		Goto SmokeLoop
+	Looplet:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+    Crush:
+        TNT1 A 0 A_PlaySound("misc/xdeath4")
+        CRS2 A 5
+        CRS2 A -1
+        Stop
+	
+	Death.Stomp:
+	Death.SSG:
+	XDeath:
+		TNT1 AAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 AAAAAA 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 AA 0 bright A_CustomMissile ("XDeath2", 55, 0, random (0, 360), 2, random (30, 180))
+		TNT1 AA 0 bright A_CustomMissile ("XDeath3", 55, 0, random (0, 360), 2, random (30, 180))
+		TNT1 A 0 A_SpawnItem ("CrushedRemains")
+		TNT1 A 1
+		TNT1 A 0 ACS_Execute(477, 0, 0, 0, 0)
+		TNT1 A 1 A_XScream
+		TNT1 A 1 A_NoBlocking
+		Stop
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Spawn
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto Spawn
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Shotgunguy",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Shotgunguy",0,0,0,frandom(-13.0,-17.0),0,frandom(10.0,12.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("ShotgunguyBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("ShotgunguyBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop")
+		Goto Looplet
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Spawn
+	Death.Acid:
+		"####" "#" 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 
+			{
+			A_SetScale(ScaleX+frandom(0.01,0.025));
+			A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130));
+			}
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+	Raise:
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		TNT1 A 0 A_SpawnItem("Shotgunguy")
+		Stop
+	}
+}
+
+ACTOR GC_BurningCacodemon: BurningCacodemon replaces BurningCacodemon
+{
+    Radius 12
+    Height 56
+    Speed 3
+    Scale 0.85
+	Health 100
+	GibHealth 25
+	+NOICEDEATH
+	damagefactor "Burn", 0.5
+	damagefactor "Fire", 0.5
+	damagefactor "Flames", 0.5
+	damagefactor "Flame", 0.5
+	damagefactor "ExplosiveImpact", 10.0
+	bloodtype "Blue_Blood"
+	bloodcolor DarkBlue
+	MONSTER
+	-COUNTKILL
+	+FLOAT
+	+NOGRAVITY
+	+FRIENDLY
+    +FLOORCLIP
+	+SHOOTABLE
+	+NOBLOCKMONST
+	+DONTSPLASH
+	Gravity 1.0
+	bloodtype "DeadBlood"
+    Obituary "%o was near someone in flames."
+	Mass 100
+
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	var int User_SmokeLoop;
+	var int User_Smoke;
+
+    States
+    {
+    Spawn:
+        TNT1 A 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		HEAD NN 1 Bright A_Chase("", "")
+		Goto Suffer
+	Suffer:
+        HEAD EE 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("FireballExplosionFlamesBig", 40, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		
+		
+		HEAD EE 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		HEAD B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 15, "Death")
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		Loop
+
+    Death:
+	    TNT1 A 0 A_Fall
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		TNT1 A 0 A_ChangeFlag("CORPSE",1)
+		HEAD P 1 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_Playsound("props/redfire")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",48) //Total iterations
+		TNT1 A 0 A_SetUserVar("User_Smoke",8) //Tic delay
+	Flaming:
+		HEAD P 0 A_JumpIf(User_SmokeLoop == 0, "Smoking")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Flame")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop
+	Flame:
+		"####" "#" 0 A_CustomMissile("FireballExplosionFlamesBig", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		"####" "#" 0 A_SetUserVar("User_Smoke", 8)
+		Goto Flaming
+	Smoking:
+		HEAD P 1 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",24) //Simulates total number of iterations...
+		TNT1 A 0 A_SetUserVar("User_Smoke",6) //Simulates tic delay per state...
+	SmokeLoop:
+		HEAD P 0 A_JumpIf(User_SmokeLoop == 0, "Looplet")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop		
+	Smoke:
+		"####" "#" 0 A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		"####" "#" 0 A_SetUserVar("User_Smoke",10)
+		Goto SmokeLoop
+	Looplet:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+	Death.Stomp:
+	Death.SSG:
+	XDeath:
+		TNT1 AAAAAAAAAAAAAAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 AAAAAAAAAAAAAAA 0 A_CustomMissile ("BurningFlyingMeatPiece", 64, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 1 A_XScream
+		TNT1 A 1 A_NoBlocking
+		Stop
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Spawn
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto Spawn
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Cacodemon",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Cacodemon",0,0,0,frandom(-13.0,-17.0),0,frandom(10.0,12.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("CacodemonBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("CacodemonBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop")
+		Goto Looplet
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Spawn
+	Death.Acid:
+		"####" "#" 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 
+			{
+			A_SetScale(ScaleX+frandom(0.01,0.025));
+			A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("FireballExplosionFlamesBig", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130));
+			}
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath
+	Raise:
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		TNT1 A 0 A_SpawnItem("Cacodemon")
+		Stop
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+    }
+}
+
+ACTOR GC_BurningZombieMan: BurningZombieMan replaces BurningZombieMan
+{
+    Radius 12
+    Height 56
+    Speed 3
+	Health 30
+	GibHealth 25
+	damagefactor "Burn", 0.0
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	damagefactor "Flame", 0.0
+	damagefactor "Head", 0.0
+	damagefactor "Ice", 0.0
+	damagefactor "ExplosiveImpact", 10.0
+	MONSTER
+	-COUNTKILL
+	+FRIENDLY
+    +FLOORCLIP
+	+SHOOTABLE
+	+NOBLOCKMONST
+	
+	Gravity 0.7
+	bloodtype "DeadBlood"
+    Obituary "%o was near someone in flames."
+	MaxDropOffHeight 6000
+   
+	Mass 999999
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	var int User_SmokeLoop;
+	var int User_Smoke;
+    States
+    {
+    Spawn:
+        BRZ1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_PlaySound("BURNZOM")
+		Goto Suffer
+	Suffer:
+        BRZ3 AAA 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BRZ3 BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		BRZ3 CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BRZ3 BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 9, "Death")
+		Loop
+	
+	Death.ExplosiveImpact:
+	TNT1 A 0
+	TNT1 A 0 ThrustThingZ(0,60,0,1)
+	TNT1 A 0 A_SpawnItem ("CrueltyBonus5Health")
+	TNT1 A 0
+	Goto Looping
+	
+	Looping:	
+	    BDT3 AAAA 1 Bright A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        BDT3 BBBB 1 Bright A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT3 CCCC 1 Bright A_JumpIf(momz == 0, "fallDeath")
+		BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        BDT3 DDDD 1 Bright A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		Loop	
+	
+	FallDeath:
+	    TNT1 AAAAAAAAAA 0 A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (20, 150))
+		TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("ExplosionParticleHeavy", 10, 0, random (0, 360), 2, random (20, 150))
+	    TNT1 AAAA 0 A_CustomMissile("XDeath1", 10, 0, random (0, 360), 2, random (20, 150))
+		TNT1 A 0 A_PlaySound("misc/xdeath")
+		TNT1 A 0 A_Explode(100, 128)
+		Goto Death
+    Death:
+	    TNT1 A 0 A_Fall
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+		
+		TNT1 A 0 A_Jump(256, "Death1", "Death2", "Death3")
+		Goto Death1
+		
+	Death1:	
+	    TNT1 A 0 A_PlaySound("BURNZOM")
+		BRZ3 DD 3 A_CustomMissile("BurnParticles", 30, 0, random (0, 360), 2, random (50, 130))
+		BRZ3 EE 3 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_ChangeFlag("CORPSE",1)
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 41)
+	Flaming:
+        BRZ3 H 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_JumpIf(User_SmokeLoop == 0, "Smoking")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	Smoking:
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 24)
+		TNT1 A 0 A_SetUserVar("User_Smoke", 10)
+	SmokeLoop:
+		BRZ3 H 0 A_JumpIf(User_SmokeLoop == 0, "Looplet")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop
+	Smoke:
+		"####" "#" 0 A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_SetUserVar("User_Smoke", 10)
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Goto SmokeLoop
+	Looplet:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+
+	Death2:
+	    TNT1 A 0 A_PlaySound("BURNZOM")
+		BRZ3 DD 3 A_CustomMissile("BurnParticles", 30, 0, random (0, 360), 2, random (50, 130))
+		BRZ3 EE 3 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_ChangeFlag("CORPSE",1)
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",42)
+	Flaming2:
+        BRZ3 I 1 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_JumpIf(User_SmokeLoop == 0, "Smoking2")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	Smoking2:
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 17)
+		TNT1 A 0 A_SetUserVar("User_Smoke",10)
+	SmokeLoop2:
+		BRZ3 I 0 A_JumpIf(User_SmokeLoop == 0, "Looplet2")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke2")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop
+	Smoke2:
+		"####" "#" 0 A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_SetUserVar("User_Smoke", 10)
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Goto SmokeLoop2
+	Looplet2:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastC")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+	Death3:
+	    TNT1 A 0 A_PlaySound("BURNZOM")
+		BRZ3 DD 3 A_CustomMissile("BurnParticles", 30, 0, random (0, 360), 2, random (50, 130))
+		BRZ3 EE 3 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_SpawnItem("DyingZombiemanInFlames")
+        Stop
+		
+	XDEATH:
+	DEATH.SSG:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+	TNT1 A 0 A_PlaySound("misc/xdeath")
+	     TNT1 AA 0 A_CustomMissile ("XDeathBurnedArm", 32, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XDeathBurnedLeg", 32, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 A 0 A_CustomMissile ("XDeathBurnedSkull", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("MuchMeatDeath", 35, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAA 0 A_CustomMissile ("BurningFlyingMeatPiece", 64, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_SpawnItem ("CrueltyBonus5Health")
+	Stop
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Spawn
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto Spawn
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Zombieman",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Zombieman",0,0,0,frandom(-13.0,-17.0),0,frandom(10.0,12.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("ZombiemanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("ZombiemanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop")
+		Goto Looplet
+	CorpseBlastC:
+		"####" "#" 0 A_SpawnItemEx("ZombiemanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop2")
+		Goto Looplet2
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Spawn
+	Death.Acid:
+		"####" "#" 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 
+			{
+			A_SetScale(ScaleX+frandom(0.01,0.025));
+			A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("FireballExplosionFlamesBig", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130));
+			}
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+	Raise:
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		TNT1 A 0 A_SpawnItem("Zombieman")
+		Stop
+    }
+}
+
+ACTOR GC_BurningShotgunguy: GC_BurningZombieMan replaces BurningShotgunguy
+{
+    States
+    {
+	Spawn:
+        BRZ1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_PlaySound("BURNZOM")
+		Goto Suffer
+	Suffer:
+        BRZ3 AAA 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BRZ3 BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		BRZ3 CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BRZ3 BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 12, "Death")
+		Loop
+	
+	
+Death:
+	    TNT1 A 0 A_Fall
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+		
+		TNT1 A 0 A_Jump(256, "Death1", "Death2", "Death3")
+		Goto Death1
+		
+	Death1:	
+	    TNT1 A 0 A_PlaySound("BURNZOM")
+		BRZ3 DD 3 A_CustomMissile("BurnParticles", 30, 0, random (0, 360), 2, random (50, 130))
+		BRZ3 EE 3 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		
+		TNT1 A 0 A_ChangeFlag("CORPSE",1)
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 41)
+	Flaming:
+        BRZ3 H 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_JumpIf(User_SmokeLoop == 0, "Smoking")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	Smoking:
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 24)
+		TNT1 A 0 A_SetUserVar("User_Smoke", 10)
+	SmokeLoop:
+		BRZ3 H 0 A_JumpIf(User_SmokeLoop == 0, "Looplet")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop
+	Smoke:
+		"####" "#" 0 A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_SetUserVar("User_Smoke", 10)
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Goto SmokeLoop
+	Looplet:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+	Death2:
+	    TNT1 A 0 A_PlaySound("BURNZOM")
+		BRZ3 DD 3 A_CustomMissile("BurnParticles", 30, 0, random (0, 360), 2, random (50, 130))
+		BRZ3 EE 3 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		
+		TNT1 A 0 A_ChangeFlag("CORPSE",1)
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop",42)
+	Flaming2:
+        BRZ3 I 1 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_JumpIf(User_SmokeLoop == 0, "Smoking2")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	Smoking2:
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 17)
+		TNT1 A 0 A_SetUserVar("User_Smoke",10)
+	SmokeLoop2:
+		BRZ3 I 0 A_JumpIf(User_SmokeLoop == 0, "Looplet2")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke2")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop
+	Smoke2:
+		"####" "#" 0 A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_SetUserVar("User_Smoke", 10)
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Goto SmokeLoop2
+	Looplet2:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastC")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+        Stop
+		
+	Death3:
+	    TNT1 A 0 A_PlaySound("BURNZOM")
+		BRZ3 DD 3 A_CustomMissile("BurnParticles", 30, 0, random (0, 360), 2, random (50, 130))
+		BRZ3 EE 3 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 FF 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_Wander
+		BRZ3 GG 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_SpawnItem("DyingSergeantNoLegInFlames")
+        Stop
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Spawn
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto Spawn
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Shotgunguy",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Shotgunguy",0,0,0,frandom(-13.0,-17.0),0,frandom(10.0,12.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("ShotgunguyBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("ShotgunguyBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop")
+		Goto Looplet
+	CorpseBlastC:
+		"####" "#" 0 A_SpawnItemEx("ShotgunguyBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop2")
+		Goto Looplet2
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Spawn
+	Death.Acid:
+		"####" "#" 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 
+			{
+			A_SetScale(ScaleX+frandom(0.01,0.025));
+			A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("FireballExplosionFlamesBig", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130));
+			}
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+	Raise:
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		TNT1 A 0 A_SpawnItem("Shotgunguy")
+		Stop
+    }
+}
+
+ACTOR GC_BurningChaingunguy: GC_BurningZombieMan replaces BurningChaingunguy
+{
+    States
+    {
+	Spawn:
+        BRZ1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_PlaySound("BURNZOM")
+		Goto Suffer
+	Suffer:
+        CPBR AAA 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        CPBR BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		CPBR CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        CPBR BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 12, "Death")
+		Loop
+
+	Death:	
+		TNT1 A 0 A_ChangeFlag("CORPSE",1)
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 41)
+	Flaming:
+        BRZ3 H 0 A_CustomMissile("BurnParticles", 5, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_JumpIf(User_SmokeLoop == 0, "Smoking")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Loop
+	Smoking:
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_SetUserVar("User_SmokeLoop", 24)
+		TNT1 A 0 A_SetUserVar("User_Smoke", 10)
+	SmokeLoop:
+		BRZ3 H 0 A_JumpIf(User_SmokeLoop == 0, "Looplet")
+		"####" "#" 0 A_JumpIf(User_Smoke == 0, "Smoke")
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_SetUserVar("User_Smoke", User_Smoke - 1)
+		Loop
+	Smoke:
+		"####" "#" 0 A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		"####" "#" 0 A_SetUserVar("User_Smoke", 10)
+		"####" "#" 0 A_SetUserVar("User_SmokeLoop", User_SmokeLoop - 1)
+		Goto SmokeLoop
+	Looplet:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		"####" "#" 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Spawn
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto Spawn
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Chaingunguy",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("grunt/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Chaingunguy",0,0,0,frandom(-13.0,-17.0),0,frandom(10.0,12.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("ChaingunguyBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("ChaingunguyBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop")
+		Goto Looplet
+	CorpseBlastC:
+		"####" "#" 0 A_SpawnItemEx("ChaingunguyBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		"####" "#" 0 A_JumpIf(User_SmokeLoop > 0, "SmokeLoop2")
+		Goto Looplet2
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Spawn
+	Death.Acid:
+		"####" "#" 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 
+			{
+			A_SetScale(ScaleX+frandom(0.01,0.025));
+			A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("FireballExplosionFlamesBig", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130));
+			}
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath
+	Raise:
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		TNT1 A 0 A_SpawnItem("Chaingunguy")
+		Stop
+    }
+}
+
+ACTOR GC_BurningImpRunning: GC_BurningZombieMan replaces BurningImpRunning
+{
+    States
+    {
+	Spawn:
+        TNT1 A 0 A_PlaySound("BURNZOM")
+		Goto Suffer
+	Suffer:
+        TRBR AAA 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		TNT1 A 0 A_PlaySound("imp/pain")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        TRBR BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TRBR CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        TRBR DDD 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 8, "Death")
+		Loop
+	Death:
+	Death.ExplosiveImpact:
+	    TNT1 A 0 A_Fall
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+        TNT1 A 0 A_SpawnItem("BurningImp")
+		Stop
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Spawn
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto Spawn
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("imp/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Pimp",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("imp/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Pimp",0,0,0,frandom(-13.0,-17.0),0,frandom(10.0,12.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Spawn
+	Death.Acid:
+		"####" "#" 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 
+			{
+			A_SetScale(ScaleX+frandom(0.01,0.025));
+			A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("FireballExplosionFlamesBig", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130));
+			}
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+    }
+}
+
+ACTOR GC_BurningDemon: GC_BurningZombieMan replaces BurningDemon
+{
+    States
+    {
+	Spawn:
+        TNT1 A 0 A_PlaySound("BURNZOM")
+		Goto Suffer
+	Suffer:
+        SBRG AAA 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		TNT1 A 0 A_playsound ("demon/pain")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        SBRG BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		SBRG CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        SBRG DDD 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 15, "Death")
+		Loop
+	Death:
+		TNT1 A 0 A_SpawnItem ("BurnedDemon")
+		Stop
+		
+	XDeath:
+	Death.SSG:
+	Death.Explosive:
+	Death.ExplosiveImpact:
+	TNT1 A 0 A_NOBlocking
+	TNT1 AAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+	TNT1 AA 0 A_CustomMissile ("XDeathBurnedDemonArm", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeathBurnedDemonLeg", 32, 0, random (0, 360), 2, random (0, 160))
+    TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat2", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat3", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("MuchMeatDeath", 35, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAA 0 A_CustomMissile ("BurningFlyingMeatPiece", 64, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_SpawnItem ("CrueltyBonus5Health")
+    Stop
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Spawn
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto Spawn
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(10.0,12.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("demon/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Demon",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("demon/pain")
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Demon",0,0,0,frandom(-13.0,-17.0),0,frandom(10.0,12.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Spawn
+	Death.Acid:
+		"####" "#" 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 
+			{
+			A_SetScale(ScaleX+frandom(0.01,0.025));
+			A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("FireballExplosionFlamesBig", 40, 0, random (0, 360), 2, random (50, 130));
+			A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130));
+			}
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+    }
+}
+
+ACTOR GC_BurningZombieManSimple: GC_BurningZombieMan replaces BurningZombieManSimple
+{
+    Speed 1
+	States
+    {
+    Spawn:
+        BRZ5 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_PlaySound("BURNZOM")
+		Goto Suffer
+	Suffer:
+        BRZ5 AAA 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BRZ5 BBB 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		BRZ5 CCC 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BRZ5 DDD 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		 BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BRZ5 EEE 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		 BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BRZ5 FFF 1 BRIGHT A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_SpawnItemEx("TinyBurningPiece3", random (-15, 15), random (-15, 15))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 4, "Death")
+		Loop
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MinorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+	}
+}

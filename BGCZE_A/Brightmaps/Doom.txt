@@ -1,0 +1,79 @@
+//Brightmaps
+
+//Mana capsule
+brightmap sprite MPODA0
+{
+    map "Bmaps/STIMA.png"
+}
+
+//Rejuvenation capsule
+brightmap sprite MPODC0
+{
+    map "Bmaps/STIMA.png"
+}
+
+//Mana pod
+brightmap sprite MPODB0
+{
+    map "Bmaps/MPODB.png"
+}
+
+//Stimpack
+brightmap sprite STIMA0
+{
+    map "Bmaps/STIMA.png"
+}
+
+//Medikit
+brightmap sprite MEDIA0
+{
+    map "Bmaps/MEDIA.png"
+}
+
+//Gunzerk
+brightmap sprite PSTRA0
+{
+    map "Bmaps/PSTRA.png"
+}
+
+//Berserk
+brightmap sprite BERZA0
+{
+    map "Bmaps/BERZA.png"
+}
+
+//Allmap
+brightmap sprite PMAPA0
+{
+    map "Bmaps/PMAPA.png"
+}
+
+brightmap sprite PMAPB0
+{
+    map "Bmaps/PMAPA.png"
+}
+
+brightmap sprite PMAPC0
+{
+    map "Bmaps/PMAPA.png"
+}
+
+brightmap sprite PMAPD0
+{
+    map "Bmaps/PMAPA.png"
+}
+
+//Keys
+brightmap sprite RCRDA0 { map "Bmaps/CRDBMAP1.png" }
+brightmap sprite YCRDA0 { map "Bmaps/CRDBMAP1.png" }
+brightmap sprite BCRDA0 { map "Bmaps/CRDBMAP1.png" }
+brightmap sprite RCRDB0 { map "Bmaps/CRDBMAP2.png" }
+brightmap sprite YCRDB0 { map "Bmaps/CRDBMAP2.png" }
+brightmap sprite BCRDB0 { map "Bmaps/CRDBMAP2.png" }
+
+brightmap sprite RSKLA0 { map "Bmaps/SKLBMAP1.png" }
+brightmap sprite YSKLA0 { map "Bmaps/SKLBMAP1.png" }
+brightmap sprite BSKLA0 { map "Bmaps/SKLBMAP1.png" }
+brightmap sprite RSKLB0 { map "Bmaps/SKLBMAP2.png" }
+brightmap sprite YSKLB0 { map "Bmaps/SKLBMAP2.png" }
+brightmap sprite BSKLB0 { map "Bmaps/SKLBMAP2.png" }

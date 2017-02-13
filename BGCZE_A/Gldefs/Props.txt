@@ -1,0 +1,48 @@
+Pointlight BARRELGLOW
+{
+    Color 0.1 0.5 0.1
+    Size 16
+    Offset 0 20 0
+}
+
+Object PopBarrel
+{
+    Frame BAR1 { light BARRELGLOW }
+	Frame BEXP { light BARRELGLOW }
+}
+
+Pointlight YELLOWGIZMO
+{
+    Color 1.0 1.0 0.1
+    Size 32
+    Offset 0 64 0
+}
+
+Object KeyGizmoYellow
+{
+    Frame KGZ1 { light YELLOWGIZMO }
+}
+
+Pointlight GREENGIZMO
+{
+    Color 0.1 1.0 0.1
+    Size 32
+    Offset 0 64 0
+}
+
+Object KeyGizmoGreen
+{
+    Frame KGZ1 { light GREENGIZMO }
+}
+
+Pointlight BLUEGIZMO
+{
+    Color 0.1 0.1 1.0
+    Size 32
+    Offset 0 64 0
+}
+
+Object KeyGizmoBlue
+{
+    Frame KGZ1 { light BLUEGIZMO }
+}

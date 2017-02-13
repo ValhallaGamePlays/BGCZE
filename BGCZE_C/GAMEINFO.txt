@@ -1,0 +1,2 @@
+STARTUPTITLE = "Brutal Guncaster V1.0.1"
+STARTUPCOLORS = "FF0000", "000000"

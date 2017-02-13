@@ -1,0 +1,171 @@
+//What says on the tin.
+ACTOR TiberiumDeath
+{
+	//+NOINTERACTION
+	+NOEXPLODEFLOOR
+	+CANBOUNCEWATER	
+	var int User_StickyCycle;
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_Counter",35*random(3,5))
+		TNT1 A 0 A_PlaySound("Tiberium/Meltdown",5,0.3,1)
+	Main:
+		TNT1 A 0 A_JumpIf(User_Counter <= 0, "Null")
+		
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", User_StickyCycle + 1)
+		TNT1 A 0 A_JumpIf(User_StickyCycle >= 3, 2)
+		TNT1 A 0 A_Jump(256,3)
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", 0)
+		TNT1 A 0 A_Warp(AAPTR_TARGET,0,0,0,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("DreadfulDeathLightning",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.1,-0.1),frandom(0.1,-0.1),frandom(0.1,-0.1),frandom(0.0,360.0),SXF_CLIENTSIDE,214)
+		TNT1 A 0 A_SpawnItemEx("DreadfulDeathSmoke",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(0.0,360.0),SXF_CLIENTSIDE,214)
+		TNT1 A 0 A_SpawnItemEx("DreadfulDeathParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(2.0,1.0),frandom(2.0,1.0),frandom(1.0,0.5),frandom(0.0,360.0),SXF_CLIENTSIDE,192)
+		TNT1 A random(1,2)
+		Loop
+	PhaseTwo:
+		TNT1 A -1
+		Stop
+	}
+}
+
+ACTOR DreadfulDeathLightning : DreadfulLightning
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(frandom(0.2,0.3))
+		TNT1 A 0 A_Jump(256,"Spawn1A","Spawn1B","Spawn1C","Spawn1D","Spawn2A","Spawn2B","Spawn2C","Spawn2D")
+	}
+}
+
+ACTOR DreadfulDeathParticle : DreadfulParticle
+{ 
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_SetScale(Frandom(0.1,0.02))
+	Looplet:
+		TNT1 A 0 A_ChangeVelocity (frandom(-0.3, 0.3), frandom(-0.3, 0.3), frandom(0.1, 0.2), 0)
+		TNT1 A 0 A_SetScale(ScaleX+0.005,ScaleY+0.005)
+		GRNP A 1 Bright A_FadeOut(frandom(0.01,0.04))
+		Loop
+    }
+}
+
+ACTOR DreadfulDeathSmoke : DreadfulFlightSmoke
+{ 
+    Alpha 0.0
+    States
+    {
+    Spawn:
+	  TNT1 A 0 NoDelay A_FadeIn(frandom(0.2,0.3))
+	  TNT1 A 0 A_SetScale(frandom(0.05,0.1))
+	  TNT1 A 0 A_Jump(255,"SmokeA","SmokeB","SmokeC","SmokeD")
+	SmokeA:
+	  GRNS A 0
+	  Goto Looplet
+	SmokeB:
+	  GRNS B 0
+	  Goto Looplet
+	SmokeC:
+	  GRNS A 0
+	  Goto Looplet
+	SmokeD:
+	  GRNS B 0
+	  Goto Looplet
+	Looplet:
+	  "####" "#" 0 A_SetScale(ScaleX+0.003)
+	  "####" "#" 1 A_FadeOut(0.005)
+	  Loop
+    }
+}
+
+//The other one
+ACTOR BlueTiberiumDeath
+{
+	//+NOINTERACTION
+	+NOEXPLODEFLOOR
+	+CANBOUNCEWATER	
+	var int User_StickyCycle;
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_Counter",35*random(3,5))
+		TNT1 A 0 A_PlaySound("Tiberium/Meltdown",5,0.3,1)
+	Main:
+		TNT1 A 0 A_JumpIf(User_Counter <= 0, "Null")
+		
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", User_StickyCycle + 1)
+		TNT1 A 0 A_JumpIf(User_StickyCycle >= 3, 2)
+		TNT1 A 0 A_Jump(256,3)
+		TNT1 A 0 A_SetUserVar("User_StickyCycle", 0)
+		TNT1 A 0 A_Warp(AAPTR_TARGET,0,0,0,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("CoreDreadfulDeathLightning",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.1,-0.1),frandom(0.1,-0.1),frandom(0.1,-0.1),frandom(0.0,360.0),SXF_CLIENTSIDE,214)
+		TNT1 A 0 A_SpawnItemEx("CoreDreadfulDeathSmoke",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(0.0,360.0),SXF_CLIENTSIDE,214)
+		TNT1 A 0 A_SpawnItemEx("CoreDreadfulDeathParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(2.0,1.0),frandom(2.0,1.0),frandom(1.0,0.5),frandom(0.0,360.0),SXF_CLIENTSIDE,192)
+		TNT1 A random(1,2)
+		Loop
+	PhaseTwo:
+		TNT1 A -1
+		Stop
+	}
+}
+
+ACTOR CoreDreadfulDeathLightning : CoreDreadfulLightning
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(frandom(0.2,0.3))
+		TNT1 A 0 A_Jump(256,"Spawn1A","Spawn1B","Spawn1C","Spawn1D","Spawn2A","Spawn2B","Spawn2C","Spawn2D")
+	}
+}
+
+ACTOR CoreDreadfulDeathParticle : CoreDreadfulParticle
+{ 
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_SetScale(Frandom(0.1,0.02))
+	Looplet:
+		TNT1 A 0 A_ChangeVelocity (frandom(-0.3, 0.3), frandom(-0.3, 0.3), frandom(0.1, 0.2), 0)
+		TNT1 A 0 A_SetScale(ScaleX+0.005,ScaleY+0.005)
+		PRNP A 1 Bright A_FadeOut(frandom(0.01,0.04))
+		Loop
+    }
+}
+
+ACTOR CoreDreadfulDeathSmoke : CoreDreadfulFlightSmoke
+{ 
+    Alpha 0.0
+    States
+    {
+    Spawn:
+	  TNT1 A 0 NoDelay A_FadeIn(frandom(0.2,0.3))
+	  TNT1 A 0 A_SetScale(frandom(0.05,0.1))
+	  TNT1 A 0 A_Jump(255,"SmokeA","SmokeB","SmokeC","SmokeD")
+	SmokeA:
+	  PRNS A 0
+	  Goto Looplet
+	SmokeB:
+	  PRNS B 0
+	  Goto Looplet
+	SmokeC:
+	  PRNS A 0
+	  Goto Looplet
+	SmokeD:
+	  PRNS B 0
+	  Goto Looplet
+	Looplet:
+	  "####" "#" 0 A_SetScale(ScaleX+0.003)
+	  "####" "#" 1 A_FadeOut(0.005)
+	  Loop
+    }
+}

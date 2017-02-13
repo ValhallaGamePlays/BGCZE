@@ -1,0 +1,358 @@
+ACTOR GuncastHellknight : Hellknight Replaces Hellknight
+{
+	//Loot
+	DropItem Ruby
+
+	//Resists & Weaknesses
+	
+	//Hell's advanced minor tanks. Classic meatshield, doesn't possess any particular
+	//resists, just being healthy in general. I always thought since childhood that they
+	//are throwing not green fire, as I found out later, but some sludge. So I am sticking
+	//with that idea and they are resistant to popper. :V
+	
+	DamageFactor Acid, 0.8
+
+	//PAAAAAIN
+	PainChance 50
+	PainChance Crow, 2
+	PainChance Crow2, 2
+	
+	//Guaranteed Effects
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	//Chance Effects
+	PainChance Lightning, 128
+	PainChance LightningBlue, 16
+	PainChance Manuel, 50
+	PainChance Fire, 50
+	
+	var int User_DeathByFire;
+	var int User_DeathByTiberium;
+	var int User_DeathByBlueTiberium;
+	var int User_LightningLock;
+	
+	States
+	{
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Pain
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-12.0,-16.0),0,frandom(9.0,11.0),CVF_RELATIVE)
+		Goto Pain
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-8.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-12.0,-16.0),0,frandom(9.0,11.0),CVF_RELATIVE)
+		Goto XDeath
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 5 A_SpawnItemEx("Midas_Statue_Hellknight",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS) //SXF_TRANSFERSPRITEFRAME|SXF_SETMASTER)
+		Stop
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Hellknight",0,0,0,frandom(-8.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Hellknight",0,0,0,frandom(-13.0,-17.0),0,frandom(9.0,11.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+	
+	//Standard death stuff
+	Crush:
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("BloodTr255", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		XMED EEEEE 1 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GiantBloodSpot", 4, 0, random (0, 360), 2, random (0, 160))
+		XMED E -1
+		Stop
+	Death:
+		TNT1 A 0 A_StopSound(5)
+		BOS2 I 8
+		BOS2 J 8 A_Scream
+		BOS2 K 8
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		BOS2 L 8 A_NoBlocking
+		BOS2 MN 8
+	Looplet:
+		BOS2 O 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		BOS2 O 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIf(User_DeathByFire == 1, "FireMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByTiberium == 1, "TiberiumMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByBlueTiberium == 1, "BlueTiberiumMelt")
+		Loop
+	XDeath:
+		TNT1 A 0 A_StopSound(5)
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItemEx("HellknightGibbed",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		XMED ABCDE 5
+	Looplet2:
+		"####" "#" 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastC")
+		"####" "#" 1 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+
+	//Corpseblast
+	CorpseBlastA:
+		"####" "#" 0 A_SpawnItemEx("HellknightBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		"####" "#" 0 A_SpawnItemEx("HellknightBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Looplet
+	CorpseBlastC:
+		"####" "#" 0 A_SpawnItemEx("HellknightBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Looplet2
+		
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		"####" "#" 0 A_Jump(50,"Pain")
+		Goto See
+	Death.Acid:
+		BOS2 H 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 A_SetScale(ScaleX+frandom(0.01,0.025))
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath+1
+		
+	//Dreadful
+	Death.Tiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	TiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	Death.BlueTiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByBlueTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	BlueTiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+		
+	//Threadcutter
+	Pain.Manuel:
+		"####" "#" 0 A_Jump(128,1)
+		Goto Pain
+		"####" "#" 0 A_GiveInventory("BleedItem")
+		"####" "#" 0 A_SpawnItemEx("BleedIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+		
+	//Thunderstruck
+	Pain.Lightning:
+		"####" "#" 0 A_Jump(192,1)
+		Goto Pain
+		BOS2 H 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	LightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "LightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Cauterizer
+	Pain.LightningBlue:
+		"####" "#" 0 A_Jump(48,1)
+		Goto Pain
+		BOS2 H 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	BlueLightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "BlueLightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Fire
+	Pain.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		"####" "#" 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(9.0,11.0),CVF_RELATIVE)
+		"####" "#" 0 A_Jump(256,2) //Guaranteed "On Fire!" effect, heeeh.
+	Pain.Fire:
+		"####" "#" 0 A_Jump(16,1)
+		Goto Pain
+		"####" "#" 0 A_JumpIfInventory("PowerOnFire",1,"Pain")
+		"####" "#" 0 A_GiveInventory("OnFireItem")
+		"####" "#" 0 A_SpawnItemEx("OnFireIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+	Death.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-13.0,-17.0),0,frandom(9.0,11.0),CVF_RELATIVE)
+	Death.Lightning:
+	Death.LightningBlue:
+	Death.Fire:
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 1)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_SpawnItemEx("FlamingDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	FireMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	EndOfMelt:
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium", 0)
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 0)
+		Goto Looplet
+		
+	//Crows
+	Death.Crow:
+		"####" "#" 0 A_SpawnItemEx("FlockOfCrows",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Goto Death
+		
+	//Scourgebreath
+	Death.Breath:
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	GenericFreezeDeath:
+		"####" "#" 5 A_GenericFreezeDeath
+		"####" "#" 0 A_JumpIfInTargetInventory("Mana",0,2)
+		"####" "#" 0 A_DropItem("MajorManaPod",-1,54)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"----" A 1 A_FreezeDeathChunks
+		Wait
+	Raise:
+		"####" "#" 0 ACS_NamedExecuteAlways("Normalization")
+		"####" "#" 0 A_SetScale(1)
+		Goto Super::Raise
+	}
+}
+
+ACTOR GuncastStealthHellKnight : GuncastHellKnight replaces StealthHellKnight
+{
+  +STEALTH
+  RenderStyle Translucent
+  Alpha 0
+  Obituary "$OB_STEALTHKNIGHT"
+  HitObituary "$OB_STEALTHKNIGHT"
+}
+
+ACTOR Midas_Statue_Hellknight : Midas_Statue
+{
+	Radius 24
+	Height 64
+	Health 60
+	States
+	{
+	Spawn:
+		BOS2 H 1
+		Goto Super::Cycle
+	Death:
+	Crash:
+		TNT1 A 0 A_SetUserVar("User_GoldRange",17)
+		TNT1 A 0 A_SetUserVar("User_GoldAmount",12)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter1",10)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter2",5)
+		Goto Super::DeathInit
+	MidasReward:
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+		TNT1 A 0 A_GiveToTarget("Dosh",75)
+		Stop
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,75)
+		Stop
+	}
+}
+
+ACTOR HellknightGibbed
+{
+	States
+	{
+	Spawn:
+		TNT1 AAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AA 0 A_CustomMissile ("XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperWallRedBlood", 40, 0, random (0, 360), 2, random (-5, 5))
+		TNT1 AAAA 0 A_CustomMissile ("Instestin", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner", 32, 0, random (0, 360), 2, random (50, 130))
+		Stop
+	}
+}
+
+ACTOR HellknightBlast : BlastShared
+{
+	States
+	{
+	DamageStuff:
+		TNT1 A 0 A_Explode(250,192,0)
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritSmall",0,0,0,0,0,1,0,SXF_TRANSFERPOINTERS,64)
+	Main:
+		TNT1 A 0 A_SpawnItemEx("PimpGibbed",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		Stop
+	 }
+}

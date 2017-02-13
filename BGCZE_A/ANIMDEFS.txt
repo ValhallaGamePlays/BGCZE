@@ -1,0 +1,176 @@
+Texture "WIZARD1"
+Pic 1 Tics 4
+Pic 2 Tics 4
+
+Texture "GCHEAD1"
+Pic 1 tics 10
+Pic 2 tics 10
+
+texture optional AMPLIF0
+pic AMPLIF0 tics 4
+pic AMPLIF1 tics 4
+pic AMPLIF2 tics 4
+pic AMPLIF3 tics 4
+pic AMPLIF4 tics 4
+
+texture optional GODLEFT0
+pic GODLEFT0 tics 1.5
+pic GODLEFT1 tics 1.5
+pic GODLEFT2 tics 1.5
+pic GODLEFT3 tics 1.5
+pic GODLEFT4 tics 1.5
+pic GODLEFT5 tics 1.5
+pic GODLEFT6 tics 1.5
+pic GODLEFT7 tics 1.5
+pic GODLEFT6 tics 1.5
+pic GODLEFT5 tics 1.5
+pic GODLEFT4 tics 1.5
+pic GODLEFT3 tics 1.5
+pic GODLEFT2 tics 1.5
+pic GODLEFT1 tics 1.5
+
+texture optional GODRIGH0
+pic GODRIGH0 tics 1.5
+pic GODRIGH1 tics 1.5
+pic GODRIGH2 tics 1.5
+pic GODRIGH3 tics 1.5
+pic GODRIGH4 tics 1.5
+pic GODRIGH5 tics 1.5
+pic GODRIGH6 tics 1.5
+pic GODRIGH7 tics 1.5
+pic GODRIGH6 tics 1.5
+pic GODRIGH5 tics 1.5
+pic GODRIGH4 tics 1.5
+pic GODRIGH3 tics 1.5
+pic GODRIGH2 tics 1.5
+pic GODRIGH1 tics 1.5
+
+texture optional TOMELFT0
+pic TOMELFT0 tics 1.5
+pic TOMELFT1 tics 1.5
+pic TOMELFT2 tics 1.5
+pic TOMELFT3 tics 1.5
+pic TOMELFT4 tics 1.5
+pic TOMELFT5 tics 1.5
+pic TOMELFT6 tics 1.5
+pic TOMELFT7 tics 1.5
+pic TOMELFT6 tics 1.5
+pic TOMELFT5 tics 1.5
+pic TOMELFT4 tics 1.5
+pic TOMELFT3 tics 1.5
+pic TOMELFT2 tics 1.5
+pic TOMELFT1 tics 1.5
+
+texture optional TOMERIG0
+pic TOMERIG0 tics 1.5
+pic TOMERIG1 tics 1.5
+pic TOMERIG2 tics 1.5
+pic TOMERIG3 tics 1.5
+pic TOMERIG4 tics 1.5
+pic TOMERIG5 tics 1.5
+pic TOMERIG6 tics 1.5
+pic TOMERIG7 tics 1.5
+pic TOMERIG6 tics 1.5
+pic TOMERIG5 tics 1.5
+pic TOMERIG4 tics 1.5
+pic TOMERIG3 tics 1.5
+pic TOMERIG2 tics 1.5
+pic TOMERIG1 tics 1.5
+
+texture optional ZERKLFT0
+pic ZERKLFT0 tics 1.5
+pic ZERKLFT1 tics 1.5
+pic ZERKLFT2 tics 1.5
+pic ZERKLFT3 tics 1.5
+pic ZERKLFT4 tics 1.5
+pic ZERKLFT5 tics 1.5
+pic ZERKLFT6 tics 1.5
+pic ZERKLFT7 tics 1.5
+pic ZERKLFT6 tics 1.5
+pic ZERKLFT5 tics 1.5
+pic ZERKLFT4 tics 1.5
+pic ZERKLFT3 tics 1.5
+pic ZERKLFT2 tics 1.5
+pic ZERKLFT1 tics 1.5
+
+texture optional ZERKRIG0
+pic ZERKRIG0 tics 1.5
+pic ZERKRIG1 tics 1.5
+pic ZERKRIG2 tics 1.5
+pic ZERKRIG3 tics 1.5
+pic ZERKRIG4 tics 1.5
+pic ZERKRIG5 tics 1.5
+pic ZERKRIG6 tics 1.5
+pic ZERKRIG7 tics 1.5
+pic ZERKRIG6 tics 1.5
+pic ZERKRIG5 tics 1.5
+pic ZERKRIG4 tics 1.5
+pic ZERKRIG3 tics 1.5
+pic ZERKRIG2 tics 1.5
+pic ZERKRIG1 tics 1.5
+
+texture MNABAR01
+pic MNABAR01 tics 1.3
+pic MNABAR02 tics 1.3
+pic MNABAR03 tics 1.3
+pic MNABAR04 tics 1.3
+pic MNABAR05 tics 1.3
+pic MNABAR06 tics 1.3
+pic MNABAR07 tics 1.3
+pic MNABAR08 tics 1.3
+pic MNABAR09 tics 1.3
+pic MNABAR10 tics 1.3
+pic MNABAR11 tics 1.3
+pic MNABAR12 tics 1.3
+pic MNABAR13 tics 1.3
+pic MNABAR14 tics 1.3
+pic MNABAR15 tics 1.3
+pic MNABAR16 tics 1.3
+pic MNABAR17 tics 1.3
+pic MNABAR18 tics 1.3
+pic MNABAR19 tics 1.3
+pic MNABAR20 tics 1.3
+pic MNABAR21 tics 1.3
+pic MNABAR22 tics 1.3
+pic MNABAR23 tics 1.3
+pic MNABAR24 tics 1.3
+pic MNABAR25 tics 1.3
+
+texture ARMBAR01
+pic ARMBAR01 tics 1.3
+pic ARMBAR02 tics 1.3
+pic ARMBAR03 tics 1.3
+pic ARMBAR04 tics 1.3
+pic ARMBAR05 tics 1.3
+pic ARMBAR06 tics 1.3
+pic ARMBAR07 tics 1.3
+
+texture HLTBAR01
+pic HLTBAR01 tics 1.3
+pic HLTBAR02 tics 1.3
+pic HLTBAR03 tics 1.3
+pic HLTBAR04 tics 1.3
+pic HLTBAR05 tics 1.3
+pic HLTBAR06 tics 1.3
+pic HLTBAR07 tics 1.3
+pic HLTBAR08 tics 1.3
+pic HLTBAR09 tics 1.3
+pic HLTBAR10 tics 1.3
+pic HLTBAR11 tics 1.3
+pic HLTBAR12 tics 1.3
+pic HLTBAR13 tics 1.3
+pic HLTBAR14 tics 1.3
+pic HLTBAR15 tics 1.3
+pic HLTBAR16 tics 1.3
+pic HLTBAR17 tics 1.3
+pic HLTBAR18 tics 1.3
+pic HLTBAR19 tics 1.3
+pic HLTBAR20 tics 1.3
+pic HLTBAR21 tics 1.3
+pic HLTBAR22 tics 1.3
+pic HLTBAR23 tics 1.3
+pic HLTBAR24 tics 1.3
+pic HLTBAR25 tics 1.3
+pic HLTBAR26 tics 1.3
+pic HLTBAR27 tics 1.3
+pic HLTBAR28 tics 1.3

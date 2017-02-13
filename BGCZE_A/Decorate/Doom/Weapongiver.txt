@@ -1,0 +1,110 @@
+ACTOR Gungiver_Basis : WeaponGiver
+{
+	Game Doom
+	Inventory.PickupSound "misc/w_pkup"
+}
+
+ACTOR Tome_Giver : TomeSpawner replaces Chainsaw
+{
+}
+
+ACTOR Longhorn_Giver : Gungiver_Basis replaces Pistol
+{
+	Inventory.PickupMessage "$GOTLONGHORN"
+	DropItem "Longhorn"
+	Weapon.AmmoGive1 8
+	States
+	{
+	Spawn:
+	LGHG X -1
+	Stop
+	}
+}
+
+ACTOR Strucker_Giver : Gungiver_Basis replaces Shotgun
+{
+	Inventory.PickupMessage "$GOTSTRUCKER"
+	DropItem "Strucker"
+	States
+	{
+	Spawn:
+	STRG X -1
+	Stop
+	}
+}
+
+ACTOR Pulverizer_Giver : Gungiver_Basis replaces Chaingun
+{
+	Inventory.PickupMessage "$GOTPULVERIZER"
+	DropItem "Pulverizer"
+	Scale 0.8
+	States
+	{
+	Spawn:
+	PLVG X -1
+	Stop
+	}
+}
+
+ACTOR Sovereign_Giver : Gungiver_Basis 
+{
+	Inventory.PickupMessage "$GOTSOVEREIGN"
+	DropItem "Sovereign"
+	States
+	{
+	Spawn:
+	SOVG X -1
+	Stop
+	}
+}
+
+
+ACTOR Matriarch_Giver : Gungiver_Basis 
+{
+	Inventory.PickupMessage "$GOTMATRIARCH"
+	DropItem "Matriarch"
+	Scale 0.9
+	States
+	{
+	Spawn:
+	MTRG X -1
+	Stop
+	}
+}
+
+ACTOR RocketLauncherBringer : RandomSpawner replaces RocketLauncher
+{
+	DropItem "Matriarch_Giver" 255 3
+	DropItem "Sovereign_Giver" 255 1
+}
+
+ACTOR Cauterizer_Giver : Gungiver_Basis replaces PlasmaRifle
+{
+	Inventory.PickupMessage "$GOTCAUTERIZER"
+	DropItem "Cauterizer"
+	States
+	{
+	Spawn:
+	CAUG X -1
+	Stop
+	}
+}
+
+ACTOR Dreadful_Giver : Gungiver_Basis
+{
+	Inventory.PickupMessage "$GOTDREADFUL"
+	DropItem "Old Dreadful"
+	States
+	{
+	Spawn:
+	BFGG X -1
+	Stop
+	}
+}
+
+
+ACTOR BFG9000Spawner : RandomSpawner replaces BFG9000
+{
+	DropItem "Dreadful_Giver" 255 3
+	DropItem "PowersuitBringer" 255 1
+}

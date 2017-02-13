@@ -1,0 +1,91 @@
+actor WizardsEye : CustomInventory
+{
+  Inventory.MaxAmount 0
+  Inventory.PickupSound "WizardsEye/Pickup"
+  Inventory.PickupMessage "Eye of Jezht! (Check your map, mortal.)"
+  Renderstyle Add
+  +FLOATBOB
+  +COUNTITEM
+  +INVENTORY.ALWAYSPICKUP
+  states
+  {
+  Spawn:
+    WZEY AA 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY AAAA 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	WZEY B 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY BBBB 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	WZEY A 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY CCCC 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	WZEY A 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY DDDD 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	WZEY E 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY EEEE 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	WZEY F 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY FFFF 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	WZEY E 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY EEEE 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	WZEY D 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY DDDD 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	WZEY C 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY CCCC 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	WZEY B 0 A_SpawnItemEx("WizardsEyeFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    WZEY BBBB 1 Bright A_SpawnItemEx("WizardsEyeParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  Pickup:
+    TNT1 A 0 A_GiveInventory("AllMap") 
+    TNT1 A 0 A_GiveInventory("EyePower1")
+    TNT1 A 0 A_GiveInventory("EyePower2")
+    stop
+  }
+}
+
+ACTOR WizardsEyeFade
+{
+  +NOGRAVITY
+  +NOINTERACTION
+  Renderstyle Add
+  States
+  {
+  Spawn:
+	WZEY C 1 A_FadeOut(0.12)
+	WZEY C 0 A_SetScale(ScaleX+0.02,ScaleX)
+	Loop
+  }
+}
+
+actor EyePower1 : PowerupGiver
+{
+  Inventory.Amount 0
+  powerup.type "EyeFake"
+  powerup.duration -0x7FFFFFFF
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.ALWAYSPICKUP
+  states
+  {
+  Spawn:
+    TNT1 A 1
+    stop
+  }
+}
+
+actor PowerEyeFake : PowerDamage
+{	
+	Inventory.Icon "WIZEYE0"
+	DamageFactor "Normal", 1.0
+}
+
+actor EyePower2 : PowerupGiver
+{
+  Inventory.Amount 0
+  powerup.type "Scanner"
+  powerup.duration -0x7FFFFFFF
+  //inventory.icon "WIZEYE0" //for unknown to me reasons, scanner doesn't show up in powerups when it has an icon, so I had to resolve to hackjob, durrr.
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.ALWAYSPICKUP
+  states
+  {
+  Spawn:
+    TNT1 A 1
+    stop
+  }
+}

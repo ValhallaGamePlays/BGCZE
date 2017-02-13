@@ -1,0 +1,39 @@
+pointlight CROWFLIGHT
+{
+    color 1.0 1.0 1.0
+    size 48
+    subtractive 1
+}
+
+object CrowProjectile
+{
+    frame CROW { light CROWFLIGHT }
+}
+
+pulselight CROWHIT
+{
+    color 1.0 1.0 1.0
+    size 32
+    secondarySize 0
+    interval 0.7
+    subtractive 1
+}
+
+object CrowBlackflash
+{
+    frame CRWF { light CROWHIT }
+}
+
+pulselight CROWMASS
+{
+    color 0.6 0.6 0.6
+    size 64
+    secondarySize 48
+    interval 1.0
+    subtractive 1
+}
+
+object FlockOfCrows
+{
+    frame TNT1 { light CROWMASS }
+}

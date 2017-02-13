@@ -1,0 +1,88 @@
+//I appear to have spontaneously burst into flames - Spy.
+flickerlight IMONFIREBABY
+{
+    color 0.8 0.5 0.1
+    size 56
+    secondarySize 72
+	offset 0 16 0
+    chance 32
+}
+
+object OnFireIndicator
+{
+    frame TNT1 { light IMONFIREBABY }
+}
+
+object FlamingDeath
+{
+    frame TNT1B { light IMONFIREBABY }
+}
+
+//THE EN-LIGHTENING
+flickerlight2 HOWSHOCKING
+{
+    color 0.8 0.8 0.1
+    size 48
+    secondarySize 64
+	offset 0 16 0
+    interval 1.0
+}
+
+object MonsterShock
+{
+    frame TNT1 { light HOWSHOCKING }
+}
+
+flickerlight2 HOWSHOCKINGBLUE
+{
+    color 0.1 0.2 0.8
+    size 48
+    secondarySize 64
+	offset 0 16 0
+    interval 1.0
+}
+
+object CauterMonsterShock
+{
+    frame TNT1 { light HOWSHOCKINGBLUE }
+}
+
+//Gumpop's affliction
+pulselight OHGODJCABOMB
+{
+    color 0.1 0.8 0.1
+    size 36
+    secondarySize 48
+	offset 0 16 0
+    interval 0.9
+}
+
+object GumpopGlow
+{
+    frame TNT1 { light OHGODJCABOMB }
+}
+
+//PIECE THROUGH TOWEL - Cane.
+object TiberiumDeath
+{
+    frame TNT1 { light GREENPLASMATORYGOODNESS }
+}
+
+pointlight GREENPLASMATORYGOODNESS
+{
+    color 0.2 0.8 0.1
+    size 32
+	offset 0 16 0
+}
+
+object BlueTiberiumDeath
+{
+    frame TNT1 { light BLUEPLASMATORYGOODNESS }
+}
+
+pointlight BLUEPLASMATORYGOODNESS
+{
+    color 0.1 0.2 0.8
+    size 32
+	offset 0 16 0
+}

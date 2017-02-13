@@ -1,0 +1,41 @@
+ACTOR CWeaponPiece1Dropper : Randomspawner replaces CWeaponPiece1
+{
+	DropItem "BerserkPot" 255 1
+	DropItem "GunzerkPot" 255 1
+	DropItem "Diamond" 255 1
+}
+
+ACTOR CWeaponPiece2Dropper : Randomspawner replaces CWeaponPiece2
+{
+	DropItem "BerserkPot" 255 1
+	DropItem "GunzerkPot" 255 1
+	DropItem "Diamond" 255 1
+}
+
+ACTOR CWeaponPiece3Dropper : Randomspawner replaces CWeaponPiece3
+{
+	DropItem "BerserkPot" 255 1
+	DropItem "GunzerkPot" 255 1
+	DropItem "Diamond" 255 1
+}
+
+ACTOR MWeaponPiece1Dropper : Randomspawner replaces MWeaponPiece1
+{
+	DropItem "BerserkPot" 255 1
+	DropItem "GunzerkPot" 255 1
+	DropItem "Diamond" 255 1
+}
+
+ACTOR MWeaponPiece2Dropper : Randomspawner replaces MWeaponPiece2
+{
+	DropItem "BerserkPot" 255 1
+	DropItem "GunzerkPot" 255 1
+	DropItem "Diamond" 255 1
+}
+
+ACTOR MWeaponPiece3Dropper : Randomspawner replaces MWeaponPiece3
+{
+	DropItem "BerserkPot" 255 1
+	DropItem "GunzerkPot" 255 1
+	DropItem "Diamond" 255 1
+}

@@ -1,0 +1,11 @@
+ACTOR MapScroll : SuperMap replaces SuperMap
+{
+  Inventory.PickupMessage "Floating scroll with vertices! How joyful!"
+  Inventory.PickupSound "Map/Pickup"
+  States
+  {
+  Spawn:
+    SPMP A -1
+    Stop
+  }
+}

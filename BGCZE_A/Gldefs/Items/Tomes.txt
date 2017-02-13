@@ -1,0 +1,197 @@
+//Skullfire
+pointlight SKULLFIREBOOK
+{
+    color 1.0 0.4 0.1
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object SkullfireBringer
+{
+    frame BOOK { light SKULLFIREBOOK }
+}
+
+//Flamewave
+pointlight FLAMEWAVEBOOK
+{
+    color 1.0 0.4 0.1
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object FlamewaveBringer
+{
+    frame BOOK { light FLAMEWAVEBOOK }
+}
+
+//Meteorfist
+pointlight METEORBOOK
+{
+    color 1.0 0.3 0.1
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object MeteorfistBringer
+{
+    frame BOOK { light METEORBOOK }
+}
+
+//Frostbite
+pointlight FROSTBITEBOOK
+{
+    color 0.1 0.7 0.8
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object FrostbiteBringer
+{
+    frame BOOK { light FROSTBITEBOOK }
+}
+
+
+//Chiillgrasp
+pointlight CHILLBOOK
+{
+    color 0.8 0.1 0.7
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object ChillgraspBringer
+{
+    frame BOOK { light CHILLBOOK }
+}
+
+
+//Gumpop
+pointlight GUMPOPBOOK
+{
+    color 0.1 0.8 0.1
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object GumpopBringer
+{
+    frame BOOK { light GUMPOPBOOK }
+}
+
+//Thunderstruck
+pointlight THUNDERBOOK
+{
+    color 0.8 0.8 0.1
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object ThunderBringer
+{
+    frame BOOK { light THUNDERBOOK }
+}
+
+//Threadcutter
+pointlight THREADCUTTERBOOK
+{
+    color 0.1 0.8 0.6
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object ThreadcutterBringer
+{
+    frame BOOK { light THREADCUTTERBOOK }
+}
+
+//Skypunch
+pointlight SKYPUNCHBOOK
+{
+    color 0.1 0.8 0.8
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object SkypunchBringer
+{
+    frame BOOK { light SKYPUNCHBOOK }
+}
+
+//Crows
+pointlight CROWSBOOK
+{
+    color 0.8 0.1 0.1
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object CrowsBringer
+{
+    frame BOOK { light CROWSBOOK }
+}
+
+//Scourgebreath
+pointlight BREATHBOOK
+{
+    color 0.8 0.6 0.1
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object BreathBringer
+{
+    frame BOOK { light BREATHBOOK }
+}
+
+//Corpseblast
+pointlight CORPSEBOOK
+{
+    color 0.8 0.1 0.7
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object CorpseBringer
+{
+    frame BOOK { light CORPSEBOOK }
+}
+
+//Annihilation
+pointlight ANNIHILATIONBOOK
+{
+    color 0.1 0.1 0.8
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object AnnihilationBringer
+{
+    frame BOOK { light ANNIHILATIONBOOK }
+}
+
+//Darkvoid
+pointlight VOIDBOOK
+{
+    color 0.8 0.1 0.7
+    size 52
+    offset 0 16 0
+	dontlightself 1
+}
+
+object DarkvoidBringer
+{
+    frame BOOK { light VOIDBOOK }
+}

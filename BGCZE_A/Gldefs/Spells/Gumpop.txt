@@ -1,0 +1,36 @@
+object GumpopProjectile
+{
+    frame TNT1A { light GUMPOPFLIGHT }
+    frame TNT1B { light GUMPOPHIT }
+}
+
+object GumpopProjectile2
+{
+    frame TNT1A { light GUMPOPFLIGHT }
+    frame TNT1B { light GUMPOPHIT }
+}
+
+pointlight GUMPOPFLIGHT
+{
+    color 0.0 1.0 0.0
+    size 64
+}
+
+pulselight GUMPOPHIT
+{
+    color 0.0 1.0 0.0
+    size 128
+    secondarySize 0
+    interval 1.0
+}
+
+pointlight GUMPOPFALL
+{
+	color 0.0 1.0 0.0
+	size 8
+}
+
+object AcidRain
+{
+	frame PDRP { light GUMPOPFALL }
+}

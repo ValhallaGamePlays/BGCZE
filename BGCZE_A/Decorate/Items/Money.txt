@@ -1,0 +1,243 @@
+ACTOR Dosh : Ammo
+{
+	Height 24
+	Radius 36
+	Inventory.Amount 1
+	Inventory.MaxAmount 999999
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 999999
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	Inventory.PickupFlash None
+	Inventory.Icon "MONEY"
+	+INVENTORY.NOSCREENFLASH
+	+INVENTORY.IGNORESKILL
+	+DONTGIB
+	+CANBOUNCEWATER
+	Tag "Gold"
+}
+
+Actor DoshPickup : CustomInventory
+{
+	Height 24
+	Radius 36
+	Inventory.PickupMessage ""
+	Inventory.PickupSound ""
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.NOSCREENFLASH
+	+INVENTORY.IGNORESKILL
+	+DONTGIB
+	+CANBOUNCEWATER
+	Tag "Gold"
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay ACS_NamedExecuteAlways("I am Dosh")
+			TNT1 A 0 A_Jump(256,"SpawnMain")
+			Stop
+		SpawnMain:
+			"####" "#" -1
+			Stop
+		Pickup:
+			TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+			TNT1 A 0 A_PlaySound("Money/Pickup")
+			TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"), "PickupShare")
+			TNT1 A 0 A_Jump(256, "PickupMain")
+			Stop
+		PickupMain:
+			TNT1 A 0 A_GiveInventory("Dosh",1)
+			Stop
+		PickupShare:
+			TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,1)
+			Stop
+		Nope:
+			TNT1 A 0
+			Fail
+	}
+}
+
+
+ACTOR Dosh1 : DoshPickup
+{
+	States
+	{
+	SpawnMain:
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB")
+	SpriteA:
+		DOSH A -1
+		Stop
+	SpriteB:
+		DOSH B -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",1)
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,1)
+		Stop
+	}
+}
+
+ACTOR Dosh5 : DoshPickup
+{
+	States
+	{
+	SpawnMain:
+		DOSH C -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",5)
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,5)
+		Stop
+	}
+}
+
+ACTOR Dosh10 : DoshPickup
+{
+	States
+	{
+	SpawnMain:
+		DOSH D -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",random(10,15))
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,10,15)
+		Stop
+	}
+}
+
+ACTOR Dosh25 : DoshPickup
+{
+	States
+	{
+	SpawnMain:
+		CBAG A -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",random(25,35))
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,25,35)
+		Stop
+	}
+}
+
+ACTOR Dosh35 : DoshPickup
+{
+	States
+	{
+	SpawnMain:
+		DOSH E -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",random(35,45))
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,35,45)
+		Stop
+	}
+}
+
+ACTOR GemPickup : DoshPickup
+{
+	-INVENTORY.NOSCREENFLASH
+	Scale 1
+	States
+	{
+		Pickup:
+			TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+			TNT1 A 0 A_PlaySound("Gem/Pickup")
+			TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"), "PickupShare")
+			TNT1 A 0 A_Jump(256, "PickupMain")
+			Stop
+	}
+}
+
+ACTOR Amber : GemPickup
+{
+	Inventory.PickupMessage "Obtained an amber. (Worth 50 gold pieces)"
+	States
+	{
+	SpawnMain:
+		GEMS A -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",50)
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,50)
+		Stop
+	}
+}
+
+ACTOR Ruby : GemPickup
+{
+	Inventory.PickupMessage "Obtained a ruby. (Worth 100 gold pieces)"
+	States
+	{
+	SpawnMain:
+		GEMS C -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",100)
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,100)
+		Stop
+	}
+}
+
+ACTOR Emerald : GemPickup
+{
+	Inventory.PickupMessage "Obtained an emerald. (Worth 250 gold pieces)"
+	States
+	{
+	SpawnMain:
+		GEMS B -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",250)
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,250)
+		Stop
+	}
+}
+
+ACTOR Sapphire : GemPickup
+{
+	Inventory.PickupMessage "Obtained a sapphire. (Worth 400 gold pieces!)"
+	States
+	{
+	SpawnMain:
+		GEMS D -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",400)
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,400)
+		Stop
+	}
+}
+
+ACTOR Diamond : GemPickup
+{
+	Inventory.PickupMessage "Obtained a diamond! (Worth a whopping 1000 gold pieces!)"
+	States
+	{
+	SpawnMain:
+		GEMS E -1
+		Stop
+	PickupMain:
+		TNT1 A 0 A_GiveInventory("Dosh",1000)
+		Stop
+	PickupShare:
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,1000)
+		Stop
+	}
+}

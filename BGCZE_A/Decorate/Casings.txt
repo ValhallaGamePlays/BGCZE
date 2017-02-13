@@ -1,0 +1,414 @@
+//Pulverizer
+ACTOR BuellerCasing //Bueller... Bueller... Bueller... Bueller... Bueller...
+{
+   Radius 2
+   Height 4
+   Speed 15
+   Scale 0.15
+   Damage (1*random(1,2))
+   BounceSound "Casing/Bullet"
+   Obituary "o% was unfortunate enough to get caught in %k's violent casing rain."
+   PROJECTILE
+   -NOGRAVITY
+   +BOUNCEONACTORS
+   +BOUNCEONCEILINGS
+   +BLOODLESSIMPACT
+   +NOTONAUTOMAP
+   +FORCEXYBILLBOARD
+   Gravity 0.75
+   BounceType Doom
+   BounceCount 6
+   BounceFactor 0.6
+   States
+   {
+   Spawn:
+      CAS1 ABCDEFGH 1
+      Goto Roflcopter
+   Roflcopter:
+      CAS1 A 0 A_Jump(128,1,3,5,7)
+      CAS1 ABCDEFGH 1
+      Loop
+   Death:
+      CAS1 A 0 A_SpawnItemEx("BuellerCasingLiedown")
+      stop
+   }
+}
+
+ACTOR BuellerCasingMirrored : BuellerCasing //T'was left handed!
+{
+   States
+   {
+   Spawn:
+      CAS1 AKLMNOPQ 1
+      Goto Roflcopter
+   Roflcopter:
+      CAS1 A 0 A_Jump(128,1,3,5,7)
+      CAS1 AKLMNOPQ 1
+      Loop
+   Death:
+      CAS1 A 0 A_SpawnItemEx("BuellerCasingLiedown")
+      stop
+   }
+}
+
+actor BuellerCasingLiedown
+{
+	-NOGRAVITY
+   	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+    Scale 0.15
+	States
+	{
+	Spawn:
+	  TNT1 A 0 NoDelay A_Jump(255,"Spawn1","Spawn2")
+	  stop
+	Spawn1:
+	  CAS1 I 1
+	  Goto Ded
+	Spawn2:
+	  CAS1 J 1
+	  Goto Ded
+	Ded:
+	  "####" "#" 210 A_CheckSight("Fadying")
+	  Loop
+	Fadying:
+	  "####" "#" 1 A_FadeOut(0.1)
+	  Wait
+   }
+}
+
+ACTOR BuellerCasingSpawner //Regular
+{
+	Speed 29
+	PROJECTILE
+	+NOCLIP
+    +NOTONAUTOMAP
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay A_CustomMissile("BuellerCasing",0,0,random(-100,-80),CMF_AIMDIRECTION,random(-15,15))
+		Stop
+	}
+}
+
+ACTOR BuellerCasingSpawnerLeft //Gunzerk Left
+{
+	Speed 29
+	PROJECTILE
+	+NOCLIP
+	+NOTONAUTOMAP
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay A_CustomMissile("BuellerCasingMirrored",0,0,random(100,80),CMF_AIMDIRECTION,random(-15,15))
+		Stop
+	}
+}
+
+//Strucker
+ACTOR ShottyCasing
+{
+   Radius 3
+   Height 5
+   Speed 6
+   Scale 0.25
+   BounceSound "Casing/Shotgun"
+   PROJECTILE
+   -NOGRAVITY
+   +BOUNCEONACTORS
+   +BOUNCEONCEILINGS
+   +NOTONAUTOMAP
+   +FORCEXYBILLBOARD
+   Gravity 0.85
+   BounceType Doom
+   BounceCount 6
+   BounceFactor 0.6
+   DamageType Nope
+   States
+   {
+   Spawn:
+      CAS2 ABCDEFGH 1
+      Goto Roflcopter
+   Roflcopter:
+      CAS2 A 0 A_Jump(128,1,3,5,7)
+      CAS2 ABCDEFGH 1
+      Loop
+   Death:
+      CAS1 A 0 A_SpawnItemEx("ShottyCasingLiedown")
+      stop
+   }
+}
+
+ACTOR ShottyCasingMirrored : ShottyCasing
+{
+   States
+   {
+   Spawn:
+      CAS2 A 0
+      CAS2 AKLMNOPQ 1
+      Goto Roflcopter
+   Roflcopter:
+      CAS2 A 0 A_Jump(128,1,3,5,7)
+      CAS2 AKLMNOPQ 1
+      Loop
+   Death:
+      CAS1 A 0 A_SpawnItemEx("ShottyCasingLiedown")
+      stop
+   }
+}
+
+actor ShottyCasingLiedown
+{
+	-NOGRAVITY
+   	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+    Scale 0.25
+	States
+	{
+	Spawn:
+	  TNT1 A 0
+	  TNT1 A 0 A_Jump(255,"Spawn1","Spawn2")
+	  stop
+	Spawn1:
+	  CAS2 I 1
+	  Goto Ded
+	Spawn2:
+	  CAS2 J 1
+	  Goto Ded
+	Ded:
+	  "####" "#" 210 A_CheckSight("Fadying")
+	  Loop
+	Fadying:
+	  "####" "#" 1 A_FadeOut(0.1)
+	  Wait
+   }
+}
+
+ACTOR ShottyCasingSpawner
+{
+	Speed 22
+	PROJECTILE
+	+NOCLIP
+    +NOTONAUTOMAP
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay A_CustomMissile("ShottyCasing",0,0,random(-100,-80),CMF_AIMDIRECTION,random(-15,15))
+		Stop
+	}
+}
+
+ACTOR ShottyCasingSpawnerLeft
+{
+	Speed 22
+	PROJECTILE
+	+NOCLIP
+	+NOTONAUTOMAP
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay A_CustomMissile("ShottyCasingMirrored",0,-0,random(100,80),CMF_AIMDIRECTION,random(-15,15))
+		Stop
+	}
+}
+
+//Matriarch
+ACTOR TankShellCasing
+{
+   Radius 4
+   Height 6
+   Speed 8
+   Scale 0.4
+   BounceSound "Casing/TankShell"
+   PROJECTILE
+   -NOGRAVITY
+   +BOUNCEONACTORS
+   +BOUNCEONCEILINGS
+   +FORCEXYBILLBOARD
+   Gravity 1.1
+   BounceType Doom
+   BounceCount 6
+   BounceFactor 0.6
+   DamageType Nope
+   States
+   {
+   Spawn:
+      CAS3 A 0
+      CAS3 A 0 A_SetScale(ScaleX-0.25)
+      CAS3 ABCD 1
+      CAS3 A 0 A_SetScale(ScaleX+0.25)
+      Goto Roflcopter
+   Roflcopter:
+      CAS3 A 0 A_Jump(128,1,3,5,7)
+      CAS3 ABCDEFGH 1
+      Loop
+   Death:
+      CAS3 A 0 A_SpawnItemEx("TankShellCasingLiedown")
+      stop
+   }
+}
+
+ACTOR TankShellCasingMirrored : TankShellCasing
+{
+   States
+   {
+   Spawn:
+      CAS3 A 0
+      CAS3 AKLMNOPQ 1
+      Goto Roflcopter
+   Roflcopter:
+      CAS3 A 0 A_Jump(128,1,3,5,7)
+      CAS3 AKLMNOPQ 1
+      Loop
+   Death:
+      CAS3 A 0 A_SpawnItemEx("TankShellCasingLiedown")
+      stop
+   }
+}
+
+actor TankShellCasingLiedown
+{
+	-NOGRAVITY
+	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+    Scale 0.4
+	States
+	{
+	Spawn:
+	  TNT1 A 0
+	  TNT1 A 0 A_Jump(255,"Spawn1","Spawn2")
+	  stop
+	Spawn1:
+	  CAS3 I 1
+	  Goto Ded
+	Spawn2:
+	  CAS3 J 1
+	  Goto Ded
+	Ded:
+	  "####" "#" 210 A_CheckSight("Fadying")
+	  Loop
+	Fadying:
+	  "####" "#" 1 A_FadeOut(0.1)
+	  Wait
+   }
+}
+
+ACTOR TankShellCasingSpawner
+{
+	Speed 10
+	PROJECTILE
+	+NOCLIP
+	States
+	{
+	Spawn:
+		TNT1 AA 1 A_CustomMissile("TankShellCasing",0,0,random(100,80),CMF_AIMDIRECTION,random(-15,15))
+		Stop
+	}
+}
+
+ACTOR TankShellCasingSpawnerLeft
+{
+	Speed 10
+	PROJECTILE
+	+NOCLIP
+	+NOTONAUTOMAP
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay A_CustomMissile("TankShellCasingMirrored",0,0,random(-100,-80),CMF_AIMDIRECTION,random(-15,15))
+		Stop
+	}
+}
+
+//Sovereign
+ACTOR RedTankShellCasing : TankShellCasing
+{
+   States
+   {
+   Spawn:
+      CAS4 A 0
+      CAS4 A 0 A_SetScale(ScaleX-0.25)
+      CAS4 ABCD 1
+      CAS4 A 0 A_SetScale(ScaleX+0.25)
+      Goto Roflcopter
+   Roflcopter:
+      CAS4 A 0 A_Jump(128,1,3,5,7)
+      CAS4 ABCDEFGH 1
+      Loop
+   Death:
+      CAS4 A 0 A_SpawnItemEx("RedTankShellCasingLiedown")
+      stop
+   }
+}
+
+ACTOR RedTankShellCasingMirrored : TankShellCasingMirrored
+{
+   States
+   {
+   Spawn:
+      CAS4 A 0
+      CAS4 AKLMNOPQ 1
+      Goto Roflcopter
+   Roflcopter:
+      CAS4 A 0 A_Jump(128,1,3,5,7)
+      CAS4 AKLMNOPQ 1
+      Loop
+   Death:
+      CAS4 A 0 A_SpawnItemEx("RedTankShellCasingLiedown")
+      stop
+   }
+}
+
+actor RedTankShellCasingLiedown
+{
+	-NOGRAVITY
+	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+    Scale 0.4
+	States
+	{
+	Spawn:
+	  TNT1 A 0
+	  TNT1 A 0 A_Jump(255,"Spawn1","Spawn2")
+	  stop
+	Spawn1:
+	  CAS4 I 1
+	  Goto Ded
+	Spawn2:
+	  CAS4 J 1
+	  Goto Ded
+	Ded:
+	  "####" "#" 210 A_CheckSight("Fadying")
+	  Loop
+	Fadying:
+	  "####" "#" 1 A_FadeOut(0.1)
+	  Wait
+   }
+}
+
+ACTOR RedTankShellCasingSpawner
+{
+	Speed 10
+	PROJECTILE
+	+NOCLIP
+	States
+	{
+	Spawn:
+		TNT1 AA 1 A_CustomMissile("RedTankShellCasing",0,0,random(100,80),CMF_AIMDIRECTION,random(-15,15))
+		Stop
+	}
+}
+
+ACTOR RedTankShellCasingSpawnerLeft
+{
+	Speed 10
+	PROJECTILE
+	+NOCLIP
+	+NOTONAUTOMAP
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay A_CustomMissile("RedTankShellCasingMirrored",0,0,random(-100,-80),CMF_AIMDIRECTION,random(-15,15))
+		Stop
+	}
+}

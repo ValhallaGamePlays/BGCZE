@@ -1,0 +1,20 @@
+//Property of Pillow - No questions needed, albeit a mention would be nice when used.
+
+#library "medcheck"
+#include "zcommon.acs"
+
+script "MedbagHealing" (void)
+{
+	if(GetActorProperty(0,APROP_Health) < GetActorProperty(0,APROP_SpawnHealth))
+	{
+		until(GetActorProperty(0,APROP_Health) >= GetActorProperty(0,APROP_SpawnHealth))
+		{
+			if(!CheckInventory("Medbag")) { break; }
+			GiveInventory("MedbagHealth", 1);
+			TakeInventory("Medbag", 1);
+		}
+		GiveInventory("MedbagEffect", 1);
+		GiveInventory("MedbagDelay", 1);
+	}
+	
+}

@@ -1,0 +1,8 @@
+ACTOR Cauterizer2 : Cauterizer replaces MWeapLightning
+{
+   Game Hexen
+   Weapon.AmmoGive 30
+   Weapon.AmmoType "GreenMana"
+   Weapon.AmmoUse 5
+   Tag "Cauterizer"
+}

@@ -1,0 +1,16 @@
+Actor HBackpack : CustomInventory
+{
+  Inventory.PickupSound "Backpack/Pickup"
+  Inventory.PickupMessage "Obtained a stylish hammerspace backpack!"
+  +COUNTITEM
+  +INVENTORY.ALWAYSPICKUP
+  States
+  {
+  Spawn:
+    BPAK B -1
+    Loop
+  Pickup:
+	TNT1 A 0 ACS_NamedExecuteAlways("HammerspaceBackpack")
+	Stop
+  }
+}

@@ -1,0 +1,9 @@
+ACTOR Ironblast2 : Ironblast replaces FWeapHammer
+{
+   Game Hexen
+   Weapon.AmmoGive 48
+   Weapon.AmmoType "GreenMana"
+   Weapon.AmmoUse 8
+   Tag "Ironblast"
+   inventory.PickupSound "Guncaster/Laugh1"
+}

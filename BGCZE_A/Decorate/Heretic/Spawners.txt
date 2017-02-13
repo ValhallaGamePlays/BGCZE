@@ -1,0 +1,114 @@
+//Quartz Flask
+ACTOR ArtiHealthSpawner : RandomSpawner replaces ArtiHealth
+{
+	DropItem "HealPot" 255 7
+	DropItem "RejuvPot" 255 1 //Quartz flasks are rarer than medikits, so higher spawn rate.
+}
+
+//Shadowsphere
+ACTOR ArtiInvisibilitySpawner : RandomSpawner replaces ArtiInvisibility
+{
+	DropItem "Reaversphere" 255 20
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+//Teleport
+ACTOR ArtiTeleportSpawner : RandomSpawner replaces ArtiTeleport
+{
+	DropItem "BerserkPot" 255 20
+	DropItem "GunzerkPot" 255 20
+	DropItem "WyvernIdol" 255 20
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+//Morph ovum
+ACTOR ArtiEggSpawner : RandomSpawner replaces ArtiEgg
+{
+	DropItem "GunzerkPot" 255 20
+	DropItem "BerserkPot" 255 20
+	DropItem "WyvernIdol" 255 20
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+//Invul ring
+ACTOR ArtiInvulnerabilitySpawner : RandomSpawner replaces ArtiInvulnerability
+{
+	DropItem "IronLizardPot" 255 20
+	DropItem "EXTREMESphere" 255 2
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+//The ashes of Corvus ancestors he snorts
+ACTOR  ArtiSuperHealthSpawner : RandomSpawner replaces ArtiSuperHealth
+{
+	DropItem "Medbag" 255 20
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+//Wings of Wrath
+ACTOR  ArtiFlySpawner : RandomSpawner replaces ArtiFly
+{
+	DropItem "WingsBringer" 255 20
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+//Torch
+ACTOR ArtiTorchSpawner : RandomSpawner replaces ArtiTorch
+{
+	DropItem "WizardsEye" 255 20
+	
+	DropItem "SurgeBringer" 255 1
+	DropItem "BoosterBringer" 255 1
+	DropItem "StimulantBringer" 255 1
+}
+
+//Bag of Holding
+/*
+ACTOR BagOfHoldingSpawner : RandomSpawner replaces BagOfHolding
+{
+	DropItem "HBackpack" 255 15
+	DropItem "PhilosophersTome" 255 1
+}
+*/
+ACTOR BagOfHoldingSpawner replaces BagOfHolding
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("HBackpack")
+		TNT1 A 0 A_DropItem("PhilosophersTome",1,16)
+		Stop
+	}
+}
+
+//Phoenix Rod
+ACTOR PhoenixSpawner2 : RandomSpawner replaces PhoenixRod
+{
+	DropItem "Matriarch" 255 2
+	DropItem "Sovereign" 255 1
+}
+
+//Mace
+ACTOR MaceSpawner2 : RandomSpawner replaces Mace
+{
+	DropItem "Old Dreadful" 255 2		//Considering that the spawn rate is lower by default, I might as well make it 66-33 in Heretic.
+	DropItem "PowersuitBringer" 255 1
+}

@@ -1,0 +1,458 @@
+brightmap sprite CYGGA1
+{
+    map "Bmaps/Cygnis/BRAGA1.png"
+}
+
+brightmap sprite CYGGA2A8
+{
+    map "Bmaps/Cygnis/BRAGA2A8.png"
+}
+
+brightmap sprite CYGGA3A7
+{
+    map "Bmaps/Cygnis/BRAGA3A7.png"
+}
+
+brightmap sprite CYGGA4A6
+{
+    map "Bmaps/Cygnis/BRAGA4A6.png"
+}
+
+brightmap sprite CYGGB1
+{
+    map "Bmaps/Cygnis/BRAGB1.png"
+}
+
+brightmap sprite CYGGB2B8
+{
+    map "Bmaps/Cygnis/BRAGB2B8.png"
+}
+
+brightmap sprite CYGGB3A7
+{
+    map "Bmaps/Cygnis/BRAGB3B7.png"
+}
+
+brightmap sprite CYGGB4B6
+{
+    map "Bmaps/Cygnis/BRAGB4B6.png"
+}
+
+brightmap sprite CYGGC1
+{
+    map "Bmaps/Cygnis/BRAGC1.png"
+}
+
+brightmap sprite CYGGC2C8
+{
+    map "Bmaps/Cygnis/BRAGC2C8.png"
+}
+
+brightmap sprite CYGGC3C7
+{
+    map "Bmaps/Cygnis/BRAGC3C7.png"
+}
+
+brightmap sprite CYGGC4C6
+{
+    map "Bmaps/Cygnis/BRAGC4C6.png"
+}
+
+brightmap sprite CYGGD1
+{
+    map "Bmaps/Cygnis/BRAGD1.png"
+}
+
+brightmap sprite CYGGD2D8
+{
+    map "Bmaps/Cygnis/BRAGD2D8.png"
+}
+
+brightmap sprite CYGGD3D7
+{
+    map "Bmaps/Cygnis/BRAGD3D7.png"
+}
+
+brightmap sprite CYGGD4D6
+{
+    map "Bmaps/Cygnis/BRAGD4D6.png"
+}
+
+brightmap sprite CYGGE1
+{
+    map "Bmaps/Cygnis/BRAGE1.png"
+}
+
+brightmap sprite CYGGE2E8
+{
+    map "Bmaps/Cygnis/BRAGE2E8.png"
+}
+
+brightmap sprite CYGGE3E7
+{
+    map "Bmaps/Cygnis/BRAGE3E7.png"
+}
+
+brightmap sprite CYGGE4E6
+{
+    map "Bmaps/Cygnis/BRAGE4E6.png"
+}
+brightmap sprite CYGGG1
+{
+    map "Bmaps/Cygnis/BRAGG1.png"
+}
+
+brightmap sprite CYGGG2G8
+{
+    map "Bmaps/Cygnis/BRAGG2G8.png"
+}
+
+brightmap sprite CYGGG3G7
+{
+    map "Bmaps/Cygnis/BRAGG3G7.png"
+}
+
+brightmap sprite CYGGG4G6
+{
+    map "Bmaps/Cygnis/BRAGG4G6.png"
+}
+
+brightmap sprite CYGGH0
+{
+    map "Bmaps/Cygnis/BRAGH0.png"
+}
+
+brightmap sprite CYGGI0
+{
+    map "Bmaps/Cygnis/BRAGI0.png"
+}
+
+brightmap sprite CYGGJ0
+{
+    map "Bmaps/Cygnis/BRAGJ0.png"
+}
+
+brightmap sprite CYGGK0
+{
+    map "Bmaps/Cygnis/BRAGK0.png"
+}
+
+brightmap sprite CYGGL0
+{
+    map "Bmaps/Cygnis/BRAGL0.png"
+}
+
+brightmap sprite CYG2A1
+{
+    map "Bmaps/Cygnis/BRAGA1.png"
+}
+
+brightmap sprite CYG2A2A8
+{
+    map "Bmaps/Cygnis/BRAGA2A8.png"
+}
+
+brightmap sprite CYG2A3A7
+{
+    map "Bmaps/Cygnis/BRAGA3A7.png"
+}
+
+brightmap sprite CYG2A4A6
+{
+    map "Bmaps/Cygnis/BRAGA4A6.png"
+}
+
+brightmap sprite CYG2B1
+{
+    map "Bmaps/Cygnis/BRAGB1.png"
+}
+
+brightmap sprite CYG2B2B8
+{
+    map "Bmaps/Cygnis/BRAGB2B8.png"
+}
+
+brightmap sprite CYG2B3A7
+{
+    map "Bmaps/Cygnis/BRAGB3B7.png"
+}
+
+brightmap sprite CYG2B4B6
+{
+    map "Bmaps/Cygnis/BRAGB4B6.png"
+}
+
+brightmap sprite CYG2C1
+{
+    map "Bmaps/Cygnis/BRAGC1.png"
+}
+
+brightmap sprite CYG2C2C8
+{
+    map "Bmaps/Cygnis/BRAGC2C8.png"
+}
+
+brightmap sprite CYG2C3C7
+{
+    map "Bmaps/Cygnis/BRAGC3C7.png"
+}
+
+brightmap sprite CYG2C4C6
+{
+    map "Bmaps/Cygnis/BRAGC4C6.png"
+}
+
+brightmap sprite CYG2D1
+{
+    map "Bmaps/Cygnis/BRAGD1.png"
+}
+
+brightmap sprite CYG2D2D8
+{
+    map "Bmaps/Cygnis/BRAGD2D8.png"
+}
+
+brightmap sprite CYG2D3D7
+{
+    map "Bmaps/Cygnis/BRAGD3D7.png"
+}
+
+brightmap sprite CYG2D4D6
+{
+    map "Bmaps/Cygnis/BRAGD4D6.png"
+}
+
+brightmap sprite CYG2E1
+{
+    map "Bmaps/Cygnis/BRAGE1.png"
+}
+
+brightmap sprite CYG2E2E8
+{
+    map "Bmaps/Cygnis/BRAGE2E8.png"
+}
+
+brightmap sprite CYG2E3E7
+{
+    map "Bmaps/Cygnis/BRAGE3E7.png"
+}
+
+brightmap sprite CYG2E4E6
+{
+    map "Bmaps/Cygnis/BRAGE4E6.png"
+}
+brightmap sprite CYG2G1
+{
+    map "Bmaps/Cygnis/BRAGG1.png"
+}
+
+brightmap sprite CYG2G2G8
+{
+    map "Bmaps/Cygnis/BRAGG2G8.png"
+}
+
+brightmap sprite CYG2G3G7
+{
+    map "Bmaps/Cygnis/BRAGG3G7.png"
+}
+
+brightmap sprite CYG2G4G6
+{
+    map "Bmaps/Cygnis/BRAGG4G6.png"
+}
+
+brightmap sprite CYG2H0
+{
+    map "Bmaps/Cygnis/BRAGH0.png"
+}
+
+brightmap sprite CYG2I0
+{
+    map "Bmaps/Cygnis/BRAGI0.png"
+}
+
+brightmap sprite CYG2J0
+{
+    map "Bmaps/Cygnis/BRAGJ0.png"
+}
+
+brightmap sprite CYG2K0
+{
+    map "Bmaps/Cygnis/BRAGK0.png"
+}
+
+brightmap sprite CYG2L0
+{
+    map "Bmaps/Cygnis/BRAGL0.png"
+}
+
+brightmap sprite CYG3A1
+{
+    map "Bmaps/Cygnis/BRAGA1.png"
+}
+
+brightmap sprite CYG3A2A8
+{
+    map "Bmaps/Cygnis/BRAGA2A8.png"
+}
+
+brightmap sprite CYG3A3A7
+{
+    map "Bmaps/Cygnis/BRAGA3A7.png"
+}
+
+brightmap sprite CYG3A4A6
+{
+    map "Bmaps/Cygnis/BRAGA4A6.png"
+}
+
+brightmap sprite CYG3B1
+{
+    map "Bmaps/Cygnis/BRAGB1.png"
+}
+
+brightmap sprite CYG3B2B8
+{
+    map "Bmaps/Cygnis/BRAGB2B8.png"
+}
+
+brightmap sprite CYG3B3A7
+{
+    map "Bmaps/Cygnis/BRAGB3B7.png"
+}
+
+brightmap sprite CYG3B4B6
+{
+    map "Bmaps/Cygnis/BRAGB4B6.png"
+}
+
+brightmap sprite CYG3C1
+{
+    map "Bmaps/Cygnis/BRAGC1.png"
+}
+
+brightmap sprite CYG3C2C8
+{
+    map "Bmaps/Cygnis/BRAGC2C8.png"
+}
+
+brightmap sprite CYG3C3C7
+{
+    map "Bmaps/Cygnis/BRAGC3C7.png"
+}
+
+brightmap sprite CYG3C4C6
+{
+    map "Bmaps/Cygnis/BRAGC4C6.png"
+}
+
+brightmap sprite CYG3D1
+{
+    map "Bmaps/Cygnis/BRAGD1.png"
+}
+
+brightmap sprite CYG3D2D8
+{
+    map "Bmaps/Cygnis/BRAGD2D8.png"
+}
+
+brightmap sprite CYG3D3D7
+{
+    map "Bmaps/Cygnis/BRAGD3D7.png"
+}
+
+brightmap sprite CYG3D4D6
+{
+    map "Bmaps/Cygnis/BRAGD4D6.png"
+}
+
+brightmap sprite CYG3E1
+{
+    map "Bmaps/Cygnis/BRAGE1.png"
+}
+
+brightmap sprite CYG3E2E8
+{
+    map "Bmaps/Cygnis/BRAGE2E8.png"
+}
+
+brightmap sprite CYG3E3E7
+{
+    map "Bmaps/Cygnis/BRAGE3E7.png"
+}
+
+brightmap sprite CYG3E4E6
+{
+    map "Bmaps/Cygnis/BRAGE4E6.png"
+}
+brightmap sprite CYG3G1
+{
+    map "Bmaps/Cygnis/BRAGG1.png"
+}
+
+brightmap sprite CYG3G2G8
+{
+    map "Bmaps/Cygnis/BRAGG2G8.png"
+}
+
+brightmap sprite CYG3G3G7
+{
+    map "Bmaps/Cygnis/BRAGG3G7.png"
+}
+
+brightmap sprite CYG3G4G6
+{
+    map "Bmaps/Cygnis/BRAGG4G6.png"
+}
+
+brightmap sprite CYG3H0
+{
+    map "Bmaps/Cygnis/BRAGH0.png"
+}
+
+brightmap sprite CYG3I0
+{
+    map "Bmaps/Cygnis/BRAGI0.png"
+}
+
+brightmap sprite CYG3J0
+{
+    map "Bmaps/Cygnis/BRAGJ0.png"
+}
+
+brightmap sprite CYG3K0
+{
+    map "Bmaps/Cygnis/BRAGK0.png"
+}
+
+brightmap sprite CYG3L0
+{
+    map "Bmaps/Cygnis/BRAGL0.png"
+}
+
+brightmap sprite CYDGA0 { map "Bmaps/Cygnis/CYDGA.png" }
+brightmap sprite CYDGB0 { map "Bmaps/Cygnis/CYDGA.png" }
+brightmap sprite CYDGC0 { map "Bmaps/Cygnis/CYDGC.png" }
+brightmap sprite CYDGD0 { map "Bmaps/Cygnis/CYDGD.png" }
+brightmap sprite CYDGE0 { map "Bmaps/Cygnis/CYDGE.png" }
+brightmap sprite CYDGF0 { map "Bmaps/Cygnis/CYDGF.png" }
+brightmap sprite CYDGG0 { map "Bmaps/Cygnis/CYDGH.png" }
+brightmap sprite CYDGH0 { map "Bmaps/Cygnis/CYDGH.png" }
+
+brightmap sprite CYD2A0 { map "Bmaps/Cygnis/CYDGA.png" }
+brightmap sprite CYD2B0 { map "Bmaps/Cygnis/CYDGA.png" }
+brightmap sprite CYD2C0 { map "Bmaps/Cygnis/CYDGC.png" }
+brightmap sprite CYD2D0 { map "Bmaps/Cygnis/CYDGD.png" }
+brightmap sprite CYD2E0 { map "Bmaps/Cygnis/CYDGE.png" }
+brightmap sprite CYD2F0 { map "Bmaps/Cygnis/CYDGF.png" }
+brightmap sprite CYD2G0 { map "Bmaps/Cygnis/CYDGH.png" }
+brightmap sprite CYD2H0 { map "Bmaps/Cygnis/CYDGH.png" }
+
+brightmap sprite CYD3A0 { map "Bmaps/Cygnis/CYDGA.png" }
+brightmap sprite CYD3B0 { map "Bmaps/Cygnis/CYDGA.png" }
+brightmap sprite CYD3C0 { map "Bmaps/Cygnis/CYDGC.png" }
+brightmap sprite CYD3D0 { map "Bmaps/Cygnis/CYDGD.png" }
+brightmap sprite CYD3E0 { map "Bmaps/Cygnis/CYDGE.png" }
+brightmap sprite CYD3F0 { map "Bmaps/Cygnis/CYDGF.png" }
+brightmap sprite CYD3G0 { map "Bmaps/Cygnis/CYDGH.png" }
+brightmap sprite CYD3H0 { map "Bmaps/Cygnis/CYDGH.png" }

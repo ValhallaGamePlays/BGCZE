@@ -1,0 +1,85 @@
+gameinfo
+{
+	//titlemusic = "GUNCTITL"
+	playerclasses = "Guncaster" //, "CygnisDoom"
+	menufontcolor_title = "Red" 
+	menufontcolor_label = "White"
+	menufontcolor_value = "White"
+	menufontcolor_action = "White"
+	menufontcolor_header = "Red" 
+	menufontcolor_highlight = "Black"
+	menufontcolor_selection = "Red"
+	dimcolor = "Black"
+	dimamount = 0.4
+	pagetime = 9999
+	//intermissionmusic = "GCINTER"
+	//finalemusic = "GCCLSTR"
+	finalpage = "BOSSBACK"
+	quitsound = "menu/quit"
+	titlepage = "Title"
+	creditpage = "Title"
+	infopage = "Crewpage"
+	//Yes, that's a heck ton of quit messages. Just to keep you entertained!
+	quitmessages = "$QUITWDM1","$QUITWDM2","$QUITWDM3","$QUITWDM4","$QUITWDM5",
+"$QUITWDM6","$QUITWDM7","$QUITWDM8","$QUITWDM9","$QUITWDM10","$QUITWDM11",
+"$QUITWDM12","$QUITWDM13","$QUITWDM14","$QUITWDM15","$QUITWDM16","$QUITWDM17",
+"$QUITWDM18","$QUITWDM19","$QUITWDM20","$QUITWDM21","$QUITWDM22","$QUITWDM23",
+"$QUITWDM24","$QUITWDM25","$QUITWDM25","$QUITWDM26","$QUITWDM27","$QUITWDM28",
+"$QUITWDM29","$QUITWDM30","$QUITWDM31","$QUITWDM32","$QUITWDM33","$QUITWDM34",
+"$QUITWDM35","$QUITWDM36","$QUITWDM37","$QUITWDM38","$QUITWDM39","$QUITWDM40",
+"$QUITWDM41","$QUITWDM42","$QUITWDM43","$QUITWDM44","$QUITWDM45","$QUITWDM46",
+"$QUITWDM47","$QUITWDM48","$QUITWDM49","$QUITWDM50","$QUITWDM51","$QUITWDM52",
+"$QUITWDM53","$QUITWDM54","$QUITWDM55","$QUITWDM56","$QUITWDM57","$QUITWDM58",
+"$QUITWDM58","$QUITWDM59","$QUITWDM60","$QUITWDM61","$QUITWDM62","$QUITWDM63",
+"$QUITWDM64","$QUITWDM65","$QUITWDM66","$QUITWDM67","$QUITWDM68","$QUITWDM69",
+"$QUITWDM70","$QUITWDM71","$QUITWDM72","$QUITWDM73","$QUITWDM74","$QUITWDM75",
+"$QUITWDM76","$QUITWDM77","$QUITWDM78","$QUITWDM79","$QUITWDM80","$QUITWDM81",
+"$QUITWDM82","$QUITWDM83","$QUITWDM84","$QUITWDM85","$QUITWDM86","$QUITWDM87"
+}
+
+defaultmap
+{
+	ExitPic = "DERGPAGE"
+}
+
+ClearSkills
+
+Skill Hatchling
+{
+	SpawnFilter = Baby
+	Name = "Hatchling"
+	TextColor = DarkRed
+	MustConfirm = "You're kidding me... right? Right?"
+}
+
+Skill Broodling
+{
+	SpawnFilter = Easy
+	Name = "Broodling"
+	TextColor = DarkRed
+}
+
+Skill Drake
+{
+	SpawnFilter = Normal
+	Name = "Drake"
+	TextColor = DarkRed
+}
+
+Skill Wyrm
+{
+	SpawnFilter = Hard
+	Name = "Wyrm"
+	TextColor = DarkRed
+}
+
+Skill Dragon
+{
+	SpawnFilter = Nightmare
+	Name = "Dragon"
+	TextColor = DarkRed
+	MustConfirm = "Feeling cocky? Good."
+	MonsterHealth = 1.2
+	FastMonsters
+	//NoPain
+}

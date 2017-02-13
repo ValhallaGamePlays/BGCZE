@@ -1,0 +1,99 @@
+pointlight COIN
+{
+    color 0.6 0.6 0.1
+    size 4
+}
+
+object Dosh1
+{
+    frame DOSH { light COIN }
+}
+
+pointlight COINS
+{
+    color 0.6 0.6 0.1
+    size 8
+}
+
+object Dosh5
+{
+    frame DOSH { light COINS }
+}
+
+object Dosh10
+{
+    frame DOSH { light COINS }
+}
+
+pointlight BAG
+{
+    color 0.6 0.6 0.1
+    size 10
+}
+
+object Dosh25
+{
+    frame CBAG { light BAG }
+}
+
+object Dosh35
+{
+    frame DOSH { light BAG }
+}
+
+
+
+pointlight AMBERLIGHT
+{
+    color 1.0 0.8 0.1
+    size 12
+}
+
+object Amber
+{
+    frame GEMS { light AMBERLIGHT }
+}
+
+pointlight RUBYLIGHT
+{
+    color 1.0 0.1 0.1
+    size 16
+}
+
+object Ruby
+{
+    frame GEMS { light RUBYLIGHT }
+}
+
+pointlight EMERALDLIGHT
+{
+    color 0.1 1.0 0.1
+    size 20
+}
+
+object Emerald
+{
+    frame GEMS { light EMERALDLIGHT }
+}
+
+pointlight SAPPHIRELIGHT
+{
+    color 0.1 0.1 1.0
+    size 20
+}
+
+object Sapphire
+{
+    frame GEMS { light SAPPHIRELIGHT }
+}
+
+pointlight DIAMONDLIGHT
+{
+    color 0.9 0.9 1.0
+    size 32
+}
+
+object Diamond
+{
+    frame GEMS { light DIAMONDLIGHT }
+}

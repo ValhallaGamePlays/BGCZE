@@ -1,0 +1,16 @@
+ACTOR BrutalGuncaster : Guncaster2
+{
+	DamageFactor "Head", 0.0
+	DamageFactor "Leg", 0.0
+	DamageFactor "Taunt", 0.0
+	DamageFactor "KillMe", 0.0
+	DamageFactor "Blood", 0.0
+	DamageFactor "Avoid", 0.0
+	DamageFactor "GibRemoving", 0.0
+	DamageFactor "TeleportRemover", 0.0
+	DamageFactor "CauseObjectsToSplash", 0.0
+	DamageFactor "Blood", 0.0 
+	DamageFactor "BlueBlood", 0.0 
+	DamageFactor "GreenBlood", 0.0
+	DamageFactor "CancelTeleportFog", 0.0
+}

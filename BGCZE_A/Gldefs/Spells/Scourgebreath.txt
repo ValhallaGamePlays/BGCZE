@@ -1,0 +1,12 @@
+object BreathProjectile
+{
+    frame TNT1A { light BROYOURMOUTHSTINKSLIKEFUCK }
+}
+
+pulselight BROYOURMOUTHSTINKSLIKEFUCK
+{
+    color 1.0 0.0 0.0
+    size 0
+    secondarySize 96
+    interval 0.4
+}

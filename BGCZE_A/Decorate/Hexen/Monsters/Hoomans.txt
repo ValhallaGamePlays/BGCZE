@@ -1,0 +1,1016 @@
+ACTOR GuncastCleric : ClericBoss replaces ClericBoss
+{
+	//Loot
+	DropItem "Diamond"
+	DropItem "StratSpawner" 32
+	
+	//Resists & weaknesses
+	
+	//Unholy and hate can't scratch Cleric that much.
+	//He however isn't on best terms with your core element - fire!
+	//One good Rachmaninov and he's practically gone.
+	
+	DamageFactor Fire, 1.25
+	DamageFactor Meteorfist, 1.25
+	
+	DamageFactor Crow, 0.7
+	DamageFactor Crow2, 0.7
+	DamageFactor Breath, 0.8
+	DamageFactor Flesh, 0.8
+	
+	DamageFactor CloseCombat, 0.75
+	DamageFactor Shoelaces, 0.75
+	DamageFactor SuperCloseCombat, 0.75
+	DamageFactor SuperShoelaces, 0.75
+	DamageFactor SuperMidasCloseCombat, 0.75
+	DamageFactor SuperMidasShoelaces, 0.75
+	
+	//PAAAAAIN
+	PainChance 50
+	PainChance Crow, 1
+	PainChance Crow2, 1
+	
+	//Guaranteed Effects
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	//Chance Effects
+	PainChance Lightning, 128
+	PainChance LightningBlue, 16
+	PainChance Manuel, 50
+	PainChance Fire, 100
+	
+	var int User_DeathByFire;
+	var int User_DeathByTiberium;
+	var int User_DeathByBlueTiberium;
+	var int User_LightningLock;
+	States
+	{
+	
+	//Melee
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-5.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Pain
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-10.0,-15.0),0,frandom(7.0,10.0),CVF_RELATIVE)
+		Goto Pain
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-5.0,-10.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Death
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-10.0,-15.0),0,frandom(7.0,10.0),CVF_RELATIVE)
+		Goto Death
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 5 A_SpawnItemEx("Midas_Statue_Cleric",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS) //SXF_TRANSFERSPRITEFRAME|SXF_SETMASTER)
+		Stop
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Cleric",0,0,0,frandom(-5.0,-10.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Cleric",0,0,0,frandom(-10.0,-15.0),0,frandom(7.0,10.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+
+	//Standard death stuff
+	Crush:
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("BloodTr255", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		XBIG EEEEE 1 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GiantBloodSpot", 4, 0, random (0, 360), 2, random (0, 160))
+		XBIG E -1
+		Stop
+	Death:
+		TNT1 A 0 A_StopSound(5)
+		CLER I 6
+		CLER K 6 A_Scream
+		CLER LL 6
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		CLER M 6 A_NoBlocking
+		CLER NOP 6
+	Looplet:
+		CLER Q 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		CLER Q 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+	XDeath:
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 0 A_SpawnItemEx("HoomanGibbed",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		CLER R 5 A_Scream
+		CLER S 5
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		CLER T 5 A_NoBlocking
+		CLER UVWXYZ 5
+	Looplet2:
+		CLER Z 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastC")
+		CLER "[" 1 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+		
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("HoomanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		TNT1 A 0 A_SpawnItemEx("HoomanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Looplet
+	CorpseBlastC:
+		TNT1 A 0 A_SpawnItemEx("HoomanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Looplet2
+	
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		"####" "#" 0 A_Jump(50,"Pain")
+		Goto See
+	Death.Acid:
+	    CLER H 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 A_SetScale(ScaleX+frandom(0.01,0.025))
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath+1
+		
+	//Dreadful
+	Death.Tiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	TiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	Death.BlueTiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByBlueTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	BlueTiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+		
+	//Threadcutter
+	Pain.Manuel:
+		"####" "#" 0 A_Jump(128,1)
+		Goto Pain
+		"####" "#" 0 A_GiveInventory("BleedItem")
+		"####" "#" 0 A_SpawnItemEx("BleedIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+		
+	//Thunderstruck
+	Pain.Lightning:
+		"####" "#" 0 A_Jump(128,1)
+		Goto Pain
+		CLER H 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	LightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "LightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Cauterizer
+	Pain.LightningBlue:
+		"####" "#" 0 A_Jump(24,1)
+		Goto Pain
+		CLER H 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	BlueLightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "BlueLightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Fire
+	Pain.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-10.0,-15.0),0,frandom(7.0,10.0),CVF_RELATIVE)
+		"####" "#" 0 A_Jump(256,2) //Guaranteed "On Fire!" effect, heeeh.
+	Pain.Fire:
+		"####" "#" 0 A_Jump(12,1)
+		Goto Pain
+		"####" "#" 0 A_JumpIfInventory("PowerOnFire",1,"Pain")
+		"####" "#" 0 A_GiveInventory("OnFireItem")
+		"####" "#" 0 A_SpawnItemEx("OnFireIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+	Death.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-10.0,-15.0),0,frandom(7.0,10.0),CVF_RELATIVE)
+	Death.Lightning:
+	Death.LightningBlue:
+	Death.Fire:
+		"####" "#" 0 A_SpawnItemEx("FlamingDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Super::Burn
+	FireMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	EndOfMelt:
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium", 0)
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 0)
+		Goto Looplet
+		
+	//Crows
+	Death.Crow:
+		TNT1 AA 0 A_SpawnItemEx("FlockOfCrows",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Goto Death
+		
+	//Scourgebreath
+	Death.Breath:
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	Ice:
+		CLER H 5 A_FreezeDeath
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		CLER H 1 A_FreezeDeathChunks
+		Wait
+		
+	Raise:
+		"####" "#" 0 ACS_NamedExecuteAlways("Normalization")
+		"####" "#" 0 A_SetScale(1)
+		CLER QPONMLKJI 8
+		Goto See
+  }
+}
+
+ACTOR Midas_Statue_Cleric : Midas_Statue
+{
+	Radius 16
+	Height 64
+	Health 60
+	States
+	{
+	Spawn:
+		CLER H 1
+		Goto Super::Cycle
+	Death:
+	Crash:
+		TNT1 A 0 A_SetUserVar("User_GoldRange",10)
+		TNT1 A 0 A_SetUserVar("User_GoldAmount",15)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter1",0)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter2",25)
+		Goto Super::DeathInit
+	MidasReward:
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+		TNT1 A 0 A_GiveToTarget("Dosh",800)
+		Stop
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,800)
+		Stop
+	}
+}
+
+ACTOR HoomanGibbed
+{
+	States
+	{
+	Spawn:
+		 TNT1 A 0
+		 TNT1 AAA 0 A_CustomMissile ("XDeath1", 6, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("XDeath2", 6, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("XDeath3", 6, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AA 0 A_CustomMissile ("XDeath4", 6, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAAAAA 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (0, 360), 2, random (-5, 5))
+		 TNT1 AAAAAAA 0 A_CustomMissile ("Instestin", 6, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 6, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner", 6, 0, random (0, 360), 2, random (50, 130))
+		 Stop
+	 }
+}
+
+ACTOR HoomanBlast : BlastShared
+{
+	States
+	{
+	DamageStuff:
+		TNT1 A 0 A_Explode(300,164,0)
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritLarge",0,0,0,0,0,1,0,SXF_TRANSFERPOINTERS)
+	Main:
+		TNT1 A 0 A_SpawnItemEx("HoomanGibbed",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		Stop
+	 }
+}
+
+ACTOR GuncastMage : MageBoss replaces MageBoss
+{
+	//Loot
+	DropItem "Diamond"
+	DropItem "StratSpawner" 32
+	
+	//Resists & weaknesses
+	
+	//Obviously veryhard to kill with elemental magic. Not to suspectible to fire either,
+	//Considering he blasts you with flame-based staff.
+	//He's however extremely frail when facing explosives, physical damage or hate-breath.
+	
+	DamageFactor Lightning, 0.75
+	DamageFactor LightningBlue, 0.75
+	DamageFactor Acid, 0.75
+	DamageFactor Ice, 0.75
+	DamageFactor Fire, 0.75
+	DamageFactor Meteorfist, 0.85
+	
+	DamageFactor Matriarch, 1.25
+	DamageFactor Manuel, 1.25
+	DamageFactor Breath, 1.25
+	DamageFactor Flesh, 1.5
+	DamageFactor CloseCombat, 2.5
+	DamageFactor Shoelaces, 2.5
+	
+    //Yep, just smack him on zerk once, and he's dead. A little joke of mine, heh.
+	DamageFactor SuperCloseCombat, 60.0
+	DamageFactor SuperSholeaces, 60.0
+	DamageFactor SuperMidasCloseCombat, 60.0
+	DamageFactor SuperMidasShoelaces, 60.0
+	
+	//PAAAAAIN
+	PainChance 50
+	PainChance Crow, 1
+	PainChance Crow2, 1
+	
+	//Guaranteed Effects
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	//Chance Effects
+	PainChance Lightning, 128
+	PainChance LightningBlue, 16
+	PainChance Manuel, 50
+	PainChance Fire, 100
+	
+	var int User_DeathByFire;
+	var int User_DeathByTiberium;
+	var int User_DeathByBlueTiberium;
+	var int User_LightningLock;
+	
+	States
+	{
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-10.0,-12.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Pain
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+		Goto Pain
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-10.0,-12.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Death
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+		Goto Death
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 5 A_SpawnItemEx("Midas_Statue_Mage",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS) //SXF_TRANSFERSPRITEFRAME|SXF_SETMASTER)
+		Stop
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Mage",0,0,0,frandom(-10.0,-12.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Mage",0,0,0,frandom(-15.0,-20.0),0,frandom(10.0,15.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+
+	//Standard death stuff
+	Crush:
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("BloodTr255", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		XBIG EEEEE 1 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GiantBloodSpot", 4, 0, random (0, 360), 2, random (0, 160))
+		XBIG E -1
+		Stop
+	Death:
+		TNT1 A 0 A_StopSound(5)
+		MAGE H 6
+		MAGE I 6 A_Scream
+		MAGE JK 6
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		MAGE L 6 A_NoBlocking
+		MAGE M 6
+	Looplet:
+		MAGE N 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		MAGE N 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIf(User_DeathByFire == 1, "FireMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByTiberium == 1, "TiberiumMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByBlueTiberium == 1, "BlueTiberiumMelt")
+		Loop
+	XDeath:
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 0 A_SpawnItemEx("HoomanGibbed",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		MAGE O 5 A_Scream
+		MAGE P 5
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		MAGE R 5 A_NoBlocking
+		MAGE S 5
+		MAGE T 5
+		MAGE U 5
+		MAGE V 5
+		MAGE W 5
+	Looplet2:
+		MAGE X 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastC")
+		MAGE X 1 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+		
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("HoomanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		TNT1 A 0 A_SpawnItemEx("HoomanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Looplet
+	CorpseBlastC:
+		TNT1 A 0 A_SpawnItemEx("HoomanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Looplet2
+
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		"####" "#" 0 A_Jump(50,"Pain")
+		Goto See
+	Death.Acid:
+	     MAGE G 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 A_SetScale(ScaleX+frandom(0.01,0.025))
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath+1
+		
+	//Dreadful
+	Death.Tiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	TiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	Death.BlueTiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByBlueTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	BlueTiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+		
+	//Threadcutter
+	Pain.Manuel:
+		"####" "#" 0 A_Jump(164,1)
+		Goto Pain
+		"####" "#" 0 A_GiveInventory("BleedItem")
+		"####" "#" 0 A_SpawnItemEx("BleedIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+		
+	//Thunderstruck
+	Pain.Lightning:
+		"####" "#" 0 A_Jump(96,1)
+		Goto Pain
+		MAGE G 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 6)
+	LightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "LightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Cauterizer
+	Pain.LightningBlue:
+		"####" "#" 0 A_Jump(16,1)
+		Goto Pain
+		MAGE G 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 6)
+	BlueLightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "BlueLightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Fire
+	Pain.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+		"####" "#" 0 A_Jump(256,2) //Guaranteed "On Fire!" effect, heeeh.
+	Pain.Fire:
+		"####" "#" 0 A_Jump(16,1)
+		Goto Pain
+		"####" "#" 0 A_JumpIfInventory("PowerOnFire",1,"Pain")
+		"####" "#" 0 A_GiveInventory("OnFireItem")
+		"####" "#" 0 A_SpawnItemEx("OnFireIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+	Death.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-15.0,-20.0),0,frandom(10.0,15.0),CVF_RELATIVE)
+	Death.Lightning:
+	Death.LightningBlue:
+	Death.Fire:
+		"####" "#" 0 A_SpawnItemEx("FlamingDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Super::Burn
+	FireMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	EndOfMelt:
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium", 0)
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 0)
+		Goto Looplet
+		
+	//Crows
+	Death.Crow:
+		TNT1 AA 0 A_SpawnItemEx("FlockOfCrows",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Goto Death
+		
+	//Scourgebreath
+	Death.Breath:
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+
+	//Ice
+	Ice:
+		MAGE Y 5 A_FreezeDeath
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		MAGE Y 1 A_FreezeDeathChunks
+		Wait
+		
+	Raise:
+		"####" "#" 0 ACS_NamedExecuteAlways("Normalization")
+		"####" "#" 0 A_SetScale(1)
+		MAGE NMLKJIH 8
+		Goto See
+	}
+}
+
+ACTOR Midas_Statue_Mage : Midas_Statue
+{
+	Radius 16
+	Height 64
+	Health 40
+	States
+	{
+	Spawn:
+		MAGE G 1
+		Goto Super::Cycle
+	Death:
+	Crash:
+		TNT1 A 0 A_SetUserVar("User_GoldRange",10)
+		TNT1 A 0 A_SetUserVar("User_GoldAmount",15)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter1",0)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter2",25)
+		Goto Super::DeathInit
+	MidasReward:
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+		TNT1 A 0 A_GiveToTarget("Dosh",800)
+		Stop
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,800)
+		Stop
+	}
+}
+
+ACTOR GuncastFighter : FighterBoss replaces FighterBoss
+{
+	//Loot
+	DropItem "Diamond"
+	DropItem "StratSpawner" 32
+	
+	//Resists & weaknesses
+	
+	//A reverse of mage - fighting this guy with melee and physical attacks
+	//is surefire way to get yourself owned. Elemental attacks however...
+	
+	DamageFactor Fire, 1.2
+	DamageFactor Meteorfist, 1.1
+	DamageFactor Lightning, 1.2
+	DamageFactor LightningBlue, 1.2
+	DamageFactor Acid, 1.2
+	DamageFactor Ice, 1.2
+	
+	DamageFactor Matriarch, 0.8
+	DamageFactor Manuel, 0.7
+	DamageFactor Flesh, 0.8
+	DamageFactor CloseCombat, 0.7
+	DamageFactor Shoelaces, 0.7
+	
+	DamageFactor SuperCloseCombat, 0.25
+	DamageFactor SuperSholeaces, 0.25
+	DamageFactor SuperMidasCloseCombat, 0.25
+	DamageFactor SuperMidasShoelaces, 0.25
+	
+	//PAAAAAIN
+	PainChance 50
+	PainChance Crow, 1
+	PainChance Crow2, 1
+	
+	//Guaranteed Effects
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	//Chance Effects
+	PainChance Lightning, 128
+	PainChance LightningBlue, 16
+	PainChance Manuel, 50
+	PainChance Fire, 100
+	
+	var int User_DeathByFire;
+	var int User_DeathByTiberium;
+	var int User_DeathByBlueTiberium;
+	var int User_LightningLock;
+	States
+	{
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-2.0,-5.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Pain
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-6.0,-10.0),0,frandom(4.0,6.0),CVF_RELATIVE)
+		Goto Pain
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-2.0,-5.0),0,frandom(1.0,3.0),CVF_RELATIVE)
+		Goto Death
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-6.0,-10.0),0,frandom(4.0,6.0),CVF_RELATIVE)
+		Goto Death
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 5 A_SpawnItemEx("Midas_Statue_Fighter",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS) //SXF_TRANSFERSPRITEFRAME|SXF_SETMASTER)
+		Stop
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Fighter",0,0,0,frandom(-2.0,-5.0),0,frandom(1.0,3.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Fighter",0,0,0,frandom(-6.0,-10.0),0,frandom(4.0,6.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 10 A_KillChildren
+		Stop
+
+	Crush:
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("BloodTr255", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		XBIG EEEEE 1 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GiantBloodSpot", 4, 0, random (0, 360), 2, random (0, 160))
+		XBIG E -1
+		Stop
+	Death:
+		TNT1 A 0 A_StopSound(5)
+		PLAY H 6
+		PLAY I 6 A_Scream
+		PLAY JK 6
+		PLAY L 6 A_NoBlocking
+		PLAY M 6
+	Looplet:
+		PLAY N 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastB")
+		PLAY N 1 CanRaise A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		"####" "#" 0 A_JumpIf(User_DeathByFire == 1, "FireMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByTiberium == 1, "TiberiumMelt")
+		"####" "#" 0 A_JumpIf(User_DeathByBlueTiberium == 1, "BlueTiberiumMelt")
+		Loop
+	XDeath:
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 0 A_SpawnItemEx("HoomanGibbed",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		PLAY O 5 A_Scream
+		PLAY P 5 A_SkullPop
+		PLAY R 5 A_NoBlocking
+		PLAY STUV 5
+	Looplet2:
+		PLAY W 0 A_JumpIfInventory("CorpseTrigger2",1,"CorpseBlastC")
+		PLAY W 1 A_JumpIfInventory("CorpseTrigger",1,"CorpseBlastA")
+		Loop
+	
+	//Corpseblast
+	CorpseBlastA:
+		TNT1 A 0 A_SpawnItemEx("HoomanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	CorpseBlastB:
+		TNT1 A 0 A_SpawnItemEx("HoomanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Looplet
+	CorpseBlastC:
+		TNT1 A 0 A_SpawnItemEx("HoomanBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		TNT1 A 0 A_TakeInventory("CorpseTrigger2",1)
+		Goto Looplet2
+		
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		"####" "#" 0 A_Jump(50,"Pain")
+		Goto See
+	Death.Acid:
+	    PLAY G 1 A_ChangeFlag("SOLID",0)
+		"####" "#" 1 A_Playsound("Gumpop/Expand",5)
+		"####" "###################################" 1 A_SetScale(ScaleX+frandom(0.01,0.025))
+		"####" "#" 1 A_Playsound("Gumpop/Pop",5)
+		Goto XDeath+1
+		
+	//Dreadful
+	Death.Tiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	TiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	Death.BlueTiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByBlueTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Death
+	BlueTiberiumMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+		
+	//Threadcutter
+	Pain.Manuel:
+		"####" "#" 0 A_Jump(192,1)
+		Goto Pain
+		"####" "#" 0 A_GiveInventory("BleedItem")
+		"####" "#" 0 A_SpawnItemEx("BleedIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+		
+	//Thunderstruck
+	Pain.Lightning:
+		"####" "#" 0 A_Jump(128,1)
+		Goto Pain
+		PLAY G 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 6)
+	LightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "LightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Cauterizer
+	Pain.LightningBlue:
+		"####" "#" 0 A_Jump(24,1)
+		Goto Pain
+		PLAY G 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 6)
+	BlueLightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "BlueLightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto See
+		
+	//Fire
+	Pain.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-6.0,-10.0),0,frandom(4.0,6.0),CVF_RELATIVE)
+		"####" "#" 0 A_Jump(256,2) //Guaranteed "On Fire!" effect, heeeh.
+	Pain.Fire:
+		"####" "#" 0 A_Jump(16,1)
+		Goto Pain
+		"####" "#" 0 A_JumpIfInventory("PowerOnFire",1,"Pain")
+		"####" "#" 0 A_GiveInventory("OnFireItem")
+		"####" "#" 0 A_SpawnItemEx("OnFireIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Pain
+	Death.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-6.0,-10.0),0,frandom(4.0,6.0),CVF_RELATIVE)
+	Death.Lightning:
+	Death.LightningBlue:
+	Death.Fire:
+		"####" "#" 0 A_SpawnItemEx("FlamingDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Super::Burn
+	FireMelt:
+		"####" "#" 0 A_JumpIf(ScaleX > 1.35, "EndOfMelt")
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 1 A_SetScale(ScaleX + frandom(0.002,0.003),ScaleY - frandom(0.003,0.004))
+		Goto Looplet
+	EndOfMelt:
+		"####" "#" 0 A_SetUserVar("User_DeathByTiberium", 0)
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 0)
+		Goto Looplet
+		
+	//Crows
+	Death.Crow:
+		TNT1 AAA 0 A_SpawnItemEx("FlockOfCrows",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Goto Death
+		
+	//Scourgebreath
+	Death.Breath:
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop
+		
+	//Ice
+	Ice:
+		PLAY X 5 A_FreezeDeath
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		"----" A 0 A_JumpIfInventory("ChillgraspTrigger",1,2)
+		"----" A 0 A_Jump(256,2)
+		"----" A 0 A_SpawnItemEx("ChillgraspBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		PLAY X 1 A_FreezeDeathChunks
+		Wait
+		
+	Raise:
+		"####" "#" 0 ACS_NamedExecuteAlways("Normalization")
+		"####" "#" 0 A_SetScale(1)
+		PLAY NMLKJIH 8
+		Goto See
+	}
+}
+
+ACTOR Midas_Statue_Fighter : Midas_Statue
+{
+	Radius 16
+	Height 64
+	Health 80
+	States
+	{
+	Spawn:
+		PLAY G 1
+		Goto Super::Cycle
+	Death:
+	Crash:
+		TNT1 A 0 A_SetUserVar("User_GoldRange",10)
+		TNT1 A 0 A_SetUserVar("User_GoldAmount",15)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter1",0)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter2",25)
+		Goto Super::DeathInit
+	MidasReward:
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+		TNT1 A 0 A_GiveToTarget("Dosh",800)
+		Stop
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,800)
+		Stop
+	}
+}

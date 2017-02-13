@@ -1,0 +1,373 @@
+ACTOR CrowLauncher
+{
+  Radius 1
+  Height 1
+  Projectile
+  Speed 25
+  +NOINTERACTION
+  +NOTONAUTOMAP
+  States
+  {
+  Spawn:
+	TNT1 A 0
+  	TNT1 A random(1,4) A_SpawnItemEx("CrowProjectile",random(20,-20),random(20,-20),random(20,-20),velx+random(2,-2),vely+random(2,-2),velz+random(2,-2),0,SXF_ABSOLUTEMOMENTUM|SXF_TRANSFERPITCH|SXF_TRANSFERPOINTERS,0)
+	Stop
+  }
+}
+
+ACTOR CrowLauncher2
+{
+  Radius 1
+  Height 1
+  Projectile
+  Speed 25
+  +NOINTERACTION
+  +NOTONAUTOMAP
+  States
+  {
+  Spawn:
+	TNT1 A 0
+  	TNT1 A random(1,4) A_SpawnItemEx("CrowProjectile2",random(20,-20),random(20,-20),random(20,-20),velx+random(2,-2),vely+random(2,-2),velz+random(2,-2),0,SXF_ABSOLUTEMOMENTUM|SXF_TRANSFERPITCH|SXF_TRANSFERPOINTERS,0)
+	Stop
+  }
+}
+
+actor CrowProjectile
+{
+  Radius 10
+  Height 12
+  Speed 40
+  Damage 0
+  Projectile
+  ProjectileKickback 0
+  +NOGRAVITY
+  +DONTSPLASH
+  +EXPLODEONWATER
+  +SEEKERMISSILE
+  +SCREENSEEKER
+  +DONTSEEKINVISIBLE
+  +THRUACTORS //+RIPPER
+  +FORCERADIUSDMG
+  +DONTREFLECT
+  /*BounceType Hexen
+  BounceFactor 1
+  WallBounceFactor 1*/
+  DamageType Crow
+  SeeSound "Crows/Fly"
+  Obituary "%o was eaten alive by %k's flock of crows."
+  Scale 1
+  var int User_Lifespan;
+  var int User_Frame;
+  var int User_Cycle;
+  States
+  {
+  Spawn:
+    "####" "#" 0 NoDelay A_ScaleVelocity(frandom(0.8,1.2))
+    "####" "#" 0 A_SetUserVar("User_Lifespan",random(70,105))
+	"####" "#" 0 A_Jump(256,"Cycle")
+  Cycle:
+    "####" "#" 0 A_JumpIf(User_Cycle >= 3, "SecondSetup")
+	"####" "#" 0 A_Jump(256,"FirstSetup")
+  FirstSetup:
+    "####" "#" 0 A_SeekerMissile(20,20,SMF_LOOK|SMF_PRECISE|SMF_CURSPEED,128,4)
+    "####" "#" 0 A_Explode(11,32,0)
+	"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle + 1)
+	"####" "#" 0 A_Jump(256,"Frame")
+  SecondSetup:
+    "####" "#" 0 A_SeekerMissile(20,30,SMF_LOOK|SMF_PRECISE|SMF_CURSPEED,128,4)
+    //"####" "#" 0 A_Explode(4,32,0)
+	"####" "#" 0 A_SetUserVar("User_Cycle",0)
+	"####" "#" 0 A_Jump(256,"Frame")
+  Frame:
+	"####" "#" 0 A_JumpIf(User_Frame <= 2, "FrameA")
+	"####" "#" 0 A_JumpIf(User_Frame <= 4, "FrameB")
+	"####" "#" 0 A_JumpIf(User_Frame <= 6, "FrameC")
+	"####" "#" 0 A_JumpIf(User_Frame <= 8, "FrameD")
+	"####" "#" 0 A_JumpIf(User_Frame > 8, "Reset")
+  FrameA:
+	CROW A 0
+	"####" "#" 0 A_Jump(256,"Looplet")
+  FrameB:
+	CROW B 0
+	"####" "#" 0 A_Jump(256,"Looplet")
+  FrameC:
+	CROW C 0
+	"####" "#" 0 A_Jump(256,"Looplet")
+  FrameD:
+	CROW D 0
+	"####" "#" 0 A_Jump(256,"Looplet")
+  Reset:
+    CROW A 0 A_SetUserVar("User_Frame",0)
+	"####" "#" 0 A_Jump(256,"Looplet")
+  Looplet:
+    "####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+    "####" "#" 0 A_SetUserVar("User_Lifespan", User_Lifespan - 1)
+	"####" "#" 0 A_ChangeVelocity(frandom(-0.4, 0.4), frandom(-0.4, 0.4), frandom(-0.4, 0.4), 0)
+    "####" "#" 0 A_SpawnItemEx("CrowFeather",random(10,-10),random(10,-10),random(10,-10),random(2.0,0.5),random(2.0,0.5),random(2.5,0.5),random(135,225),SXF_CLIENTSIDE,32) 
+	"####" "#" 1 A_SpawnItemEx("CrowTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE)
+	"####" "#" 0  A_JumpIf(User_Lifespan <= 0, "Death")
+	"####" "#" 0 A_Jump(256,"Cycle")
+  Death:
+    TNT1 A 0 A_AlertMonsters
+    TNT1 A 0 A_SpawnItemEx("CrowDissapear")
+    TNT1 A 15
+    stop
+  }
+}
+
+ACTOR CrowFeather
+{
+	+NOINTERACTION
+	-NOGRAVITY
+	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+	+DONTSPLASH
+	Gravity 0.35
+	States
+	{
+	Spawn:
+		TNT1 AA 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE")
+	SpriteA:
+		CFTR A 0 A_Jump(256,"Wolololo")
+	SpriteB:
+		CFTR B 0 A_Jump(256,"Wolololo")
+	SpriteC:
+		CFTR C 0 A_Jump(256,"Wolololo")
+	SpriteD:
+		CFTR D 0 A_Jump(256,"Wolololo")
+	SpriteE:
+		CFTR E 0 A_Jump(256,"Wolololo")
+	Wolololo:
+		"####" "#" 3 A_Jump(182,"Fade")
+		Loop
+	Fade:
+		"####" "#" 1 A_FadeOut(0.1)
+		Loop
+		}
+}
+
+ACTOR CrowTrail
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	+DONTSPLASH
+	Alpha 0.8
+	States
+	{
+	Spawn:
+		"####" "#" 1 A_FadeOut(0.2)
+		Loop
+	}
+}
+
+ACTOR CrowDissapear
+{
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_PlaySound("Crows/Dissipate",5,0.6)
+	TNT1 A 0 A_SpawnItemEx("CrowBlackflash",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+	TNT1 A 0 A_SpawnItemEx("CrowFeatherblast",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+	Stop
+	}
+}
+
+ACTOR CrowBlackflash
+{
+	+NOINTERACTION
+	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+	Renderstyle Translucent
+	Scale 0.2
+	Alpha 0.99
+	States
+	{
+	Spawn:
+	CRWF A 0
+	CRWF A 0 A_SetScale(ScaleX-frandom(0.02,0.015))
+	CRWF A 0 A_JumpIf(ScaleX <= 0, "NULL")
+	CRWF A 1 Bright A_FadeOut(0.02)
+	Loop
+	}
+}
+
+ACTOR CrowFeatherblast
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOTONAUTOMAP
+	Var Int User_CrowVar1;
+	Var Int User_CrowVar2;
+	States
+	{
+	Spawn:
+		"####" "#" 0
+	Wolololo:
+		"####" "#" 0 A_SetUserVar("User_CrowVar1", 40)
+	Looplo1:
+		"####" "#" 0 A_SetUserVar("User_CrowVar1", User_CrowVar1 - 1)
+		"####" "#" 0 A_JumpIf(User_CrowVar1 <= 0, "PhaseTwo")
+		"####" "#" 0 A_SpawnItemEx("CrowFeather",random(15,-15),random(15,-15),random(15,-15),random(6,1),random(6,1),random(random(6,1),random(-6,-1)),random(0,359),SXF_CLIENTSIDE,20)
+		Loop
+	PhaseTwo:
+		"####" "#" 0 A_SetUserVar("User_CrowVar2", 10)
+	Looplo2:
+		"####" "#" 0 A_SetUserVar("User_CrowVar2", User_CrowVar2 - 1)
+		"####" "#" 0 A_JumpIf(User_CrowVar2 <= 0, "NULL")
+		"####" "#" 1 A_SpawnItemEx("CrowFeather",random(25,-25),random(25,-25),random(25,-25),random(2.0,1.5),random(2.0,1.5),random(1.0,-1.0),random(0,359),SXF_CLIENTSIDE,20)
+		Loop
+		}
+}
+
+ACTOR CrowItem : CustomInventory
+{
+	Inventory.Amount 0
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.AUTOACTIVATE
+	States
+	{
+	Spawn:
+	Use:
+		TNT1 A 0 A_JumpIfInventory("CrowsAlreadyBeenThere",1,"NopetyNope")
+		TNT1 A 0 A_ChangeFlag("Friendly",1)
+		TNT1 A 0 A_GiveInventory("CrowsAlreadyBeenThere",1)
+		Stop
+	NopetyNope:
+		TNT1 A 0
+		Stop
+	}
+}
+
+ACTOR CrowsAlreadyBeenThere : Inventory { Inventory.MaxAmount 1 }
+
+ACTOR FlockOfCrows
+{
+  obituary "%o eaten alive by a flock of crows."
+  radius 15
+  height 42
+  PROJECTILE
+  +NOGRAVITY
+  +NOEXPLODEFLOOR
+  +SEEKERMISSILE
+  +NOINTERACTION
+  +FLOATBOB
+  +FLOAT
+  var int User_Lifespan;
+  var int User_Cawk;
+  var int User_Spam;
+  states
+  {
+  Spawn:
+	TNT1 A 0 NoDelay A_SetUserVar("User_Lifespan",875)
+	//TNT1 A 0 A_RearrangePointers(AAPTR_MASTER,AAPTR_DEFAULT,AAPTR_DEFAULT)
+    TNT1 A 0 A_PlaySound("Crows/Flock",5,0.5,1)
+    TNT1 AAAAAAAA 0 A_SpawnItemEx("CrowMidair",0,0,10,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS|SXF_ORIGINATOR|SXF_SETMASTER,48)
+    TNT1 A 25
+    Goto SpawnLoop
+  Cawk:
+    TNT1 A 0 A_Jump(128,2)
+    TNT1 A 0 A_PlaySound("Crows/Idle",6,0.8)
+    TNT1 A 0 A_SetUserVar("User_Cawk", 0)
+  SpawnLoop:
+	TNT1 A 0 A_SetUserVar("User_Lifespan", User_Lifespan - 1)
+	TNT1 A 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256,1)
+    TNT1 A 1 A_SetUserVar("User_Cawk", User_Cawk + 1)
+	TNT1 A 0 A_JumpIf(User_Lifespan <= 0, "Dissipate")
+	TNT1 A 0 A_JumpIf(User_Cawk > 105, "Cawk")
+	TNT1 A 0 A_JumpIf(IsPointerEqual(AAPTR_TRACER, AAPTR_DEFAULT|AAPTR_NULL) == TRUE, "SpawnLoop")
+  Launch:
+	TNT1 A 0 A_KillChildren
+	TNT1 A 0 A_StopSound(5)
+	TNT1 A 0 A_SetUserVar("User_Spam",10)
+  Spam:
+    TNT1 A 0 A_JumpIf(User_Spam <= 0, "Null")
+	TNT1 A 0 A_SetUserVar("User_Spam", User_Spam - 1)
+	TNT1 AAAA 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,1)
+	TNT1 A 0 A_FaceTracer
+    TNT1 A random(1,2) A_SpawnItemEx("CrowProjectile2",frandom(20.0,-20.0),frandom(20.0,-20.0),frandom(20.0,-20.0),40,0,0,0,SXF_TRANSFERPOINTERS,0)
+	Loop
+  Dissipate:
+    TNT1 A 0 A_AlertMonsters
+    TNT1 A 0 A_KillChildren
+	stop
+  }
+}
+
+actor CrowMidair
+{
+  Radius 1
+  Height 1
+  +NOINTERACTION
+  +NOGRAVITY
+  +FLOATBOB
+  Monster
+  Scale 1
+  var int User_SuperpositionX;
+  var int User_SuperpositionZ;
+  var int User_Angle;
+  var int User_Frame;
+  States
+  {
+  Spawn:
+	"####" "#" 0 NoDelay A_SetUserVar("User_SuperpositionX", random(50,30))
+	"####" "#" 0 A_SetUserVar("User_SuperpositionZ", random(50,20))
+	"####" "#" 0 A_SetUserVar("User_Angle", random(0,360))
+	"####" "#" 0 A_SetUserVar("User_Frame", frandom(1,7))
+	Goto FrameCheck
+  Reset:
+	"####" "#" 0 A_SetUserVar("User_Frame", 1)
+  FrameCheck:
+    "####" "#" 0 A_JumpIf(User_Frame <= 2, "FrameA")
+    "####" "#" 0 A_JumpIf(User_Frame <= 4, "FrameB")
+    "####" "#" 0 A_JumpIf(User_Frame <= 6, "FrameC")
+    "####" "#" 0 A_JumpIf(User_Frame <= 8, "FrameD")
+  FrameA:
+	CROW A 0 A_SpawnItemEx("CrowTrail")
+	Goto Main
+  FrameB:
+	CROW B 0 A_SpawnItemEx("CrowTrail")
+	Goto Main
+  FrameC:
+	CROW C 0 A_SpawnItemEx("CrowTrail")
+	Goto Main
+  FrameD:
+	CROW D 0 A_SpawnItemEx("CrowTrail")
+    CROW D 0 A_JumpIf(User_Frame == 8, "Reset")
+	Goto Main
+  Main:
+	"####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+	"####" "#" 0 A_SetUserVar("User_Angle", User_Angle + random(5,10))
+	"####" "#" 0 A_Warp(AAPTR_MASTER, User_SuperpositionX, 0, User_SuperpositionZ, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+	"####" "#" 1 A_SetAngle(Angle + 90)
+    Goto FrameCheck
+  Death:
+    TNT1 A 0 A_SpawnItemEx("CrowDissapear",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+    TNT1 A 15
+    stop
+  }
+}
+
+actor CrowProjectile2 : CrowProjectile
+{
+  -SCREENSEEKER
+  DamageType Crow2
+  States
+  {
+  Cycle:
+    "####" "#" 0 A_JumpIf(User_Cycle >= 3, "SecondSetup")
+	"####" "#" 0 A_Jump(256,"FirstSetup")
+  FirstSetup:
+    "####" "#" 0 A_SeekerMissile(20,20,SMF_LOOK|SMF_PRECISE|SMF_CURSPEED,128,4)
+    "####" "#" 0 A_Explode(8,32,0)
+	"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle + 1)
+	"####" "#" 0 A_Jump(256,"Frame")
+  SecondSetup:
+    "####" "#" 0 A_SeekerMissile(20,30,SMF_LOOK|SMF_PRECISE|SMF_CURSPEED,128,4)
+    //"####" "#" 0 A_Explode(4,32,0)
+	"####" "#" 0 A_SetUserVar("User_Cycle",0)
+	"####" "#" 0 A_Jump(256,"Frame")
+  }
+}

@@ -1,0 +1,221 @@
+object IgnitionSnort
+{
+    frame FEUR { light IGNITETNT }
+}
+
+pulselight IGNITETNT
+{
+    color 0.7 0.3 0.1
+    size 128
+    secondarySize 0
+    interval 1.1
+}
+
+object DynamiteProjectile
+{
+    frame TNTP { light TNTFLICKER }
+}
+
+object DynamiteProjectile2
+{
+    frame TNTP { light TNTFLICKER }
+}
+
+flickerlight TNTFLICKER
+{
+    color 0.7 0.4 0.1
+    size 30
+    secondarySize 26
+    chance 0.7
+}
+
+object TNTFX
+{
+    frame TNT1 { light TNTBLAST }
+}
+
+pulselight TNTBLAST
+{
+    color 0.9 0.4 0.2
+    size 512
+    secondarySize 0
+    interval 2.8
+}
+
+//[DoomKrakken]: Dynamite Strat's Dynamic Lights.  It spawns a butt-ton of actors, and all of those actors have dynamic lights... so then all of a sudden dynamite bundles become very un-fun to use.  If you think your computer can handle the truth, go ahead and delete that slash-asterisk-comment-marker-thing to enable all of the dynamic lights.
+/*
+flickerlight TOWERFIRE
+{
+    color 1.0 0.7 0.0
+    size 48
+    secondarySize 56
+    chance 0.5
+}
+
+flickerlight TOWERFIRE_X1
+{
+    color 0.9 0.4 0.0
+    size 56
+    secondarySize 64
+    chance 0.5
+}
+
+flickerlight TOWERFIRE_X2
+{
+    color 0.7 0.1 0.0
+    size 48
+    secondarySize 56
+    chance 0.5
+}
+
+flickerlight TOWERFIRE_X3
+{
+    color 0.4 0.0 0.0
+    size 40
+    secondarySize 48
+    chance 0.5
+}
+
+flickerlight TOWERFIRE_X4
+{
+    color 0.2 0.0 0.0
+    size 32
+    secondarySize 40
+    chance 0.5
+}
+
+object HeadFX3
+{
+    frame FX06A { light TOWERFIRE }
+    frame FX06B { light TOWERFIRE }
+    frame FX06C { light TOWERFIRE }
+
+    frame FX06D { light TOWERFIRE_X1 }
+    frame FX06E { light TOWERFIRE_X2 }
+    frame FX06F { light TOWERFIRE_X3 }
+    frame FX06G { light TOWERFIRE_X4 }
+}
+
+object FirePillarUpward
+{
+    frame FPILA { light TOWERFIRE }
+    frame FPILB { light TOWERFIRE }
+    frame FPILC { light TOWERFIRE }
+
+    frame FPILD { light TOWERFIRE_X1 }
+    frame FPILE { light TOWERFIRE_X2 }
+    frame FPILF { light TOWERFIRE_X3 }
+    frame FPILG { light TOWERFIRE_X4 }
+}
+
+pointlight FIREBURST1
+{
+    color 0.5 0.3 1.0
+    size 24
+}
+
+flickerlight FIREBURST1_X1
+{
+    color 0.5 0.3 1.0
+    size 24
+    secondarySize 26
+    chance 0.3
+}
+
+flickerlight FIREBURST1_X2
+{
+    color 0.4 0.1 0.7
+    size 24
+    secondarySize 26
+    chance 0.3
+}
+
+flickerlight FIREBURST1_X3
+{
+    color 0.3 0.0 0.5
+    size 28
+    secondarySize 30
+    chance 0.3
+}
+
+flickerlight FIREBURST1_X4
+{
+    color 0.3 0.0 0.3
+    size 26
+    secondarySize 28
+    chance 0.3
+}
+
+object FirePillarEmber
+{
+    frame SNFXJ { light FIREBURST2 }
+    frame SNFXK { light FIREBURST2 }
+
+    frame SNFXL { light FIREBURST2_X1 }
+    frame SNFXM { light FIREBURST2_X2 }
+    frame SNFXN { light FIREBURST2_X3 }
+}
+
+pulselight DERPFLAME
+{
+    color 1.0 0.7 0.0
+    size 1
+    secondarySize 64
+    interval 6.0
+}
+
+flickerlight DERPFLAME_X1
+{
+    color 1.0 0.7 0.0
+    size 48
+    secondarySize 56
+    chance 0.3
+}
+
+flickerlight DERPFLAME_X2
+{
+    color 1.0 0.7 0.0
+    size 56
+    secondarySize 64
+    chance 0.3
+}
+
+flickerlight DERPFLAME_X3
+{
+    color 0.7 0.4 0.0
+    size 64
+    secondarySize 68
+    chance 0.3
+}
+
+flickerlight DERPFLAME_X4
+{
+    color 0.5 0.1 0.0
+    size 68
+    secondarySize 72
+    chance 0.3
+}
+
+flickerlight DERPFLAME_X5
+{
+    color 0.2 0.0 0.0
+    size 72
+    secondarySize 76
+    chance 0.3
+}
+
+object Derpflame
+{
+    frame ERFLI { light DERPFLAME_X1 }
+    frame ERFLJ { light DERPFLAME_X2 }
+    frame ERFLK { light DERPFLAME_X3 }
+    frame ERFLL { light DERPFLAME_X4 }
+    frame ERFLM { light DERPFLAME_X5 }
+}
+
+object DerpflameTrail
+{
+    frame ERFLA { light DERPFLAME }
+    frame ERFLB { light DERPFLAME }
+    frame ERFLC { light DERPFLAME }
+}

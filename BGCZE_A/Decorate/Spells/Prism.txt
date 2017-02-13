@@ -1,0 +1,678 @@
+//Basis
+Actor PrismRadius : Inventory { Inventory.MaxAmount 70 }
+Actor PrismSpin : Inventory { Inventory.MaxAmount 360 }
+Actor PrismPower : Inventory { Inventory.MaxAmount 70 }
+
+//The particles proved to be too lag-inducing to be spawned during beam's activity, so I decided to reuse them as impact stuff instead.
+ACTOR PrismParticleBase
+{
+	Renderstyle Add
+	Scale 0.02
+	Alpha 0.1
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
+	+NOTIMEFREEZE //You'd better leave this intact if you value your computational power.
+	Var Int User_Counter;
+	States
+	{
+	PhaseOne:
+		"####" "#" 1 Bright A_SetScale(ScaleX + frandom(0.005,0.001))
+		"####" "#" 0 A_FadeIn(0.045)
+		"####" "#" 0 A_ChangeVelocity(frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(0.3,-0.2),CVF_RELATIVE)
+		"####" "#" 0 A_JumpIf(Alpha >= 0.99, "PhaseTwo")
+		"####" "#" 0 A_Jump(256,"PhaseOne")
+		Loop
+	PhaseTwo:
+		"####" "#" 1 Bright A_SetScale(ScaleX - frandom(0.005,0.001))
+		"####" "#" 0 A_FadeOut(0.01)
+		"####" "#" 0 A_ChangeVelocity(frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(0.3,-0.2),CVF_RELATIVE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Loop
+	}
+}
+
+Actor PrismBeamBase
+{
+	Renderstyle Add
+	Alpha 0.0
+	+NOINTERACTION
+	+NOTIMEFREEZE
+	+FORCEXYBILLBOARD
+	Var Int User_Counter;
+	States
+	{
+	PhaseOne:
+		/*"####" "#" 1 Bright A_SetScale(ScaleX + 0.02)
+		"####" "#" 0 A_FadeIn(0.22)
+		"####" "#" 0 A_JumpIf(Alpha >= 0.88, 1)
+		Loop*/
+		"####" "#" 0  A_SetScale(0.2)
+		"####" "#" 0 A_FadeIn(0.8)
+		"####" "#" 0 A_SetUserVar("User_Counter",1)
+		//"####" "#" 0 A_Jump(32,"PhaseTwoEnter") //So I can determine spawnchance of particles here, instead of defining it in for each spawnitemex.
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	PhaseTwoEnter:
+		//"####" "#" 0 A_SpawnItemEx("PrismParticleBase",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),0,0,0,frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	PhaseTwo:
+		"####" "#" 1 Bright A_SetUserVar("User_Counter", User_Counter - 1)
+		"####" "#" 0 A_JumpIf(User_Counter >= 1, "PhaseTwo")
+	PhaseThree:
+		/*"####" "#" 1 Bright A_SetScale(ScaleX - 0.01)
+		"####" "#" 0 A_FadeOut(0.11)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		Loop*/
+		Stop
+	}
+}
+
+ACTOR PrismBloodless
+{
+	+BLOODLESSIMPACT
+}
+
+Actor PrismImpactBase : BulletPuff
+{
+    VSpeed 0
+	Renderstyle Add
+	Scale 0.2
+	Alpha 0.8
+	-RANDOMIZE
+	+NOEXTREMEDEATH
+	-ALLOWPARTICLES
+	+PUFFONACTORS
+	+ALWAYSPUFF
+	+BLOODLESSIMPACT
+	+PUFFGETSOWNER
+	+NOINTERACTION
+	+DONTSPLASH
+	+NOTIMEFREEZE
+	+FORCERADIUSDMG
+	+FORCEXYBILLBOARD
+	Var Int User_Counter;
+	States
+	{
+	PhaseOne:
+		"####" "#" 0 A_SetUserVar("User_Counter",random(1,3))
+		//"####" "#" 0 A_Jump(32,"PhaseTwoEnter") //So I can determine spawnchance of particles here, instead of defining it in for each spawnitemex.
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	PhaseTwoEnter:
+		//"####" "#" 0 A_SpawnItemEx("PrismParticleBase",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),0,0,0,frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	PhaseTwo:
+		"####" "#" 0 A_Explode(20,96,0)
+		"####" "#" 1 Bright A_SetUserVar("User_Counter", User_Counter - 1)
+		"####" "#" 0 A_JumpIf(User_Counter >= 1, "PhaseTwo")
+	PhaseThree:
+		"####" "#" 0 A_Explode(20,96,0)
+		"####" "#" 1 Bright A_SetScale(ScaleX + 0.2)
+		"####" "#" 0 A_FadeOut(0.1)
+		Loop
+	}
+}
+
+//Possibly stupidest way to hack in decals in railgun, ever.
+Actor PrismDecalBase : BulletPuff
+{
+    VSpeed 0
+	Alpha 0
+	-RANDOMIZE
+	+NOEXTREMEDEATH
+	-ALLOWPARTICLES
+	+ALWAYSPUFF
+	+BLOODLESSIMPACT
+	+DONTSPLASH
+	+NOTIMEFREEZE
+}
+
+//Old Light actor
+/*Actor PrismLightBase
+{
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_Jump(64,"Null") //occasionally doesn't appear at all
+	TNT1 A 0 A_ChangeVelocity(frandom(60.0,-60.0),frandom(60.0,-60.0),frandom(50.0,-50.0),CVF_RELATIVE) //To create light displacement
+	TNT1 A 0 A_ScaleVelocity(frandom(0.7,1.5))
+	TNT1 A 2 //1 tic isn't enough to make the light last anything.
+	Stop
+	}
+}*/
+
+//New Light actor for rotator
+Actor PrismLightBase
+{
+	PROJECTILE
+	+NOINTERACTION
+	+NOTIMEFREEZE
+	Var Float User_Angle;
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Jump(256,"Looplet")
+	Looplet:
+		"####" "#" 1 Bright A_Warp(AAPTR_TARGET, 56.0+frandom(12.0,-12.0),
+							frandom(12.0,-12.0), 25.0+frandom(12.0,-12.0),
+							8.0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_USECALLERANGLE)
+		"####" "#" 0 A_JumpIfInTargetInventory("PrismRadius",1,"Looplet")
+		Stop
+		
+	}
+}
+
+//Beam variations
+
+//Blue
+Actor PrismBeamBlue : PrismBeamBase
+{
+	states
+	{
+	Spawn:
+		PRSP A 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	PhaseTwoEnter:
+		"####" "#" 0 A_SpawnItemEx("PrismParticleBlue",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+		frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	}
+}
+
+Actor PrismParticleBlue : PrismParticleBase
+{
+	states
+	{
+	Spawn:
+		BPRT B 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	}
+}
+
+Actor PrismImpactBlue : PrismImpactBase
+{
+	DamageType "LightningBlue"
+	States
+	{
+	Spawn:
+	PRSP A 0 NoDelay A_SpawnItemEx("PrismParticleBlue",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+	frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+	"####" "#" 0 A_CustomBulletAttack(0,0,1,0,"PrismDecalBlue",0,CBAF_AIMFACING)
+	Goto PhaseOne
+	}
+}
+
+Actor PrismDecalBlue : PrismDecalBase
+{
+	Decal "PrismBlueScorch"
+}
+
+Actor PrismLightBlue : PrismLightBase
+{
+}
+
+//Cyan
+Actor PrismBeamCyan : PrismBeamBase
+{
+	states
+	{
+	Spawn:
+		PRSP B 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	PhaseTwoEnter:
+		"####" "#" 0 A_SpawnItemEx("PrismParticleCyan",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+		frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	}
+}
+
+Actor PrismParticleCyan : PrismParticleBase
+{
+	states
+	{
+	Spawn:
+		CPRT A 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	}
+}
+
+Actor PrismImpactCyan : PrismImpactBase
+{
+	DamageType "Ice"
+	States
+	{
+	Spawn:
+	PRSP B 0 NoDelay A_SpawnItemEx("PrismParticleCyan",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+	frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+	"####" "#" 0 A_CustomBulletAttack(0,0,1,0,"PrismDecalCyan",0,CBAF_AIMFACING)
+	Goto PhaseOne
+	}
+}
+
+Actor PrismDecalCyan : PrismDecalBase
+{
+	Decal "PrismCyanScorch"
+}
+
+Actor PrismLightCyan : PrismLightBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_SetUserVar("User_Angle", 45.0)
+		TNT1 A 0 A_Jump(256,"Looplet")
+	}
+}
+
+//Green
+Actor PrismBeamGreen : PrismBeamBase
+{
+	states
+	{
+	Spawn:
+		PRSP C 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	PhaseTwoEnter:
+		"####" "#" 0 A_SpawnItemEx("PrismParticleCyan",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+		frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	}
+}
+
+Actor PrismParticleGreen : PrismParticleBase
+{
+	states
+	{
+	Spawn:
+		GPRT A 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	}
+}
+
+Actor PrismImpactGreen : PrismImpactBase
+{
+	DamageType "Tiberium"
+	States
+	{
+	Spawn:
+	PRSP C 0 NoDelay A_SpawnItemEx("PrismParticleGreen",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+	frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+	"####" "#" 0 A_CustomBulletAttack(0,0,1,0,"PrismDecalGreen",0,CBAF_AIMFACING)
+	Goto PhaseOne
+	}
+}
+
+Actor PrismDecalGreen : PrismDecalBase
+{
+	Decal "PrismGreenScorch"
+}
+
+Actor PrismLightGreen : PrismLightBase
+{
+}
+
+//Lime
+Actor PrismBeamLime : PrismBeamBase
+{
+	states
+	{
+	Spawn:
+		PRSP D 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	PhaseTwoEnter:
+		"####" "#" 0 A_SpawnItemEx("PrismParticleLime",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+		frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	}
+}
+
+Actor PrismParticleLime : PrismParticleBase
+{
+	states
+	{
+	Spawn:
+		LPRT A 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	}
+}
+
+Actor PrismImpactLime : PrismImpactBase
+{
+	DamageType "Acid"
+	States
+	{
+	Spawn:
+	PRSP D 0 NoDelay A_SpawnItemEx("PrismParticleLime",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+	frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+	"####" "#" 0 A_CustomBulletAttack(0,0,1,0,"PrismDecalLime",0,CBAF_AIMFACING)
+	Goto PhaseOne
+	}
+}
+
+Actor PrismDecalLime : PrismDecalBase
+{
+	Decal "PrismLimeScorch"
+}
+
+Actor PrismLightLime : PrismLightBase
+{
+}
+
+//Yellow
+Actor PrismBeamYellow : PrismBeamBase
+{
+	states
+	{
+	Spawn:
+		PRSP E 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	PhaseTwoEnter:
+		"####" "#" 0 A_SpawnItemEx("PrismParticleYellow",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+		frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	}
+}
+
+Actor PrismParticleYellow : PrismParticleBase
+{
+	states
+	{
+	Spawn:
+		YPRT A 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	}
+}
+
+Actor PrismImpactYellow : PrismImpactBase
+{
+	DamageType "Lightning"
+	States
+	{
+	Spawn:
+	PRSP E 0 NoDelay A_SpawnItemEx("PrismParticleYellow",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+	frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+	"####" "#" 0 A_CustomBulletAttack(0,0,1,0,"PrismDecalYellow",0,CBAF_AIMFACING)
+	Goto PhaseOne
+	}
+}
+
+Actor PrismDecalYellow : PrismDecalBase
+{
+	Decal "PrismYellowScorch"
+}
+
+Actor PrismLightYellow : PrismLightBase
+{
+}
+
+//Orange
+Actor PrismBeamOrange : PrismBeamBase
+{
+	states
+	{
+	Spawn:
+		PRSP F 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	PhaseTwoEnter:
+		"####" "#" 0 A_SpawnItemEx("PrismParticleOrange",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+		frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	}
+}
+
+Actor PrismParticleOrange : PrismParticleBase
+{
+	states
+	{
+	Spawn:
+		OPRT A 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	}
+}
+
+Actor PrismImpactOrange : PrismImpactBase
+{
+	DamageType "Fire"
+	States
+	{
+	Spawn:
+	PRSP F 0 NoDelay A_SpawnItemEx("PrismParticleOrange",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+	frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+	"####" "#" 0 A_CustomBulletAttack(0,0,1,0,"PrismDecalOrange",0,CBAF_AIMFACING)
+	Goto PhaseOne
+	}
+}
+
+Actor PrismDecalOrange : PrismDecalBase
+{
+	Decal "PrismOrangeScorch"
+}
+
+Actor PrismLightOrange : PrismLightBase
+{
+}
+
+//Red
+Actor PrismBeamRed : PrismBeamBase
+{
+	states
+	{
+	Spawn:
+		PRSP G 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	PhaseTwoEnter:
+		"####" "#" 0 A_SpawnItemEx("PrismParticleRed",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+		frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	}
+}
+
+Actor PrismParticleRed : PrismParticleBase
+{
+	states
+	{
+	Spawn:
+		RPRT A 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	}
+}
+
+Actor PrismImpactRed : PrismImpactBase
+{
+	DamageType "Breath"
+	States
+	{
+	Spawn:
+	PRSP G 0 NoDelay A_SpawnItemEx("PrismParticleRed",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+	frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+	"####" "#" 0 A_CustomBulletAttack(0,0,1,0,"PrismDecalRed",0,CBAF_AIMFACING)
+	Goto PhaseOne
+	}
+}
+
+Actor PrismDecalRed : PrismDecalBase
+{
+	Decal "PrismRedScorch"
+}
+
+Actor PrismLightRed : PrismLightBase
+{
+}
+
+//Purple
+Actor PrismBeamPurple : PrismBeamBase
+{
+	states
+	{
+	Spawn:
+		PRSP H 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	PhaseTwoEnter:
+		"####" "#" 0 A_SpawnItemEx("PrismParticlePurple",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+		frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_Jump(256,"PhaseTwo")
+		Goto PhaseTwo
+	}
+}
+
+Actor PrismParticlePurple : PrismParticleBase
+{
+	states
+	{
+	Spawn:
+		PPRT A 0 A_Jump(256,"PhaseOne")
+		Goto PhaseOne
+	}
+}
+
+Actor PrismImpactPurple : PrismImpactBase
+{
+	DamageType "Flesh"
+	States
+	{
+	Spawn:
+	PRSP H 0 NoDelay A_SpawnItemEx("PrismParticlePurple",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+	frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+	"####" "#" 0 A_CustomBulletAttack(0,0,1,0,"PrismDecalPurple",0,CBAF_AIMFACING)
+	Goto PhaseOne
+	}
+}
+
+Actor PrismDecalPurple : PrismDecalBase
+{
+	Decal "PrismPurpleScorch"
+}
+
+Actor PrismLightPurple : PrismLightBase
+{
+}
+
+//For Wyvern
+Actor PrismProjectileBase : FastProjectile
+{
+	Radius 12
+	Height 16
+	MissileHeight 16
+	Speed 300
+	Damage 15
+	Projectile
+	+RIPPER
+	+BLOODLESSIMPACT
+	+FORCERADIUSDMG
+	MissileType "PrismBeamBlue"
+	States
+	{
+	Spawn:
+		TNT1 A 1
+		Loop
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PrismImpactBlue",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor PrismProjectileBlue : PrismProjectileBase
+{
+	DamageType "LightningBlue"
+	States
+	{
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PrismImpactBlue",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor PrismProjectileCyan : PrismProjectileBase
+{
+	DamageType "Ice"
+	MissileType "PrismBeamCyan"
+	States
+	{
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PrismImpactCyan",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor PrismProjectileGreen : PrismProjectileBase
+{
+	DamageType "Tiberium"
+	MissileType "PrismBeamGreen"
+	States
+	{
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PrismImpactGreen",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor PrismProjectileLime : PrismProjectileBase
+{
+	DamageType "Acid"
+	MissileType "PrismBeamLime"
+	States
+	{
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PrismImpactLime",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor PrismProjectileYellow : PrismProjectileBase
+{
+	DamageType "Lightning"
+	MissileType "PrismBeamYellow"
+	States
+	{
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PrismImpactYellow",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor PrismProjectileOrange : PrismProjectileBase
+{
+	DamageType "Orange"
+	MissileType "PrismBeamOrange"
+	States
+	{
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PrismImpactOrange",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor PrismProjectileRed : PrismProjectileBase
+{
+	DamageType "Breath"
+	MissileType "PrismBeamRed"
+	States
+	{
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PrismImpactRed",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor PrismProjectilePurple : PrismProjectileBase
+{
+	DamageType "Flesh"
+	MissileType "PrismBeamPurple"
+	States
+	{
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PrismImpactPurple",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}

@@ -1,0 +1,88 @@
+actor Mana : Ammo
+{
+	Inventory.PickupMessage "I wonder how did you pick up THAT, nutty mortal."
+	Inventory.MaxAmount 100
+	Inventory.InterHubAmount 100
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 100
+	Inventory.Icon "MANASTAT"
+	+INVENTORY.UNDROPPABLE
+	+INVENTORY.IGNORESKILL
+	//+INVBAR
+}
+
+ACTOR MinorManaPot : CustomInventory
+{
+  Inventory.MaxAmount 0
+  Inventory.PickupSound "Pot/Pickup"
+  Inventory.PickupMessage "Obtained a mana vial."
+  +INVENTORY.AUTOACTIVATE
+  //+INVENTORY.ALWAYSPICKUP
+  -INVENTORY.INVBAR
+  //+INVENTORY.ALWAYSPICKUP
+  States
+  {
+  Spawn:
+    PTN4 AABBCCDDEE 1 A_SpawnItemEx("BlueParticle",frandom(3.0,-3.0),frandom(3.0,-3.0),frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  Pickup:
+    TNT1 A 0 A_JumpIfInventory("Mana",0,"Lolnope")
+	TNT1 A 0 A_GiveInventory("Mana",25)
+	TNT1 A 0 ACS_NamedExecuteAlways("ManaBonus", 0, 1)
+	Stop
+  Lolnope:
+	TNT1 A 0
+	Fail
+  }
+}
+
+ACTOR MajorManaPot : MinorManaPot
+{
+  Inventory.PickupMessage "Picked up a mana potion."
+  States
+  {
+  Spawn:
+    PTN3 AABBCCDDEEFF 1 A_SpawnItemEx("BlueParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  Pickup:
+    TNT1 A 0 A_JumpIfInventory("Mana",0,"Lolnope")
+	TNT1 A 0 A_GiveInventory("Mana",50)
+	TNT1 A 0 ACS_NamedExecuteAlways("ManaBonus", 0, 2)
+	Stop
+  }
+}
+
+ACTOR MinorManaPod : MinorManaPot
+{
+  Inventory.PickupSound "Capsule/Pickup"
+  Inventory.PickupMessage "Obtained a mana capsule."
+  States
+  {
+  Spawn:
+    MPOD A 1 A_SpawnItemEx("BlueParticle",frandom(3.0,-3.0),frandom(3.0,-3.0),7+frandom(10.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,128)
+    Loop
+  Pickup:
+    TNT1 A 0 A_JumpIfInventory("Mana",0,"Lolnope")
+	TNT1 A 0 A_GiveInventory("Mana",25)
+	TNT1 A 0 ACS_NamedExecuteAlways("ManaBonus", 0, 1)
+	Stop
+  }
+}
+
+ACTOR MajorManaPod : MinorManaPot
+{
+  Inventory.PickupSound "Capsule/Pickup"
+  Inventory.PickupMessage "Picked up a mana pod."
+  Scale 0.9
+  States
+  {
+  Spawn:
+    MPOD B 1 A_SpawnItemEx("BlueParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),15+frandom(25.0,0.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,128)
+    Loop
+  Pickup:
+    TNT1 A 0 A_JumpIfInventory("Mana",0,"Lolnope")
+	TNT1 A 0 A_GiveInventory("Mana",50)
+	TNT1 A 0 ACS_NamedExecuteAlways("ManaBonus", 0, 2)
+	Stop
+  }
+}

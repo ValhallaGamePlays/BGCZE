@@ -1,0 +1,2 @@
+	STARTUPTITLE = "The Guncaster v2.8 - DoomKrakken Edition"
+	STARTUPCOLORS = "000000", "9F0000"

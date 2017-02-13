@@ -1,0 +1,67 @@
+object Thunderball
+{
+    frame TNT1A { light THUNDERBALL }
+}
+
+object HomingThunderBall
+{
+    frame TNT1A { light THUNDERBALL }
+}
+
+object CauterizerFX //I had to split it from main projectile because, for unknown for me reason - it doesn't work then, duh. 
+{
+    frame TNT1A { light THUNDERBLAST }
+}
+
+pointlight THUNDERBALL
+{
+    color 0.1 0.8 1.0
+    size 192
+}
+
+pulselight THUNDERBLAST
+{
+    color 0.1 0.8 1.0
+    size 0
+    secondarySize 256
+    interval 1.2
+}
+
+pointlight CAUTGLOWSMALL
+{
+    color 0.1 0.7 0.7
+    size 9
+    offset 0 4 0
+	dontlightself 1
+}
+ 
+object CauterizerAmmo
+{
+    frame CAUA { light CAUTGLOWSMALL }
+}
+
+pointlight CAUTGLOWLARGE
+{
+    color 0.1 0.7 0.7
+    size 18
+    offset 0 6 0
+	dontlightself 1
+}
+
+object CauterizerBox
+{
+    frame CAUB { light CAUTGLOWLARGE }
+}
+
+pointlight CAUTGLOWVERYSMALL
+{
+    color 0.1 0.7 0.7
+    size 1
+    offset 0 4 0
+	dontlightself 1
+}
+
+//object LightningTrail
+//{
+//	Frame CLIT { light CAUTGLOWVERYSMALL }
+//}

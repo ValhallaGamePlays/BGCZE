@@ -1,0 +1,45 @@
+object Dreadball
+{
+    frame TNT1A { light DREADBALL }
+}
+
+object CoreDreadball
+{
+    frame TNT1A { light COREDREADBALL }
+}
+
+pointlight COREDREADBALL
+{
+    color 0.3 0.2 1.0
+    size 512
+}
+
+pointlight DREADBALL
+{
+    color 0.2 1.0 0.3
+    size 512
+}
+
+pointlight TIBGLOWSMALL
+{
+    color 0.05 0.7 0.05
+    size 12
+    offset 0 4 0
+}
+
+object TiberiumAmmo
+{
+    frame TIBAA { light TIBGLOWSMALL }
+}
+
+pointlight TIBGLOWLARGE
+{
+    color 0.05 0.7 0.05
+    size 32
+    offset 0 8 0
+}
+
+object TiberiumBloat
+{
+    frame TIBAB { light TIBGLOWLARGE }
+}

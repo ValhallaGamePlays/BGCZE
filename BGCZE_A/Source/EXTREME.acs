@@ -1,0 +1,24 @@
+//Let's be honest - such trivialty doesn't need to be credited at all, hue.
+
+#library "EXTREME"
+#include "zcommon.acs" //Does this even need a lib? Whatevers.
+
+script "PedalToTheMetal" (void)
+{
+	LocalSetMusic("DRGFORCE");
+	while(CheckInventory("PowerExtremeDamage"))
+	{
+		delay(CONST:1); // I hope you're happy Keks
+	}
+	LocalSetMusic("*");
+	
+	/*TakeInventory("PowerExtremeSpeed",1); //Pillow: This ain't needed anymore.
+	TakeInventory("PowerExtremeJump",1);
+	TakeInventory("PowerExtremeAmmo",1);
+	TakeInventory("PowerExtremeDamage",1);
+	TakeInventory("PowerExtremeInvul",1);
+	TakeInventory("PowerGunzerking",1);
+	TakeInventory("PowerBerserkDamage",1);
+	TakeInventory("PowerTomeEffect",1);
+	TakeInventory("ExtremeSphereInEffect",1);*/
+}

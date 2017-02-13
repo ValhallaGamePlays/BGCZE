@@ -1,0 +1,767 @@
+[enr]
+
+[enu default]
+
+STSTR_DQDON = "Deity mode on";
+STSTR_DQDOFF = "Deity mode off";
+STSTR_NCON = "Spirit walk engaged";
+STSTR_NCOFF = "Spirit walk disengaged";
+STSTR_NC2ON = "Spiritus walk engaged (hic)";
+TXT_BUDDHAON = "Undying mode on";
+TXT_BUDDHAOFF = "Undying mode off";
+STSTR_KFAADDED	= "Hoard access granted";
+STSTR_FAADDED = "Hoard access mostly granted";
+MSGOFF = "Ability to read suspended";
+MSGON = "Ability to read restored";
+NETEND = "You wish you could troll like that, don't you, puny mortal?";
+ENDGAME = "You may postpone your quest... but you will return.";
+GGSAVED = "Your efforts were successfully memorized by the deities of time and space.\nBut mostly by your hard drive.";
+TXT_DEFAULTPICKUPMSG = "Have fun picking up things with undefined strings!";
+
+STARTUP1 = "In one dragon's quest for blood, gold, and vengeance,";
+STARTUP2 = "many will fall in his name and ordnance.";
+STARTUP3 = "Will he reach his true goal? Will he avenge his home?";
+STARTUP4 = "That's up to you, my friend. Go forth and raise hell!";
+STARTUP5 = "Oh, and spend some money while you're at it. I need a new chalice.";
+
+OB_SUICIDE = "%o decided %p trip to Taumthegos.";
+OB_FALLING = "%o, even with wings, couldn't eternally defy the laws of physics.";
+OB_CRUSH = "%o became a dragon pancake.";
+OB_EXIT = "%o wanted to call quits.";
+OB_WATER = "%o found out that dragons aren't equipped with gills.";
+OB_SLIME = "%o shouldn't skimp on a protection suit next time.";
+OB_LAVA = "%o's heat resistance didn't make the cut.";
+OB_BARREL = "%o shouldn't touch that darn thing.";
+OB_KILLEDSELF = "%o couldn't bear with %hself.";
+OB_VOODOO = "%o always knew that black magic wasn't his thing. Or magic in general, really.";
+
+//Doom monsters
+OB_UNDEADHIT = "%o was agitated hard by a skeleton.";
+OB_IMPHIT = "%o was humiliated by an imp.";
+OB_CACOHIT = "%o was nommed by an aerial tomato.";
+OB_DEMONHIT = "%o was chomped by a hugeass pink mouth.";
+OB_SPECTREHIT = "%o isn't entirely sure what bit him.";
+OB_BARONHIT = "%o held a lethal meeting with a fabulously pink fellow.";
+OB_KNIGHTHIT = "%o got baaaa'd to the bone.";
+OB_ZOMBIE = "%o was plinked by a laughable possessed.";
+OB_SHOTGUY = "%o didn't covet that fellow's shotgun well enough.";
+OB_VILE = "%o was ironically incinerated by a demonic wazard.";
+OB_UNDEAD = "%o found out about the bad side of homing projectiles.";
+OB_FATSO = "%o couldn't outrun a mass of fat's barrage.";
+OB_CHAINGUY = "%o suffered severe lead poisoning.";
+OB_SKULL = "%o was kissed by a burning skull.";
+OB_IMP = "%o should have fought fire with fire.";
+OB_CACO = "%o was zapped by a flying strawberry.";
+OB_BARON = "%o got sludged by a fabulous goatman.";
+OB_KNIGHT = "%o got sludged by a goatman.";
+OB_SPIDER = "%o shouldn't have underestimated the brains of these operations.";
+OB_BABY = "%o was spammed to death by a brain on legs.";
+OB_CYBORG = "%o faced a rocket. In the face.";
+OB_WOLFSS = "%o did nazi it coming.";
+OB_DOG = "%o is predictably not good with dogs."
+
+//Stealth assholes
+OB_STEALTHBABY = "%o was spammed to death by a haxing brain.";
+OB_STEALTHVILE = "%o was stalked by a demonic wazard.";
+OB_STEALTHBARON = "%o imagined pink royalty before he went down.";
+OB_STEALTHCACO = "%o was zapped by a cowardly strawberry.";
+OB_STEALTHCHAINGUY = "%o suffered severe lead poisoning from an invisible turret.";
+OB_STEALTHDEMON = "%o was bit by pink things he couldn't see.";
+OB_STEALTHKNIGHT = "%o was murdered by a hard-to-find goatman.";
+OB_STEALTHIMP = "%o should have fought invisible fire with fire.";
+OB_STEALTHFATSO = "%o had a mass of fat sneak up and sit on him.";
+OB_STEALTHUNDEAD = "%o was agitated by a non-existent skeleton.";
+OB_STEALTHSHOTGUY = "%o coveted shotguns, but ate lead in the surprise round.";
+OB_STEALTHZOMBIE = "%o was plinked by a slightly more capable possessed.";
+//I can't believe it doesn't exist
+OB_STEALTHSKULL = "%o was kissed by an invisible skull.";
+//It doesn't exist, but I can't resist
+OB_STEALTHWOLFSS = "%o really did nazi it coming.";
+
+//The cast
+CC_ZOMBIE = "Laughable Possessed";
+CC_SHOTGUN = "Bald Possessed";
+CC_HEAVY = "Lead Dispenser";
+CC_IMP = "Spiked Dungman";
+CC_DEMON = "Nice Jaws";
+CC_LOST = "Burning Face";
+CC_CACO = "Flying Tomato";
+CC_HELL = "Goatman";
+CC_BARON = "Fabulous Goatman";
+CC_ARACH = "Brain on Legs";
+CC_PAIN = "Jesus fuck kill this";
+CC_REVEN = "Annoying Skeleton";
+CC_MANCU = "The Walking Fat";
+CC_ARCH = "Demon Wazard";
+CC_SPIDER = "'Brain of Operations'";
+CC_CYBER = "Rocket-Launching Supercow";
+CC_HERO = "Don't even dare to kill me";
+
+//Heretic monsters
+OB_HERETICIMP = "This imp is surely laughing in %o's face with a light toasting.";
+OB_HERETICIMPHIT = "%o had %p back scratched by an imp.";
+OB_MUMMY = "%o was sucker-punched by a mummified corpse.";
+OB_MUMMYLEADER = "%o was shrieked to death by a head-flinging bandage artist.";
+OB_BONEKNIGHT = "%o would like to axe a dead warrior a question.";
+OB_BONEKNIGHTHIT = "%o hates wazards for the magic of resurrection.";
+OB_CLINK = "%o learned the meaning of slasher films.";
+OB_WIZARD = "%o revises %p list of hated wazards.";
+OB_WIZARDHIT = "%o was somehow brought to ultimate shame from a wazard.";
+OB_SNAKE = "%o is tired of these motherfucking snakes on this motherfucking plane.";
+OB_BEAST = "%o met one of his ill-fated ugly cousins.";
+OB_IRONLICH = "%o should have struck the metal wazard head into ringing like a bell.";
+OB_IRONLICHHIT = "%o got into a fight with a metalhead and was shown the music.";
+OB_DSPARIL1 = "%o is pathetic for letting %hself get pwnt by D'Sparil's ride.";
+OB_DSPARIL1HIT = "D'Sparil's ride said otherwise to %o's personal tactics.";
+OB_DSPARIL2 = "%o's endless rampage wasn't good enough to defeat D'Sparil after all.";
+OB_DSPARIL2HIT = "%o's fistfight with D'Sparil resulted in utter humiliation.";
+
+//Hexen monsters
+OB_DEMON1 = "%o curses reptile DNA for producing a capably ugly specimen.";
+OB_DEMON2 = "%o wonders where in the family tree a werebeast and serpent got together.";
+OB_ETTIN = "Two heads didn't conflict enough before mashing %o.";
+OB_CENTAUR = "%o was slain by a Centaur.";
+OB_SLAUGHTAURHIT = "%o was slaughtered by a Slaughtaur.";
+OB_SLAUGHTAUR = "%o was struck down by a Slaughtaur's shield ball.";
+OB_FIREDEMON = "%o curses new paint jobs for old impling foes.";
+OB_BISHOP = "%o couldn't get over seeking wazard magic.";
+OB_ICEGUY = "%o learned the difference between normal chill and magical freeze - especially for dragons.";
+OB_WRAITH = "%o was ended by a ghostly warrior's flame.";
+OB_WRAITHHIT = "%o didn't watch his back for ghosts.";
+OB_SERPENTHIT = "%o encountered a brief reunion with the serpent family tree.";
+OB_SERPENT = "%o was stalked and subdued with a bad acid trip.";
+OB_DRAGON = "%o received an airstrike welcome from %p vicious distant relative.";
+OB_FBOSS = "%o learned to respect the warrior fellow.";
+OB_MBOSS = "%o couldn't handle the op wazard's staff.";
+OB_CBOSS = "%o crusaded against the wrong priest.";
+OB_HERESIARCH = "%o knows one thing: even wazards of his own heritage should never be underestimated.";
+OB_KORAX = "%o was toppled like a king on Korax' chessboard."
+
+QUITMSG = "(Choose your grumpy fate.)";
+TXT_YES = "Mhm. (Yes)";
+TXT_NO = "Hrmph. (No)";
+
+//Deathmatch
+TXT_FRAGLIMIT = "Perished souls limit has been reached.";
+TXT_TIMELIMIT = "All the moments that make up a fun day ticked away.";
+
+SPREEKILLSELF = "%o was a pretty vicious entity until %p trigger slipped.";
+SPREEOVER = "%o's rampage was put to an end by %k.";
+SPREE5 = "%k starts to draw bloodthirsty deities' attention.";
+SPREE10 = "%k pleases the aforementioned deities!";
+SPREE15 = "%k just earned a pass for the annual manslaughters!";
+SPREE20 = "Deities are definitely handing the city keys to %k!";
+SPREE25 = "%k must be the next incarnation of Nithor!"; //I'll spoil this, and many other references... someday. Maybe.
+
+OB_DEFAULT = "Here lies %o, the coolest dragon who ever wore pants. (Where did %g get the pants?)";
+OB_MPDEFAULT = "%k decided to give someone a taste of real wrath.";
+OB_FRIENDLY1 = "%k's hatred of everything reached zenith.";
+OB_FRIENDLY2 = "Someone was unfortunate enough to be in %k's range.";
+OB_FRIENDLY3 = "Somebody perished at the hands of %k.";
+OB_FRIENDLY4 = "%k felt like murdering some poor soul.";
+
+//Correct spelling stuff
+GOTFIREBREATH = "You just obtained the power to \c[Orange]breathe fire\c-!";
+GOTSKULLFIRE = "You just obtained the power of casting \c[Orange]Skullfire\c-!";
+GOTFLAMEWAVE = "You just obtained the power of casting \c[Orange]Flamewave\c-!";
+GOTFROSTBITE = "You just obtained the power of casting \c[LightBlue]Frostbite\c-!";
+GOTCHILLGRASP = "You just obtained the power of casting \c[GCPurple]Chillgrasp\c-!";
+GOTGUMPOP = "You just obtained the power of casting \c[Green]Gumpop\c-!";
+GOTTHUNDERSTRUCK = "You just obtained the power of casting \c[Yellow]Thunderstruck\c-!";
+GOTTHREADCUTTER = "You just obtained the power of casting \c[GCTeal]Threadcutter\c-!";
+GOTSKYPUNCH = "You just obtained the power of casting \c[Cyan]Skypunch\c-!";
+GOTCROWS = "You just obtained the power of casting \c[Black]Hitchcock's Birds\c-!";
+GOTSCOURGE = "You just obtained the power of casting \c[Red]Scourgebreath\c-!";
+GOTCORPSEBLAST = "You just obtained the power of casting \c[Pink]Corpseblast\c-!";
+GOTANNIHILATION = "You just obtained the power of casting \c[Blue]Annihilation\c-!";
+GOTMETEORFIST = "You just obtained the power of causing real mayhem - \c[Orange]the Meteorfist\c-!";
+GOTSHEEPSHIELD = "Lo and behold - you just obtained the power of casting \c[White]Sheepshield\c-!";
+GOTSPIRITCANNON = "You just obtained the power to summon \c[LightBlue]Spiritcannons\c-!";
+GOTDARKVOID = "You just obtained the power of casting \c[Purple]Darkvoid\c-!";
+GOTPRISM = "You've got the \c[Blue]P\c[Cyan]r\c[Green]i\c[Olive]s\c[Yellow]m \c[Orange]L\c[Red]a\c[Pink]z\c[Purple]e\c[GCPurple]r\c-! Rainboooowwwzzz!~*bleeuuurgh*";
+
+//Gun stuff
+GOTLONGHORN = "Retrieved the trusty \c[orange]''Longhorn''\c- revolver! Never feel lucky, chump... I mean, punk. (2)";
+GOTSTRUCKER = "Nabbed a \c[red]''Strucker''\c- shotgun! Lead is the name of the game. (3)";
+GOTIRONBLAST = "Grabbed hold of an \c[black]''Ironblast''\c- super quadshotgun! Eight barrels, all awesome. (3)";
+GOTPULVERIZER = "Received the gift of \c[gold]''Pulverizer''\c- chaingun! Handheld lead dispenser, at your service! (4)";
+GOTMATRIARCH = "Caught your eye on \c[olive]''Matriarch''\c- cannon rifle! She's a real, ol' hag. (5)";
+GOTSOVEREIGN = "Inherited the \c[gray]''Sovereign''\c- autocannon! Real successor's throne is made of gibs. (5)";
+GOTCAUTERIZER = "Got your claws on a \c[cyan]''Cauterizer''\c- thunderblaster! A truly shocking experience. (6)";
+GOTDREADFUL = "Obtained an \c[green]''Old Dreadful''\c- BFG! Jebut-factor: Beyond any limits! (7)";
+
+/*
+//Old Stuff...
+GOTLONGHORN = "Retrieved the trusty ''Longhorn'' revolver! Never feel lucky, chump... I mean, punk. (2)";
+GOTSTRUCKER = "Nabbed a ''Strucker'' shotgun! Lead is the name of the game. (3)";
+GOTIRONBLAST = "Grabbed hold of an ''Ironblast'' super quadshotgun! Eight barrels, all awesome. (3)";
+GOTPULVERIZER = "Received the gift of ''Pulverizer'' chaingun! Handheld lead dispenser, at your service! (4)";
+GOTMATRIARCH = "Caught your eye on ''Matriarch'' cannon rifle! She's a real, ol' hag. (5)";
+GOTCAUTERIZER = "Got your claws on a ''Cauterizer'' thunderblaster! A truly shocking experience. (6)";
+GOTDREADFUL = "Obtained an ''Old Dreadful'' BFG! Jebut-factor: Beyond any limits! (7)";
+*/
+
+KILLDERGFIST = "%o was shown drunken dragon martial arts by %k.";
+KILLLONGHORN = "%k put a huge bullet into %o's cranium.";
+KILLSTRUCKER = "%k struck %o to death with a fistful of 10-gauge.";
+KILLIRONBLAST = "%o was painted over the wall like one of %k's french girls - likely with an ''Ironblast''.";
+KILLPULVERIZER = "%o was showered with %k's unreasonably pulverizing amounts of lead.";
+KILLMATRIARCH = "%o knows now that if there's something worse than %p mother-in-law, that'd be %k's ''Matriarch''.";
+KILLSOVEREIGN = "%o was gazed upon by a tyrant - the glory of %k's ''Sovereign''.";
+KILLCAUTERIZER = "%o was shockingly dispersed by %k's ''Cauterizer''.";
+KILLDREADFUL = "%o was annihilated from existence by %k's ye olde ''Dreadful''.";
+
+//Quit messages
+QUITWDM1 = "Hear ye thine advice from ye olde dragon:\nshoot first, ask questions later.";
+QUITWDM2 = "Spare a moment to accept our true lord and savior Bahamut?";
+QUITWDM3 = "Nothing shows your affection and tolerance better than a hug...\nor a chain of explosions.";
+QUITWDM4 = "Hope you enjoyed your stay! I surely did.";
+QUITWDM5 = "Guns don't kill people... until I pull the trigger.";
+QUITWDM6 = "You know, next time you come in here, I'm gonna toast you.";
+QUITWDM7 = "Protip: hate wazards with passion.";
+QUITWDM8 = "Come on out, D'Sparil.\nYou can't hide your magical ass for eternity.";
+QUITWDM9 = "I, for one, welcome your destiny with a smile.\nIt will definitely hurt.";
+QUITWDM10 = "Oh, I found some glorious bubblegum!\nWonder who left this treasure here...";
+QUITWDM11 = "'I must've dreamed a thousand dreams,\nBeen haunted by a million screams!'";
+QUITWDM12 = "*hums*... Corpses flying, bastards dying... ahhh...\nI should write a touching ballad sometime.";
+QUITWDM13 = "I've attained a sudden yearning for the tears of my enemies.";
+QUITWDM14 = "My dragon senses are tingling: you've had enough of this slaughterhouse for the moment.";
+QUITWDM15 = "The answer is 42.\nSounds like a reasonable number of explosions...\nfrom one nuke.";
+QUITWDM16 = "I don't really care what you think of all these wonders.\nI actually hate magic.";
+QUITWDM17 = "'Hello? Is anybody in there?\nJust knock if you can hear me...\nIs there anyone at home?'";
+QUITWDM18 = "A thousand scales, and all of them are in your face at the moment.\nBe sure to recommend my medicine to a friend.";
+QUITWDM19 = "'We go all the way, do we need the pain, waking up in a black tomorrow...\nI've been there before, was it all wasted again?!'";
+QUITWDM20 = "If you're really dense, I can tell you my secret:\nI absolutely love shooting everything.\nNothing's better - just ask Doomguy!\n... Oh, right, he's literally speechless about it.";
+QUITWDM21 = "Today, we play a match of battleshots!\n... Everyone gets wasted!";
+QUITWDM22 = "Here comes mercy and salvation!\nMercy is my left fist, salvation... you understand.";
+QUITWDM23 = "I hate magic. And vampires, and lawyers...";
+QUITWDM24 = "I find your lack of firepower disturbing.";
+QUITWDM25 = "That feeling you are embracing right now?\n\nIt is your flesh, peeling straight off your bones.";
+QUITWDM26 = "If explosions were a medium of expression, I'd be an artisan right now.";
+QUITWDM27 = "A coffin won't be needed once I'm done with you.";
+QUITWDM28 = "Thanks from the mountain! Hahaha!";
+QUITWDM29 = "And voila, another round of wonderful destruction!";
+QUITWDM30 = "This. Is. NARNIAAA!!...\nNo, wait, I think I got it wrong.";
+QUITWDM31 = "You dare to bring the blight into my air?! YOU MUST DIE!";
+QUITWDM32 = "History says you tried your best...\nYour lack of pulse, frankly, says different.";
+QUITWDM33 = "You're dead. Amen to that.";
+QUITWDM34 = "Is it just me, or did they not even try to kill me?";
+QUITWDM35 = "Words can't comprehend how much I HATE wazards.";
+QUITWDM36 = "Don't follow me if you want to live.";
+QUITWDM37 = "You mustn't be this tall to die.\nAny height is fine!";
+QUITWDM38 = "I'm not an existentialist, but even I can deal with your problems existing!";
+QUITWDM39 = "Maybe one day I'll actually start to like this magical mumbo-jumbo.";
+QUITWDM40 = "Yeah, I could rest my trigger-finger...\n\n...On second thought, I'll go shooting without you.";
+QUITWDM41 = "I've got a present for you! And yes - it shall be left-handed!";
+QUITWDM42 = "I have some great information for you: you are already dead.";
+QUITWDM43 = "Order now, and you'll receive another brutal evisceration - absolutely free!";
+QUITWDM44 = "MONSTRO EXPLODOOO!\nThat's the magic I like.";
+QUITWDM45 = "I. Hate. WAZARDS!\nI mean, wazerds... weyzards... okay okay, I got it... WEZERDS!...\nAh, fuck it.";
+QUITWDM46 = "The sad truth? I am more ridiclously armed than you.";
+QUITWDM47 = "Huh? There's something on your face!\n...\nWhoops, I've removed it already. Your face, that is.";
+QUITWDM48 = "Tis but a scratch!";
+QUITWDM49 = "Yeah baby, I'm on fire!\n...\nNo, wait! I actually am on fire!";
+QUITWDM50 = "Tell me, is that the grim reaper looming over there?";
+QUITWDM51 = "That's nothing but a flesh wound!";
+QUITWDM52 = "NO! Do not want! Seal all the doors!\nAbort the circus! Ludicrous speed, NOW!";
+QUITWDM53 = "Better find a safe spot and regenerate...\n\nNo wait, that's not how it works.";
+QUITWDM54 = "Oh come on! I thought the magic password was BANANA!";
+QUITWDM55 = "*Long groan of disapproval*";
+QUITWDM56 = "Only a wazard could invent so many randomly placed locks.\nGood thing I make my own keys.";
+QUITWDM57 = "Yeah, well... I hate you too.";
+QUITWDM58 = "Call no man happy until he's dead...\nHAPPY! HAPPY! HAPPY! HAPPY! HAPPY! HAPPY!";
+QUITWDM59 = "In the end, all that matters are exploding wazards. Err... eh, whatever.";
+QUITWDM60 = "If I wasn't a nice guy,\nI'd just use this split second to take you with me!";
+QUITWDM61 = "Opened a can of whoopass on the wrong side?";
+QUITWDM62 = "I need a vacation...\nA nice one in the flames of Magnemos six.";
+QUITWDM63 = "If I wasn't a sarcastic prick,\nI'd say you did quite well.";
+QUITWDM64 = "Your mother was a hamster, and your father smelt of elderberries!";
+QUITWDM65 = "They were all ugly. I released my trigger from the finger... and then life was a rhetorical question.";
+QUITWDM66 = "'Twas I who fucked the dragon,\nFuckalize sing-fuckaloo!\nAnd if you try to fuck with me,\nThen I shall fuck you too!'";
+QUITWDM67 = "'After the storm, when the magic has gone,\nDrown in the tears of a mandrake!\nPawn in the game, invisible chains,\nTry to move, you will feel as they graze!'";
+QUITWDM68 = "I am Cygnis Flaynithere.\nI will eat you. *grin*";
+QUITWDM69 = "First rule - do no harm (to dragons).\nThat is, if you want no harm to come to you.";
+QUITWDM70 = "Join me, and we shall rule the worlds!\nOr at least, burn some wazards.\nIt's gonna be fun nonetheless!";
+QUITWDM71 = "Dragonclaw? What? You call this... Dragonclaw?! You have to be shitting me.";
+QUITWDM72 = "I believe in flying spaghetti monster.\n...In hopes of consuming the biggest spaghetti ever!";
+QUITWDM73 = "I am really torn between whether or not to tear you apart.";
+QUITWDM74 = "I once rescued a Djinni and his lamp.\nI asked for a hot chick as a reward.\nI received a chicken nugget.\n\n...I fail to see humour in this.";
+QUITWDM75 = "I wonder where that cig-addicted wiseacre could be...\nHe was good for the bitches.";
+QUITWDM76 = "My ancestor once said - if you want a trusty friend,\nhe'd better be called either Victor or Keith.\nWhy not both?!";
+QUITWDM77 = "I feel train to you. *ran over by a train, asdf-style*";
+QUITWDM78 = "*Stares at firemace* You know what things like these are good for?\n\nUnclogging a toilet.";
+QUITWDM79 = "Did Korax mistake me with someone? Eh, no matter."; 
+QUITWDM80 = "'Dreaming of screaming,\nSomeone kick me out of my mind,\nI hate these thoughts I can't deny!'";
+QUITWDM81 = "'Money!... grab that gold with both hands and make a hoard!'";
+QUITWDM82 = "'So far away we wait for the day,\nFor the lights are so wasted and gone,\nWe feel the pain of a lifetime lost in a thousand days,\nThrough the fire and the flames we carry on!'";
+QUITWDM83 = "Knock knock.\n\nWho's there?\n\nMe, I kill you.";
+QUITWDM84 = "No dragon was harmed during the production of this mod.\nCan't say the same about the monsters.";
+QUITWDM85 = "Jez'ni trak'netah!";
+QUITWDM86 = "Wololo. Now I'm blue.";
+QUITWDM87 = "Heeeere's Cyggie!";
+
+// Now for some cluster texts
+
+// Doom 1
+
+E1TEXT =
+	"Those hideous demon-skinned beasts never\n"
+	"stood a chance, did they? Still, where's\n"
+	"your hoard of gold and your portal back?\n"
+	"Where are you ultimately wandering, and\n"
+	"what's with the ambush? It's not going\n"
+	"to end this way, you snort. All you can\n"
+	"do is pull yourself from the pile of\n"
+	"corpses and stagger forward.\n"
+	"\n"
+	"Your sensitive nostrils pick up the\n"
+	"smell of rotten flesh, and your sharp\n"
+	"eyes rove over more strange corporate\n"
+	"technology than you ever thought to\n"
+	"exist in a single timeline. Looks like\n"
+	"your fight is just beginning. Show those\n"
+	"hellish bastards what a dragon is made\n"
+	"of. The only way out... is through.\n";
+
+E2TEXT =
+	"You've done it! The big ugly cyborg\n"
+	"bastard that challenged your path\n"
+	"forward has been reduced to a pile\n"
+	"of insignificant gibs... But where\n"
+	"have you gotten yourself to now? You\n"
+	"swoop to the edge of the ex-ruler's\n"
+	"tower to find the bizarre truth of your\n"
+	"predicament...\n"
+	"\n"
+	"This base floats above a hellish plane\n"
+	"reminiscent of a few you've seen before,\n"
+	"perhaps not quite like this but most\n"
+	"certainly not original in its obsession\n"
+	"with the flesh of mortalkind. Escaping\n"
+	"from such a dimension is difficult, but\n"
+	"certainly not impossible. You'll make\n"
+	"anyone sorry for standing in your way\n"
+	"soon enough... It's time to show your\n"
+	"enemies the meaning of an 'inferno'.\n";
+
+E3TEXT =
+	"You've never seen grey matter on legs\n"
+	"before, but you're sure that after your\n"
+	"excursion no one ever will again.\n"
+	"Certainly a wazard of the chaingun is\n"
+	"worth something on your list of kills.\n"
+	"\n"
+	"A portal mysteriously opens after its\n"
+	"defeat, beckoning you to a strange and\n"
+	"oddly green place you're not sure you've\n"
+	"ever heard of before. With no better\n"
+	"propositions of a return home, you step\n"
+	"through to find soft ground beneath your\n"
+	"boots and a swift breeze across your\n"
+	"nose. As far as planes go, this one was\n"
+	"not too shabby. Unfortunately, it seems\n"
+	"you aren't the only one who finds\n"
+	"yourself here of recent adventure...\n";
+
+E4TEXT =
+	"It seems a shame to trod all over the\n"
+	"fairness this world had to offer, but\n"
+	"you had no choice when the revenge of\n"
+	"the brain began with doing exactly what\n"
+	"you had to. Still, you stepped forth\n"
+	"and showed those measly excuses for\n"
+	"creatures of warfare just what a true\n"
+	"fire-breather can do.\n"
+	"\n"
+	"Plus, someone was going to have to pay\n"
+	"for soiling the lawn with rabbit guts.\n"
+	"\n"
+	"Unfortunately, it seems your work is\n"
+	"still not yet done. The invasion has\n"
+	"launched, and soon these peaceful\n"
+	"grounds will be overrun by demons no\n"
+	"matter what you could have done.\n"
+	"\n"
+	"You'll just have to show them true hell\n"
+	"in return.\n";
+
+// Doom 2
+
+C1TEXT =
+	"You've wandered deeply into the infested\n"
+	"grounds of the humans. Something seems\n"
+	"very wrong here, as if there is a powerful\n"
+	"magic at work here - not unlike the kind\n"
+	"you wield. The influence is quite heady.\n"
+	"\n"
+	"Ahead you see fortified territory, a\n"
+	"bastion for the principles you've been\n"
+	"fighting ever since you got here. Your\n"
+	"keen senses detect that this zone is being\n"
+	"guarded for a reason, one you wish to\n"
+	"discover if only to ruin evil's cup of\n"
+	"morning tea. Perhaps you are here for\n"
+	"a reason of your own...\n";
+
+C2TEXT =
+	"Whatever that switch you just pulled did\n"
+	"seems to have totally thrown the enemy\n"
+	"into complete disarray. Satisfied, you\n"
+	"take a breather to observe a nearby\n"
+	"display, one that shows the bulkheads\n"
+	"for human spaceships to have opened and\n"
+	"allowed them all to evacuate in the face\n"
+	"of this nasty threat you've been kicking\n"
+	"the ass of all damn day. Is that it?\n"
+	"Have you done your good deed? You are a\n"
+	"lone dragon standing on a lively yet\n"
+	"desolate planet, with still yet more\n"
+	"ass to kick roaming all over the place.\n"
+	"Slowly you pick up your revolver and\n"
+	"head forth to continue your campaign of\n"
+	"carnage and discombobulation, hopeful\n"
+	"that the source will lead you back to\n"
+	"where you want to be...";
+
+C3TEXT =
+	"Your destruction has lead you to the\n"
+	"corrupt heart of a city, surrounded by\n"
+	"casings and fallen foes where they lay.\n"
+	"A portal here seems to lead directly\n"
+	"back to your point of origin, but while\n"
+	"destroying it may hinder their entry,\n"
+	"you'd rather just kick the factory's\n"
+	"fleshy ass and slap another kill onto\n"
+	"the impressive list.\n"
+	"\n"
+	"You grin unsettlingly and plunge\n"
+	"through, hoping to serve a ten ton can\n"
+	"of almighty dragon rage to some unlucky\n"
+	"dimensional monster. What do you care if\n"
+	"you've got to go through hell again?\n";
+
+C4TEXT =
+	"Of all the things you've killed in your\n"
+	"hefty lifetime, this one has to take the\n"
+	"cake for ugliness. It screams and flails\n"
+	"uncontrollably in the wake of your\n"
+	"slaughter, doing itself a number on its\n"
+	"own quaint dimension. Scratch one bad\n"
+	"number off your list, you think to\n"
+	"yourself as you shoulder your autocannon\n"
+	"and head back the way you came. Humans\n"
+	"probably won't understand what happened\n"
+	"today, but you won't care. You're left\n"
+	"to wander again through the\n"
+	"dimensional wake, searching tirelessly\n"
+	"for a way back to your homeland and\n"
+	"your ultimate goal. D'Sparil the wizard\n"
+	"will be shown that a misleading portal\n"
+	"won't culminate in your end. Taking\n"
+	"his skull apart ought to be a lot more\n"
+	"fun than this was.";
+
+C5TEXT =
+	"Odd. This strange portal was located out\n"
+	"of the way... Almost cleverly concealed,\n"
+	"in fact. As a certain phrase goes in\n"
+	"Draconic: [Where there is a well-hidden\n"
+	"cave, an equally worthy hoard lies.]\n";
+
+C6TEXT =
+	"As expected, the treasures you seek\n"
+	"aren't so easily found via a single\n"
+	"portal. Of minor surprise is that\n"
+	"these plots seems to be human-built,\n"
+	"not moderated with magical power. A\n"
+	"worthy target, you can only believe.\n";
+
+// Plutonia Experiment
+
+P1TEXT =
+	"A strange device lays at your feet, now\n"
+	"broken into several pieces in the wake\n"
+	"of your rampage. You hoped it wasn't\n"
+	"important because whoever owned it\n"
+	"wasn't going to be able to catch up and\n"
+	"complain. Beyond the metal parts lay the\n"
+	"remains of the cyborg that defended it,\n"
+	"most viciously and to the death. If you\n"
+	"happened across another along the way,\n"
+	"you'd destroy that too - just to see\n"
+	"utter wrath in these foes' faces. Keep\n"
+	"moving, keep fireballing, keep killing.\n"
+	"Oh yes, and keep collecting gold, too.\n";
+
+P2TEXT =
+	"You almost had to laugh hard enough to\n"
+	"spit blood from your throat, being put\n"
+	"up against demons with only flames as\n"
+	"their weapon. They, too, carried one\n"
+	"of those devices, now crushed under\n"
+	"one sole of a conveniently placed boot.\n"
+	"Something tells you there are more from\n"
+	"the smell in the environment, one that\n"
+	"seemed to be unique to the device alone.\n"
+	"You hoped it was a smell and not just\n"
+	"your gut telling you it was time for\n"
+	"dinner. You're good at that kind of thing.\n";
+
+P3TEXT =
+	"No devices here, but you have a distinct\n"
+	"feeling there's another one like them\n"
+	"just ahead. The concentration of enemies\n"
+	"trying to hold you back tells a revealing\n"
+	"story. They may be bad, but you know for\n"
+	"a fact just who is worse.\n"
+	"\n"
+	"You shuffle your pouch of gold and the\n"
+	"weapons in your holsters, splaying your\n"
+	"scaly lips evilly with the vision of\n"
+	"splattering more evil against the walls.\n";
+
+P4TEXT =
+	"Another ugly bastard down, and this one's\n"
+	"device created a pretty light show when\n"
+	"an explosive put it permanently out of\n"
+	"commission, sucking all of the other\n"
+	"demons with it into an inverse portal to\n"
+	"a nasty void dimension. You laugh heartily\n"
+	"in the face of such a worthless travesty,\n"
+	"sending the message to Hell that you would\n"
+	"not stand for such weaklings pounding good\n"
+	"people with evil schemes. Perhaps if you\n"
+	"returned one day, you'd tell your\n"
+	"hatchlings to pack you a launcher for the\n"
+	"trip. Something tells you a final clean-up\n"
+	"would be utterly satisfying.\n";
+
+P5TEXT =
+	"A separate teleporter looms with an\n"
+	"ominous glow, the destination set to a\n"
+	"high concentration zone of death. You've\n"
+	"always liked a challenge. Show them what\n"
+	"you're made of.\n";
+
+P6TEXT =
+	"Nearing the next portal only intensified\n"
+	"your gut feeling: the grip of finality\n"
+	"present here would not let its victims go\n"
+	"freely. No one gets out alive... no mere\n"
+	"mortal, at the very least.\n";
+
+// TNT: Evilution
+
+T1TEXT =
+	"Once again, you've fought your way through\n"
+	"bizarre laboratories chock full of\n"
+	"militaristic secrets. Whoever was throwing\n"
+	"money at all of this technology had to\n"
+	"have an impressive stash, you guessed.\n"
+	"\n"
+	"Ahead lie more facilities waiting to be\n"
+	"utterly looted and diseased horrors to\n"
+	"use as target practice. With luck, they\n"
+	"have ammo ready for you to fire.\n";
+
+T2TEXT =
+	"You hear the sound of grinding machinery\n"
+	"ahead, hopefully molding new threats for\n"
+	"you to 'manage'. You're ready to ream a\n"
+	"whole herd with bullets if you have to.\n"
+	"They might be planning a blood feast,\n"
+	"but your own wasn't on the menu tonight.\n"
+	"Not the belongings of a 200-pound pissed\n"
+	"dragon, nor the guns at your side.\n"
+	"\n"
+	"You don't ever plan going down easy.\n";
+
+T3TEXT =
+	"The vista opening ahead looks real damn\n"
+	"familiar... Smells familiar, too. Like\n"
+	"the souls of a thousand foes waiting to\n"
+	"be quenched again in their own hellfire.\n"
+	"You sure as hell enjoyed yourself here\n"
+	"before, and you plan to do so again -\n"
+	"all the way until you reach your own\n"
+	"plane again. The more you think about\n"
+	"being kept from returning, the madder\n"
+	"you get. An evil grin once again parts\n"
+	"your face as you heft your revolver\n"
+	"and move on your way. Taking names is\n"
+	"the whole game.\n";
+
+T4TEXT =
+	"Suddenly, you hear nothing in the air,\n"
+	"demons fading from the grounds from one\n"
+	"edge of your vision to the other. The\n"
+	"unearthly screams fade, the sky\n"
+	"relinquishes its color, the destruction\n"
+	"all around vanishes into thin air\n"
+	"before your very nose... Have you\n"
+	"really done it? Have you vanquished\n"
+	"Hell's might for all time? That would\n"
+	"be... quite boring.\n"
+	"\n"
+	"Nonetheless, a rumbling sound in the\n"
+	"distance answers your call to\n"
+	"wandering, a faint blue glow\n"
+	"accompanying the noise...\n";
+
+T5TEXT =
+	"Another strange plane... This one looks\n"
+	"quite dusty and filled with ancient\n"
+	"scrawlings that mean nothing to you.\n"
+	"It seems too intricately built not to\n"
+	"loot... Whomever cared about allowing\n"
+	"sleeping gods to lie?\n";
+
+T6TEXT =
+	"This destination seems quiet... A bit\n"
+	"too quiet. Where are all of the uglies\n"
+	"to murder? Where's the blood, the death,\n"
+	"the massacre? You're not ready for a\n"
+	"vacation, and nobody is going to take\n"
+	"your rightful place as the true slayer...\n"
+	"\n"
+	"The sound of a cyberdemon's iron shoe\n"
+	"in the distance once again lifts your\n"
+	"mood...\n";
+
+// No Rest For The Living
+
+NERVETEXT =
+	"Trouble was brewing again in the plane\n"
+	"of trouble and destruction... Hell.\n"
+	"Another one of those half-metal uglies\n"
+	"thought it'd be funny to stamp out a\n"
+	"personal amusement park and shape the\n"
+	"human planet into a ticket booth.\n"
+	"\n"
+	"Little did he know Hell's least favorite\n"
+	"dragon was visiting the grounds, ready to\n"
+	"amp up the shooting gallery to eleven on\n"
+	"the slaughter scale.\n"
+	"\n"
+	"Now the walls of his corner of\n"
+	"Pandaemonium echo with the sound of his\n"
+	"remains plastering the walls with blood\n"
+	"and seared flesh. His death moan gurgles\n"
+	"out through the mess you left of his face.\n"
+	"\n"
+	"This ride is closed.\n";
+
+// Heretic, should've been the main focus lol
+
+HE1TEXT =
+	"The destruction of the magical\n"
+	"metal heads and their minions\n"
+	"signals the end of undead\n"
+	"influence on this plane. But\n"
+	"where is your goal? Who filled\n"
+	"this world with the shambling\n"
+	"horrors you left lying in your\n"
+	"wake? One thing is for certain:\n"
+	"a serpent rider's name rings\n"
+	"through your mind, calling forth\n"
+	"all of the anger you've unleashed\n"
+	"so far and driving you forth\n"
+	"through the portal to Hell's Maw\n"
+	"with the ultimate goal of\n"
+	"sealing it from the other side.\n"
+	"To ensure that D'Sparil cannot\n"
+	"ruin more lives than yours, you\n"
+	"find yourself stuck in very\n"
+	"unfriendly worlds with plenty\n"
+	"to kill and maim, but hey: no\n"
+	"one ever said being a dragon\n"
+	"was easy!\n";
+
+HE2TEXT =
+	"The mighty maulotaurs proved no\n"
+	"match for the sheer inferno of a\n"
+	"reptile, and as their separated\n"
+	"bodily organs splatter all about,\n"
+	"a grim sense of satisfaction parts\n"
+	"your lips and teeth. Still, yet\n"
+	"again has D'Sparil evaded your\n"
+	"determination to stick his head\n"
+	"through a conveniently placed pike,\n"
+	"and your mood quickly dampens before\n"
+	"another great portal. You quickly\n"
+	"step through to compensate for\n"
+	"reluctance and hear the sound of\n"
+	"maniacal mocking laughter ringing\n"
+	"through your skull, a great dome\n"
+	"spread out overhead displaying\n"
+	"this plane's encapsulation. Perhaps\n"
+	"D'Sparil has chosen to play fair\n"
+	"once and for all, but horrific beings\n"
+	"ahead of you tell of nothing good...\n";
+
+HE3TEXT =
+	"The death of D'Sparil releases you\n"
+	"from a great bond, much as it does\n"
+	"so for his remaining servants still\n"
+	"wandering these grounds. Have you\n"
+	"finally avenged your home? Is your\n"
+	"quest over, your wanderlust sated\n"
+	"and your vengeance satisfied once\n"
+	"and for all? You quickly step through\n"
+	"the portal blasted open in the wake\n"
+	"of D'Sparil's demise, recognizing\n"
+	"the shattering of the dome behind you\n"
+	"and the destination ahead of you as\n"
+	"two coincidences on the same plane.\n"
+	"Was it the final incantation D'Sparil\n"
+	"uttered post mortem that caused you\n"
+	"unease? Was it the sensation of being\n"
+	"ripped through time and space to a\n"
+	"location possibly unknown? What of\n"
+	"the strange merchant who has been\n"
+	"supplying you the whole way here?\n"
+	"The answers won't come easily,\n"
+	"you feel in your gut. Damn wazards.\n";
+
+HE4TEXT =
+	"You knew it couldn't have been this\n"
+	"easy. D'Sparil's last act was to\n"
+	"banish you to his personal section\n"
+	"of the universe, filled with untold\n"
+	"guardians awaiting an unlucky hero.\n"
+	"Fortunately, you have triumphed, but\n"
+	"small dismay begins to set in as your\n"
+	"realization comes to a head: this is\n"
+	"D'Sparil's origin, a plane of hellish\n"
+	"trial and tirade. To end his evil\n"
+	"would mean destroying the cesspit\n"
+	"from which he came, a part of the\n"
+	"abyss which you are currently staring\n"
+	"into; perhaps within is a way out,\n"
+	"but you're not intending to seek one\n"
+	"until the influence of your enemy has\n"
+	"been quelled once and for all. The\n"
+	"demesne awaits, and your gun will\n"
+	"fell his bodyguards for sure...\n";
+
+HE5TEXT =
+	"With the final felling of the\n"
+	"mighty maulotaurs, you breathe\n"
+	"heavily and take stock of your\n"
+	"injuries. Never before has such a\n"
+	"conflict brought you to near\n"
+	"ruination, and never have you\n"
+	"tasted so much of your own blood.\n"
+	"The gates before you lay open,\n"
+	"leaving you wondering only idly\n"
+	"whether they actually lead home;\n"
+	"whether you hold the strength to\n"
+	"continue is not a question of\n"
+	"physicality, but instead mental\n"
+	"turmoil. Will you ever see your\n"
+	"homeland again? Can continued\n"
+	"murder sustain your will to live?\n"
+	"In the end, you toss away these\n"
+	"deprecating thoughts. One more\n"
+	"challenge won't hurt anything.\n"
+	"That is, except your enemies.\n";

@@ -1,0 +1,997 @@
+//Property of Stan423321 - All wrongs reversed.
+
+//Code that makes the lists game-agnostic, and all in one script, by Zhs2!
+
+// KeksDose put some tape on it so it kind of works now! Wow.
+
+//PILLOW:
+//It still wasn't what Keks expected so I had to do some copy-pasta and such,
+//and it still doesn't work in satisfying way.
+//(ergo the powerup and x-amount-of-units items are still kinda broken,
+//but since I can't do much about it, that must suffice for now.)
+
+#library "UFOPORN2"
+#include "zcommon.acs"
+#libdefine MASK (-1.0)
+
+str CASH_ACTOR = "Dosh";
+str SHOPFONT = "SMALLFONT";
+str CURSORFONT = "WHELCURS"; //CURSOR
+str SLOTBG = "LOL0";
+str SLOTBGFULL = "LOL3";
+str SLOTBGHEAVY = "LOL4";
+str SLOTBGFOCUS = "LOL2";
+str TOTAL_BG = "TNT1A0";
+str ARROW_L = "LOLL";
+str SCRIPT_L = "AMULET_COVER";
+str ARROW_R = "LOLR";
+str SCRIPT_R = "AMULET";
+
+#libdefine X_MULTIPLIER (-3200.0)
+#libdefine Y_MULTIPLIER (-4000.0)
+#libdefine XRH 800.0
+#libdefine YRH 600.0
+// Comment out inner and outer slots so they too can be dynamic
+//#libdefine INNER_SLOTS 0 //12 //if 1 ring then 0
+#libdefine INNER_DISP_R 280.5
+//#libdefine OUTER_SLOTS 17 //20
+#libdefine OUTER_DISP_R 445.5
+#libdefine INTRO_OUTRO_LEN 10
+#libdefine INFO_WAIT_LEN 70
+#libdefine LAG_LEN 0.04
+
+#libdefine OUTER_LOGIC_R ((INNER_DISP_R+OUTER_DISP_R)/2)
+//#libdefine INNER_LOGIC_R ((3*INNER_DISP_R-OUTER_DISP_R)/2) //unlock when 2 rings
+#libdefine INNER_LOGIC_R (OUTER_LOGIC_R+1) //unlock when 1 ring
+#libdefine ARROW_DISP_R (2*OUTER_DISP_R-INNER_DISP_R)
+#libdefine ARROW_LOGIC_R ((3*OUTER_DISP_R-INNER_DISP_R)/2)
+
+str SOUND_INTRO = "menu/activate";
+str SOUND_OUTRO = "menu/clear";
+str SOUND_HOVER = "Spell/Move";
+str SOUND_BUY = "menu/activate";
+str SOUND_CANNOT = "menu/invalid";
+
+// To fuck with this variable, it can't be a constant.
+//#libdefine TOTAL_SLOTS (INNER_SLOTS+OUTER_SLOTS) //for one ring please define 0 inner slots
+
+// Instead, we define it arbitrarily and the rest of the system handles it for us.
+int TOTAL_SLOTS; // I guess map scope is okay for now. The script should always be setting it to a predetermined length.
+int INNER_SLOTS; // Gotta handle these too.
+int OUTER_SLOTS; // Ditto.
+#libdefine MAX_SLOTS 64 // Just a high limit so as to set arrays to some stupid length and let all of the lower numbers handle the real work.
+#libdefine DESCRIPTIVE_TYPES 7 // I just pulled this variable out of my ass to increase readability
+
+//BELOW IS THE GLOBAL LIST! ADD TO IT TO ADD AN ITEM TO EVERY GAME!
+//WHEN DOING SO, PLEASE BUMP THE FOLLOWING VARIABLE TO MATCH THE NUMBER OF ITEMS!
+#libdefine GLOBAL_LIST_END 13
+//Also these are for slot types. Bump them too.
+#libdefine GLOBAL_INNER 0
+#libdefine GLOBAL_OUTER 13
+
+// [Keks] All right you insane fools. Who wrote this? >:O
+// Below you see the old array that has like, strings and integers all at once.
+// That's a fundamental flaw which trips up the interpretation. Don't do that,
+// it will blow up in your face and you'll get numbers you have never declared
+// in the first place.
+
+// [Zhs2] I solly :(
+// Funnily enough, it worked just great in another project that never saw the light of day!
+// But it was all static and I never overwrote data in it. That might be why.
+
+// int global_shop_items[MAX_SLOTS][DESCRIPTIVE_TYPES] = {
+// Some notes: Item limit is the inventory's max limit. Heavy is used by the shop menu to know when to display a lit ring based on how many you own of that item.
+//  Class Name         Icon Name    Display Name      Price  Item Limit  Heavy  Description (really long!)
+  /* {"MedbagGiver",     "ICONMBAG",  "Medical Bag",    800,   1,          1,     "Powerful medical assistance kit.\nComes in handy after heavy firefights."},
+   {"VestGiver",      "ICONARM1",  "Combat Vest",    400,   1,          1,     "Your standard issue protection.\nProvides 75 Armor points at 25% damage absorption."},
+   {"CombatGiver",     "ICONARM2",  "Combat Armor",   500,   1,          1,     "Slightly more useful than your standard issue armor.\nProvides 100 Armor points at 40% damage absorption."},
+   {"AssaultGiver",    "ICONARM3",  "Assault Armor",  800,   1,          1,     "This may save you in heavier firefights.\nProvides 200 Armor points at 50% damage absorption."},
+   {"TankGiver",       "ICONARM4",  "Tank Armor",     1000,  1,          1,     "The thickest plating in stock.\nProvides a whopping 400 Armor points at 75% damage absorption!"},
+   {"TiberiumAmmo",    "ICONTIBR",  "Tiberium",       500,   16,         1,     "Source of income in another dimension; for you, it means destruction.\nPowers the ''Old Dreadful''."},
+   {"TibCore",         "ICONCORE",  "Tiberium Core",  8000,  1,          1,     "An infusion of Blue Tiberium for your ''Old Dreadful''.\nCaution: Aiming is harder."},
+   {"ExtremeSphere",   "ICONXTRS",  "EXTREMESPHERE",  10000, 1,          1,     "This may not be the Eternal Flame, but whatever works!\nIn the name of Nithor, it's burning time!"},
+   {"EnvirosuitGiver", "ICONSUIT",  "Asbestos Suit",  400,   1,          1,     "Environmental hazards chewing through your scales?\nThis provides a comfy solution to that problem.\n(To a dragon, at least.)"},
+   {"PowerSurge",      "ICONSYRB",  "Mana Surge",     4000,  8,          1,     "Enhances the mana moderation organ in your body.\n(I would hope it's not your appendix.)"},
+   {"PowerBooster",    "ICONSYRA",  "Mana Booster",   1500,  12,         1,     "Pumps up your max mana and lets you cast more spells in succession.\n(Quit your grumbling, mortal!)"},
+   {"PowerStimulant",  "ICONSYRC",  "Health Stim",    3000,  10,         1,     "Dragons are beefy! Become the dragon and raise your resistance to all pain!\n(Does not actually increase muscle mass.)"},
+   {"TNTAmmo",      "ICONTNT",   "Dynamite",		  200,   10,          1,     "Set the fuse on fire, throw it, and see body parts raining.\nLack of lighter shouldn't be a problem for you, eh?"}*/
+// };
+
+// [Keks] We have to split that array up in a sane way. It is our destiny.
+
+int global_shop_items_int[MAX_SLOTS][3] =
+{
+	{	800,	1,		1	},
+	{	400,	1,		1	},
+	{	500,	1,		1	},
+	{	800,	1,		1	},
+	{	1000,	1,		1	},
+	{	8000,	1,		1	},
+	{	10000,	1,		1	},
+	{	400,	1,		1	},
+	{	4000,	8,		1	},
+	{	1500,	12,		1	},
+	{	3000,	10,		1	},
+	{	200,	15,		1	},
+	{	2000,	5,		1	}
+};
+
+str global_shop_items_str[MAX_SLOTS][4] =
+{
+	{"MedbagGiver",		"ICONMBAG",	"Medical Bag",		"Powerful medical assistance kit.\nComes in handy after heavy firefights."},
+	{"VestGiver",		"ICONARM1",	"Combat Vest",		"Your standard issue protection.\nProvides 75 Armor points at 25% damage absorption."},
+	{"CombatGiver",		"ICONARM2",	"Combat Armor",		"Slightly more useful than your standard issue armor.\nProvides 100 Armor points at 40% damage absorption."},
+	{"AssaultGiver",	"ICONARM3",	"Assault Armor",	"This may save you in heavier firefights.\nProvides 200 Armor points at 50% damage absorption."},
+	{"TankGiver",		"ICONARM4",	"Tank Armor",		"The thickest plating in stock.\nProvides a whopping 400 Armor points at 75% damage absorption!"},
+	{"TibCore",			"ICONCORE",	"Tiberium Core",	"An infusion of blue tiberium for your tiberium-based weaponry.\nGives them a hefty boost in damage."},
+	{"ExtremeSphere",	"ICONXTRS",	"EXTREMESPHERE",	"This may not be the Eternal Flame, but whatever works!\nIn the name of Nithor, it's burning time!"},
+	{"EnvirosuitGiver",	"ICONSUIT",	"Asbestos Suit",	"Environmental hazards chewing through your scales?\nThis provides a comfy solution to that problem.\n(To a dragon, at least.)"},
+	{"PowerSurge",		"ICONSYRB",	"Mana Surge",		"Enhances the mana moderation organ in your body.\n(I would hope it's not your appendix.)"},
+	{"PowerBooster",	"ICONSYRA",	"Mana Booster",		"Pumps up your max mana and lets you cast more spells in succession.\nAlso boosts the mana you get from pickups.\n(Quit your grumbling, mortal!)"},
+	{"PowerStimulant",	"ICONSYRC",	"Health Stim",		"Dragons are beefy! Become the dragon and raise your resistance to all pain!\n(Does not actually increase muscle mass.)"},
+	{"TNTAmmo",			"ICONTNT",	"Dynamite",			"Set the fuse on fire, throw it, and see body parts raining.\nLack of lighter shouldn't be a problem for you, eh?"},
+	{"WyvernIdol",		"ICONDIDL",	"Wyvern Idol",		"A powerful companion that tosses\nyour non-tomed spells you currently own!\nLasts for one minute,\nhis casting mode can be toggled\nin the HERE BE DRAGONS menu."}
+};
+
+//BELOW ARE THE GAME LISTS! ADD TO THEM TO SHOW ITEMS ONLY IN THEIR RESPECTIVE GAMES!
+//AND NOW HAVE SOME DEFINES THAT ARE ARBITRARY BUT NEED TO BE MESSED WITH PER GAME!
+#libdefine DOOM_LIST_END 7
+#libdefine DOOM_INNER 0
+#libdefine DOOM_OUTER 7
+#libdefine HERETIC_LIST_END 7
+#libdefine HERETIC_INNER 0
+#libdefine HERETIC_OUTER 7
+#libdefine HEXEN_LIST_END 5
+#libdefine HEXEN_INNER 0
+#libdefine HEXEN_OUTER 5
+
+int doom_shop_items_int[MAX_SLOTS][3] =
+{
+	{	1000,	8,		1	},
+	{	1200,	5,		1	},
+	{	300,	10,		1	},
+	{	1500,	5,		1	},
+	{	1500,	5,		1	},
+	{	500,	8,		1	},//Tiberium
+	{	3000,	1,		1	}/*,
+	
+	{	800,	1,		1	},
+	{	400,	1,		1	},
+	{	500,	1,		1	},
+	{	800,	1,		1	},
+	{	1000,	1,		1	},
+	{	500,	16,		1	},
+	{	8000,	1,		1	},
+	{	10000,	1,		1	},
+	{	400,	1,		1	},
+	{	4000,	8,		1	},
+	{	1500,	12,		1	},
+	{	3000,	10,		1	},
+	{	200,	10,		1	}
+*/
+};
+
+str doom_shop_items_str[MAX_SLOTS][4] =
+{
+	{"PowerLifter",	"ICONSYRD",	"Wing Booster","With wings like those, it'd be a shame not to let them stretch.\n(Serum may induce lightheadedness in awesomeness.)"},
+	{"Amplifier",	"ICONAMPF",	"Ancient Amplifier","A bizarre alien artifact from another dimension.\nWorks strangely like a certain magical counterpart..."},
+	{"RejuvCaps",	"ICONMPOD",	"Rejuvenation Capsule","The injection stings something fierce, but boosts mana and health regen for a time.\nTry not to become addicted, mortal."},
+	{"Gunzerk",		"ICONPSTR",	"Gunzerk Capsule","Double the guns, double the fun! Comes standard with ammo and health regeneration.\nWatch your stockpile."},
+	{"Berserk2",	"ICONBERZ",	"Berserk Capsule","Teach simple foes what it means to be an angry brute. Drains life on each punch.\n(Disclaimer: Rockets still hurt, mortal.)"},
+	{"TiberiumAmmo",	"ICONTIBR",	"Tiberium",			"Source of income in another dimension; for you, it means destruction.\nPowers the ''Old Dreadful''."},
+	{"Ironblast",		"ICONSHOT",	"Ironblast","An artifact brought from an advanced dimension for your amusement, mortal.\nLaunches shrapnel with extreme prejudice."}
+	/*,
+
+	{"MedbagGiver",		"ICONMBAG",	"Medical Bag",		"Powerful medical assistance kit.\nComes in handy after heavy firefights."},
+	{"VestGiver",		"ICONARM1",	"Combat Vest",		"Your standard issue protection.\nProvides 75 Armor points at 25% damage absorption."},
+	{"CombatGiver",		"ICONARM2",	"Combat Armor",		"Slightly more useful than your standard issue armor.\nProvides 100 Armor points at 40% damage absorption."},
+	{"AssaultGiver",	"ICONARM3",	"Assault Armor",	"This may save you in heavier firefights.\nProvides 200 Armor points at 50% damage absorption."},
+	{"TankGiver",		"ICONARM4",	"Tank Armor",		"The thickest plating in stock.\nProvides a whopping 400 Armor points at 75% damage absorption!"},
+	{"TiberiumAmmo",	"ICONTIBR",	"Tiberium",			"Source of income in another dimension; for you, it means destruction.\nPowers the ''Old Dreadful''."},
+	{"TibCore",			"ICONCORE",	"Tiberium Core",	"An infusion of Blue Tiberium for your ''Old Dreadful''.\nCaution: Aiming is harder."},
+	{"ExtremeSphere",	"ICONXTRS",	"EXTREMESPHERE",	"This may not be the Eternal Flame, but whatever works!\nIn the name of Nithor, it's burning time!"},
+	{"EnvirosuitGiver",	"ICONSUIT",	"Asbestos Suit",	"Environmental hazards chewing through your scales?\nThis provides a comfy solution to that problem.\n(To a dragon, at least.)"},
+	{"PowerSurge",		"ICONSYRB",	"Mana Surge",		"Enhances the mana moderation organ in your body.\n(I would hope it's not your appendix.)"},
+	{"PowerBooster",	"ICONSYRA",	"Mana Booster",		"Pumps up your max mana and lets you cast more spells in succession.\n(Quit your grumbling, mortal!)"},
+	{"PowerStimulant",	"ICONSYRC",	"Health Stim",		"Dragons are beefy! Become the dragon and raise your resistance to all pain!\n(Does not actually increase muscle mass.)"},
+	{"TNTAmmo",			"ICONTNT",	"Dynamite",			"Set the fuse on fire, throw it, and see body parts raining.\nLack of lighter shouldn't be a problem for you, eh?"}
+*/
+};
+
+int hexen_shop_items_int[MAX_SLOTS][3] =
+{
+	{	1000,	8,		1	},
+	{	1200,	5,		1	},
+	{	400,	10,		1	},
+	{	1500,	5,		1	},
+	{	1500,	5,		1	}/*,
+	
+	{	800,	1,		1	},
+	{	400,	1,		1	},
+	{	500,	1,		1	},
+	{	800,	1,		1	},
+	{	1000,	1,		1	},
+	{	500,	16,		1	},
+	{	8000,	1,		1	},
+	{	10000,	1,		1	},
+	{	400,	1,		1	},
+	{	4000,	8,		1	},
+	{	1500,	12,		1	},
+	{	3000,	10,		1	},
+	{	200,	10,		1	}
+*/
+};
+
+str hexen_shop_items_str[MAX_SLOTS][4] =
+{
+	{"WingsOfWrath",	"ICONWING",	"Wings of Wrath",	"In the world of Cronos, this lasts indefinitely.\nWe of the winged kind can jump higher upon collection."},
+	{"TomeOfPowah",		"ICONTOME",	"Tome of Power",	"Mortals may not be doled magic quite as often, but with a little magical help,\nthe effects of casting can be made devastating for a period."},
+	{"RejuvPot",		"ICONPOT",	"Rejuvenation Potion",	"Simply awful. Drink it if you must to regain your internal mana and health.\n(Weapon mana is not affected, but good attempt.)"},
+	{"GunzerkPot",		"ICONGPOT",	"Gunzerk Potion",	"If you absolutely must fire lead at twice the pace,\nthis potion serves your purposes nicely."},
+	{"BerserkPot",		"ICONBPOT",	"Berserk Potion",	"Your lead-launching toys are extremely efficient, but if you absolutely must pummel your foes,\ndo so with all strength and vigor."},
+/*
+	{"MedbagGiver",		"ICONMBAG",	"Medical Bag",		"Powerful medical assistance kit.\nComes in handy after heavy firefights."},
+	{"VestGiver",		"ICONARM1",	"Combat Vest",		"Your standard issue protection.\nProvides 75 Armor points at 25% damage absorption."},
+	{"CombatGiver",		"ICONARM2",	"Combat Armor",		"Slightly more useful than your standard issue armor.\nProvides 100 Armor points at 40% damage absorption."},
+	{"AssaultGiver",	"ICONARM3",	"Assault Armor",	"This may save you in heavier firefights.\nProvides 200 Armor points at 50% damage absorption."},
+	{"TankGiver",		"ICONARM4",	"Tank Armor",		"The thickest plating in stock.\nProvides a whopping 400 Armor points at 75% damage absorption!"},
+	{"TiberiumAmmo",	"ICONTIBR",	"Tiberium",			"Source of income in another dimension; for you, it means destruction.\nPowers the ''Old Dreadful''."},
+	{"TibCore",			"ICONCORE",	"Tiberium Core",	"An infusion of Blue Tiberium for your ''Old Dreadful''.\nCaution: Aiming is harder."},
+	{"ExtremeSphere",	"ICONXTRS",	"EXTREMESPHERE",	"This may not be the Eternal Flame, but whatever works!\nIn the name of Nithor, it's burning time!"},
+	{"EnvirosuitGiver",	"ICONSUIT",	"Asbestos Suit",	"Environmental hazards chewing through your scales?\nThis provides a comfy solution to that problem.\n(To a dragon, at least.)"},
+	{"PowerSurge",		"ICONSYRB",	"Mana Surge",		"Enhances the mana moderation organ in your body.\n(I would hope it's not your appendix.)"},
+	{"PowerBooster",	"ICONSYRA",	"Mana Booster",		"Pumps up your max mana and lets you cast more spells in succession.\n(Quit your grumbling, mortal!)"},
+	{"PowerStimulant",	"ICONSYRC",	"Health Stim",		"Dragons are beefy! Become the dragon and raise your resistance to all pain!\n(Does not actually increase muscle mass.)"},
+	{"TNTAmmo",			"ICONTNT",	"Dynamite",			"Set the fuse on fire, throw it, and see body parts raining.\nLack of lighter shouldn't be a problem for you, eh?"}
+*/
+};
+
+int heretic_shop_items_int[MAX_SLOTS][3] =
+{
+	{	1000,	8,		1	},
+	{	1200,	5,		1	},
+	{	400,	10,		1	},
+	{	1500,	5,		1	},
+	{	1500,	5,		1	},
+	{	3000,	1,		1	},
+	{	500,	8,		1	}/*,
+
+	{	800,	1,		1	},
+	{	400,	1,		1	},
+	{	500,	1,		1	},
+	{	800,	1,		1	},
+	{	1000,	1,		1	},
+	{	500,	16,		1	},
+	{	8000,	1,		1	},
+	{	10000,	1,		1	},
+	{	400,	1,		1	},
+	{	4000,	8,		1	},
+	{	1500,	12,		1	},
+	{	3000,	10,		1	},
+	{	200,	10,		1	}
+*/
+};
+
+str heretic_shop_items_str[MAX_SLOTS][4] =
+{
+	{"WingsOfWrath",	"ICONWING",	"Wings of Wrath",	"Magical artifacts such as these do not benefit lesser elves for long;/nyou, however, can make use of them with actual wings."},
+	{"TomeOfPowah",		"ICONTOME",	"Tome of Power",	"At times, you may find your selection of spells underwhelming.\nThe Tome of Power teaches one how to fix that for a time."},
+	{"RejuvPot",		"ICONPOT",	"Rejuvenation Potion",		"This liquid tastes awful, but boosts mana and health regen for a time.\nDo try not to choke during swallowing."},
+	{"GunzerkPot",		"ICONGPOT",	"Gunzerk Potion",	"A strange potion that gives one the strength to hold a second gun.\nBelittling for a dragon, perhaps, but try arguing the effects. I dare you."},
+	{"BerserkPot",		"ICONBPOT",	"Berserk Potion",	"A euphoric potion that invokes the urge to draw blood with one's fists for personal gain.\nGo forth, and slaughter them simplemindedly."},
+	{"Ironblast",		"ICONSHOT",	"Ironblast",	"An artifact brought from an advanced dimension for your amusement, mortal.\nLaunches shrapnel with extreme prejudice."},
+	{"TiberiumAmmo",	"ICONTIBR",	"Tiberium",			"Source of income in another dimension; for you, it means destruction.\nPowers the ''Old Dreadful''."}
+	/*,
+
+	{"MedbagGiver",		"ICONMBAG",	"Medical Bag",		"Powerful medical assistance kit.\nComes in handy after heavy firefights."},
+	{"VestGiver",		"ICONARM1",	"Combat Vest",		"Your standard issue protection.\nProvides 75 Armor points at 25% damage absorption."},
+	{"CombatGiver",		"ICONARM2",	"Combat Armor",		"Slightly more useful than your standard issue armor.\nProvides 100 Armor points at 40% damage absorption."},
+	{"AssaultGiver",	"ICONARM3",	"Assault Armor",	"This may save you in heavier firefights.\nProvides 200 Armor points at 50% damage absorption."},
+	{"TankGiver",		"ICONARM4",	"Tank Armor",		"The thickest plating in stock.\nProvides a whopping 400 Armor points at 75% damage absorption!"},
+	{"TiberiumAmmo",	"ICONTIBR",	"Tiberium",			"Source of income in another dimension; for you, it means destruction.\nPowers the ''Old Dreadful''."},
+	{"TibCore",			"ICONCORE",	"Tiberium Core",	"An infusion of Blue Tiberium for your ''Old Dreadful''.\nCaution: Aiming is harder."},
+	{"ExtremeSphere",	"ICONXTRS",	"EXTREMESPHERE",	"This may not be the Eternal Flame, but whatever works!\nIn the name of Nithor, it's burning time!"},
+	{"EnvirosuitGiver",	"ICONSUIT",	"Asbestos Suit",	"Environmental hazards chewing through your scales?\nThis provides a comfy solution to that problem.\n(To a dragon, at least.)"},
+	{"PowerSurge",		"ICONSYRB",	"Mana Surge",		"Enhances the mana moderation organ in your body.\n(I would hope it's not your appendix.)"},
+	{"PowerBooster",	"ICONSYRA",	"Mana Booster",		"Pumps up your max mana and lets you cast more spells in succession.\n(Quit your grumbling, mortal!)"},
+	{"PowerStimulant",	"ICONSYRC",	"Health Stim",		"Dragons are beefy! Become the dragon and raise your resistance to all pain!\n(Does not actually increase muscle mass.)"},
+	{"TNTAmmo",			"ICONTNT",	"Dynamite",			"Set the fuse on fire, throw it, and see body parts raining.\nLack of lighter shouldn't be a problem for you, eh?"}
+*/
+};
+
+////////////////////DOOMKRAKKEN STUFF INTENSIFIES!!!!////////////////////
+
+script "UpdateShopEnterNoBackpack" ENTER
+{
+	if(CheckInventory("Castpack"))
+	{
+	terminate;
+	}
+	else
+	ACS_NamedExecuteWithResult("update_Tiberium_Heretic", 6, -2 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteWithResult("update_Tiberium_Doom", 5, -2 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteWithResult("update_TNT", 11, 5 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteAlways("Shop Initialization Sensation",0);
+}
+
+script "UpdateShopReturnNoBackpack" RETURN
+{
+	if(CheckInventory("Castpack"))
+	{
+	terminate;
+	}
+	else
+	ACS_NamedExecuteWithResult("update_Tiberium_Heretic", 6, -2 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteWithResult("update_Tiberium_Doom", 5, -2 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteWithResult("update_TNT", 11, 5 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteAlways("Shop Initialization Sensation",0);
+}
+
+script "UpdateShopEnter" ENTER
+{
+	if(CheckInventory("Castpack"))
+	{
+	ACS_NamedExecuteWithResult("update_Tiberium_Heretic", 6, 6 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteWithResult("update_Tiberium_Doom", 5, 6 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteWithResult("update_TNT", 11, 3 * CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteAlways("Shop Initialization Sensation",0);
+	}
+	else terminate;
+}
+
+script "UpdateShopReturn" RETURN
+{
+	if(CheckInventory("Castpack"))
+	{
+	ACS_NamedExecuteWithResult("update_Tiberium_Heretic", 6, 6 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteWithResult("update_Tiberium_Doom", 5, 6 + CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteWithResult("update_TNT", 11, 3 * CheckInventory("HammerSpaceCounter"));
+	ACS_NamedExecuteAlways("Shop Initialization Sensation",0);
+	}
+	else terminate;
+}
+
+script "update_TNT" (int slot, int increase)
+{
+	global_shop_items_int[slot][1] = increase;
+	ACS_NamedExecuteAlways("Shop Initialization Sensation",0);
+}
+
+script "update_Tiberium_Heretic" (int slot, int increase)
+{
+	heretic_shop_items_int[slot][1] = increase;
+	ACS_NamedExecuteAlways("Shop Initialization Sensation",0);
+}
+
+script "update_Tiberium_Doom" (int slot, int increase)
+{
+	doom_shop_items_int[slot][1] = increase;
+	ACS_NamedExecuteAlways("Shop Initialization Sensation",0);
+}
+
+////////////////////DOOMKRAKKEN STUFF ENDS!!!!//////////////////////////
+
+// ANYTHING STORED IN THESE ARRAYS HERE AND NOW WILL NEVER BE USED! But of course, touch them to clean them up if absolutely necessary.
+str sold_items[MAX_SLOTS] = {
+	"Medbag", "TomeOfPowah", "EXTREMESphere", "VestGiver", "CombatGiver",
+	"AssaultGiver", "TankGiver", "WingsOfWrath", "ManaPot", "TiberiumAmmo",
+	"PowerSurge", "PowerBooster", "PowerStimulant", "GunzerkPot", "BerserkPot",
+	"TibCore", "Ironblast" /*"BULION17", "BULION18", "BULION19",
+	"BULION20", "BULION21", "BULION22", "BULION23", "BULION24",
+	"BULION25", "BULION26", "BULION27", "BULION28", "BULION29",
+	"BULION30", "BULION31"*/
+};
+
+str item_icons[MAX_SLOTS] = {
+	"ICONMBAG", "ICONTOME", "ICONXTRS", "ICONARM1", "ICONARM2",
+	"ICONARM3", "ICONARM4", "ICONWING", "ICONPOT", "ICONTIBR",
+	"ICONSYRB", "ICONSYRA", "ICONSYRC", "ICONGPOT", "ICONBPOT",
+	"ICONCORE", "ICONSHOT" /*"BULION17", "BULION18", "BULION19",
+	"BULION20", "BULION21", "BULION22", "BULION23", "BULION24",
+	"BULION25", "BULION26", "BULION27", "BULION28", "BULION29",
+	"BULION30", "BULION31"*/
+};
+
+str item_names[MAX_SLOTS] = {
+	"Med bag",
+	"Tome of Power",
+	"Extreme Sphere",
+	"Combat Vest",
+	"Combat Armor",
+	"Assault Armor",
+	"Tank Armor",
+	"Wings of Wrath",
+
+	"Mana Pot",
+	"Tiberium",
+	"Surge",
+	"Booster",
+	"Stimulant",
+	"Gunzerk Pot",
+	"Berserk Pot",
+	"Blue Tiberium Core",
+
+	"Ironblast"
+	/*"The Tetris Effect",
+	"Injustice for All",
+	"Magnificent Mustard",
+	"Save Import",
+	"Advanced Action Control Script",
+	"Landed Down Under",
+	"DRoMMFSWaTHFP",
+
+	"Noclip",
+	"Party Blender",
+	"Achievement Unblocker",
+	"The Gatorade",
+	"Recyclinator",
+	"Digital Eclipse",
+	"Cooloonatic",
+	"Neckromancey"*/
+};
+
+int item_prices[MAX_SLOTS] = {
+	500, 250, 10000, 400, 500,
+	800, 1000, 1000, 200, 400,
+	4000, 1500, 2000, 1000, 1000,
+	8000, 4000 /*140, 7747, 3333,
+	5846, 7777, 256, 512, 128,
+	0, 6666, 1314, 1410, 1994,
+	6862, 4450*/
+};
+
+int item_limits[MAX_SLOTS]; /*= {
+	5, 5, 1, 1, 1,
+	1, 1, 8, 10, 16,
+	5, 12, 10, 5, 5,
+	1, 1, 140, 7747, 3333,
+	5846, 7777, 256, 512, 128,
+	0, 6666, 1314, 1410, 1994,
+	6862, 4450
+};*/
+
+int item_heavy[MAX_SLOTS] = {
+	1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1,
+	1, 1 /*140, 7747, 3333,
+	5846, 7777, 256, 512, 128,
+	0, 6666, 1314, 1410, 1994,
+	6862, 4450*/
+};
+
+str item_info[MAX_SLOTS] = {
+	"Powerful medical assistance kit.\nComes in handy after heavy firefights.",
+	"Crazed magicians and warlocks' all-time favourite!\nBoosts your usual power with varied effects.\nEither amps the power up to eleven,\napplies additional effects,\nor gives your usual powers different behaviour.",
+	"If you want everything to be absolutely,\npositively dead in the wake of your rampage, this is a thing for you.\nIncredibly pricy, but believe it or not - it pays off.",
+	"Your standard issue protection.\nProvides 75 Armor points at 25% damage absorption.",
+	"Slightly more useful than your standard issue armor.\nProvides 100 Armor points at 40% damage absorption.",
+	"This may save you in heavier firefights.\nProvides 200 Armor points at 50% damage absorption.",
+	"The most thick plating in stock.\nProvides a whopping 400 Armor points at 75% damage absorption!",
+	"A not too cheap but useful artifact.\nIt extends your flight ability.",
+
+	"Your standard energy refill liquid - blue, gooey, and far from tasty.\nThey fill up your energy to full capacity.",
+	"Slightly overpriced, but it ain't easy to get such munitions.\nIt powers the ''Old Dreadful''.",
+	"Improves energy flow, thus increasing mana regeneration.",
+	"Increases your mana cap by 25, up to 400.",
+	"Increases your health by 10, up to 200.",
+	"Turn yourself into twin-gun toting,\nfurious dragon with ammo and health regenerating capabilities!\nHowever, you cannot cast spells or quick kick until it burns out.\nJust use your guns, or switch to melee!",
+	"If you thought that your punch packsquite'a punch,\nthis will make you think otherwise.\nonce it's running, you gain five times your usual damage\nlife steal, even more mobility, damage resistance,\nand a lust for fresh blood.",
+	"An empowering core for ''Old Dreadful'',\nmakes it three times as deadly,\nalbeit aiming with it in tight places\nmay be a bit tricky.",
+
+	"Probably the most powerful pump-action shotgun you'll ever witness.\nsports eight barrels that shoot hot shrapnel\nat rather astoundishing speed and moderate spread."
+	/*"Put some witty description here.",
+	"Makes your enemies play an early prototype\nversion of that recent DC fighter.\nThis proto is so awful loser will die.\nOf laughter.",
+	"This mustard knows its destiny. It actually\nwants to enter your enemies' throat.\nIt even won't mind to give you\na lift to them.",
+	"Ever wanted to switch make ammo\nhealth, health grass, and grass\ncrazy monsters? USE THIS!\nNo idea what exactly will happen though.",
+	"This magick makes you able to control\nyour foes actions - during your\nfight, yet in advance! How cool\nis that, huh?",
+	"This spell opens portals to random\ndimentions. Pretty cool as last\nresort. DISCLAIMER: We cannot\nguarantee there are infinite\ndimensions available.",
+	"Covers area with multiple bags\ncontaining meat. Utilizable both as\ncover and as health pickup.\nFact: scientists still argue\nabout name's nature.",
+
+	"Struck with this, your foe can't\nclip to walls. Also, this magick\eats shells for some reason.",
+	"If your party becomes too stagnant,\nuse this magick to mix everyone's\npositions. Some of our\ncustomers use it during fights though.",
+	"Here's something they don't want you\nto know: this game has achievements!\nIf you ever feel mercy to your foes,\nunblock them for them with this.",
+	"This spell can summon really cool monsters!\nBut for some reason, it needs stuff\nto splash in order to work.",
+	"Grab waste from around you and create\ncool minions out of it! It fails\nspectacularly without waste though.",
+	"Disables any Russian technology in radius\nof Norwegian mile. No side effects\nand minimal holding cost\nwill cause a nasty surprise!\nDisclaimer: works against you too.",
+	"Ever thought that you would own that enemy\nin one on one fight? Go and check that!\nDisclaimer: dimension warping features\nofthis magick may feature some abberations.",
+	"Allows you to grab your enemies necks. And\nthen kiss them. This will cause them to die.\nIt's that simple."*/
+};
+//////////////////////////////////////////////////////////////////
+
+function int item_insane_len(int x, int y) {
+	if (x<0) {
+		x = -x;
+	}
+	if (y<0) {
+		y = -y;
+	}
+	if (x<y) {
+		return y+FixedMul(x, 0.41421);
+	}
+	return x+FixedMul(y, 0.41421);
+}
+
+
+function void item_display(int x, int y, int num, int sel) {
+	int disp_x = x & MASK;
+	int disp_y = y & MASK;
+	SetFont(item_icons[num]);
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1100+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+	if (CheckInventory(sold_items[num])>=item_limits[num]) {
+		SetFont(SLOTBGFULL);
+	} else if (num==sel) {
+		SetFont(SLOTBGFOCUS);
+	} else if (CheckInventory(sold_items[num])>=item_heavy[num]) {
+		SetFont(SLOTBGHEAVY);
+	} else {
+		SetFont(SLOTBG);
+	}
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1300+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+}
+
+function int item_buy(int num) {
+//0 - FULL
+//1 - not enough cash
+//2 - bought
+//PLACEHOLDER
+	if (CheckInventory(sold_items[num])>=item_limits[num]) {
+		return 0;
+	}
+	if (CheckInventory(CASH_ACTOR)<item_prices[num]) {
+		return 1;
+	}
+	TakeInventory(CASH_ACTOR, item_prices[num]);
+	GiveInventory(sold_items[num], 1);
+	return 2;
+}
+
+function int shopkeeper_item(int sh, int sel, int wt) {
+	str stru;
+
+	if (wt==0) {
+		if (sel==-1) {
+			sh = 4;
+		} else if (sel==-2) {
+			sh = 6;
+		} else if (sel==-3) {
+			sh = 7;
+		} else {
+			sh = 5;
+		}
+	}
+
+	int cash = CheckInventory(CASH_ACTOR);
+	if (sh==-1) {
+		stru = "Welcome to the shop, mortal! Wouldn't the door have been easier?";
+	} else if (sh==3) {
+		stru = "Welcome to the item section. Look around if anything suits your needs.";
+	} else if (sh==0) {
+		stru = "Although I appreciate your urge for more, you've reached your max, mortal.";
+	} else if (sh==1) {
+		stru = "You don't have enough gold, pitiful mortal.";//have only, i:cash, s:" gold.");
+	} else if (sh==2 && sel>-1) {
+		stru = StrParam(s:"Thank you for your purchase, mortal.\n\c[cyan]", s:item_names[sel], s:"\cj(\ck", i:CheckInventory(sold_items[sel]), s:"\cj/\ci", i:item_limits[sel], s:"\cj)");
+	} else if (sh==4) {
+		stru = "";
+	} else if (sh==5 && sel>-1) {
+		stru = StrParam(s:"\c[cyan]", s:item_names[sel], s:"\cj(\ck", i:CheckInventory(sold_items[sel]), s:"\cj/\ci", i:item_limits[sel], s:"\cj)\nAvailable for \cf", i:item_prices[sel], s:"\cj gold");
+    } else if (sh==6 /*LEFT*/ || sh==7 /*RIGHT*/) {
+		stru = StrParam(s:"You can take this way to the spell section. Press \cd", k:"+attack", s:"\cj to do that.");
+	} else {
+		stru = "Lorem ipsum..?";
+	}
+
+	SetFont(SHOPFONT);
+	SetHudSize(0, 0, FALSE);
+	if (sel<0) {
+		HudMessage(s:"\cjGold: \cf", i:cash, s:"\n\cj", s:stru,
+            s:"\n\cjHover over an item for a while to learn more about it.\n\cjPress \cd", k:"+altattack", s:"\cj to buy one instance of the selected item.\n\cjPress \cd", k:"+Gimbostratus", s:"\cj to return to your everyday slaughter.";
+		HUDMSG_PLAIN, 950, CR_RED, 1.5, 0.5, LAG_LEN);
+	} else {
+		if (wt>INFO_WAIT_LEN && sel>-1) {
+			HudMessage(s:item_info[sel]; HUDMSG_PLAIN, 950, CR_WHITE, 1.5, 0.5, LAG_LEN);
+		} else {
+			HudMessage(s:stru; HUDMSG_PLAIN, 950, CR_WHITE, 1.5, 0.5, LAG_LEN);
+		}
+	}
+	SetHudSize((XRH)>>15, (YRH)>>15, FALSE);
+	return sh;
+}
+
+function void item_miniview(int factor, int an_s1, int an_s2) {
+	int i, an, px, py;
+	int ir = FixedMul(INNER_DISP_R, factor);
+	for (i = 0; i<INNER_SLOTS; i++) {
+		an = (i*1.0)/INNER_SLOTS + an_s1;
+		px = FixedMul(ir, cos(an));
+		py = FixedMul(ir, sin(an));
+		item_display(px, py, i, -1);
+	}
+	ir = FixedMul(OUTER_DISP_R, factor);
+	for (i = 0; i<OUTER_SLOTS; i++) {
+		an = (i*1.0)/OUTER_SLOTS + an_s2;
+		px = FixedMul(ir, cos(an));
+		py = FixedMul(ir, sin(an));
+		item_display(px, py, i+INNER_SLOTS, -1);
+	}
+	SetFont(TOTAL_BG);
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1400, 0, XRH, YRH, LAG_LEN);
+}
+
+function int item_are_we_crazy(void) {
+	return 0;
+}
+
+// [Keks] If something breaks again, use this to print the arrays and rule out
+// fundamental flaws like a badly declared array.
+
+/*script "print debug info" enter
+{
+	int i = 0;
+	int j = 0;
+	str out;
+	
+	SetHudSize(1280, 720, true);
+	
+	for(i = 0; i < MAX_SLOTS; i++)
+		for(j = 0; j < DESCRIPTIVE_TYPES; j++)
+		{
+			if(j > 3 && j < 7)
+				out = strParam(i:global_shop_items_int[i][j - 4]);
+			else
+				out = strParam(s:global_shop_items_str[i][j]);
+			
+			HudMessage(s:out; HUDMSG_PLAIN, i * (DESCRIPTIVE_TYPES - 1) + j,
+			CR_GREEN, i * 60.0 + 0.1, j * 50.0 + 0.1, 0.0);
+		}
+}*/
+
+script "AMULET_ITEM" (int entry) {
+	SetHudSize((XRH)>>15, (YRH)>>15, FALSE);
+	//int player_no = PlayerNumber();
+	SetPlayerProperty(0, 1, PROP_TOTALLYFROZEN);
+
+	int mouse_x = 0.0, mouse_y = 0.0;
+	int disp_x, disp_y, px, py;
+	int i, len, an, this_i;
+	int last_i = -1, last_sho = 3, last_len = 0.0, wt = 10;
+	int pulldown = 1.0;
+	int i_troll = 0.0, o_troll = 0.0;
+	int i_md = 0.0, o_md = 0.0, i_tmd = 0.0, o_tmd = 0.0;
+	int pressed_input = 0;
+	int shopkeeper = -1;
+	int movescript = 0;
+
+	if (entry==1) {
+		shopkeeper = 3;
+	}
+	
+	int crazy = item_are_we_crazy();
+
+	if (crazy==0) {
+		i_md = 0.01;
+		o_md = -0.01;
+		i_troll = (-i_md) * INTRO_OUTRO_LEN;
+		o_troll = (-o_md) * INTRO_OUTRO_LEN;
+	} else if (crazy==1) {
+		i_tmd = 0.003; o_tmd =-0.003;
+		i_md = 0.003; o_md =-0.003;
+	}
+	ActivatorSound(SOUND_INTRO, 89);
+ 
+	for (i = 0; i<INTRO_OUTRO_LEN; i++) {
+		delay(1);
+		item_miniview(sin((i*0.25)/INTRO_OUTRO_LEN), i_troll, o_troll);
+		i_troll += i_md; o_troll += o_md;
+		SetFont("SMALLFONT");
+	}
+	
+	if (crazy==0) {
+		i_md = 0.0;
+		o_md = 0.0;
+	}
+
+	while (1) {
+		delay(1);
+		pressed_input = GetPlayerInput(-1, INPUT_BUTTONS);
+		pressed_input&= ~(GetPlayerInput(-1, INPUT_OLDBUTTONS));
+		if (pressed_input&(BT_LEFT|BT_MOVELEFT|BT_RIGHT|BT_MOVERIGHT)) {
+			if (pressed_input&(BT_LEFT|BT_MOVELEFT)) {
+				movescript = -1;
+			} else if (pressed_input&(BT_RIGHT|BT_MOVERIGHT)) {
+				movescript = 1;
+			}
+			break;
+		}
+		if(!CheckInventory("MenuWheelActive"))
+		{
+			break;
+		}
+
+		mouse_x+= FixedMul(X_MULTIPLIER, GetPlayerInput(-1, INPUT_YAW));
+		mouse_x = FixedMul(pulldown, mouse_x);
+		if (GetCVar("invertmouse")) {
+		mouse_y+=FixedMul(-(Y_MULTIPLIER), GetPlayerInput(-1, INPUT_PITCH));
+		} else {
+		mouse_y+=FixedMul(Y_MULTIPLIER, GetPlayerInput(-1, INPUT_PITCH));
+		}
+		mouse_y = FixedMul(pulldown, mouse_y);
+
+		disp_x = mouse_x & mask;
+		disp_y = mouse_y & mask;
+		i_troll+=i_md; o_troll+=o_md;
+		len = item_insane_len(mouse_x, mouse_y);
+		SetFont(CURSORFONT);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 900, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+
+		if (len<INNER_LOGIC_R) {
+			this_i = -1;
+		} else if (INNER_SLOTS>0 && len<OUTER_LOGIC_R) {
+			an = (VectorAngle(mouse_x, mouse_y)-i_troll)&(~MASK);
+			an = (an*INNER_SLOTS*2)/1.0;
+			this_i = (((an+1)/2))%INNER_SLOTS;
+		} else if (len < ARROW_LOGIC_R) {
+			an = (VectorAngle(mouse_x, mouse_y)-o_troll)&(~MASK);
+			an = (an*OUTER_SLOTS*2)/1.0;
+			this_i = (((an+1)/2))%OUTER_SLOTS + INNER_SLOTS;
+		} else {
+			this_i = -1;
+			if (pressed_input&(BT_ATTACK|BT_ALTATTACK)) {
+				if (mouse_x<0) {
+					movescript = -1;
+				} else {
+					movescript = 1;
+				}
+				break;
+			} else if (mouse_x<0) {
+				this_i = -2;
+			} else {
+				this_i = -3;
+			}
+		}
+		if (last_i!=this_i) {
+			wt = 0; last_i = this_i; last_sho = shopkeeper;
+		} else if (last_sho!=shopkeeper) {
+			wt = 1; last_sho = shopkeeper;
+		} else if (wt<400) {
+			wt++;
+		}
+		shopkeeper = shopkeeper_item(shopkeeper, this_i, wt);
+
+		if (crazy==1) {
+			if ((last_len<INNER_LOGIC_R && len>INNER_LOGIC_R)
+			|| (last_len>INNER_LOGIC_R && len<INNER_LOGIC_R)
+			|| (last_len<OUTER_LOGIC_R && len>OUTER_LOGIC_R)
+			|| (last_len>OUTER_LOGIC_R && len<OUTER_LOGIC_R)
+			|| (last_len<ARROW_LOGIC_R && len>ARROW_LOGIC_R)
+			|| (last_len>ARROW_LOGIC_R && len<ARROW_LOGIC_R)
+			|| Random(0,65535)==0) {
+				i_tmd = (1-2*Random(0,1))*Random(0.0002, 0.015);
+				o_tmd = (1-2*Random(0,1))*Random(0.0002, 0.015);
+			}
+		}
+		last_len = len;
+		i_md = (19*i_md+i_tmd)/20;
+		o_md = (19*o_md+o_tmd)/20;
+
+		SetFont(ARROW_L);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 910, 0, XRH-ARROW_DISP_R, YRH, LAG_LEN);
+		SetFont(ARROW_R);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 911, 0, XRH+ARROW_DISP_R, YRH, LAG_LEN);
+		for (i = 0; i<TOTAL_SLOTS; i++) {
+			if (i<INNER_SLOTS) {
+				an = (i*1.0)/INNER_SLOTS + i_troll;
+				px = FixedMul(INNER_DISP_R, cos(an));
+				py = FixedMul(INNER_DISP_R, sin(an));
+			} else {
+				an = ((i-INNER_SLOTS)*1.0)/OUTER_SLOTS + o_troll;
+				px = FixedMul(OUTER_DISP_R, cos(an));
+				py = FixedMul(OUTER_DISP_R, sin(an));
+			}
+			item_display(px, py, i, this_i);
+			if (this_i==i) {
+				if (wt==0) {
+					ActivatorSound(SOUND_HOVER, 53);
+				}
+				if (pressed_input & BT_ALTATTACK) {
+					shopkeeper = item_buy(i);
+					if (shopkeeper==2) {
+						ActivatorSound(SOUND_BUY, 89);
+					} else {
+						ActivatorSound(SOUND_CANNOT, 89);
+					}
+				}
+			}
+		}
+		SetFont(TOTAL_BG);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 1400, 0, XRH, YRH, LAG_LEN);
+		SetFont("SMALLFONT");
+	}
+
+	if (crazy==0) {
+		i_md =-0.01;
+		o_md = 0.01;
+	}
+	ActivatorSound(SOUND_OUTRO, 89);
+	for (i = 0; i<INTRO_OUTRO_LEN; i++) {
+		delay(1);
+		item_miniview(cos((i*0.25)/INTRO_OUTRO_LEN), i_troll, o_troll);
+		i_troll += i_md; o_troll += o_md;
+		SetFont("SMALLFONT");
+	}
+
+	if (movescript==-1) {
+		ACS_NamedExecuteAlways(SCRIPT_L, 0, 1, 0, 0);
+	} else if (movescript==1) {
+		ACS_NamedExecuteAlways(SCRIPT_R, 0, 1, 0, 0);
+	} else {
+		SetFont("SMALLFONT");
+		SetPlayerProperty(0, 0, PROP_TOTALLYFROZEN);
+		SetHudSize(0, 0, FALSE);
+		SetUserVariable(0, "user_amuletopen", 0); // There! That wasn't so bad!
+	}
+}
+
+script "Shop Initialization Sensation" OPEN // A Zhs2 function
+{
+	int i, j; // These variables could get rape cases through federal court
+	// Oh boy. What's the sequence?
+	// First up, get our global listings out of the way
+	delay(1); // Just to make sure.
+	for(i = 0; i < DESCRIPTIVE_TYPES; i++)
+	{
+		for(j = 0; j < GLOBAL_LIST_END; j++)
+		{
+			switch(i)
+			{
+				case 0:
+					sold_items[j] = global_shop_items_str[j][i];
+					break;
+				case 1:
+					item_icons[j] = global_shop_items_str[j][i];
+					break;
+				case 2:
+					item_names[j] = global_shop_items_str[j][i];
+					break;
+				case 3:
+					item_info[j] = global_shop_items_str[j][i];
+					break;
+				case 4:
+					item_prices[j] = global_shop_items_int[j][i - 4];
+					break;
+				case 5:
+					item_limits[j] = global_shop_items_int[j][i - 4];
+					break;
+				case 6:
+					item_heavy[j] = global_shop_items_int[j][i - 4];
+					break;
+			}
+		}
+	}
+	
+	// Keks added some sane initializations for these in case things never get initialized later,
+	// that's a smart move but I'd still rather have each counter block modify the base variables
+	// as they add onto the list each and this still manages to work in other, unsupported games
+	TOTAL_SLOTS = GLOBAL_LIST_END;
+	INNER_SLOTS = GLOBAL_INNER;
+	OUTER_SLOTS = GLOBAL_OUTER;
+	
+	// Next, we handle per-game PAIN
+	until(SetActivator(0, AAPTR_PLAYER1)) // Go for the player's inventory item then
+	{
+		delay(1);
+	}
+	
+	// Keks y you remove the global list end addifiers
+	// I don't want to write all of the same information twice :(
+	
+	if(CheckInventory("DoomCounter"))
+	{
+		for(i = 0; i < DESCRIPTIVE_TYPES; i++)
+		{
+			for(j = 0; j < DOOM_LIST_END; j++)
+			{
+				switch(i)
+				{
+					case 0:
+						sold_items[j+GLOBAL_LIST_END] = doom_shop_items_str[j][i];
+						break;
+					case 1:
+						item_icons[j+GLOBAL_LIST_END] = doom_shop_items_str[j][i];
+						break;
+					case 2:
+						item_names[j+GLOBAL_LIST_END] = doom_shop_items_str[j][i];
+						break;
+					case 3:
+						item_info[j+GLOBAL_LIST_END] = doom_shop_items_str[j][i];
+						break;
+					case 4:
+						item_prices[j+GLOBAL_LIST_END] = doom_shop_items_int[j][i - 4];
+						break;
+					case 5:
+						item_limits[j+GLOBAL_LIST_END] = doom_shop_items_int[j][i - 4];
+						break;
+					case 6:
+						item_heavy[j+GLOBAL_LIST_END] = doom_shop_items_int[j][i - 4];
+						break;
+				}
+			}
+		}
+		TOTAL_SLOTS = GLOBAL_LIST_END+DOOM_LIST_END;
+		INNER_SLOTS = GLOBAL_INNER+DOOM_INNER;
+		OUTER_SLOTS = GLOBAL_OUTER+DOOM_OUTER;
+	}
+	else if (CheckInventory("HereticCounter"))
+	{
+		for(i = 0; i < DESCRIPTIVE_TYPES; i++)
+		{
+			for(j = 0; j < HERETIC_LIST_END; j++)
+			{
+				switch(i)
+				{
+					case 0:
+						sold_items[j+GLOBAL_LIST_END] = heretic_shop_items_str[j][i];
+						break;
+					case 1:
+						item_icons[j+GLOBAL_LIST_END] = heretic_shop_items_str[j][i];
+						break;
+					case 2:
+						item_names[j+GLOBAL_LIST_END] = heretic_shop_items_str[j][i];
+						break;
+					case 3:
+						item_info[j+GLOBAL_LIST_END] = heretic_shop_items_str[j][i];
+						break;
+					case 4:
+						item_prices[j+GLOBAL_LIST_END] = heretic_shop_items_int[j][i - 4];
+						break;
+					case 5:
+						item_limits[j+GLOBAL_LIST_END] = heretic_shop_items_int[j][i - 4];
+						break;
+					case 6:
+						item_heavy[j+GLOBAL_LIST_END] = heretic_shop_items_int[j][i - 4];
+						break;
+				}
+			}
+		}
+		TOTAL_SLOTS = GLOBAL_LIST_END+HERETIC_LIST_END;
+		INNER_SLOTS = GLOBAL_INNER+HERETIC_INNER;
+		OUTER_SLOTS = GLOBAL_OUTER+HERETIC_OUTER;
+	}
+	else if (CheckInventory("HexenCounter"))
+	{
+		for(i = 0; i < DESCRIPTIVE_TYPES; i++)
+		{
+			for(j = 0; j < HEXEN_LIST_END; j++)
+			{
+				switch(i)
+				{
+					case 0:
+						sold_items[j+GLOBAL_LIST_END] = hexen_shop_items_str[j][i];
+						break;
+					case 1:
+						item_icons[j+GLOBAL_LIST_END] = hexen_shop_items_str[j][i];
+						break;
+					case 2:
+						item_names[j+GLOBAL_LIST_END] = hexen_shop_items_str[j][i];
+						break;
+					case 3:
+						item_info[j+GLOBAL_LIST_END] = hexen_shop_items_str[j][i];
+						break;
+					case 4:
+						item_prices[j+GLOBAL_LIST_END] = hexen_shop_items_int[j][i - 4];
+						break;
+					case 5:
+						item_limits[j+GLOBAL_LIST_END] = hexen_shop_items_int[j][i - 4];
+						break;
+					case 6:
+						item_heavy[j+GLOBAL_LIST_END] = hexen_shop_items_int[j][i - 4];
+						break;
+				}
+			}
+		}
+		TOTAL_SLOTS = GLOBAL_LIST_END+HEXEN_LIST_END;
+		INNER_SLOTS = GLOBAL_INNER+HEXEN_INNER;
+		OUTER_SLOTS = GLOBAL_OUTER+HEXEN_OUTER;
+	}
+}

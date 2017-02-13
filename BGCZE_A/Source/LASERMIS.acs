@@ -1,0 +1,404 @@
+#library "lasermis"
+#include "zdefs.acs"
+#include "zspecial.acs"
+
+// -----------------------------------------------------------------------------
+//
+// Laser pointer missile scripts by KeksDose
+//
+// 8 / February / 2015
+//
+// These scripts work to make a missile fired by a special weapon try to seek
+// whatever it is you are pointing at, even walls, floors and ceiling.
+//
+// Reuse and modify these scripts as you wish, just credit me somewhere.
+//
+// -----------------------------------------------------------------------------
+
+#libdefine LG_KEYGUIDE		BT_ALTATTACK
+#libdefine LG_KEYPERMA		BT_ALTATTACK
+#libdefine LG_DIST			0x7FFFFFFF
+#libdefine LG_TICDELAY		1
+#libdefine LG_SEEKDELAY		1
+#libdefine LG_MAXPLAYERS	32
+#libdefine LG_FAILVAL		-1				// Unable to determine the shooter
+#libdefine LG_STDONE		0
+#libdefine LG_STCONTROL		1
+#libdefine LG_STPERMA		2
+#libdefine LG_POINTCOLOR	0x50FFFF
+#libdefine LG_SEEKCOLOR		0xFF5050
+
+//str guidedWeapon = "SheepHerder";
+str guidedInventory = "SheepGuidance";
+str guidedPuff = "CattleProd";
+str hudFont = "confont";
+int pointerTids[LG_MAXPLAYERS];
+
+// This script isn't necessary but it makes finding a target easy since it will
+// make the designated actor glow.
+
+script "KD Laser Target FX" (void)
+{
+	while(CheckInventory(guidedInventory)) //while(CheckWeapon(guidedWeapon)
+	{
+		ACS_NamedExecuteAlways("KD Laser Target Glow", 0, PlayerNumber());
+		
+		Delay(const:LG_TICDELAY);
+	}
+}
+
+script "KD Laser Target Glow" (int player)
+{
+	if(SetActivatorToTarget(0))
+	{
+		int style = GetActorProperty(0, APROP_RENDERSTYLE);
+		int color = GetActorProperty(0, APROP_STENCILCOLOR);
+		int time = 0;
+		int flash = LG_POINTCOLOR;
+		int input = GetPlayerInput(player, INPUT_BUTTONS);
+		int designated = 0;
+		
+		if(input & LG_KEYGUIDE | LG_KEYPERMA)
+		{
+			flash = LG_SEEKCOLOR;
+		}
+		
+		if(input & LG_KEYPERMA)
+		{
+			designated = true;
+		}
+		
+		do
+		{
+			time = Timer();
+			
+			if(time & 1)
+			{
+				SetActorProperty(0, APROP_RENDERSTYLE, STYLE_ADDSTENCIL);
+				SetActorProperty(0, APROP_STENCILCOLOR, flash);
+			}
+			
+			Delay(const:LG_TICDELAY);
+				
+			SetActorProperty(0, APROP_RENDERSTYLE, style);
+			SetActorProperty(0, APROP_STENCILCOLOR, color);
+		} while(designated);
+	}
+}
+
+// Call this on your laser guided weapon's Raise animation once.
+//...But since all weapons use this, let's make it happen on the map start. - Pillow.
+
+script "KD Laser Pointer Tic" enter
+{
+	int ang = 0;
+	int vAng = 0;
+	
+	// It's specific to one weapon, but you can add more checks using the
+	// logical OR-operators. The puff actor can be used across many different
+	// guided missiles since a player can only have one weapon out at a time.
+	
+	while(CheckInventory(guidedInventory)) //while(CheckWeapon(guidedWeapon)
+	{
+		ang = GetActorAngle(0);
+		vAng = GetActorPitch(0);
+		
+		// So this script will run in the background and shoot a hit scan every
+		// LG_TICDELAY tics.
+		
+		LineAttack(0, ang, vAng, 0, guidedPuff, "None",
+					LG_DIST, FHF_NORANDOMPUFFZ);
+		
+		Delay(const:LG_TICDELAY);
+	}
+}
+
+// This must be called once by the laser puff actor so the guided missiles know
+// exactly what to follow.
+
+script "KD Laser Assign Tid" (void)
+{
+	// I assume the actor that calls this has no tid to begin with, since it's
+	// supposed to be a newly spawned puff actor somewhere on a wall on an
+	// actor, you know.
+	
+	int tid = UniqueTid();
+	
+	Thing_ChangeTid(0, tid);
+	
+	// Lots of safe-guarding here. This basically makes sure that this was fired
+	// by a player and that the new tid is put firmly between the responsible
+	// array bounds unless you enjoy going out of bounds, then you can remove
+	// that stuff.
+	
+	if(SetActivatorToTarget(0))
+	{
+		int player = PlayerNumber();
+		
+		if(player > -1 && player < LG_MAXPLAYERS)
+		{
+			pointerTids[player] = tid;
+		}
+	}
+}
+
+// This script is required because the projectile needs to know its player.
+// Reverting to the projectile after changing pointers is iffy, so I prefer to
+// use another script as a subroutine. Sounds smart, yeah?
+
+script "KD Laser Get Shooter" (void)
+{
+	if(SetActivatorToTarget(0))
+	{
+		SetResultValue(PlayerNumber());
+		terminate;
+	}
+	
+	SetResultValue(LG_FAILVAL);
+}
+
+// Call this once on the guided missile when it's supposed to start being
+// controllable. You could have it pause shortly after firing before taking off
+// quickly, for example, or only guided under specific circumstances like after
+// acquiring a special item.
+
+script "KD Laser Track" (void)
+{
+	// These are constants for readability and some optimization:
+	
+	int player = ACS_NamedExecuteWithResult("KD Laser Get Shooter", 0);
+	
+	if(player == LG_FAILVAL)
+	{
+		PrintBold(s:"\"KD Laser Track\": int player returned ", d:LG_FAILVAL,
+					s:" -- shooter is not a player or unavailable.");
+		
+		terminate;
+	}
+	
+	int notHugger = !(CheckFlag(0, "FLOORHUGGER") ||
+						CheckFlag(0, "CEILINGHUGGER"));
+	
+	// DECORATE-configured constants:
+	
+	int cMaxVel = GetUserVariable(0, "User_MaxSpeed");
+	int cAccel = GetUserVariable(0, "User_Acceleration");
+	
+	// Periphery:
+	
+	int input = 0;
+	int tid = 0;
+	int this = UniqueTid();
+	int state = LG_STCONTROL;
+	int vel = 0;
+	int accelerate = false;
+	
+	// Distance vector between missile and target:
+	
+	int dX = 0;
+	int dY = 0;
+	int dZ = 0;
+	
+	// New angle and pitch of the missile:
+	
+	int ang = 0;
+	int vAng = 0;
+	
+	// Angle that projects a line from missile to target:
+	
+	int tAng = 0;
+	int tvAng = 0;
+	
+	// Some temporary variables to store trigonometric values:
+	
+	int sinAng = 0;
+	int cosAng = 0;
+	int sinvAng = 0;
+	int cosvAng = 0;
+	
+	// Current velocity vector of the missile:
+	
+	int vX = 0;
+	int vY = 0;
+	int vZ = 0;
+	
+	// Acceleration vector of the missile:
+	
+	int aX = 0;
+	int aY = 0;
+	int aZ = 0;
+	
+	// New velocity vector of the missile:
+	
+	int nX = 0;
+	int nY = 0;
+	int nZ = 0;
+	
+	// Here's some debug stuff. Cool stuff!
+	
+	str debugStr;
+	int tics = 0;
+	
+	SetFont(hudFont);
+	SetHudSize(1280, 720, true);
+	Thing_ChangeTid(0, this);
+	
+	while(state != LG_STDONE)
+	{
+				// This is our ending condition. Basically, there is no way for the
+		// missile by itself to tell this script it has been destroyed, so there
+		// needs to be a tid assigned to said missile to determine in this way
+		// whether it exists or not.
+		
+		if(ThingCount(T_NONE, this) < 1)
+		{
+			state = LG_STDONE;
+			terminate;
+		}
+		
+		// Laser pointer is updated every LG_TICDELAY tics, so make sure to
+		// catch every new laser pointer spawned.
+		
+		input = GetPlayerInput(player, INPUT_BUTTONS);
+		tid = pointerTids[player];
+		SetPointer(AAPTR_TRACER,tid); //Thanks to this line, you can do a DECORATE magic with the laser pointer as well
+		tics++;
+		
+		// The new angle of the missile to face.
+		
+		ang = VectorAngle(nX, nY);
+		vAng = VectorAngle(VectorLength(nX, nY), nZ);
+		
+		debugStr = strParam(
+		s:"\cfPeriphery:\n",
+		s:"Tics: ", d:tics, s:"\n",
+		s:"State: ", d:state, s:"\n",
+		s:"Input: ", d:input, s:"\n",
+		s:"Tid: ", d:tid, s:"\n",
+		s:"Missile tid: ", d:this, s:"\n",
+		s:"Controlled: ", d:input & LG_KEYGUIDE, s:"\n",
+		s:"Velocity: ", f:vel, s:"\n",
+		s:"Accelerating: ", d:accelerate, s:"\n",
+		s:"\cgMax speed: ", f:cMaxVel, s:"\n",
+		s:"\cgAcceleration: ", f:cAccel, s:"\n",
+		s:"\cfProjection angles:\n",
+		f:tAng, s:"\n",
+		f:tvAng, s:"\n",
+		s:"\cfDistance:\n",
+		f:dX, s:"\n",
+		f:dY, s:"\n",
+		f:dZ, s:"\n",
+		s:"\cfVelocity:\n",
+		f:vX, s:"\n",
+		f:vY, s:"\n",
+		f:vZ, s:"\n",
+		s:"\cfAcceleration:\n",
+		f:aX, s:"\n",
+		f:aY, s:"\n",
+		f:aZ);
+		
+		// This is controlled seeking mode, you hold LG_KEYGUIDE and the
+		// missiles will follow suit.
+		
+		//if(input & LG_KEYGUIDE)
+		//{
+			// Get velocities, calculate distances on cardinal axes.
+			
+			vX = GetActorVelX(0);
+			vY = GetActorVelY(0);
+			vZ = GetActorVelZ(0);
+			
+			dX = GetActorX(tid) - GetActorX(0);
+			dY = GetActorY(tid) - GetActorY(0);
+			dZ = GetActorZ(tid) - GetActorZ(0);
+			
+			// These are the lateral and vertical angles projected from the
+			// missile towards the laser pointer. The lateral angle is easily
+			// calculated as the angle between the vector components dX and dY,
+			// but for the vertical angle, you'll need the dZ component and the
+			// distance of the vector with just the dX and dY components.
+			
+			// You can imagine that like a right triangle on a 2D plane and on
+			// its hypotenuse you place another right triangle in 3D space with
+			// its opposite cathete being orthogonal to the 2D plane below. Its
+			// adjacent cathete is the hypotenuse of the previous right triangle
+			// and the angle formed by its own hypotenuse and the adjacent
+			// cathete, that's the pitch needed to look at the laser pointer.
+			
+			// Sounds a lot more complicated than it really is.
+			
+			tAng = VectorAngle(dX, dY);
+			tvAng = VectorAngle(dZ, VectorLength(dX, dY));
+			
+			// Temporary variables for trigonometry stuff so this stays
+			// somewhat readable.
+			
+			sinAng = sin(tAng);
+			cosAng = cos(tAng);
+			sinvAng = sin(tvAng);
+			cosvAng = cos(tvAng);
+			
+			// Calculate the lateral components of the acceleration vector. This
+			// is practically the same as what I just described but with the
+			// angles of the right triangles. Laterally, you only need the
+			// cos(a) * accel and sin(a) * accel parts, but since we want the
+			// missiles to seek in 3D space, the vertical angle must be taken
+			// into regard as well.
+			
+			aX = FixedMul(FixedMul(cosAng, cAccel), sinvAng);
+			aY = FixedMul(FixedMul(sinAng, cAccel), sinvAng);
+			
+			// We don't want floor or ceiling huggers to leave the plane they're
+			// stuck on, do we?
+			
+			if(notHugger)
+			{
+				aZ = FixedMul(cosvAng, cAccel);
+			}
+			
+			else
+			{
+				aZ = 0.0;
+			}
+			
+			// New velocity components by simply adding the acceleration vector
+			// on top of the previous velocity vector. Then calculate the
+			// magnitude of the vector as the total speed.
+			
+			nX = vX + aX;
+			nY = vY + aY;
+			nZ = vZ + aZ;
+			
+			vel = VectorLength(VectorLength(nX, nY), nZ);
+			
+			if(vel > cMaxVel)
+			{
+				// The velocity vector is normalised here, meaning its magnitude
+				// will be equal to or less than 1 and then multiplied with the
+				// maximum possible velocity. This is to ensure the missiles
+				// don't speed up beyond control.
+				
+				// Higher acceleration implies higher control for this reason.
+				
+				nX = FixedMul(FixedDiv(nX, vel), cMaxVel);
+				nY = FixedMul(FixedDiv(nY, vel), cMaxVel);
+				nZ = FixedMul(FixedDiv(nZ, vel), cMaxVel);
+			}
+			
+			// And now set all the new velocities and angles. Done.
+			
+			SetActorVelocity(0, nX, nY, nZ, false, false);
+			SetActorAngle(0, ang);
+			SetActorPitch(0, vAng);
+		//}
+		
+		/*if(input & LG_KEYPERMA)
+		{
+			state = LG_STPERMA;
+		}
+		
+		HudMessageBold(s:debugStr; HUDMSG_PLAIN, 1, CR_GREEN, 0.1, 0.1, 0.0);*/
+		
+		Delay(const:LG_SEEKDELAY);
+	}
+}

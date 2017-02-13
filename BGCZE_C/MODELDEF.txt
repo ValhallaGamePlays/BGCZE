@@ -1,0 +1,54 @@
+Model BrutalLonghornBullet
+{ 
+   Path "Models"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM 
+   
+   FrameIndex TRAC A 0 0
+}
+
+Model BrutalLonghornRipperBullet
+{ 
+   Path "Models"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM 
+   
+   FrameIndex TRAC A 0 0
+}
+
+Model BrutalLeadBallBullet
+{ 
+   Path "Models"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM 
+   
+   FrameIndex TRAC A 0 0
+}
+
+Model BrutalPulverizerTracer
+{ 
+   Path "Models"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM 
+   
+   FrameIndex TRAC A 0 0
+}
+
+Model BrutalStruckerPellet
+{ 
+   Path "Models"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM 
+   
+   FrameIndex TRAC A 0 0
+}

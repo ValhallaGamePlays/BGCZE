@@ -1,0 +1,327 @@
+//[DoomKrakken]: MOST DEFINITELY UNUSED.  Inspired by shotfan.
+
+Actor ThunderSpirit : Thunderball
+{
+  Radius 36
+  Height 54
+  MissileHeight 54
+  MissileType "CauterizerSpiritTrailSpawner"
+  Decal "CauterizerLightning"
+  ReactionTime 350
+  +SEEKERMISSILE
+  +LOOKALLAROUND
+  +BOUNCEONWALLS
+  +BOUNCEONFLOORS
+  +BOUNCEONCEILINGS
+  BounceCount 150
+  States
+  {
+  Spawn:
+    TNT1 A 0 A_JumpIfInTargetInventory("HexenCounter",1,3)
+    TNT1 A 0 A_TakeFromTarget("CauterizerAmmo",4,TIF_NOTAKEINFINITE)
+	TNT1 A 0 A_Jump(256,2)
+	TNT1 A 0 A_TakeFromTarget("GreenMana",15,TIF_NOTAKEINFINITE)
+  Looplet:
+    TNT1 A 0 A_Countdown
+    TNT1 A 0 A_Quake (3, 1, 0, 192, none)
+    TNT1 A 0 A_PlaySound("Cauterizer/Fly",5,0.8,1)
+	TNT1 A 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_PRECISE|SMF_CURSPEED)
+    TNT1 A 1 A_Explode((30*random(2,3)),216,0,0)
+    Loop
+  Bounce:
+	TNT1 AAA 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_PRECISE|SMF_CURSPEED)
+	Goto Looplet
+  Death:
+    //TNT1 A 0 A_CheckFloor("Watercheck")
+    TNT1 A 0 A_Quake (5, 17, 0, 384, none)
+    TNT1 A 0 A_Quake (2, 52, 0, 384, none)
+    TNT1 A 0 A_PlaySound("Cauterizer/Hit",4,1.0)
+    TNT1 A 0 A_PlaySound("Cauterizer/Blast",5,0.8)
+    TNT1 A 0 A_Explode((180*random(2,3)),384,0)
+    TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_SpawnItemEx("CauterizerSpiritSparkBlast")
+	TNT1 A 0 A_SpawnItemEx("CauterizerFX")
+	TNT1 A 0 A_SpawnItemEx("CauterizerSpiritParticleSpawner")
+	TNT1 A 0 A_SpawnItemEx("SpiritLightningSpawner")
+	TNT1 AAAA 0 A_SpawnItemEx("CauterizerSpiritDisruption")
+    TNT1 AAA 1 A_SpawnItemEx("CauterizerSpiritSparkBlast")
+	TNT1 A 2
+    TNT1 AAAAAAAAAAABBBBBBBBBBB 2 A_Explode((15*random(2,3)),36,0)
+    stop
+  /*Watercheck:
+	TNT1 A 0 A_JumpIf(CallACS("WaterBollocks") == true, "Supercharge")
+	Goto Death+2
+  Supercharge:
+    TNT1 A 0 A_Quake (7, 17, 0, 384, none)
+    TNT1 A 0 A_Quake (4, 52, 0, 384, none)
+    TNT1 A 0 A_PlaySound("Cauterizer/Hit",4,0.6)
+    TNT1 A 0 A_PlaySound("Cauterizer/Blast",5,0.4)
+    TNT1 A 0 A_Explode((90*random(2,3)),192,0)
+    TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_SpawnItemEx("CauterizerFX")
+	TNT1 AA 0 A_SpawnItemEx("CauterizerParticleSuperSpawner")
+	TNT1 AA 0 A_SpawnItemEx("CyanLightningSuperSpawner")
+	TNT1 AAAAA 0 A_SpawnItemEx("CauterizerSuperDisruption")
+    TNT1 A 0 A_SpawnItemEx("CauterizerSuperSparkBlast")
+    TNT1 AAAAA 1 A_SpawnItemEx("CauterizerSparkBlast")
+    TNT1 AAAAAAAAAAABBBBBBBBBBB 2 A_Explode((7*random(2,3)),72,0)
+    stop*/
+  }
+}
+
+ACTOR CauterizerSpiritTrailSpawner : CauterizerTrailSpawner
+{ 
+    States
+    {
+    Spawn:
+      TNT1 A 0
+	  TNT1 A 0 A_SpawnItemEx("CauterizerSpiritSpark",frandom(6.0,-6.0),frandom(6.0,-6.0),frandom(6.0,-6.0),frandom(0.1,1.0),frandom(0.1,1.0),frandom(-1.0,1.0),random(0,359),128,0)
+      TNT1 A 1 A_SpawnItemEx("CauterizerSpiritTrail",0,0,0,0,0,0,0,128,0)
+      Stop
+    }
+}
+
+ACTOR CauterizerSpiritTrail : CauterizerTrail
+{ 
+    Scale 0.3
+    Alpha 0.98
+    Renderstyle Add
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+    States
+    {
+    Spawn:
+	  TNT1 A 0
+	  WINS A 0 A_SetScale(ScaleX-0.03,ScaleY-0.03)
+	  XELB A 1 A_FadeOut(0.1)
+	  Loop
+    }
+}
+
+ACTOR CauterizerSpiritSpark : CauterizerSpark
+{ 
+    Scale 0.375
+    Alpha 1
+    Renderstyle Add
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+    States
+    {
+    Spawn:
+	  TNT1 A 0
+	  XELC AAABBBCCCDDDEEEFFF 1 A_FadeOut(0.025)
+	  Stop
+    }
+}
+
+ACTOR CauterizerSpiritSparkBlast : CauterizerSpark
+{
+	States
+    {
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SpawnItemEx("CauterizerSpiritSpark",random(24,-24),random(24,-24),random(24,-24),frandom(3.0,10.0),frandom(3.0,10.0),frandom(-10.0,10.0),frandom(0.0,360.0))
+	TNT1 A 0 A_Countdown
+	Loop
+	Death:
+	Stop
+	}
+}
+
+/*ACTOR CauterizerSuperSparkBlast
+{
+    +NOGRAVITY
+    +NOINTERACTION
+    ReactionTime 250
+	States
+    {
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SpawnItemEx("CauterizerSpark",random(24,-24),random(24,-24),random(24,-24),frandom(9.0,25.0),frandom(9.0,25.0),frandom(-15.0,15.0),frandom(0.0,360.0))
+	TNT1 A 0 A_Countdown
+	Loop
+	Death:
+	Stop
+	}
+}*/
+
+ACTOR CauterizerSpiritDisruption : CauterizerDisruption
+{
+	States
+    {
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SpawnItemEx("CauterizerSpiritForce",random(3,-3),random(3,-3),random(3,-3),frandom(2.0,3.0),frandom(2.0,3.0),frandom(-3.0,3.0),frandom(0.0,359.0))
+	TNT1 A 1 A_Countdown
+	Loop
+	Death:
+	Stop
+	}
+}
+
+/*ACTOR CauterizerSuperDisruption
+{
+    +NOGRAVITY
+    +NOINTERACTION
+    ReactionTime 30
+	States
+    {
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SpawnItemEx("CauterizerSuperForce",random(9,-9),random(9,-9),random(9,-9),frandom(3.0,4.0),frandom(3.0,4.0),frandom(-4.0,4.0),frandom(0.0,359.0))
+	TNT1 A 1 A_Countdown
+	Loop
+	Death:
+	Stop
+	}
+}*/
+
+ACTOR CauterizerSpiritForce : CauterizerForce
+{ 
+    Scale 0.15
+    States
+    {
+    Spawn:
+	  TNT1 A 0
+	  WINS A 0 A_SetScale(ScaleX+0.03,ScaleY+0.03)
+	  XELB A 1 A_FadeOut(0.075)
+	  Loop
+    }
+}
+
+/*ACTOR CauterizerSuperForce : CauterizerForce
+{ 
+    Scale 0.07
+    States
+    {
+    Spawn:
+	  TNT1 A 0
+	  WINS A 0 A_SetScale(ScaleX+0.015,ScaleY+0.015)
+	  XELB A 1 A_FadeOut(0.075)
+	  Loop
+    }
+}*/
+
+ACTOR SpiritLightning : CyanLightning
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+	Alpha 0.99
+	Scale 0
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SetScale(ScaleX + frandom(1.8,2.4))
+	TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+	CLIT A 0 A_Jump(256,"Main")
+	SpriteB:
+	CLIT B 0 A_Jump(256,"Main")
+	SpriteC:
+	CLIT C 0 A_Jump(256,"Main")
+	SpriteD:
+	CLIT D 0 A_Jump(256,"Main")
+	SpriteE:
+	CLIT E 0 A_Jump(256,"Main")
+	SpriteF:
+	CLIT F 0 A_Jump(256,"Main")
+	SpriteG:
+	CLIT G 0 A_Jump(256,"Main")
+	SpriteH:
+	CLIT H 0 A_Jump(256,"Main")
+	Main:
+	"####" "#" 2 Bright A_Jump(92,"Fade")
+	Loop
+	Fade:
+	"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.15))
+	Loop
+	}
+}
+
+ACTOR SpiritLightningSpawner : CyanLightningSpawner
+{
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SetUserVar("User_Count",16)
+	Looplo:
+	TNT1 A 0 A_SpawnItemEx("SpiritLightning",random(5,-5),random(5,-5),random(5,-5),frandom(0.2,0.1),frandom(0.2,0.1),frandom(0.2,-0.2),0,SXF_CLIENTSIDE)
+	TNT1 A 0 A_SetUserVar("User_Count", User_Count - 1)
+	TNT1 A random(1,3) A_JumpIf(User_Count <= 0,"NULL")
+	Loop
+	}
+}
+
+/*ACTOR CyanLightningSuperSpawner
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	var int User_Count;
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SetUserVar("User_Count",16)
+	Looplo:
+	TNT1 A 0 A_SpawnItemEx("CyanLightning",random(50,-50),random(50,-50),random(50,-50),frandom(0.2,0.1),frandom(0.2,0.1),frandom(0.2,-0.2),0,SXF_CLIENTSIDE)
+	TNT1 A 0 A_SetUserVar("User_Count", User_Count - 1)
+	TNT1 A random(1,3) A_JumpIf(User_Count <= 0,"NULL")
+	Loop
+	}
+}*/
+
+ACTOR CauterizerSpiritParticle : CauterizerParticle
+{
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SetScale(ScaleX + frandom(0.225,0.45))
+	In:
+	"####" "#" 0 A_ChangeVelocity(frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(0.0,0.01),0)	
+	CPRT A 1 Bright A_FadeIn(frandom(0.04,0.05))
+	CPRT A 0 A_JumpIf(Alpha >= 0.95,"Main")
+	Loop
+	Main:
+	"####" "##" 1 Bright A_ChangeVelocity(frandom(-0.3,0.3),frandom(-0.2,0.2),0,0)
+	"####" "#" 0 A_Jump(64,"Out")
+	Loop
+	Out:
+	"####" "#" 0 A_ChangeVelocity(frandom(-0.3,0.3),frandom(-0.3,0.3),frandom(-0.2,0.0),0)
+	"####" "#" 1 Bright A_FadeOut(frandom(0.07,0.04))
+	Loop
+	}
+}
+
+ACTOR CauterizerSpiritParticleSpawner : CauterizerParticleSpawner
+{
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SetUserVar("User_Count",25)
+	Looplo:
+	TNT1 A 0 A_SpawnItemEx("CauterizerSpiritParticle",random(50,-50),random(50,-50),random(30,-30),0,0,frandom(1.0,3.0),0,SXF_CLIENTSIDE)
+	TNT1 A 0 A_SetUserVar("User_Count", User_Count - 1)
+	TNT1 A 1 A_JumpIf(User_Count <= 0,"NULL")
+	Loop
+	}
+}
+
+/*ACTOR CauterizerParticleSuperSpawner
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	var int User_Count;
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SetUserVar("User_Count",25)
+	Looplo:
+	TNT1 A 0 A_SpawnItemEx("CauterizerParticle",random(70,-70),random(70,-70),random(70,-70),0,0,frandom(1.0,3.0),0,SXF_CLIENTSIDE)
+	TNT1 A 0 A_SetUserVar("User_Count", User_Count - 1)
+	TNT1 A 1 A_JumpIf(User_Count <= 0,"NULL")
+	Loop
+	}
+}*/

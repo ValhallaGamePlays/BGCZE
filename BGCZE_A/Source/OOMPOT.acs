@@ -1,0 +1,44 @@
+// Mana regen-over-time effect script for mana potions. Simple enough!
+// By Zhs2.
+
+//Pillow (2016-02-24): Now this function is passed over to rejuvenation pots,
+//With an extra healing powers!
+//Regular pots drop around and get the boost from the second script.
+
+#library "IMOUTTAMANAINEEDAP"
+#include "zcommon.acs"
+
+script "RejuvRegen" (void)
+{
+	int regentics; // counter, so as not to rely on a timer
+	regentics++; // our temporary counter method so as to not disallow mana for not having been called on the right tic
+	if (!(regentics%10)) //PILLOW: every tenth tic
+	{
+			GiveInventory("RejuvHeal", 1); //Pillow: OOM.
+	}
+	if (!(regentics%7)) // every seventh tic
+	{
+		GiveInventory("Mana", 1); // OOM! OOM!
+	}
+	if (regentics > 525) // 15 'seconds' have passed
+	{
+		terminate; // good night, sweet prince
+	}
+	delay(1);
+	restart;
+}
+
+script "HPMPChecker" (void)
+{
+	if(GetActorProperty(0,APROP_Health) < GetActorProperty(0,APROP_SpawnHealth)
+	|| (CheckInventory("Mana") < GetMaxInventory(0,"Mana")))
+	{
+		SetResultValue(1);
+	}
+	Else SetResultValue(0);
+}
+
+script "ManaBonus" (int ManaBonus)
+{
+	GiveInventory("Mana", (CheckInventory("PowerBooster")*ManaBonus));
+}

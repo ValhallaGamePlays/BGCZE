@@ -1,0 +1,242 @@
+/*actor BrutalThunderball: Thunderball replaces Thunderball
+{
+	DeathType "Plasma"
+}
+
+actor BrutalHomingThunderball: HomingThunderBall replaces HomingThunderball
+{
+	DeathType "Plasma"
+}*/
+
+actor BrutalIronblastProjectile: IronblastProjectile replaces IronblastProjectile
+{
+	DeathType "SSG"
+}
+
+actor BrutalMatriarchSlug: MatriarchSlug replaces MatriarchSlug
+{
+	PainType "ExplosiveImpact"
+	DeathType "ExplosiveImpact"
+}
+
+actor BrutalDynamiteProjectile: DynamiteProjectile replaces DynamiteProjectile
+{
+	PainType "ExplosiveImpact"
+	DeathType "ExplosiveImpact"
+}
+
+actor BrutalDynamiteProjectile2: DynamiteProjectile2 replaces DynamiteProjectile2
+{
+	PainType "ExplosiveImpact"
+	DeathType "ExplosiveImpact"
+}
+
+actor BrutalAirstrikeMissileUpward: AirstrikeMissileUpward replaces AirstrikeMissileUpward
+{
+	PainType "ExplosiveImpact"
+	DeathType "ExplosiveImpact"
+}
+
+actor BrutalAirstrikeMissile: AirstrikeMissile replaces AirstrikeMissile
+{
+	PainType "ExplosiveImpact"
+	DeathType "ExplosiveImpact"
+}
+
+actor BrutalLonghornBullet: LonghornBullet replaces LonghornBullet
+{
+	DeathType "Blast"
+	+HITTRACER
+	States
+	{
+		XDeath:
+		TNT1 A 0
+		{
+			if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE))
+			//if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE)||CheckClass("CybersHitBox",AAPTR_TRACER,TRUE))//[DoomKrakken]: For debugging purposes only...
+			{
+				A_SpawnItemEx("Blue_Blood");
+			}
+			//if (CheckClass("BaronOfHell",AAPTR_TRACER,TRUE))
+			//{
+			//	A_SpawnItemEx("Green_Blood");
+			//}
+			else
+			{
+				A_SpawnItemEx("Blood");
+			}
+		}
+		Stop
+	}
+}
+
+actor BrutalLonghornInvisBullet: LonghornInvisBullet replaces LonghornInvisBullet
+{
+	DeathType "Blast"
+	+HITTRACER
+	States
+	{
+		XDeath:
+		TNT1 A 0
+		{
+			if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE))
+			//if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE)||CheckClass("CybersHitBox",AAPTR_TRACER,TRUE))//[DoomKrakken]: For debugging purposes only...
+			{
+				A_SpawnItemEx("Blue_Blood");
+			}
+			//if (CheckClass("BaronOfHell",AAPTR_TRACER,TRUE))
+			//{
+			//	A_SpawnItemEx("Green_Blood");
+			//}
+			else
+			{
+				A_SpawnItemEx("Blood");
+			}
+		}
+		Stop
+	}
+}
+
+actor BrutalLonghornRipperBullet: LonghornRipperBullet replaces LonghornRipperBullet
+{
+	DeathType "Blast"
+	+HITTRACER
+	States
+	{
+		XDeath:
+		TNT1 A 0
+		{
+			if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE))
+			//if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE)||CheckClass("CybersHitBox",AAPTR_TRACER,TRUE))//[DoomKrakken]: For debugging purposes only...
+			{
+				A_SpawnItemEx("Blue_Blood");
+			}
+			//if (CheckClass("BaronOfHell",AAPTR_TRACER,TRUE))
+			//{
+			//	A_SpawnItemEx("Green_Blood");
+			//}
+			else
+			{
+				A_SpawnItemEx("Blood");
+			}
+			A_Explode(125,32,0);
+		}
+		Stop
+	}
+}
+
+actor BrutalLeadBallBullet: LeadBallBullet replaces LeadBallBullet
+{
+	+HITTRACER
+	DeathType "Cutless"
+	States
+	{
+		XDeath:
+		TNT1 A 0
+		{
+			if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE))
+			//if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE)||CheckClass("CybersHitBox",AAPTR_TRACER,TRUE))//[DoomKrakken]: For debugging purposes only...
+			{
+				A_SpawnItemEx("Blue_Blood");
+			}
+			//if (CheckClass("BaronOfHell",AAPTR_TRACER,TRUE))
+			//{
+			//	A_SpawnItemEx("Green_Blood");
+			//}
+			else
+			{
+				A_SpawnItemEx("Blood");
+			}
+		}
+		Stop
+	}
+}
+
+actor BrutalPulverizerTracer: PulverizerTracer replaces PulverizerTracer
+{
+	+HITTRACER
+	-THRUGHOST
+	DeathType "Cutless"
+	States
+	{
+		XDeath:
+		TNT1 A 0
+		{
+			if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE))
+			//if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE)||CheckClass("CybersHitBox",AAPTR_TRACER,TRUE))//[DoomKrakken]: For debugging purposes only...
+
+			{
+				A_SpawnItemEx("Blue_Blood");
+			}
+			//if (CheckClass("BaronOfHell",AAPTR_TRACER,TRUE))
+			//{
+			//	A_SpawnItemEx("Green_Blood");
+			//}
+			else
+			{
+				A_SpawnItemEx("Blood");
+			}
+		}
+		Stop
+	}
+}
+
+actor BrutalStruckerPellet: StruckerPellet replaces StruckerPellet
+{
+	+HITTRACER
+	-THRUGHOST
+	DeathType "Shotgun"
+	States
+	{
+		XDeath:
+		TNT1 A 0
+		{
+			if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE))
+			//if (CheckClass("Cacodemon",AAPTR_TRACER,TRUE)||CheckClass("CybersHitBox",AAPTR_TRACER,TRUE))//[DoomKrakken]: For debugging purposes only...
+
+			{
+				A_SpawnItemEx("Blue_Blood");
+			}
+			//if (CheckClass("BaronOfHell",AAPTR_TRACER,TRUE))
+			//{
+			//	A_SpawnItemEx("Green_Blood");
+			//}
+			else
+			{
+				A_SpawnItemEx("Blood");
+			}
+		}
+		Stop
+	}
+}
+
+//Kickin'
+ACTOR BrutalKickProjectile: KickProjectile replaces KickProjectile
+{
+	PainType Kick
+}
+
+ACTOR BrutalKickProjectileLeft: KickProjectileLeft replaces KickProjectileLeft
+{
+	PainType Kick
+}
+
+ACTOR BrutalKickProjectileRight: KickProjectileRight replaces KickProjectileRight
+{
+	PainType Kick
+}
+
+ACTOR BrutalMidasKickProjectile: MidasKickProjectile replaces MidasKickProjectile
+{
+	PainType Kick
+}
+
+ACTOR BrutalMidasKickProjectileLeft: MidasKickProjectileLeft replaces MidasKickProjectileLeft
+{
+	PainType Kick
+}
+
+ACTOR BrutalMidasKickProjectileRight: MidasKickProjectileRight replaces MidasKickProjectileRight
+{
+	PainType Kick
+}

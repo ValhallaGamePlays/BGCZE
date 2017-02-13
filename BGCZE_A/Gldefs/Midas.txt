@@ -1,0 +1,145 @@
+//Tome
+pointlight MIDASTOME1
+{
+    color 1.0 0.4 0.1
+    size 48
+    offset 0 16 0
+	dontlightself 1
+}
+
+pulselight MIDASTOME2
+{
+    color 0.8 0.7 0.1
+    size 64
+    secondarySize 24
+    offset 0 16 0
+    interval 1.5
+}
+
+object PhilosophersTome
+{
+    frame MIDTA { light MIDASTOME1 }
+    frame MIDT { light MIDASTOME2 }
+}
+
+object MidasTome
+{
+    frame MIDTA { light MIDASTOME1 }
+    frame MIDT { light MIDASTOME2 }
+}
+
+
+//Sphere
+pointlight MIDASSPHERELIGHT
+{
+    color 0.8 0.8 0.1
+    size 48
+    offset 0 16 0
+    dontlightself 1
+}
+
+object MidasSphere
+{
+    frame MDSS{ light MIDASSPHERELIGHT }
+}
+
+//Melee
+object SuperMidasPawnchPuff
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+object SuperMidasPawnchPuff2
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+object SuperMidasPawnchPuffLeft
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+object SuperMidasPawnchPuffLeft2
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+object SuperMidasScratchPuffLeft
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+object SuperMidasScratchPuffRight
+{
+    frame TNT1A { light SUPERMIDASPAWNCH }
+}
+
+pulselight SUPERMIDASPAWNCH
+{
+    color 1.0 0.8 0.1
+    size 32
+    secondarySize 0
+    interval 0.9
+}
+
+object SuperMidasKick_Gldef
+{
+    frame TNT1A { light SUPERMIDASKEECK }
+}
+
+pulselight SUPERMIDASKEECK
+{
+    color 1.0 0.8 0.1
+    size 128
+    secondarySize 0
+    interval 1.2
+}
+
+//Stomp
+object SuperMidasStomp_GLDEF
+{
+    frame TNT1A { light MIDASZERKBLAST }
+}
+
+pulselight MIDASZERKBLAST
+{
+    color 1.0 0.8 0.1
+    size 192
+    secondarySize 0
+    interval 1.4
+}
+
+//Statue
+object Midas_GLDEF
+{
+    frame TNT1A { light MIDASSTATUEBLAST }
+}
+
+pulselight MIDASSTATUEBLAST
+{
+    color 1.0 0.8 0.1
+    size 164
+    secondarySize 0
+    interval 1.2
+}
+
+//Coins
+object SmallMidasCoin
+{
+    frame COIN { light COINS }
+}
+
+object SmallMidasCoinStationary
+{
+    frame COIN { light COINS }
+}
+
+object BigMidasCoin
+{
+    frame COI2 { light BAG }
+}
+
+object BigMidasCoinStationary
+{
+    frame COI2 { light BAG }
+}

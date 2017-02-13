@@ -1,0 +1,131 @@
+Object PrismLightBlue { frame TNT1 { light PRISMBLUE } }
+Object PrismLightCyan { frame TNT1 { light PRISMCYAN } }
+Object PrismLightGreen { frame TNT1 { light PRISMGREEN } }
+Object PrismLightLime { frame TNT1 { light PRISMLIME } }
+Object PrismLightYellow { frame TNT1 { light PRISMYELLOW } }
+Object PrismLightOrange { frame TNT1 { light PRISMORANGE } }
+Object PrismLightRed { frame TNT1 { light PRISMRED } }
+Object PrismLightPurple { frame TNT1 { light PRISMPURPLE } }
+
+Object PrismImpactBlue { frame PRSPA { light PRISMIMPACTBLUE } }
+Object PrismImpactCyan { frame PRSPB { light PRISMIMPACTCYAN } }
+Object PrismImpactGreen { frame PRSPC { light PRISMIMPACTGREEN } }
+Object PrismImpactLime { frame PRSPD { light PRISMIMPACTLIME } }
+Object PrismImpactYellow { frame PRSPE { light PRISMIMPACTYELLOW } }
+Object PrismImpactOrange { frame PRSPF { light PRISMIMPACTORANGE } }
+Object PrismImpactRed { frame PRSPG { light PRISMIMPACTRED } }
+Object PrismImpactPurple { frame PRSPH { light PRISMIMPACTPURPLE } }
+
+//Originator
+Pointlight PRISMBLUE
+{
+    color 0.0 0.0 0.5
+    size 64
+}
+
+Pointlight PRISMCYAN
+{
+    color 0.0 0.25 0.5
+    size 64
+}
+
+Pointlight PRISMGREEN
+{
+    color 0.0 0.5 0.0
+    size 64
+}
+
+Pointlight PRISMLIME
+{
+    color 0.25 0.5 0.0
+    size 64
+}
+
+Pointlight PRISMYELLOW
+{
+    color 0.5 0.5 0.0
+    size 64
+}
+
+Pointlight PRISMORANGE
+{
+    color 0.5 0.25 0.0
+    size 64
+}
+
+Pointlight PRISMRED
+{
+    color 0.5 0.0 0.0
+    size 64
+}
+
+Pointlight PRISMPURPLE
+{
+    color 0.15 0.0 0.5
+    size 64
+}
+
+//Impacts
+pulselight PRISMIMPACTBLUE
+{
+    color 0.0 0.0 0.25
+    size 96
+    secondarySize 0
+    interval 0.6
+}
+
+pulselight PRISMIMPACTCYAN
+{
+    color 0.0 0.125 0.25
+    size 96
+    secondarySize 0
+    interval 0.6
+}
+
+pulselight PRISMIMPACTGREEN
+{
+    color 0.0 0.25 0.0
+    size 96
+    secondarySize 0
+    interval 0.6
+}
+
+pulselight PRISMIMPACTLIME
+{
+    color 0.125 0.25 0.0
+    size 96
+    secondarySize 0
+    interval 0.6
+}
+
+pulselight PRISMIMPACTYELLOW
+{
+    color 0.25 0.25 0.0
+    size 96
+    secondarySize 0
+    interval 0.6
+}
+
+pulselight PRISMIMPACTORANGE
+{
+    color 0.25 0.125 0.0
+    size 96
+    secondarySize 0
+    interval 0.6
+}
+
+pulselight PRISMIMPACTRED
+{
+    color 0.25 0.0 0.0
+    size 96
+    secondarySize 0
+    interval 0.6
+}
+
+pulselight PRISMIMPACTPURPLE
+{
+    color 0.075 0.0 0.25
+    size 96
+    secondarySize 0
+    interval 0.6
+}

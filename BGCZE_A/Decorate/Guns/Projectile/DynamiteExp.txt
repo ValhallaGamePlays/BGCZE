@@ -1,0 +1,310 @@
+ACTOR TNTBase
+{ 
+    +NOINTERACTION
+	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+	Alpha 0.0
+	Scale 0.0
+}
+
+ACTOR TNTFX : TNTBase
+{ 
+	States
+	{
+		Spawn:
+			TNT1 A 80
+			Stop
+	}
+}
+
+ACTOR TNTSmoke : TNTBase
+{
+	RenderStyle Translucent
+	States
+	{
+		Spawn:
+			TNT1 A random(12,17)
+			TNT1 A 0 //NoDelay A_ScaleVelocity(frandom(0.8,1.1))
+		SetupSprite:
+			TNT1 A 0 A_Jump(256, "SpriteE", "SpriteF", "SpriteG", "SpriteH",
+			"SpriteI", "SpriteJ", "SpriteK", "SpriteL", "SpriteM", "SpriteN",
+			"SpriteO", "SpriteP")
+		SpriteE:
+			DYMI E 0
+			Goto SetupScale
+		SpriteF:
+			DYMI F 0
+			Goto SetupScale
+		SpriteG:
+			DYMI G 0
+			Goto SetupScale
+		SpriteH:
+			DYMI H 0
+			Goto SetupScale
+		SpriteI:
+			DYMI I 0
+			Goto SetupScale
+		SpriteJ:
+			DYMI J 0
+			Goto SetupScale
+		SpriteK:
+			DYMI K 0
+			Goto SetupScale
+		SpriteL:
+			DYMI L 0
+			Goto SetupScale
+		SpriteM:
+			DYMI A 0
+			Goto SetupScale
+		SpriteN:
+			DYMI B 0
+			Goto SetupScale
+		SpriteO:
+			DYMI C 0
+			Goto SetupScale
+		SpriteP:
+			DYMI D 0
+			Goto SetupScale
+		SetupScale:
+			"####" "#" 0 A_SetScale(frandom(0.9, 1.1))
+		FadeIn:
+			"####" "#" 1 A_FadeIn(FRandom(0.01, 0.04))
+			"####" "#" 0 A_ChangeVelocity(frandom(-0.02, 0.02), frandom(-0.02, 0.02), frandom(-0.02, 0.03), 0)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.01, 0.02))
+			"####" "#" 0 A_JumpIf(Alpha >= 0.4, "Inter")
+			Loop
+		Inter:
+			"####" "#" 0 A_ChangeVelocity(frandom(-0.02, 0.02), frandom(-0.02, 0.02), frandom(-0.02, 0.03), 0)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.01, 0.02))
+			"####" "#" 1 A_Jump(24,"FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 A_FadeOut(FRandom(0.01,0.02))
+			"####" "#" 0 A_ChangeVelocity(frandom(-0.02, 0.02), frandom(-0.02, 0.02), frandom(-0.02, 0.03), 0)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.01, 0.02))
+			Loop
+	}
+}
+
+ACTOR TNTCloud : TNTBase
+{
+	RenderStyle Add
+	States
+	{
+		Spawn:
+			TNT1 A 0
+		SetupSprite:
+			TNT1 A 0 A_Jump(256, "SpriteA", "SpriteB", "SpriteC", "SpriteD",
+			"SpriteE", "SpriteF", "SpriteG", "SpriteH")
+		SpriteA:
+			CLOD A 0
+			Goto SetupScale
+		SpriteB:
+			CLOD B 0
+			Goto SetupScale
+		SpriteC:
+			CLOD C 0
+			Goto SetupScale
+		SpriteD:
+			CLOD D 0
+			Goto SetupScale
+		SpriteE:
+			CLOD E 0
+			Goto SetupScale
+		SpriteF:
+			CLOD F 0
+			Goto SetupScale
+		SpriteG:
+			CLOD G 0
+			Goto SetupScale
+		SpriteH:
+			CLOD H 0
+			Goto SetupScale
+		SetupScale:
+			"####" "#" 0 A_SetScale(frandom(1.2, 1.65))
+		FadeIn:
+			"####" "#" 1 A_FadeIn(FRandom(0.15, 0.1))
+			"####" "#" 0 A_ChangeVelocity(frandom(-0.06, 0.06), frandom(-0.06, 0.06), frandom(-0.06, 0.07), 0)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.01, 0.025))
+			"####" "#" 0 A_JumpIf(Alpha >= 0.8, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 A_FadeOut(FRandom(0.05,0.02))
+			"####" "#" 0 A_ChangeVelocity(frandom(-0.06, 0.06), frandom(-0.06, 0.06), frandom(-0.06, 0.07), 0)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.025, 0.05))
+			Loop
+	}
+}
+
+ACTOR TNTBlast : TNTBase
+{
+	RenderStyle Add
+	States
+	{
+		Spawn:
+			TNT1 A 0
+		SetupSprite:
+			TNT1 A 0 A_Jump(255, "SpriteA", "SpriteB", "SpriteC", "SpriteD",
+			"SpriteE", "SpriteF", "SpriteG", "SpriteH")
+		SpriteA:
+			BLST A 0
+			Goto SetupScale
+		SpriteB:
+			BLST B 0
+			Goto SetupScale
+		SpriteC:
+			BLST C 0
+			Goto SetupScale
+		SpriteD:
+			BLST D 0
+			Goto SetupScale
+		SpriteE:
+			BLST E 0
+			Goto SetupScale
+		SpriteF:
+			BLST F 0
+			Goto SetupScale
+		SpriteG:
+			BLST G 0
+			Goto SetupScale
+		SpriteH:
+			BLST H 0
+			Goto SetupScale
+		SetupScale:
+			"####" "#" 0 A_SetScale(frandom(1.2, 1.65))
+		FadeIn:
+			"####" "#" 1 A_FadeIn(FRandom(0.15, 0.1))
+			"####" "#" 0 A_ChangeVelocity(frandom(-0.06, 0.06), frandom(-0.06, 0.06), frandom(-0.06, 0.07), 0)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.02, 0.01))
+			"####" "#" 0 A_JumpIf(Alpha >= 0.8, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 A_FadeOut(FRandom(0.05,0.02))
+			"####" "#" 0 A_ChangeVelocity(frandom(-0.06, 0.06), frandom(-0.06, 0.06), frandom(-0.06, 0.07), 0)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.02, 0.01))
+			Loop
+	}
+}
+
+ACTOR TNTEmber : TNTBase
+{
+	RenderStyle Add
+	States
+	{
+		Spawn:
+			TNT1 A 0
+		SetupSprite:
+			TNT1 A 0 A_Jump(256, "SpriteA", "SpriteB", "SpriteC", "SpriteD",
+			"SpriteE", "SpriteF")
+		SpriteA:
+			EMBR A 0
+			Goto SetupScale
+		SpriteB:
+			EMBR B 0
+			Goto SetupScale
+		SpriteC:
+			EMBR C 0
+			Goto SetupScale
+		SpriteD:
+			EMBR D 0
+			Goto SetupScale
+		SpriteE:
+			EMBR E 0
+			Goto SetupScale
+		SpriteF:
+			EMBR F 0
+			Goto SetupScale
+		SetupScale:
+			"####" "#" 0 A_SetScale(frandom(0.04, 0.1))
+		FadeIn:
+			"####" "#" 1 A_FadeIn(FRandom(0.99, 0.9))
+		Intern:
+			"####" "#" 3 Bright A_Jump(200, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 A_Weave(FRandom(0.9, 1.0), FRandom(0.9, 1.0),
+										FRandom(70, 90), FRandom(70, 90))
+			"####" "#" 0 A_JumpIf(ScaleX <= 0.0, "NULL")
+			"####" "#" 0 A_ChangeVelocity(VelX * FRandom(0.93, 0.99),
+										  VelY * FRandom(0.93, 0.99),
+										  VelZ - FRandom(0.1, 0.2),
+										  CVF_REPLACE)
+			"####" "#" 0 A_SetScale(ScaleX - FRandom(0.002, 0.001))
+			Loop
+	}
+}
+
+Actor TNTShockwave : TNTBase
+{
+	RenderStyle Add
+	Alpha 0.99
+	Scale 0.9
+	States
+	{
+		Spawn:
+			SHCK A 0
+			SHCK A 0 A_SetScale(ScaleX + FRandom(0.12, 0.09))
+			SHCK A 1 Bright A_FadeOut(frandom(0.02,0.05))
+			Loop
+	}
+}
+
+Actor TNTFlare : TNTBase
+{
+	RenderStyle Add
+	Alpha 0.99
+	Scale 7.5
+	States
+	{
+		Spawn:
+			FLAR A 1 Bright A_FadeOut(0.02)
+			FLAR A 0 A_SetScale(ScaleX - FRandom(0.05, 0.15))
+			FLAR A 0 A_JumpIf(ScaleX <= 0.0, "NULL")
+			Loop
+	}
+}
+
+Actor TNTExplosionMain : TNTBase
+{
+	Var Int User_Counter;
+	States
+	{
+		Spawn:
+			TNT1 A 0 NoDelay A_SetUserVar("User_Counter", 30)
+			Goto Emit
+		Emit:
+			TNT1 A 0 A_SpawnItemEx("TNTCloud", FRandom(-45.0, 45.0),
+									FRandom(-45.0, 45.0), FRandom(-45.0, 45.0),
+									FRandom(1.0, 3.5), 0,
+									FRandom(-1.0, 4.5), FRandom(0.0,360.0), SXF_CLIENTSIDE, 40)
+			TNT1 A 0 A_SpawnItemEx("TNTBlast", FRandom(-45.0, 45.0),
+									FRandom(-45.0, 45.0), FRandom(-45.0, 45.0),
+									FRandom(1.0, 3.5), 0,
+									FRandom(-2.0, 2.5), FRandom(0.0,360.0), SXF_CLIENTSIDE, 40)
+			TNT1 AA 0 A_SpawnItemEx("TNTSmoke", FRandom(-45.0, 45.0),
+									FRandom(-45.0, 45.0), FRandom(-45.0, 45.0),
+									FRandom(0.5, 2.5), 0,
+									FRandom(-2.0, 2.5), FRandom(0.0,360.0), SXF_CLIENTSIDE, 40)
+			TNT1 AA 0 A_SpawnItemEx("TNTEmber", FRandom(-35.0, 35.0),
+									FRandom(-35.0, 35.0), FRandom(-45.0, 45.0),
+									FRandom(5.0, 17.0), 0,
+									FRandom(2.0, 9.0), FRandom(0.0,360.0), SXF_CLIENTSIDE, 30)
+			TNT1 A 1
+			TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+			TNT1 A 0 A_JumpIf(User_Counter <= 0,"NULL")
+			Loop
+	}
+}
+
+Actor TNTMain : TNTBase
+{
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SpawnItemEx("TNTExplosionMain",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+	TNT1 A 0 A_SpawnItemEx("TNTFlare",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+	TNT1 A 0 A_SpawnItemEx("TNTShockwave",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+	TNT1 A 0 A_SpawnItemEx("TNTFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+	Stop
+	}
+}

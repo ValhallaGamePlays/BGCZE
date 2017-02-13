@@ -1,0 +1,192 @@
+ACTOR BreathEffectInherit
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	Scale 0
+	Alpha 0.99
+	Renderstyle Add
+}
+
+ACTOR BreathProjectile
+{
+	+NOINTERACTION
+	+NOCLIP
+	+NOGRAVITY
+	+FORCERADIUSDMG
+	+BLOODLESSIMPACT
+	+DONTREFLECT
+	+FOILINVUL //Because fuck all the monsters that do that shit!
+	DamageType Breath
+	Projectile
+	ProjectileKickback 20
+	Speed 25
+	States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 AAA 0 A_SpawnItemEx("BreathRedLightning",random(10,-10),random(10,-10),random(10,-10),velx,vely,velz,0,SXF_TRANSFERPITCH|SXF_ABSOLUTEMOMENTUM|SXF_CLIENTSIDE,40)
+	TNT1 AAAAA 0 A_SpawnItemEx("BreathBlackLightning",random(10,-10),random(10,-10),random(10,-10),velx,vely,velz,0,SXF_TRANSFERPITCH|SXF_ABSOLUTEMOMENTUM|SXF_CLIENTSIDE,40)	
+	TNT1 AAAAAAA 0 A_SpawnItemEx("BreathBlackCloud",random(20,-20),random(20,-20),random(20,-20),velx,vely,velz,0,SXF_TRANSFERPITCH|SXF_ABSOLUTEMOMENTUM|SXF_CLIENTSIDE,40)	
+	TNT1 AAAA 0 A_SpawnItemEx("BreathRedCloud",random(20,-20),random(20,-20),random(20,-20),velx,vely,velz,0,SXF_TRANSFERPITCH|SXF_ABSOLUTEMOMENTUM|SXF_CLIENTSIDE,40)	
+	TNT1 AAA 0 A_SpawnItemEx("BreathBlackParticle",random(10,-10),random(10,-10),random(10,-10),velx,vely,velz,0,SXF_TRANSFERPITCH|SXF_ABSOLUTEMOMENTUM|SXF_CLIENTSIDE,40)	
+	TNT1 AAA 0 A_SpawnItemEx("BreathRedParticle",random(10,-10),random(10,-10),random(10,-10),velx,vely,velz,0,SXF_TRANSFERPITCH|SXF_ABSOLUTEMOMENTUM|SXF_CLIENTSIDE,40)	
+	TNT1 AAAAAAAAAAAAAAAAA 1 A_Explode(7,128,0)
+	Stop
+	}
+}
+
+ACTOR BreathRedLightning : BreathEffectInherit
+{
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_ScaleVelocity(random(0.9,1.0))
+	TNT1 A 0 A_SetScale(ScaleX + frandom(0.1,0.2))
+	TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+	RLIT A 0 A_Jump(256,"Main")
+	SpriteB:
+	RLIT B 0 A_Jump(256,"Main")
+	SpriteC:
+	RLIT C 0 A_Jump(256,"Main")
+	SpriteD:
+	RLIT D 0 A_Jump(256,"Main")
+	SpriteE:
+	RLIT E 0 A_Jump(256,"Main")
+	SpriteF:
+	RLIT F 0 A_Jump(256,"Main")
+	SpriteG:
+	RLIT G 0 A_Jump(256,"Main")
+	SpriteH:
+	RLIT H 0 A_Jump(256,"Main")
+	Main:
+	"####" "#" 2 Bright A_Jump(92,"Fade")
+	Loop
+	Fade:
+	"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.05))
+	Loop
+	}
+}
+
+ACTOR BreathBlackLightning : BreathEffectInherit
+{
+	Renderstyle Translucent
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_ScaleVelocity(random(0.9,1.0))
+	TNT1 A 0 A_SetScale(ScaleX + frandom(0.1,0.15))
+	TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+	BLIT A 0 A_Jump(256,"Main")
+	SpriteB:
+	BLIT B 0 A_Jump(256,"Main")
+	SpriteC:
+	BLIT C 0 A_Jump(256,"Main")
+	SpriteD:
+	BLIT D 0 A_Jump(256,"Main")
+	SpriteE:
+	BLIT E 0 A_Jump(256,"Main")
+	SpriteF:
+	BLIT F 0 A_Jump(256,"Main")
+	SpriteG:
+	BLIT G 0 A_Jump(256,"Main")
+	SpriteH:
+	BLIT H 0 A_Jump(256,"Main")
+	Main:
+	"####" "#" 2 Bright A_Jump(92,"Fade")
+	Loop
+	Fade:
+	"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.05))
+	Loop
+	}
+}
+
+ACTOR BreathRedCloud : BreathEffectInherit
+{
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_ScaleVelocity(random(0.9,1.0))
+	TNT1 A 0 A_SetScale(ScaleX + frandom(0.2,0.3))
+	TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+	RLOD A 0 A_Jump(256,"Main")
+	SpriteB:
+	RLOD B 0 A_Jump(256,"Main")
+	SpriteC:
+	RLOD C 0 A_Jump(256,"Main")
+	SpriteD:
+	RLOD D 0 A_Jump(256,"Main")
+	Main:
+	"####" "#" 0 A_SetScale(ScaleX + frandom(0.01,0.02))
+	"####" "#" 1 Bright A_FadeOut(frandom(0.075,0.05))
+	Loop
+	}
+}
+
+ACTOR BreathBlackCloud : BreathEffectInherit
+{
+	Renderstyle Translucent
+	ProjectileKickback 0
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_ScaleVelocity(random(0.9,1.0))
+	TNT1 A 0 A_SetScale(ScaleX + frandom(0.2,0.3))
+	TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+	BLTD A 0 A_Jump(256,"Main")
+	SpriteB:
+	BLTD B 0 A_Jump(256,"Main")
+	SpriteC:
+	BLTD C 0 A_Jump(256,"Main")
+	SpriteD:
+	BLTD D 0 A_Jump(256,"Main")
+	Main:
+	"####" "#" 0 A_SetScale(ScaleX + frandom(0.01,0.02))
+	"####" "#" 1 Bright A_FadeOut(frandom(0.075,0.05))
+	Loop
+	}
+}
+
+ACTOR BreathRedParticle : BreathEffectInherit
+{
+	Scale 0
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_ScaleVelocity(random(0.9,1.0))
+	TNT1 A 0 A_SetScale(ScaleX + frandom(0.02,0.015))
+	Sprite:
+	RPRT A 0 A_Jump(256,"Main")
+	Main:
+	"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+	"####" "#" 0 A_ChangeVelocity(frandom(-1.0,1.0),frandom(1.0,-1.0),frandom(0.2,0.1),CVF_RELATIVE)
+	"####" "#" 0 A_SetScale(ScaleX - frandom(0.0001,0.00015))
+	"####" "#" 1 Bright A_FadeOut(frandom(0.001,0.003))
+	Loop
+	}
+}
+
+ACTOR BreathBlackParticle : BreathEffectInherit
+{
+	Renderstyle Translucent
+	Scale 0
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_ScaleVelocity(random(0.9,1.0))
+	TNT1 A 0 A_SetScale(ScaleX + frandom(0.02,0.015))
+	Sprite:
+	BPRT A 0 A_Jump(256,"Main")
+	Main:
+	"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+	"####" "#" 0 A_ChangeVelocity(frandom(-1.0,1.0),frandom(1.0,-1.0),frandom(0.2,0.1),CVF_RELATIVE)
+	"####" "#" 0 A_SetScale(ScaleX - frandom(0.0001,0.00015))
+	"####" "#" 1 Bright A_FadeOut(frandom(0.001,0.003))
+	Loop
+	}
+}

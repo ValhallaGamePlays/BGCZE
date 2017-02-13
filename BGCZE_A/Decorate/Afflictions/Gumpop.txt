@@ -1,0 +1,62 @@
+ACTOR GumpopIndicator
+{
+	+NOINTERACTION
+	+NOCLIP
+	+MISSILE
+	Renderstyle Translucent
+	Alpha 0
+	var int User_Counter;
+	var int User_StickyCycle;
+	States
+	{
+		Spawn:
+			"####" "#" 0 NoDelay A_SetUserVar("User_Counter",random(25,35))
+			Goto Looplet
+		Looplet:
+			"####" "#" 0 A_SetUserVar("User_StickyCycle", User_StickyCycle + 1)
+			"####" "#" 0 A_JumpIf(User_StickyCycle >= 3, 2)
+			"####" "#" 0 A_Jump(256,3)
+			"####" "#" 0 A_SetUserVar("User_StickyCycle", 0)
+			"####" "#" 0 A_Warp(AAPTR_TARGET,0,0,0,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		
+			"####" "#" 0 A_SpawnItemEx("Gumpop_AcidBubble",frandom(35.0,-35.0),frandom(35.0,-35.0),frandom(35.0,-35.0),frandom(0.5,1.0),frandom(0.5,1.0),frandom(0.5,1.5),frandom(0.0,360.0),SXF_CLIENTSIDE,48)
+			"####" "#" 0 A_SetUserVar("User_Counter", User_Counter - 1)
+			"####" "#" random(1,2)
+			"####" "#" 0 A_JumpIf(User_Counter <= 0, "PopGoesTheFrame")
+			"####" "#" 0 A_JumpIfInTargetInventory("PowerGumpopDamage",1,"Looplet")
+			Stop
+		PopGoesTheFrame:
+			"####" "#" 0 A_SpawnItemEx("GumpopFrame",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERSPRITEFRAME)
+			Goto Spawn
+	}
+}
+
+ACTOR GumpopGlow
+{
+	+NOINTERACTION
+	+NOCLIP
+	+MISSILE
+	States
+	{
+		Spawn:
+			TNT1 A 1 A_Warp(AAPTR_TARGET,0,0,0,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+			TNT1 A 0 A_JumpIfInTargetInventory("PowerGumpopDamage",1,"Spawn")
+			Stop
+	}
+}
+
+ACTOR GumpopFrame
+{
+	+NOINTERACTION
+	+MISSILE
+	Renderstyle Add
+	States
+	{
+		Spawn:
+			"####" "#" 0 NoDelay ACS_NamedExecuteAlways("Toxic Avenger")
+		Looplet:
+			"####" "#" 1 Bright A_SetScale(ScaleX + 0.02)
+			"####" "#" 0 A_FadeOut(0.1)
+			Loop
+	}
+}

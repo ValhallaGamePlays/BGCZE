@@ -1,0 +1,467 @@
+/*
+Property of Stan423321 - All wrongs reversed. Ask before using it,
+OR ELSE YOU WILL DIE! (Enforced by Pillow. Just so you know
+who is the bad guy here :3)
+*/
+
+/*
+Slightly (eeeeeehhhhh) modified for use with user buttons by Zhs2.
+Stanley did all the hard work, he's pretty cool. I am welding this door!
+*/
+
+#include "zcommon.acs"
+#library "UFOPORN3" //Don't ask, unless you want to enter that weird part of polish youtube.
+
+#define MASK (-1.0)
+
+str CASH_ACTOR = "Dosh";
+str SHOPFONT = "SMALLFONT";
+str CURSORFONT = "WHELCURS"; //CURSOR
+str SLOTBGBUY = "LOL0";
+str SLOTBGON = "LOL3";
+str SLOTBGOFF = "LOL2";
+str SLOTBGBUYMOUSE = "LOL4";
+str SLOTBGONMOUSE = "LOL1";
+str SLOTBGOFFMOUSE = "LOL2";
+str TOTAL_BG = "TNT1A0";
+str ARROW_L = "LOLL";
+str SCRIPT_L = "AMULET";
+str ARROW_R = "LOLR";
+str SCRIPT_R = "AMULET_ITEM";
+
+#define X_MULTIPLIER (-3200.0)
+#define Y_MULTIPLIER (-4000.0)
+#define XRH 800.0
+#define YRH 600.0
+#define INNER_SLOTS 0 //12 //if 1 ring then 0
+#define INNER_DISP_R 280.5 //255.0
+#define OUTER_SLOTS 8 //20
+#define OUTER_DISP_R 445.5 //405.0
+#define INTRO_OUTRO_LEN 10
+#define INFO_WAIT_LEN 70
+#define TIP_WAIT_LEN 210
+#define LAG_LEN 0.04
+#define WEAPON_BUTTON BT_USER4
+
+#define OUTER_LOGIC_R ((INNER_DISP_R+OUTER_DISP_R)/2)
+//#define INNER_LOGIC_R ((3*INNER_DISP_R-OUTER_DISP_R)/2) //unlock when 2 rings
+#define INNER_LOGIC_R (OUTER_LOGIC_R+1) //unlock when 1 ring
+#define ARROW_DISP_R (2*OUTER_DISP_R-INNER_DISP_R)
+#define ARROW_LOGIC_R ((3*OUTER_DISP_R-INNER_DISP_R)/2)
+
+str SOUND_INTRO = "menu/activate";
+str SOUND_OUTRO = "menu/clear";
+str SOUND_HOVER_BUY = "Spell/Move";
+str SOUND_HOVER_PICK = "Spell/Move";
+str SOUND_BUY = "Spell/Buy";
+str SOUND_CANNOT = "menu/invalid";
+
+#define TOTAL_SLOTS (INNER_SLOTS+OUTER_SLOTS)
+//for one ring please define 0 inner slots
+
+str covered_weapons[TOTAL_SLOTS] = {
+	"Longhorn", "Strucker", "Ironblast", "Pulverizer", "Matriarch", "Cauterizer", "Old Dreadful", "Dynamite"
+};
+
+str cover_icons[TOTAL_SLOTS] = {
+	"ICONSTR1", "ICONSTR2", "ICONSTR3", "ICONSTR4", "ICONSTR5", "ICONSTR6", "ICONSTR7", "ICONSTR8"
+};
+
+str cover_sounds[TOTAL_SLOTS] = {
+	"Longhorn/Up", "Strucker/Up", "Ironblast/Up", "Pulverizer/Up", "Matriarch/Up", "Cauterizer/Up", "Dreadful/Up", "Dynamite/Up"
+};
+
+str cover_names[TOTAL_SLOTS] = {
+	"Longhorn Stratocaster Case",
+	"Strucker Stratocaster Case",
+	"Ironblast Stratocaster Case",
+	"Pulverizer Stratocaster Case",
+	"Matriarch Stratocaster Case",
+	"Cauterizer Stratocaster Case",
+	"Dreadful Stratocaster Case",
+	"Dynamite Stratocaster Case"
+};
+
+int cover_prices[TOTAL_SLOTS] = {
+	3000, 3000, 6000, 3000, 3000, 5000, 32167, 7500
+};
+
+str cover_info[TOTAL_SLOTS] = {
+	"Longhorn bullets deal more damage and rip through enemies.",
+	"Strucker's full-auto fire mode has 50% less recoil.",
+	"You can have a chaos buddy wield the weapon for you\nwhich will fire the Ironblast for you.\nPrepare for the ultimate double-donk with Gunzerk",
+	"Pulverizer generates a lead ball.",
+	"Matriarch stacks up shots into bursts..",
+	"Cauterizer fires homing thunderballs.",
+	"Old Dreadful fires... a space nuke. Yep, you heard it right. A space nuke.\nWhen you want something absolutely positively dead, this is for you.",
+	"TNT has an added outlandish flame effect.  Use if\nyou like your monsters extra crispy."
+};
+
+str cover_tips[TOTAL_SLOTS] = {
+	"Longhorn bullets deal more damage and rip through enemies.",
+	"Strucker's full-auto fire mode has 50% less recoil.",
+	"You can have a chaos buddy wield the weapon for you\nwhich will fire the Ironblast for you.\nPrepare for the ultimate double-donk with Gunzerk",
+	"Pulverizer generates a lead ball.",
+	"Matriarch stacks up shots into bursts..",
+	"Cauterizer fires homing thunderballs.",
+	"Old Dreadful fires... a space nuke. Yep, you heard it right. A space nuke.\nWhen you want something absolutely positively dead, this is for you.",
+	"TNT has an added outlandish flame effect.  Use if\nyou like your monsters extra crispy."
+};
+//////////////////////////////////////////////////////////////////
+//Found by googling on stackoverflow. Weirdest idea ever.
+function int insane_len(int x, int y) {
+	if (x<0) {
+		x = -x;
+	}
+	if (y<0) {
+		y = -y;
+	}
+	if (x<y) {
+		return y+FixedMul(x, 0.41421);
+	}
+	return x+FixedMul(y, 0.41421);
+}
+
+
+function void quiet_display(int x, int y, int num) {
+	int disp_x = x & MASK;
+	int disp_y = y & MASK;
+	SetFont(cover_icons[num]);
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1100+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+	if (CheckInventory(StrParam(s:covered_weapons[num], s:"Strat")) <= 0) {
+		SetFont(SLOTBGBUY);
+	} else if (CheckInventory(StrParam(s:covered_weapons[num], s:"StratActive"))) {
+		SetFont(SLOTBGOFF);
+	} else {
+		SetFont(SLOTBGON);
+	}
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1300+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+}
+function void featured_display(int x, int y, int num) {
+	int disp_x = x & MASK;
+	int disp_y = y & MASK;
+	SetFont(cover_icons[num]);
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1100+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+	if (CheckInventory(StrParam(s:covered_weapons[num], s:"Strat")) <= 0) {
+		SetFont(SLOTBGBUYMOUSE);
+	} else if (CheckInventory(StrParam(s:covered_weapons[num], s:"StratActive"))) {
+		SetFont(SLOTBGOFFMOUSE);
+	} else {
+		SetFont(SLOTBGONMOUSE);
+	}
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1300+num, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+}
+
+function int try_to_buy(int num) {
+//0 - bought earlier
+//1 - not enough cash
+//2 - bought
+//PLACEHOLDER
+	int ownership_token = StrParam(s:covered_weapons[num], s:"Strat");
+	if (CheckInventory(ownership_token)) {
+		return 0;
+	}
+	if (CheckInventory(CASH_ACTOR) < cover_prices[num]) {
+		return 1;
+	}
+	TakeInventory(CASH_ACTOR, cover_prices[num]);
+	GiveInventory(ownership_token, 1);
+	return 2;
+}
+
+function int weapon_mode_cycle(int identifier) {
+	int weapon_name = GetWeapon();
+	if (identifier != -1) weapon_name = covered_weapons[identifier]; // TODO
+	int owned_name = StrParam(s:weapon_name, s:"Strat");
+	if (!CheckInventory(owned_name)) return 5;
+	int token_name = StrParam(s:weapon_name, s:"StratActive");
+	if (CheckInventory(token_name)) {
+		TakeInventory(token_name, 1);
+		return 11;
+	}
+	GiveInventory(token_name, 1);
+	return 4;
+}
+
+function int shopkeeper_str(int sh, int sel, int wt) {
+	str stru;
+
+	if (wt==0) {
+		if (sel==-1) {
+			sh = 8;
+		} else if (sel==-2) {
+			sh = 9;
+		} else if (sel==-3) {
+			sh = 10;
+		} else if (sel>-1 && CheckInventory(StrParam(s:covered_weapons[sel], s:"Strat"))<=0) {
+			sh = 7;
+		} else {
+			sh = 6;
+		}
+	}
+
+	int cash = CheckInventory(CASH_ACTOR);
+	if (sh==-1) {
+		stru = "Greetings mortal! Are you ready to buy?";
+	} else if (sh==3) {
+		stru = "Welcome to the stratocaster section. They give your weapons powerful alternate firing modes.\nYou can quickly toggle them while your weapon is out, set the bind in menu.";
+	} else if (sh==0) {
+		stru = "You already got this one in your strat set, mortal.";
+	} else if (sh==1) {
+		stru = "Not enough gold for that one, dragon.";//have only, i:cash, s:" gold.");
+	} else if (sh==2 && sel>-1) {
+		stru = StrParam(s:"\c[cyan]", s:cover_names[sel] ,s:"\n\cjenters your set, mortal.");
+	} else if (sh==4 && sel>-1) {
+		stru = StrParam(s:"\c[cyan]", s:cover_names[sel], s:"\n\cjengaged.");
+	} else if (sh==5) {
+		stru = "You need to buy the stratocaster before applying it to your weapon.";
+	} else if (sh==6 && sel>-1) {
+		stru = StrParam(s:"\c[cyan]", s:cover_names[sel]); //to w sumie jest niepotrzebne, bo jest graficzny indykator zakupu.
+	} else if (sh==7 && sel>-1) {
+		stru = StrParam(s:"\c[cyan]", s:cover_names[sel], s:"\n\cjavailable for \cf", i:cover_prices[sel], s:"\cj gold.");
+	} else if (sh==8) {
+        stru = "";
+    } else if (sh==9 /*LEFT*/ || sh==10 /*RIGHT*/) {
+		stru = StrParam(s:"You can enter this way to the item section. Use \cd", k:"+attack", s:"\cj to do that.");
+	} else if (sh==11 && sel > -1) {
+		stru = StrParam(s:"\c[cyan]", s:cover_names[sel], s:"\n\cjdisengaged.");
+	} else {
+		stru = "Lorem ipsum..?";
+	}
+
+	SetHudSize(0, 0, FALSE);
+	SetFont(SHOPFONT);
+	if (sel<0) {
+		HudMessage(s:"\cjGold: \cf", i:cash, s:"\n\cj", s:stru,
+			s:"\n\cjHover over a stratocaster for a while to learn more about it.\n\cjPress \cd", k:"+attack", s:"\cj to (dis)engage the alternate firing mode.\n\cjPress \cd", k:"+altattack", s:"\cj to buy the strat.\n\cjPress \cd", k:"+moveleft", s:"\cj or \cd", k:"+moveright", s:"\cj to switch shelves.\n\cjPress \cd", k:"+Gimbostratus", s:"\cj to return to your everyday slaughter.";
+			HUDMSG_PLAIN, 950, CR_WHITE, 1.5, 0.5, LAG_LEN);
+	} else {
+		if (wt>(INFO_WAIT_LEN+TIP_WAIT_LEN) && sel>-1) {
+			HudMessage(s:cover_tips[sel]; HUDMSG_PLAIN, 950, CR_CYAN, 1.5, 0.5, LAG_LEN);
+		} else if (wt>(INFO_WAIT_LEN) && sel>-1) {
+			HudMessage(s:cover_info[sel]; HUDMSG_PLAIN, 950, CR_WHITE, 1.5, 0.5, LAG_LEN);
+		} else {
+			HudMessage(s:stru; HUDMSG_PLAIN, 950, CR_WHITE, 1.5, 0.5, LAG_LEN);
+		}
+	}
+	SetHudSize((XRH)>>15, (YRH)>>15, FALSE);
+	return sh;
+}
+
+function void miniview(int factor, int an_s1, int an_s2) {
+	int i, an, px, py;
+	int ir = FixedMul(INNER_DISP_R, factor);
+	for (i = 0; i<INNER_SLOTS; i++) {
+		an = (i*1.0)/INNER_SLOTS + an_s1;
+		px = FixedMul(ir, cos(an));
+		py = FixedMul(ir, sin(an));
+		quiet_display(px, py, i);
+	}
+	ir = FixedMul(OUTER_DISP_R, factor);
+	for (i = 0; i<OUTER_SLOTS; i++) {
+		an = (i*1.0)/OUTER_SLOTS + an_s2;
+		px = FixedMul(ir, cos(an));
+		py = FixedMul(ir, sin(an));
+		quiet_display(px, py, i+INNER_SLOTS);
+	}
+	SetFont(TOTAL_BG);
+	HudMessage(s:"A"; HUDMSG_PLAIN, 1400, 0, XRH, YRH, LAG_LEN);
+}
+
+script "AMULET_COVER" (int entry) {
+	SetHudSize((XRH)>>15, (YRH)>>15, FALSE);
+	//int player_no = PlayerNumber();
+	SetPlayerProperty(0, 1, PROP_TOTALLYFROZEN);
+
+	int mouse_x = 0.0, mouse_y = 0.0;
+	int disp_x, disp_y, px, py;
+	int i, len, an, this_i;
+	int last_i = -1, last_sho = 3, last_len = 0.0, wt = 10;
+	int pulldown = 1.0;
+	int i_troll = 0.0, o_troll = 0.0;
+	int i_md = 0.0, o_md = 0.0, i_tmd = 0.0, o_tmd = 0.0;
+	int pressed_input = 0;
+	int shopkeeper = -1;
+	int movescript = 0;
+	
+	SetUserVariable(0, "user_amuletopen", 1);
+	
+	if (entry==1) {
+		shopkeeper = 3;
+	}
+
+	i_md = 0.01;
+	o_md = -0.01;
+	i_troll = (-i_md) * INTRO_OUTRO_LEN;
+	o_troll = (-o_md) * INTRO_OUTRO_LEN;
+	ActivatorSound(SOUND_INTRO, 89);
+ 
+	for (i = 0; i<INTRO_OUTRO_LEN; i++) {
+		delay(1);
+		miniview(sin((i*0.25)/INTRO_OUTRO_LEN), i_troll, o_troll);
+		i_troll += i_md; o_troll += o_md;
+		SetFont("SMALLFONT");
+	}
+	
+	i_md = 0.0;
+	o_md = 0.0;
+	//print(f:INNER_LOGIC_R, s:" ", f:OUTER_LOGIC_R, s:" ", f:ARROW_LOGIC_R);
+	while (1) {
+		delay(1);
+		pressed_input = GetPlayerInput(-1, INPUT_BUTTONS);
+		pressed_input&= ~(GetPlayerInput(-1, INPUT_OLDBUTTONS));
+		if (pressed_input&(BT_LEFT|BT_MOVELEFT|BT_RIGHT|BT_MOVERIGHT)) {
+			if (pressed_input&(BT_LEFT|BT_MOVELEFT)) {
+				movescript = -1;
+			} else if (pressed_input&(BT_RIGHT|BT_MOVERIGHT)) {
+				movescript = 1;
+			}
+			break;
+		}
+		if(!CheckInventory("MenuWheelActive"))
+		{
+			break;
+		}
+		mouse_x+= FixedMul(X_MULTIPLIER, GetPlayerInput(-1, INPUT_YAW));
+		mouse_x = FixedMul(pulldown, mouse_x);
+		if (GetCVar("invertmouse")) {
+		mouse_y+=FixedMul(-(Y_MULTIPLIER), GetPlayerInput(-1, INPUT_PITCH));
+		} else {
+		mouse_y+=FixedMul(Y_MULTIPLIER, GetPlayerInput(-1, INPUT_PITCH));
+		}
+		mouse_y = FixedMul(pulldown, mouse_y);
+
+		disp_x = mouse_x & mask;
+		disp_y = mouse_y & mask;
+		i_troll+=i_md; o_troll+=o_md;
+		len = insane_len(mouse_x, mouse_y);
+		SetFont(CURSORFONT);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 900, 0, XRH+disp_x, YRH+disp_y, LAG_LEN);
+		//SetFont("BIGFONT");
+		//HudMessage(f:len; HUDMSG_PLAIN, 899, 0, XRH, YRH, LAG_LEN);
+
+		if (len<INNER_LOGIC_R) {
+			this_i = -1;
+		} else if (INNER_SLOTS>0 && len<OUTER_LOGIC_R) {
+			an = (VectorAngle(mouse_x, mouse_y)-i_troll)&(~MASK);
+			an = (an*INNER_SLOTS*2)/1.0;
+			this_i = (((an+1)/2))%INNER_SLOTS;
+		} else if (len < ARROW_LOGIC_R) {
+			an = (VectorAngle(mouse_x, mouse_y)-o_troll)&(~MASK);
+			an = (an*OUTER_SLOTS*2)/1.0;
+			this_i = (((an+1)/2))%OUTER_SLOTS + INNER_SLOTS;
+		} else {
+			this_i = -1;
+			if (pressed_input&(BT_ATTACK|BT_ALTATTACK)) {
+				if (mouse_x<0) {
+					movescript = -1;
+				} else {
+					movescript = 1;
+				}
+				break;
+			} else if (mouse_x<0) {
+				this_i = -2;	
+			} else {
+				this_i = -3;
+			}
+		}
+		if (last_i!=this_i) {
+			wt = 0; last_i = this_i; last_sho = shopkeeper;
+		} else if (last_sho!=shopkeeper) {
+			wt = 1; last_sho = shopkeeper;
+		} else if (wt<400) {
+			wt++;
+		}
+		shopkeeper = shopkeeper_str(shopkeeper, this_i, wt);
+
+		last_len = len;
+		i_md = (19*i_md+i_tmd)/20;
+		o_md = (19*o_md+o_tmd)/20;
+
+		SetFont(ARROW_L);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 910, 0, XRH-ARROW_DISP_R, YRH, LAG_LEN);
+		SetFont(ARROW_R);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 911, 0, XRH+ARROW_DISP_R, YRH, LAG_LEN);
+		for (i = 0; i<TOTAL_SLOTS; i++) {
+			if (i<INNER_SLOTS) {
+				an = (i*1.0)/INNER_SLOTS + i_troll;
+				px = FixedMul(INNER_DISP_R, cos(an));
+				py = FixedMul(INNER_DISP_R, sin(an));
+			} else {
+				an = ((i-INNER_SLOTS)*1.0)/OUTER_SLOTS + o_troll;
+				px = FixedMul(OUTER_DISP_R, cos(an));
+				py = FixedMul(OUTER_DISP_R, sin(an));
+			}
+			if (this_i==i) {
+				featured_display(px, py, i);
+				if (wt==0) {
+					if (CheckInventory(StrParam(s:covered_weapons[i], s:"Strat"))<=0) {
+						ActivatorSound(SOUND_HOVER_BUY, 75);
+					} else {
+						ActivatorSound(SOUND_HOVER_PICK, 75);
+					}
+				}
+				if (pressed_input & BT_ALTATTACK) {
+					shopkeeper = try_to_buy(i);
+					if (shopkeeper==2) {
+						ActivatorSound(SOUND_BUY, 89);
+					} else {
+						ActivatorSound(SOUND_CANNOT, 89);
+					}
+				} else if (pressed_input & BT_ATTACK) {
+					shopkeeper = weapon_mode_cycle(i);
+					if (shopkeeper==4) {
+						ActivatorSound(cover_sounds[i], 89);
+					} else if (shopkeeper == 11) {
+						ActivatorSound(cover_sounds[i], 89);
+					} else {
+						ActivatorSound(SOUND_CANNOT, 89);
+					}
+				}
+			} else {
+				quiet_display(px, py, i);
+			}
+		}
+		SetFont(TOTAL_BG);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 1400, 0, XRH, YRH, LAG_LEN);
+		SetFont("SMALLFONT");
+	}
+
+	i_md =-0.01;
+	o_md = 0.01;
+	ActivatorSound(SOUND_OUTRO, 89);
+	for (i = 0; i<INTRO_OUTRO_LEN; i++) {
+		delay(1);
+		miniview(cos((i*0.25)/INTRO_OUTRO_LEN), i_troll, o_troll);
+		i_troll += i_md; o_troll += o_md;
+		SetFont("SMALLFONT");
+	}
+
+	if (movescript==-1) {
+		ACS_NamedExecuteAlways(SCRIPT_L, 0, 1, 0, 0);
+	} else if (movescript==1) {
+		ACS_NamedExecuteAlways(SCRIPT_R, 0, 1, 0, 0);
+	} else {
+		SetFont("SMALLFONT");
+		SetPlayerProperty(0, 0, PROP_TOTALLYFROZEN);
+		SetHudSize(0, 0, FALSE);
+		SetUserVariable(0, "user_amuletopen", 0); // I am so smart. Gets nuked whenever you die
+	}
+}
+
+/*
+script "WEAPON_MODE_BUTTON" ENTER {
+	delay(1);
+	int retval;
+	if ((~GetPlayerInput(-1, INPUT_OLDBUTTONS)) & GetPlayerInput(-1, INPUT_BUTTONS) & WEAPON_BUTTON) {
+		retval = weapon_mode_cycle(-1);
+		if (retval == 4) {
+			ActivatorSound(SOUND_INTRO, 89);
+		} else if (retval == 11) {
+			ActivatorSound(SOUND_OUTRO, 89);
+		} {
+			ActivatorSound(SOUND_CANNOT, 89);
+		}
+	}
+	restart;
+}*/

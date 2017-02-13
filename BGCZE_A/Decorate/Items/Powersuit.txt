@@ -1,0 +1,612 @@
+ACTOR PowersuitBringer : CustomInventory
+{
+	Inventory.PickupSound "Bishop/Pickup"
+	Inventory.PickupMessage "You have obtained the ''Bishop'' Battle Armored Dragon Assault Strike System! Ooooh boy."
+	+INVENTORY.AUTOACTIVATE
+	+FORCEYBILLBOARD
+	Scale 0.65
+	States
+	{
+	Spawn:
+		SUIT B -1
+		Stop
+	Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("Mighty Morphin' Power Dragon") == FALSE, "RemoveThyself")
+		TNT1 A 0 A_JumpIfInventory("PowersuitItem",0,"Dosh")
+		//TNT1 A 0 A_JumpIfInventory("PowersuitItem2",0,"Dosh")
+		TNT1 A 0 A_Print("\c[Red]Powersuit's additional instructions:\n\c[white]Reload toggles the arm cannons mode.\n\c[white]Casting a spell causes to launch an airstrike.\n\c[white]The rest is self-explanatory. Have fun!", 5)
+		TNT1 A 0 A_JumpIfInventory("PowersuitItem",1,"NoAutoactivation")
+		TNT1 A 0 A_GiveInventory("PowersuitItemAutoactivate",1)
+		Stop
+	Dosh:
+		TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+		TNT1 A 0 A_GiveToTarget("Dosh",20000)	//It's worth its slack.
+		Stop
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,20000)
+		Stop
+	Nope:
+		TNT1 A 0
+		Fail
+	RemoveThyself:
+		TNT1 A 0
+		Stop
+	NoAutoactivation:
+		TNT1 A 0 A_GiveInventory("PowersuitItem",1)
+		Stop
+	}
+}
+
+actor PowersuitItem : CustomInventory
+{
+	Inventory.PickupSound "Bishop/Pickup"
+	Inventory.UseSound ""
+	Inventory.PickupMessage "You have obtained the ''Bishop'' Battle Armored Dragon Assault Strike System! Ooooh boy."
+    Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Inventory.Icon "ARTISUI2"
+    +INVBAR
+	+FORCEYBILLBOARD
+	+INVENTORY.UNDROPPABLE
+	Tag "Powersuit"
+	Scale 0.65
+	states
+	{
+	Spawn:
+		SUIT B -1
+		Stop
+		
+	Use:
+		//TNT1 A 0 A_SetBlend("Black",1.0,55,"Orange")
+		TNT1 A 0 A_JumpIfInventory("PowersuitToken",1,"Unuse")
+		TNT1 A 0 A_JumpIfInventory("DergfistSelected",1,"DergfistStuff")
+		TNT1 A 0 A_JumpIfInventory("LonghornSelected",1,"LonghornStuff")
+		TNT1 A 0 A_JumpIfInventory("StruckerSelected",1,"StruckerStuff")
+		TNT1 A 0 A_JumpIfInventory("IronblastSelected",1,"IronblastStuff")
+		TNT1 A 0 A_JumpIfInventory("PulverizerSelected",1,"PulverizerStuff")
+		TNT1 A 0 A_JumpIfInventory("MatriarchSelected",1,"MatriarchStuff")
+		TNT1 A 0 A_JumpIfInventory("SovereignSelected",1,"SovereignStuff")
+		TNT1 A 0 A_JumpIfInventory("CauterizerSelected",1,"CauterizerStuff")
+		TNT1 A 0 A_JumpIfInventory("DreadfulSelected",1,"DreadfulStuff")
+		TNT1 A 0 A_JumpIfInventory("DynamiteSelected",1,"DynamiteStuff")
+		TNT1 A 1
+		Fail
+	DergfistStuff:
+		TNT1 A 1 A_GiveInventory("DergfistSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	LonghornStuff:
+		TNT1 A 1 A_GiveInventory("LonghornSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	StruckerStuff:
+		TNT1 A 1 A_GiveInventory("StruckerSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	IronblastStuff:
+		TNT1 A 1 A_GiveInventory("IronblastSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	PulverizerStuff:
+		TNT1 A 1 A_GiveInventory("PulverizerSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	MatriarchStuff:
+		TNT1 A 1 A_GiveInventory("MatriarchSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	SovereignStuff:
+		TNT1 A 1 A_GiveInventory("SovereignSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	CauterizerStuff:
+		TNT1 A 1 A_GiveInventory("CauterizerSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	DreadfulStuff:
+		TNT1 A 1 A_GiveInventory("DreadfulSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	DynamiteStuff:
+		TNT1 A 1 A_GiveInventory("DynamiteSelect")
+		TNT1 A 0 A_GiveInventory("CygborgActivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgActivateWeapon")
+		TNT1 A 1
+		Fail
+	Unuse:
+		TNT1 A 0 A_JumpIfInventory("DergfistSelected",1,"OtherDergfistStuff")
+		TNT1 A 0 A_JumpIfInventory("LonghornSelected",1,"OtherLonghornStuff")
+		TNT1 A 0 A_JumpIfInventory("StruckerSelected",1,"OtherStruckerStuff")
+		TNT1 A 0 A_JumpIfInventory("IronblastSelected",1,"OtherIronblastStuff")
+		TNT1 A 0 A_JumpIfInventory("PulverizerSelected",1,"OtherPulverizerStuff")
+		TNT1 A 0 A_JumpIfInventory("MatriarchSelected",1,"OtherMatriarchStuff")
+		TNT1 A 0 A_JumpIfInventory("SovereignSelected",1,"OtherSovereignStuff")
+		TNT1 A 0 A_JumpIfInventory("CauterizerSelected",1,"OtherCauterizerStuff")
+		TNT1 A 0 A_JumpIfInventory("DreadfulSelected",1,"OtherDreadfulStuff")
+		TNT1 A 0 A_JumpIfInventory("DynamiteSelected",1,"OtherDynamiteStuff")
+		TNT1 A 1
+		Fail
+	OtherDergfistStuff:
+		TNT1 A 1 A_GiveInventory("DergfistSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	OtherLonghornStuff:
+		TNT1 A 1 A_GiveInventory("LonghornSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	OtherStruckerStuff:
+		TNT1 A 1 A_GiveInventory("StruckerSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	OtherIronblastStuff:
+		TNT1 A 1 A_GiveInventory("IronblastSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	OtherPulverizerStuff:
+		TNT1 A 1 A_GiveInventory("PulverizerSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	OtherMatriarchStuff:
+		TNT1 A 1 A_GiveInventory("MatriarchSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	OtherSovereignStuff:
+		TNT1 A 1 A_GiveInventory("SovereignSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	OtherCauterizerStuff:
+		TNT1 A 1 A_GiveInventory("CauterizerSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	OtherDreadfulStuff:
+		TNT1 A 1 A_GiveInventory("DreadfulSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	OtherDynamiteStuff:
+		TNT1 A 1 A_GiveInventory("DynamiteSelect")
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 1
+		Fail
+	}
+}
+
+actor PowersuitItemAutoactivate : PowersuitItem
+{
+	+INVENTORY.AUTOACTIVATE
+	Inventory.MaxAmount 0
+	states
+	{
+	Spawn:
+		SUIT B -1
+		Stop
+		
+	Use:
+		//TNT1 A 0 A_SetBlend("Black",1.0,55,"Orange")
+		TNT1 A 0 A_GiveInventory("PowersuitItem")
+		TNT1 A 0 A_JumpIfInventory("DergfistSelected",1,"DergfistStuff")
+		TNT1 A 0 A_JumpIfInventory("LonghornSelected",1,"LonghornStuff")
+		TNT1 A 0 A_JumpIfInventory("StruckerSelected",1,"StruckerStuff")
+		TNT1 A 0 A_JumpIfInventory("IronblastSelected",1,"IronblastStuff")
+		TNT1 A 0 A_JumpIfInventory("PulverizerSelected",1,"PulverizerStuff")
+		TNT1 A 0 A_JumpIfInventory("MatriarchSelected",1,"MatriarchStuff")
+		TNT1 A 0 A_JumpIfInventory("SovereignSelected",1,"SovereignStuff")
+		TNT1 A 0 A_JumpIfInventory("CauterizerSelected",1,"CauterizerStuff")
+		TNT1 A 0 A_JumpIfInventory("DreadfulSelected",1,"DreadfulStuff")
+		TNT1 A 0 A_JumpIfInventory("DynamiteSelected",1,"DynamiteStuff")
+		TNT1 A 1
+		Stop
+	}
+}
+
+/*actor PowersuitItem2 : PowersuitItem
+{
+	+INVENTORY.UNDROPPABLE
+	states
+	{
+	Use:
+		TNT1 A 1 A_GiveInventory("CygborgDeactivateWeapon")
+		TNT1 A 0 A_SelectWeapon("CygborgDeactivateWeapon")
+		TNT1 A 0 A_GiveInventory("PowersuitItem")
+		TNT1 A 1
+		Stop
+	}
+}*/
+
+
+ACTOR CygborgActivateWeapon : Weapon
+{
+	+CHEATNOTWEAPON
+	States
+	{
+	Spawn:
+		TNT1 A 0
+	Select:
+		TNT1 AAAAAAAAAAAAAAA 0 A_Raise
+		Goto Ready
+	Ready:
+		TNT1 A 0 A_JumpIfInventory("DergfistSelect",1,"DergfistStuff")
+		TNT1 A 0 A_JumpIfInventory("LonghornSelect",1,"LonghornStuff")
+		TNT1 A 0 A_JumpIfInventory("StruckerSelect",1,"StruckerStuff")
+		TNT1 A 0 A_JumpIfInventory("IronblastSelect",1,"IronblastStuff")
+		TNT1 A 0 A_JumpIfInventory("PulverizerSelect",1,"PulverizerStuff")
+		TNT1 A 0 A_JumpIfInventory("MatriarchSelect",1,"MatriarchStuff")
+		TNT1 A 0 A_JumpIfInventory("SovereignSelect",1,"SovereignStuff")
+		TNT1 A 0 A_JumpIfInventory("CauterizerSelect",1,"CauterizerStuff")
+		TNT1 A 0 A_JumpIfInventory("DreadfulSelect",1,"DreadfulStuff")
+		TNT1 A 0 A_JumpIfInventory("DynamiteSelect",1,"DynamiteStuff")
+		Goto GoOn
+	DergfistStuff:
+		TNT1 A 1 A_TakeInventory("DergfistSelect")
+		TNT1 A 1 A_SelectWeapon("Dergfist")
+		Goto GoOn
+	LonghornStuff:
+		TNT1 A 1 A_TakeInventory("LonghornSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Longhorn")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Longhorn2")
+		TNT1 A 1
+		Goto GoOn
+	StruckerStuff:
+		TNT1 A 1 A_TakeInventory("StruckerSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Strucker")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Strucker2")
+		TNT1 A 1
+		Goto GoOn
+	IronblastStuff:
+		TNT1 A 1 A_TakeInventory("IronblastSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Ironblast")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Ironblast2")
+		TNT1 A 1
+		Goto GoOn
+	PulverizerStuff:
+		TNT1 A 1 A_TakeInventory("PulverizerSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Pulverizer")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Pulverizer2")
+		TNT1 A 1
+		Goto GoOn
+	MatriarchStuff:
+		TNT1 A 1 A_TakeInventory("MatriarchSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Matriarch")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Matriarch2")
+		TNT1 A 1
+		Goto GoOn
+	SovereignStuff:
+		TNT1 A 1 A_TakeInventory("SovereignSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Sovereign")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Sovereign2")
+		TNT1 A 1
+		Goto GoOn
+	CauterizerStuff:
+		TNT1 A 1 A_TakeInventory("CauterizerSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Cauterizer")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Cauterizer2")
+		TNT1 A 1
+		Goto GoOn
+	DreadfulStuff:
+		TNT1 A 1 A_TakeInventory("DreadfulSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Old Dreadful")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Old Dreadful2")
+		TNT1 A 1
+		Goto GoOn
+	DynamiteStuff:
+		TNT1 A 1 A_TakeInventory("DynamiteSelect")
+		TNT1 A 1 A_SelectWeapon("DynamiteWeapon")
+		Goto GoOn
+	GoOn:
+		CU1A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		CY1A A 0
+		"####" A 0 A_PlaySound("Bishop/Use",6,0.9)
+		"####" A 0 A_QuakeEx(4,4,4,35,0,128,none,QF_SCALEDOWN)
+		"####" A 1 A_ZoomFactor(0.6)
+		"####" B 1 A_ZoomFactor(0.8)
+		"####" C 1 A_ZoomFactor(0.9)
+		"####" D 1 A_ZoomFactor(0.925)
+		"####" E 1 A_ZoomFactor(0.97)
+		"####" F 1 A_ZoomFactor(0.98)
+		"####" G 1 A_ZoomFactor(0.99)
+		"####" H 1 A_ZoomFactor(1)
+		"####" A 0 A_PlaySound("Bishop/Activate1",5)
+		"####" A 0 A_SetBlend("Orange",0.3,25)
+		"####" H 10
+		"####" IJKLMNOPPP 1
+		"####" Q 10
+		"####" RSTUVW 1
+		"####" A 0 A_PlaySound("Bishop/Activate2",6)
+		"####" XYZ 1
+		CU2A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		CY2A A 0
+		"####" ABCD 1
+		"####" A 0 A_ChangeFlag("NOBLOOD",1)
+		"####" A 0 A_GiveInventory("CygborgPower")
+		"####" A 0 A_GiveInventory("CygborgRegen")
+		"####" A 0 A_GiveInventory("CygborgEnviro")
+		"####" E 10
+		"####" FGHIJ 1
+		//TNT1 A 10
+		TNT1 A 1 A_TakeInventory("CygborgActivateWeapon")
+	Deselect:
+		TNT1 AAAAAAAAAAAAAAA 0 A_Lower
+		Goto Ready
+	Fire:
+		TNT1 A 1
+		Goto GoOn
+	}
+}
+
+ACTOR CygborgDeactivateWeapon : Weapon
+{
+	+CHEATNOTWEAPON
+	States
+	{
+	Spawn:
+		TNT1 A 0
+	Select:
+		TNT1 AAAAAAAAAAAAAAA 0 A_Raise
+		Goto Ready
+	Ready:
+		TNT1 A 0 A_JumpIfInventory("DergfistSelect",1,"DergfistStuff")
+		TNT1 A 0 A_JumpIfInventory("LonghornSelect",1,"LonghornStuff")
+		TNT1 A 0 A_JumpIfInventory("StruckerSelect",1,"StruckerStuff")
+		TNT1 A 0 A_JumpIfInventory("IronblastSelect",1,"IronblastStuff")
+		TNT1 A 0 A_JumpIfInventory("PulverizerSelect",1,"PulverizerStuff")
+		TNT1 A 0 A_JumpIfInventory("MatriarchSelect",1,"MatriarchStuff")
+		TNT1 A 0 A_JumpIfInventory("SovereignSelect",1,"SovereignStuff")
+		TNT1 A 0 A_JumpIfInventory("CauterizerSelect",1,"CauterizerStuff")
+		TNT1 A 0 A_JumpIfInventory("DreadfulSelect",1,"DreadfulStuff")
+		TNT1 A 0 A_JumpIfInventory("DynamiteSelect",1,"DynamiteStuff")
+		Goto GoOn
+	DergfistStuff:
+		TNT1 A 1 A_TakeInventory("DergfistSelect")
+		TNT1 A 1 A_SelectWeapon("Dergfist")
+		Goto GoOn
+	LonghornStuff:
+		TNT1 A 1 A_TakeInventory("LonghornSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Longhorn")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Longhorn2")
+		TNT1 A 1
+		Goto GoOn
+	StruckerStuff:
+		TNT1 A 1 A_TakeInventory("StruckerSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Strucker")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Strucker2")
+		TNT1 A 1
+		Goto GoOn
+	IronblastStuff:
+		TNT1 A 1 A_TakeInventory("IronblastSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Ironblast")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Ironblast2")
+		TNT1 A 1
+		Goto GoOn
+	PulverizerStuff:
+		TNT1 A 1 A_TakeInventory("PulverizerSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Pulverizer")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Pulverizer2")
+		TNT1 A 1
+		Goto GoOn
+	MatriarchStuff:
+		TNT1 A 1 A_TakeInventory("MatriarchSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Matriarch")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Matriarch2")
+		TNT1 A 1
+		Goto GoOn
+	SovereignStuff:
+		TNT1 A 1 A_TakeInventory("SovereignSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Sovereign")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Sovereign2")
+		TNT1 A 1
+		Goto GoOn
+	CauterizerStuff:
+		TNT1 A 1 A_TakeInventory("CauterizerSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Cauterizer")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Cauterizer2")
+		TNT1 A 1
+		Goto GoOn
+	DreadfulStuff:
+		TNT1 A 1 A_TakeInventory("DreadfulSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 1 A_SelectWeapon("Old Dreadful")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 1 A_SelectWeapon("Old Dreadful2")
+		TNT1 A 1
+		Goto GoOn
+	DynamiteStuff:
+		TNT1 A 1 A_TakeInventory("DynamiteSelect")
+		TNT1 A 1 A_SelectWeapon("DynamiteWeapon")
+		Goto GoOn
+	GoOn:
+		CU2A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		CY2A A 0
+		"####" A 0 A_PlaySound("Bishop/Use",6,0.9)
+		"####" A 0 A_QuakeEx(4,4,4,35,0,128,none,QF_SCALEDOWN)
+		"####" J 1 A_ZoomFactor(0.6)
+		"####" I 1 A_ZoomFactor(0.8)
+		"####" H 1 A_ZoomFactor(0.9)
+		"####" G 1 A_ZoomFactor(0.925)
+		"####" F 1 A_ZoomFactor(0.97)
+		"####" E 1 A_ZoomFactor(0.98)
+		"####" E 1 A_ZoomFactor(0.99)
+		"####" E 1 A_ZoomFactor(1)
+		"####" A 0 A_SetBlend("Orange",0.3,25)
+		"####" E 7
+		"####" DCBA 1
+		CU1A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		CY1A A 0
+		"####" ZYX 1
+		"####" A 0 A_PlaySound("Bishop/Activate2",5)
+		"####" WVUTSR 1
+		"####" Q 10
+		"####" A 0 A_PlaySound("Bishop/Activate1",6)
+		"####" PONMLKJI 1
+		"####" A 0 A_ChangeFlag("NOBLOOD",0)
+		"####" A 0 A_TakeInventory("PowerSuitToken")
+		"####" A 0 A_TakeInventory("CygborgRegen")
+		"####" A 0 A_TakeInventory("PowerSuit2Ironfeet")
+		"####" H 10
+		"####" GFEDCBA 1
+		TNT1 A 1 A_TakeInventory("CygborgDeactivateWeapon")
+	Deselect:
+		TNT1 AAAAAAAAAAAAAAA 0 A_Lower
+		Goto Ready
+	Fire:
+		TNT1 A 1
+		Goto GoOn
+	}
+}
+
+actor CygborgPower : PowerupGiver
+{
+  Inventory.Amount 0
+  powerup.type "SuitToken"
+  powerup.duration -0x7FFFFFFF
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.ALWAYSPICKUP
+  states
+  {
+  Spawn:
+    TNT1 A 1
+    stop
+  }
+}
+
+ACTOR CygborgRegen : PowerRegeneration
+{
+	Powerup.Duration -0x7FFFFFFF
+	Powerup.Strength 1
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.PERSISTENTPOWER
+	+INVENTORY.HUBPOWER
+	states
+	{
+	Spawn:
+		TNT1 A 1
+		stop
+	}
+}
+
+ACTOR CygborgEnviro : PowerupGiver
+{
+  Inventory.MaxAmount 0
+  Powerup.Duration 0x7FFFFFFF
+  Powerup.Type "Suit2Ironfeet"
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.ALWAYSPICKUP
+}
+
+ACTOR PowerSuit2Ironfeet : PowerIronFeet
+{
+  Powerup.Color 0, 0, 0, 0.0
+  +INVENTORY.PERSISTENTPOWER
+  +INVENTORY.HUBPOWER
+}
+
+
+actor PowerSuitToken : PowerProtection
+{
+	+INVENTORY.PERSISTENTPOWER
+	+INVENTORY.HUBPOWER
+  
+	Inventory.icon "DRABORG0"
+	
+	//DamageFactor 0.4
+	DamageFactor "Normal", 0.4
+	DamageFactor "Matriarch", 0.4
+	DamageFactor "Bueller", 0.6
+	DamageFactor "Meteorfist", 0.4
+	DamageFactor "Fire", 0.4
+	DamageFactor "Acid", 0.4
+	DamageFactor "AcidReflux", 0.4
+	DamageFactor "Ice", 0.4
+	DamageFactor "LightningBlue", 0.4
+	DamageFactor "Lightning", 0.4
+	DamageFactor "Annihilation", 0.4
+	DamageFactor "Tiberium", 0.4
+	DamageFactor "BlueTiberium", 0.4
+	DamageFactor "Breath", 0.4
+	DamageFactor "Darkness", 0.4
+	DamageFactor "Flesh", 0.4
+	DamageFactor "Crow", 0.4
+	DamageFactor "Crow2", 0.4
+	DamageFactor "FuckRevenants", 0.4
+	
+	DamageFactor "CloseCombat", 0.4
+	DamageFactor "Shoelaces", 0.4
+	DamageFactor "SuperCloseCombat", 0.4
+	DamageFactor "SuperShoelaces", 0.4
+	DamageFactor "SuperMidasCloseCombat", 0.4
+	DamageFactor "SuperMidasShoelaces", 0.4
+	
+	DamageFactor "Manuel", 0.1
+	
+	/*DamageFactor "Slime", 0.0
+	DamageFactor "Poison", 0.0*/
+	DamageFactor "Drowning", 0.0
+	DamageFactor "PoisonCloud", 0.0
+	DamageFactor "InstantDeath", 0.0 //I wish this would actually work :V
+}

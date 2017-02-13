@@ -1,0 +1,15 @@
+Actor BasicArmorSpawner2 : BasicArmorSpawner replaces AmuletOfWarding
+{
+}
+
+Actor BasicArmorSpawner3 : BasicArmorSpawner replaces PlatinumHelm
+{
+}
+
+actor AdvancedArmorSpawner2 : AdvancedArmorSpawner replaces MeshArmor
+{
+}
+
+actor AdvancedArmorSpawner3 : AdvancedArmorSpawner replaces FalconShield
+{
+}

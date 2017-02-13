@@ -1,0 +1,49 @@
+//Cauterizer
+/*object BrutalThunderball
+{
+    frame TNT1A { light THUNDERBALL }
+}
+
+object BrutalHomingThunderBall
+{
+    frame TNT1A { light THUNDERBALL }
+}*/
+
+//Ironblast
+object BrutalIronblastProjectile
+{
+    frame TNT1A { light IRONFLIGHT }
+}
+
+//Dynamite
+object BrutalDynamiteProjectile
+{
+    frame TNTP { light TNTFLICKER }
+}
+
+object BrutalDynamiteProjectile2
+{
+    frame TNTP { light TNTFLICKER }
+}
+
+//Annihilation
+object BrutalAnnihilationShot
+{
+    frame ANNH { light ANNOSHOT }
+}
+
+object BrutalTomedAnnihilationShot
+{
+    frame ANNH { light ANNOSHOT2 }
+}
+
+//Corpseblast
+object CorpseblastProjectile
+{
+    frame TNT1A { light CORPSEBLASTER }
+}
+
+object CorpseblastProjectile2
+{
+    frame TNT1A { light CORPSEBLASTER }
+}

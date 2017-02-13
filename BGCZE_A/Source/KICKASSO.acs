@@ -1,0 +1,43 @@
+// Pillow tried a script, but Pillow and scripts are like Zhs2 and grenades. So the latter guy fixed it.
+
+#library "KICKASSO"
+#include "zcommon.acs"
+
+script "It's a Football, Luigi" (void)
+{
+	int thisTID = UniqueTID();
+	Thing_ChangeTID(0, thisTID);
+	SetActivatorToTarget(0);
+	int vX = GetActorVelX(0);
+	int vY = GetActorVelY(0);
+	int vZ = GetActorVelZ(0);
+	SetActivator(thisTID);
+	SetActorVelocity(0, vX*2, vY*2, vZ+8.0, false, true);
+}
+
+//Made with a little help of Keks. I CAN'T INTO ACS~~ Fuck you Zhs. Go eat a grenade. *sob* - Pillow.
+
+script "Pitchfork Simulation" (void)
+{
+	SetActivatorToTarget(0);
+	int pitch = GetActorPitch(0) + Random(-0.02, 0.02);
+	int vAng = (pitch % 1.0);
+	int byteAng = vAng >> 8;
+	SetResultValue(byteAng * 360 / 0xFF);
+	//PrintBold(f:pitch, s:"\n", f:vAng, s:"\n", d:byteAng);
+}
+
+script "Large Sheep Collider" (void)
+{
+	int ang = GetActorAngle(0);
+	int x = GetActorX(0) + 64.0 * cos(ang);
+	int y = GetActorY(0) + 64.0 * sin(ang);
+	int z = GetActorZ(0) - 32.0;
+	int tid = UniqueTid();
+	if(Spawn("SheepCollider", x, y, z, tid))
+	{
+		Thing_Remove(tid);
+		SetResultValue(true);
+	}
+		SetResultValue(false);
+}

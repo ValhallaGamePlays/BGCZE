@@ -1,0 +1,8 @@
+ACTOR Pulverizer2 : Pulverizer replaces CWeapStaff
+{
+   Game Hexen
+   Weapon.AmmoGive 30
+   Weapon.AmmoType "BlueMana"
+   Weapon.AmmoUse 1
+   Tag "Pulverizer"
+}

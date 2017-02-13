@@ -1,0 +1,38 @@
+object CorpseEffect
+{
+    frame TNT1A { light CORPSEBLASTING }
+}
+
+object CorpseblastProjectileHit
+{
+    frame TNT1A { light CORPSEBLASTING }
+}
+
+object CorpseblastProjectileHit2
+{
+    frame TNT1A { light CORPSEBLASTING }
+}
+
+pulselight CORPSEBLASTING
+{
+    color 1.0 0.0 0.0
+    size 32
+    secondarySize 128
+    interval 0.7
+}
+
+object CorpseblastProjectile
+{
+    frame TNT1A { light CORPSEBLASTER }
+}
+
+object CorpseblastProjectile2
+{
+    frame TNT1A { light CORPSEBLASTER }
+}
+
+Pointlight CORPSEBLASTER
+{
+    color 1.0 0.0 0.0
+    size 64
+}

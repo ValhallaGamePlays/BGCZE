@@ -1,0 +1,2684 @@
+ACTOR WyvernIdol : CustomInventory
+{
+  Inventory.Amount 1
+  Inventory.MaxAmount 5
+  Inventory.InterHubAmount 5
+  Inventory.PickupSound "CasterFamiliar/Pickup"
+  Inventory.UseSound ""
+  Inventory.Icon "ARTIDIDL"
+  Inventory.PickupMessage "Obtained a wyvern idol! Lil' Caster, at your service!"
+  Tag "Wyvern Idol"
+  +COUNTITEM
+  //+FLOATBOB
+  +INVBAR
+  Scale 0.6
+  States
+  {
+  Spawn:
+		DIDL A 1 Bright A_SpawnItemEx("RedParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.0,25.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		Loop
+	Use:
+		TNT1 A 0 A_GiveInventory("MinidergItem")
+		TNT1 A 0 A_PlaySound("CasterFamiliar/Use",3)
+		TNT1 A 0 A_SetBlend("Red",0.3,25,"Orange")
+		TNT1 A 0 A_JumpIfInventory("CasterFamiliarActive",2,"Nope")
+		TNT1 A 0 A_JumpIfInventory("CasterFamiliarActive",1,"AnotherOne")
+		TNT1 A 0 A_SpawnItemEx("CasterFamiliar",0,0,0,0,0,0,0,SXF_ORIGINATOR|SXF_SETTARGET|SXF_TRANSFERTRANSLATION)
+		Stop
+	AnotherOne:
+		TNT1 A 0 A_SpawnItemEx("CasterFamiliar2",0,0,0,0,0,0,0,SXF_ORIGINATOR|SXF_SETTARGET|SXF_TRANSFERTRANSLATION)
+		Stop
+	Nope:
+		TNT1 A 0
+		Stop
+  }
+}
+
+actor MinidergItem : PowerupGiver
+{
+  Inventory.MaxAmount 0
+  powerup.type "Miniderg"
+  powerup.duration -60
+  +INVENTORY.ALWAYSPICKUP
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.ADDITIVETIME
+  states
+  {
+  Spawn:
+    TNT1 A 1
+    stop
+  }
+}
+
+actor PowerMiniderg : PowerDamage
+{	
+	Inventory.Icon "IDOLPWR0"
+	DamageFactor "Normal", 1.0
+}
+
+ACTOR CasterFamiliarSpawner
+{
+	+NOCLIP
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("CasterFamiliar",0,0,0,0,0,0,0,SXF_ORIGINATOR|SXF_TRANSFERPOINTERS|SXF_TRANSFERTRANSLATION)
+		Stop
+	}
+}
+
+//Both wyvern triggers
+ACTOR CasterFamiliarActive : Inventory { Inventory.MaxAmount 2 }
+
+//Wyvern triggers
+ACTOR FamiliarOnTheHunt : Inventory { Inventory.MaxAmount 1 }
+ACTOR SheepActive2 : Inventory { Inventory.MaxAmount 1 }
+ACTOR WyvernTurretEngaged : Inventory { Inventory.MaxAmount 3 }
+
+//Mirror wyvern triggers
+ACTOR FamiliarOnTheHunt2 : Inventory { Inventory.MaxAmount 1 }
+ACTOR SheepActive3 : Inventory { Inventory.MaxAmount 1 }
+ACTOR WyvernTurretEngaged2 : Inventory { Inventory.MaxAmount 3 }
+
+ACTOR CasterFamiliar
+{
+	Speed 0
+	var int User_Angle;
+	var int User_CastDelay;
+	var int User_Frame;
+	var int User_Breath;
+	var int User_Breath2;
+	var int User_Decon;
+	var int User_TurretIDs[2];
+	Obituary "%o got roasted by %k's mini-%g companion."
+	PROJECTILE
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOCLIP
+	+FLOATBOB
+	+SEEKERMISSILE
+	+FORCEXYBILLBOARD
+	+NOTIMEFREEZE
+	States
+	{
+	Spawn:
+		"####" "#" 0 NoDelay A_GiveToTarget("CasterFamiliarActive")
+		"####" "#" 0 A_GiveInventory("TurretLimitCounter", 2)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_SpawnItemEx("CasterFamiliarRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SetUserVar("User_Frame",1)
+	Frame:
+		"####" "#" 0 A_JumpIf(User_Frame <= 2, "FrameA")
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "FrameB")
+		"####" "#" 0 A_JumpIf(User_Frame <= 6, "FrameC")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "FrameD")
+		"####" "#" 0 A_JumpIf(User_Frame <= 10, "FrameC")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "FrameB")
+		"####" "#" 0 A_JumpIf(User_Frame > 12, "Reset")
+	FrameA:
+		DFAM A 0
+		Goto Idle
+	FrameB:
+		DFAM B 0
+		Goto Idle
+	FrameC:
+		DFAM C 0
+		Goto Idle
+	FrameD:
+		DFAM D 0 A_JumpIf(User_Frame == 8, 2)
+		DFAM D 0 A_Jump(256,"Idle")
+		DFAM D 0 A_PlaySound("CasterFamiliar/Fly",6,0.3)
+		Goto Idle
+	Reset:
+		DFAM A 0 A_SetUserVar("User_Frame",1)
+		Goto Idle
+	Idle:
+		"####" "#" 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256,12)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_JumpIf(User_Breath <= 0, 2) //as much as the spell delay gets set to an arbitrary number,
+												   //thus reseting any negatives, I don't wanna risk any complications
+												   //in case of subtraction running for longer than intended.
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 1
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerMiniderg",1,1)
+		Goto Death
+		"####" "#" 0 A_JumpIfTargetInLOS("BreatheDaSpell", 0, JLOSF_PROJECTILE, 64*12, 0)
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		Goto Frame
+	ClearTracer:
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		Goto Frame
+	BreatheDaSpell:
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerTomeEffect",1,"BreatheDaSpellT")
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarCheck"), "BreatheDaSpellAlt")
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "Frame")
+		"####" "#" 0 A_JumpIfInTargetInventory("FirebreathActive",1,"FirebreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkullfireActive",1,"SkullfireLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("MeteorfistActive",1,"MeteorfistLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("FlamewaveActive",1,"FlamewaveLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("FrostbiteActive",1,"FrostbiteLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ChillgraspActive",1,"ChillgraspLaunch") //this one needs some refinement to make it not collide with regular spell.
+		"####" "#" 0 A_JumpIfInTargetInventory("GumpopActive",1,"GumpopLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkypunchActive",1,"SkypunchLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CrowsActive",1,"CrowsLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThunderActive",1,"ThunderLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("BreathActive",1,"BreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CorpseActive",1,"CorpseLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThreadcutterActive",1,"ThreadcutterLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("AnnihilationActive",1,"AnnihilationLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,"SheepshieldLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SpiritcannonActive",1,"SpiritcannonLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("DarkvoidActive",1,"DarkvoidLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("PrismActive",1,"PrismLaunch")
+		Goto ClearTracer
+	BreatheDaSpellAlt:
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "Frame")
+		"####" "#" 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)
+		"####" "#" 0 A_JumpIfInTargetInventory("FirebreathTome",1,"FirebreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkullfireTome",1,"SkullfireLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("MeteorfistTome",1,"MeteorfistLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("FlamewaveTome",1,"FlamewaveLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("FrostbiteTome",1,"FrostbiteLaunch")
+		//"####" "#" 0 A_JumpIfInTargetInventory("ChillgraspTome",1,"ChillgraspLaunch") //would suck a little if you'd be shooting some explosive projectile and suddenly some frozen monster is getting in your sight.
+		"####" "#" 0 A_JumpIfInTargetInventory("GumpopTome",1,"GumpopLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkypunchTome",1,"SkypunchLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CrowsTome",1,"CrowsLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThunderTome",1,"ThunderLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("BreathTome",1,"BreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CorpseTome",1,"CorpseLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThreadcutterTome",1,"ThreadcutterLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("AnnihilationTome",1,"AnnihilationLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SpiritcannonActive",1,"SpiritcannonLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("DarkvoidTome",1,"DarkvoidLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("PrismTome",1,"PrismLaunch")
+		//"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldTome",1,"SheepshieldLaunch") //or sheeps block your own TNT and "ouch that hurts".
+		Goto ClearTracer
+	//Firebreath
+	FirebreathLaunch:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*2, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_PlaySound("TNT/Ignition",1,0.9)
+		"####" "#" 0 A_SetUserVar("User_Breath", 8)
+	FirebreathPhaseOne:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,3)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FirebreathPhaseOne")
+		"####" "#" 0 A_SetUserVar("User_Breath", 6)
+	FirebreathPhaseTwo:
+		"####" "#" 0 A_CustomMissile("IgnitionSnort",0,0,frandom(2.0,-2.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(2.0,-2.0),AAPTR_TRACER)
+		"####" "##" 0 A_CustomMissile("IgnitionSmoke",0,0,frandom(2.0,-2.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(2.0,-2.0),AAPTR_TRACER)
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,4)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FirebreathPhaseTwo")
+		"####" "#" 0 A_SetUserVar("User_Breath", 26)
+		Goto ClearTracer
+		
+	//Skullfire
+	SkullfireLaunch:
+		"####" "#" 0 A_CustomMissile("SkullfireProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Skullfire/Launch",0)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	SkullfireLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SkullfireLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+		Goto ClearTracer
+		
+	//Meteorfist
+	MeteorfistLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Stomp/Use",5,1)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_GiveToTarget("FamiliarOnTheHunt",1)
+		"####" "#" 0 A_SpawnItemEx("MeteorfistFamiliar",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		Goto MeteorfistIdle
+	MeteorfistIdle:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInTargetInventory("FamiliarOnTheHunt",1,"MeteorfistIdle")
+		TNT1 A 0 A_SetUserVar("User_Breath",140)
+		Goto Frame
+		
+	//Flamewave
+	FlamewaveLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Skullfire/Launch",5)
+		"####" "#" 0 A_CustomMissile("FlamewaveSpawner",-10,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	FlamewaveLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FlamewaveLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		Goto ClearTracer
+		
+	//Frostbite
+	FrostbiteLaunch:
+		"####" "#" 0 A_JumpIfInTargetInventory("AltModeEnabled",1,"FrostbiteAltLaunch")
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("FrostbiteProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Frostbite/Launch",5)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+		Goto FrostbiteLoop
+	FrostbiteAltLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("FrozenOrbProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("FrozenOrbProjectileFade1",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("FrozenOrbProjectileFade2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Frostbite/Launch",5)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+		Goto FrostbiteLoop
+	FrostbiteLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FrostbiteLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 65)
+		Goto ClearTracer
+		
+	//Chillgrasp
+	ChillgraspLaunch:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, (64*8)-1, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_JumpIf(CallACS("TracerDeathCheck"), "ClearTracer")
+	YesPlease:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Chillgrasp/Loop",5,1.0,1)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_SetUserVar("User_Breath",105)
+		"####" "#" 0 ACS_NamedExecuteAlways("KD GC Carry") //A_GiveToTarget("ChillgraspExecuter") 
+		"####" "#" 0 A_FaceTracer
+	ChillgraspLoop:
+		//"####" "#" 0 A_JumpIfInTargetInventory("ChillyFishCatch",1,2)
+		//"####" "#" 0 A_FaceTracer
+		//"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright //A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Decon >= 1, 2)
+		"####" "#" 0 A_JumpIf(CallACS("TracerDeathCheck"), "DeconTheTime")
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ChillgraspLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", random(70,105))
+		"####" "#" 0 A_SetUserVar("User_Decon", 0)
+		"####" "#" 0 A_PlaySound("Chillgrasp/End",5)
+		"####" "#" 0 ACS_NamedExecuteAlways("KD GC Stop Carrying") //A_GiveToTarget("ChillgraspEnder")
+		Goto ClearTracer
+	DeconTheTime:
+		"####" "#" 0 A_SetUserVar("User_Breath",random(10,15))
+		"####" "#" 0 A_SetUserVar("User_Decon", 1)
+		Goto ChillgraspLoop
+		
+	//Gumpop
+	GumpopLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("GumpopProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Gumpop/Cast",5,0.7)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	GumpopLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "GumpopLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 25)
+		Goto ClearTracer
+		
+	//Skypunch
+	SkypunchLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("SkypunchWave",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Skypunch/Layer",5,0.9)
+		"####" "#" 0 A_PlaySound("Skypunch/Blast",4,1.0)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	SkypunchLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SkypunchLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Crows
+	CrowsLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Crows/Launch",5,0.8)
+		"####" "#" 0 A_PlaySound("Crows/Scream",7,0.4)
+		"####" "#" 0 A_PlaySound("Crows/Add",4,0.7)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 15)
+	CrowsLoop:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("CrowLauncher2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "CrowsLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 80)
+		Goto ClearTracer
+		
+	//Thunderstruck
+	ThunderLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("ThunderSpawner",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Thunderstruck/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 14)
+	ThunderLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ThunderLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Scourgebreath
+	BreathLaunch:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*7, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_PlaySound("Breath/Start",5,0.8)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 19)
+	BreathPhaseOne:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "BreathPhaseOne")
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerTomeEffect",1,3)
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)	
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_SetUserVar("User_Breath", 170)	
+	BreathPhaseTwo:
+		"####" "#" 0 A_CustomMissile("BreathProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Breath/Loop",4,0.7,1)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "BreathPhaseTwo")
+		"####" "#" 0 A_SetUserVar("User_Breath", 10)
+	BreathPhaseThree:
+		"####" "#" 0 A_PlaySound("Breath/End",4,0.8)
+	BreathEndLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "BreathEndLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		Goto ClearTracer
+		
+	//Corpseblast
+	CorpseLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("CorpseblastProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Corpseblast/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 15)
+	CorpseLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "CorpseLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Threadcutter
+	ThreadcutterLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "####################" 0 A_CustomMissile("ThreadcutterKnife1",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(4.0,-4.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "##########" 0 A_CustomMissile("ThreadcutterCleaver1",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(4.0,-4.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Threadcutter/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 20)
+	ThreadcutterLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ThreadcutterLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 50)
+		Goto ClearTracer
+		
+	//Annihilation
+	AnnihilationLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("AnnihilationShot",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Annihilation/Use",5,0.8)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	AnnihilationLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "AnnihilationLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 140)
+		Goto ClearTracer
+		
+	//Sheepshield
+	SheepshieldLaunch:
+		"####" "#" 0 A_PlaySound("Sheepshield/Loop",5,0.7,1)
+		"####" "#" 0 A_GiveToTarget("SheepActive2",1)
+	SheepshieldPhaseOne:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		//"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath + 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath >= 6, 1)
+		Loop
+		"####" "#" 0 A_SetUserVar("User_Breath", 0)
+		"####" "#" 0 A_CustomMissile("ExplosiveSheepFamiliar",0,0,0,CMF_TRACKOWNER)
+		"####" "#" 0 A_SetUserVar("User_Breath2", User_Breath2 + 1)
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarCheck"), 2)
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,1)
+		Goto SheepshieldPrematureStop
+		"####" "#" 0 A_JumpIf(User_Breath2 >= 25, "SheepshieldPhaseTwo")
+		Loop
+	SheepshieldPhaseTwo:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath + 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath >= 105, "SheepshieldStop")
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,"SheepshieldPhaseTwo")
+		Goto SheepshieldStop
+	SheepshieldStop:
+		"####" "#" 0 A_SetUserVar("User_Breath", 205)
+		"####" "#" 0 A_PlaySound("Sheepshield/Stop",5,0.7)
+		"####" "#" 0 A_TakeFromTarget("SheepActive2",1)
+		"####" "#" 0 A_SetUserVar("User_Breath2", 0)
+		Goto ClearTracer
+	SheepshieldPrematureStop:
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		Goto SheepshieldStop+1
+		
+	//Spiritcannon
+	SpiritcannonLaunch:
+		"####" "#" 0 A_JumpIfInTargetInventory("WyvernTurretEngaged",5,"ClearTracer")
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_SpawnItemEx("Spiritcannon",45,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_ORIGINATOR|SXF_SETMASTER) //A_CustomMissile("SpiritcannonSpawner",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Spiritcannon/Use",5,0.8)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	SpiritcannonLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SpiritcannonLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 140)
+		Goto ClearTracer
+		
+//Darkvoid
+	DarkvoidLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("DarkWeave",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" A 0 A_PlaySound("DarkVoid/Fire",1)
+		"####" A 0 A_PlaySound("DarkVoid/Add1",5)
+		"####" "#" 0 A_PlaySound("Thunderstruck/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	DarkvoidLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "DarkvoidLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 210)
+		Goto ClearTracer
+	//Prism Laser
+	PrismLaunch:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*10, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_PlaySound("Prism/Start",5,0.8)
+		"####" "#" 0 A_QuakeEx(1,1,1,9,0,128,"none",QF_SCALEUP)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+	  	"####" A 0 A_GiveInventory("PrismRadius",70)
+	  	"####" A 0 A_GiveInventory("PrismSpin",360)
+	 	"####" A 0 A_SpawnItemEx("PrismLightBlue",192,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightCyan",192,0,0,0,0,0,45,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightGreen",192,0,0,0,0,0,90,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+		"####" A 0 A_SpawnItemEx("PrismLightLime",192,0,0,0,0,0,135,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightYellow",192,0,0,0,0,0,180,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightOrange",192,0,0,0,0,0,225,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightRed",192,0,0,0,0,0,270,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightPurple",192,0,0,0,0,0,315,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+		"####" "#" 0 A_SetUserVar("User_Breath", 9)
+	PrismPhaseOne:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "PrismPhaseOne")
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerTomeEffect",1,3)
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_SetUserVar("User_Breath", 210)
+		"####" "#" 0 A_Jump(250,2)
+		"####" "#" 0 A_PlaySound("Prism/Maccaron",5,1.0,1)
+	PrismPhaseTwo:
+	  	"####" "#" 0 A_GiveInventory("PrismPower",1) //Increases power consumption.
+	  	"####" "#" 0 A_JumpIf(CountInv("PrismRadius") < 2,2) // Make sure we wind up with one in the end.
+	  	"####" "#" 0 A_TakeInventory("PrismRadius",1) // Skipped when only one is left.
+	  	"####" "#" 0 A_TakeInventory("PrismSpin",10) // Go ten degrees at a time.
+	  	"####" "#" 0 A_JumpIfInventory("PrismSpin",1,2) // Make sure we loop over the spin amounts.
+	  	"####" "#" 0 A_GiveInventory("PrismSpin",360)
+	  	"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_CustomMissile("PrismProjectileBlue",0,0, atan(sin(CountInv("PrismSpin") + 0.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 0.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileCyan",0,0, atan(sin(CountInv("PrismSpin") + 45.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 45.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileLime",0,0, atan(sin(CountInv("PrismSpin") + 90.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 90.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileLime",0,0, atan(sin(CountInv("PrismSpin") + 135.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 135.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileYellow",0,0, atan(sin(CountInv("PrismSpin") + 180.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 180.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileOrange",0,0, atan(sin(CountInv("PrismSpin") + 225.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 225.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileRed",0,0, atan(sin(CountInv("PrismSpin") + 270.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 270.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectilePurple",0,0, atan(sin(CountInv("PrismSpin") + 315.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 315.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Prism/Loop",4,1.0,1)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "PrismPhaseTwo")
+		"####" "#" 0 A_SetUserVar("User_Breath", 10)
+	PrismPhaseThree:
+		"####" A 0 A_PlaySound("Prism/End",4)
+		"####" A 0 A_StopSound(5)
+	 	"####" A 0 A_TakeInventory("PrismRadius",999)
+	  	"####" A 0 A_TakeInventory("PrismSpin",999)
+	PrismEndLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "PrismEndLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 140)
+		Goto ClearTracer
+
+	//Reference state.
+	AttackAnim:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*8, 0)
+		Goto ClearTracer
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "AttackAnim")
+		Goto ClearTracer
+		
+	BreatheDaSpellT:
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarCheck"), "BreatheDaSpellAltT")
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "Frame")
+		"####" "#" 0 A_JumpIfInTargetInventory("FirebreathActive",1,"FirebreathLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkullfireActive",1,"SkullfireLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("MeteorfistActive",1,"MeteorfistLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("FlamewaveActive",1,"FlamewaveLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("FrostbiteActive",1,"FrostbiteLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ChillgraspActive",1,"ChillgraspLaunch") //tis already in.
+		"####" "#" 0 A_JumpIfInTargetInventory("GumpopActive",1,"GumpopLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkypunchActive",1,"SkypunchLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("CrowsActive",1,"CrowsLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThunderActive",1,"ThunderLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("BreathActive",1,"BreathLaunch") //There's only difference in mana cost; might as well just extend cast time in regular one with a check.
+		"####" "#" 0 A_JumpIfInTargetInventory("CorpseActive",1,"CorpseLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThreadcutterActive",1,"ThreadcutterLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("AnnihilationActive",1,"AnnihilationLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,"SheepshieldLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SpiritcannonActive",1,"SpiritcannonLaunch") //tis already in.
+		"####" "#" 0 A_JumpIfInTargetInventory("DarkvoidActive",1,"DarkvoidLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("PrismActive",1,"PrismLaunch") //Tis already in. Same case as Scourgebreath.
+		Goto ClearTracer
+	BreatheDaSpellAltT:
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "Frame")
+		"####" "#" 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
+		"####" "#" 0 A_JumpIfInTargetInventory("FirebreathTome",1,"FirebreathLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkullfireTome",1,"SkullfireLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("MeteorfistTome",1,"MeteorfistLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("FlamewaveTome",1,"FlamewaveLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("FrostbiteTome",1,"FrostbiteLaunchT")
+		//"####" "#" 0 A_JumpIfInTargetInventory("ChillgraspTome",1,"ChillgraspLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("GumpopTome",1,"GumpopLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkypunchTome",1,"SkypunchLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("CrowsTome",1,"CrowsLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThunderTome",1,"ThunderLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("BreathTome",1,"BreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CorpseTome",1,"CorpseLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThreadcutterTome",1,"ThreadcutterLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("AnnihilationTome",1,"AnnihilationLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SpiritcannonActive",1,"SpiritcannonLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("DarkvoidTome",1,"DarkvoidLaunchT")
+		//"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldTome",1,"SheepshieldLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("PrismTome",1,"PrismLaunch")
+		Goto ClearTracer
+
+	//Tomed Firebreath
+	FirebreathLaunchT:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*2, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_PlaySound("TNT/Ignition",1,0.9)
+		"####" "#" 0 A_SetUserVar("User_Breath", 8)
+	FirebreathPhaseOneT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,3)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FirebreathPhaseOneT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 6)
+	FirebreathPhaseTwoT:
+		"####" "###" 0 A_CustomMissile("FiresweepSnort",0,0,frandom(32.0,-32.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "#####" 0 A_CustomMissile("FiresweepSmoke",0,0,frandom(32.0,-32.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,4)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FirebreathPhaseTwoT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+		Goto ClearTracer
+		
+	//Tomed Skullfire
+	SkullfireLaunchT:
+		"####" "#" 0 A_CustomMissile("SkullfireTomedProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Skullfire/Launch",0)
+	    "####" "#" 0 A_PlaySound("Skullfire/Whizz",6,0.55)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	SkullfireLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SkullfireLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 45)
+		Goto ClearTracer
+		
+	//Tomed Meteorfist
+	MeteorfistLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Stomp/Use",5,1)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_GiveToTarget("FamiliarOnTheHunt",1)
+		"####" "#" 0 A_SpawnItemEx("SuperMeteorfistFamiliar",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		Goto MeteorfistIdleT
+	MeteorfistIdleT:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInTargetInventory("FamiliarOnTheHunt",1,"MeteorfistIdleT")
+		TNT1 A 0 A_SetUserVar("User_Breath",175)
+		Goto Frame
+		
+	//Tomed Flamewave
+	FlamewaveLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Skullfire/Launch",5)
+		"####" "#" 0 A_CustomMissile("SuperFlamewaveSpawner",-10,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	FlamewaveLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FlamewaveLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 140)
+		Goto ClearTracer
+		
+	//Tomed Frostbite
+	FrostbiteLaunchT:
+		"####" "#" 0 A_JumpIfInTargetInventory("AltModeEnabled",1,"FrostbiteAltLaunchT")
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedFrostbiteProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Frostbite/Launch",5)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+		Goto FrostbiteLoopT
+	FrostbiteAltLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedFrozenOrbProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("TomedFrozenOrbProjectileFade1",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("TomedFrozenOrbProjectileFade2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Frostbite/Launch",5)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+		Goto FrostbiteLoopT
+	FrostbiteLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FrostbiteLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		Goto ClearTracer
+		
+	//Tomed Gumpop
+	GumpopLaunchT:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*6, 0)
+		Goto ClearTracer
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("GumpopProjectile2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER) //"####" "#" 0 A_CustomMissile("GumpodSpawner",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Gumpop/Cast",5,0.7)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	GumpopLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "GumpopLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Tomed Skypunch
+	SkypunchLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("SkypunchLauncher2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Skypunch/Layer",5,0.9)
+		"####" "#" 0 A_PlaySound("Skypunch/Blast",4,1.0)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	SkypunchLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SkypunchLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 95)
+		Goto ClearTracer
+		
+	//Tomed Crows
+	CrowsLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Crows/Launch",5,0.8)
+		"####" "#" 0 A_PlaySound("Crows/Scream",7,0.4)
+		"####" "#" 0 A_PlaySound("Crows/Add",4,0.7)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 15)
+	CrowsLoopT:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("CrowLauncher",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "CrowsLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 95)
+		Goto ClearTracer
+		
+	//Tomed Thunderstruck
+	ThunderLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedThunderSpawner",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Thunderstruck/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 14)
+	ThunderLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ThunderLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 95)
+		Goto ClearTracer
+		
+	//Tomed Corpseblast
+	CorpseLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("CorpseblastProjectile2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Corpseblast/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 15)
+	CorpseLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "CorpseLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 95)
+		Goto ClearTracer
+		
+	//Tomed Threadcutter
+	ThreadcutterLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "####################" 0 A_CustomMissile("ThreadcutterKnife2",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(4.0,-4.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "##########" 0 A_CustomMissile("ThreadcutterCleaver2",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(4.0,-4.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Threadcutter/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 20)
+	ThreadcutterLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ThreadcutterLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Tomed Annihilation
+	AnnihilationLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedAnnihilationShot",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Annihilation/Use",5,0.8)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	AnnihilationLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "AnnihilationLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 210)
+		Goto ClearTracer
+		
+	//Tomed Sheepshield
+	SheepshieldLaunchT:
+		"####" "#" 0 A_PlaySound("Sheepshield/Loop",5,0.7,1)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_GiveToTarget("SheepActive2",1)
+		"####" "#" 0 A_CustomMissile("SuperFamExplosiveSheep1",0,0,0,CMF_TRACKOWNER)
+		"####" "#" 0 A_CustomMissile("SuperFamExplosiveSheep2",0,0,0,CMF_TRACKOWNER)
+		"####" "#" 0 A_CustomMissile("SuperFamExplosiveSheep3",0,0,0,CMF_TRACKOWNER)
+	SheepshieldPhaseOneT:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		//"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath + 1)
+		"####" "#" 0 A_JumpIf(User_Breath >= 105, "SheepshieldStopT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,"SheepshieldPhaseOneT")
+		Goto SheepshieldStopT
+	SheepshieldStopT:
+		"####" "#" 0 A_SetUserVar("User_Breath", 205)
+		"####" "#" 0 A_PlaySound("Sheepshield/Stop",5,0.7)
+		"####" "#" 0 A_TakeFromTarget("SheepActive2",1)
+		Goto ClearTracer
+		
+	//Tomed Darkvoid
+	DarkvoidLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedDarkWeave",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" A 0 A_PlaySound("DarkVoid/Fire",1)
+		"####" A 0 A_PlaySound("DarkVoid/Add1",5)
+		"####" "#" 0 A_PlaySound("Thunderstruck/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	DarkvoidLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "DarkvoidLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 210)
+		Goto ClearTracer
+
+	Death:
+		"####" "#" 0 A_SpawnItemEx("CasterFamiliarRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_TakeFromTarget("CasterFamiliarActive")
+	DeathLoop:
+		DFAM F 1 A_FadeOut(0.05)
+		Loop
+	}
+}
+
+//Mirror wyvern
+ACTOR CasterFamiliar2 : CasterFamiliar
+{
+	States
+	{
+	Spawn:
+		"####" "#" 0 NoDelay A_GiveToTarget("CasterFamiliarActive")
+		"####" "#" 0 A_GiveInventory("TurretLimitCounter", 2)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_SpawnItemEx("CasterFamiliarRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SetUserVar("User_Frame",1)
+	Frame:
+		"####" "#" 0 A_JumpIf(User_Frame <= 2, "FrameA")
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "FrameB")
+		"####" "#" 0 A_JumpIf(User_Frame <= 6, "FrameC")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "FrameD")
+		"####" "#" 0 A_JumpIf(User_Frame <= 10, "FrameC")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "FrameB")
+		"####" "#" 0 A_JumpIf(User_Frame > 12, "Reset")
+	FrameA:
+		DFAM A 0
+		Goto Idle
+	FrameB:
+		DFAM B 0
+		Goto Idle
+	FrameC:
+		DFAM C 0
+		Goto Idle
+	FrameD:
+		DFAM D 0 A_JumpIf(User_Frame == 8, 2)
+		DFAM D 0 A_Jump(256,"Idle")
+		DFAM D 0 A_PlaySound("CasterFamiliar/Fly",6,0.3)
+		Goto Idle
+	Reset:
+		DFAM A 0 A_SetUserVar("User_Frame",1)
+		Goto Idle
+	Idle:
+		"####" "#" 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256,12)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_JumpIf(User_Breath <= 0, 2) //as much as the spell delay gets set to an arbitrary number,
+												   //thus reseting any negatives, I don't wanna risk any complications
+												   //in case of subtraction running for longer than intended.
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 1
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerMiniderg",1,1)
+		Goto Death
+		"####" "#" 0 A_JumpIfTargetInLOS("BreatheDaSpell", 0, JLOSF_PROJECTILE, 64*12, 0)
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		Goto Frame
+	ClearTracer:
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		Goto Frame
+	BreatheDaSpell:
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerTomeEffect",1,"BreatheDaSpellT")
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarCheck"), "BreatheDaSpellAlt")
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "Frame")
+		"####" "#" 0 A_JumpIfInTargetInventory("FirebreathActive",1,"FirebreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkullfireActive",1,"SkullfireLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("MeteorfistActive",1,"MeteorfistLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("FlamewaveActive",1,"FlamewaveLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("FrostbiteActive",1,"FrostbiteLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ChillgraspActive",1,"ChillgraspLaunch") //this one needs some refinement to make it not collide with regular spell.
+		"####" "#" 0 A_JumpIfInTargetInventory("GumpopActive",1,"GumpopLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkypunchActive",1,"SkypunchLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CrowsActive",1,"CrowsLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThunderActive",1,"ThunderLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("BreathActive",1,"BreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CorpseActive",1,"CorpseLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThreadcutterActive",1,"ThreadcutterLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("AnnihilationActive",1,"AnnihilationLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,"SheepshieldLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SpiritcannonActive",1,"SpiritcannonLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("DarkvoidActive",1,"DarkvoidLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("PrismActive",1,"PrismLaunch")
+		Goto ClearTracer
+	BreatheDaSpellAlt:
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "Frame")
+		"####" "#" 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
+		"####" "#" 0 A_JumpIfInTargetInventory("FirebreathTome",1,"FirebreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkullfireTome",1,"SkullfireLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("MeteorfistTome",1,"MeteorfistLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("FlamewaveTome",1,"FlamewaveLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("FrostbiteTome",1,"FrostbiteLaunch")
+		//"####" "#" 0 A_JumpIfInTargetInventory("ChillgraspTome",1,"ChillgraspLaunch") //would suck a little if you'd be shooting some explosive projectile and suddenly some frozen monster is getting in your sight.
+		"####" "#" 0 A_JumpIfInTargetInventory("GumpopTome",1,"GumpopLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkypunchTome",1,"SkypunchLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CrowsTome",1,"CrowsLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThunderTome",1,"ThunderLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("BreathTome",1,"BreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CorpseTome",1,"CorpseLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThreadcutterTome",1,"ThreadcutterLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("AnnihilationTome",1,"AnnihilationLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("SpiritcannonActive",1,"SpiritcannonLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("DarkvoidTome",1,"DarkvoidLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("PrismTome",1,"PrismLaunch")
+		//"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldTome",1,"SheepshieldLaunch") //or sheeps block your own TNT and "ouch that hurts".
+		Goto ClearTracer
+	//Firebreath
+	FirebreathLaunch:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*2, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_PlaySound("TNT/Ignition",1,0.9)
+		"####" "#" 0 A_SetUserVar("User_Breath", 8)
+	FirebreathPhaseOne:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,3)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FirebreathPhaseOne")
+		"####" "#" 0 A_SetUserVar("User_Breath", 6)
+	FirebreathPhaseTwo:
+		"####" "#" 0 A_CustomMissile("IgnitionSnort",0,0,frandom(2.0,-2.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(2.0,-2.0),AAPTR_TRACER)
+		"####" "##" 0 A_CustomMissile("IgnitionSmoke",0,0,frandom(2.0,-2.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(2.0,-2.0),AAPTR_TRACER)
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,4)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FirebreathPhaseTwo")
+		"####" "#" 0 A_SetUserVar("User_Breath", 26)
+		Goto ClearTracer
+		
+	//Skullfire
+	SkullfireLaunch:
+		"####" "#" 0 A_CustomMissile("SkullfireProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Skullfire/Launch",0)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	SkullfireLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SkullfireLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+		Goto ClearTracer
+		
+	//Meteorfist
+	MeteorfistLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Stomp/Use",5,1)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_GiveToTarget("FamiliarOnTheHunt2",1)
+		"####" "#" 0 A_SpawnItemEx("MeteorfistFamiliar2",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		Goto MeteorfistIdle
+	MeteorfistIdle:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInTargetInventory("FamiliarOnTheHunt2",1,"MeteorfistIdle")
+		TNT1 A 0 A_SetUserVar("User_Breath",140)
+		Goto Frame
+		
+	//Flamewave
+	FlamewaveLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Skullfire/Launch",5)
+		"####" "#" 0 A_CustomMissile("FlamewaveSpawner",-10,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	FlamewaveLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FlamewaveLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		Goto ClearTracer
+		
+	//Frostbite
+	FrostbiteLaunch:
+		"####" "#" 0 A_JumpIfInTargetInventory("AltModeEnabled",1,"FrostbiteAltLaunch")
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("FrostbiteProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Frostbite/Launch",5)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+		Goto FrostbiteLoop
+	FrostbiteAltLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("FrozenOrbProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("FrozenOrbProjectileFade1",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("FrozenOrbProjectileFade2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Frostbite/Launch",5)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+		Goto FrostbiteLoop
+	FrostbiteLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FrostbiteLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 65)
+		Goto ClearTracer
+		
+	//Chillgrasp
+	ChillgraspLaunch:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, (64*8)-1, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_JumpIf(CallACS("TracerDeathCheck"), "ClearTracer")
+	YesPlease:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Chillgrasp/Loop",5,1.0,1)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_SetUserVar("User_Breath",105)
+		"####" "#" 0 ACS_NamedExecuteAlways("KD GC Carry") //A_GiveToTarget("ChillgraspExecuter") 
+		"####" "#" 0 A_FaceTracer
+	ChillgraspLoop:
+		//"####" "#" 0 A_JumpIfInTargetInventory("ChillyFishCatch",1,2)
+		//"####" "#" 0 A_FaceTracer
+		//"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright //A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Decon >= 1, 2)
+		"####" "#" 0 A_JumpIf(CallACS("TracerDeathCheck"), "DeconTheTime")
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ChillgraspLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", random(70,105))
+		"####" "#" 0 A_SetUserVar("User_Decon", 0)
+		"####" "#" 0 A_PlaySound("Chillgrasp/End",5)
+		"####" "#" 0 ACS_NamedExecuteAlways("KD GC Stop Carrying") //A_GiveToTarget("ChillgraspEnder")
+		Goto ClearTracer
+	DeconTheTime:
+		"####" "#" 0 A_SetUserVar("User_Breath",random(10,15))
+		"####" "#" 0 A_SetUserVar("User_Decon", 1)
+		Goto ChillgraspLoop
+		
+	//Gumpop
+	GumpopLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("GumpopProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Gumpop/Cast",5,0.7)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	GumpopLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "GumpopLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 25)
+		Goto ClearTracer
+		
+	//Skypunch
+	SkypunchLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("SkypunchWave",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Skypunch/Layer",5,0.9)
+		"####" "#" 0 A_PlaySound("Skypunch/Blast",4,1.0)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	SkypunchLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SkypunchLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Crows
+	CrowsLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Crows/Launch",5,0.8)
+		"####" "#" 0 A_PlaySound("Crows/Scream",7,0.4)
+		"####" "#" 0 A_PlaySound("Crows/Add",4,0.7)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 15)
+	CrowsLoop:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("CrowLauncher2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "CrowsLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 80)
+		Goto ClearTracer
+		
+	//Thunderstruck
+	ThunderLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("ThunderSpawner",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Thunderstruck/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 14)
+	ThunderLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ThunderLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Scourgebreath
+	BreathLaunch:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*7, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_PlaySound("Breath/Start",5,0.8)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 19)
+	BreathPhaseOne:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "BreathPhaseOne")
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerTomeEffect",1,3)
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)	
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_SetUserVar("User_Breath", 170)	
+	BreathPhaseTwo:
+		"####" "#" 0 A_CustomMissile("BreathProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Breath/Loop",4,0.7,1)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "BreathPhaseTwo")
+		"####" "#" 0 A_SetUserVar("User_Breath", 10)
+	BreathPhaseThree:
+		"####" "#" 0 A_PlaySound("Breath/End",4,0.8)
+	BreathEndLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "BreathEndLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		Goto ClearTracer
+		
+	//Corpseblast
+	CorpseLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("CorpseblastProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Corpseblast/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 15)
+	CorpseLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "CorpseLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Threadcutter
+	ThreadcutterLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "####################" 0 A_CustomMissile("ThreadcutterKnife1",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(4.0,-4.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "##########" 0 A_CustomMissile("ThreadcutterCleaver1",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(4.0,-4.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Threadcutter/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 20)
+	ThreadcutterLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ThreadcutterLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 50)
+		Goto ClearTracer
+		
+	//Annihilation
+	AnnihilationLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("AnnihilationShot",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Annihilation/Use",5,0.8)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	AnnihilationLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "AnnihilationLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 140)
+		Goto ClearTracer
+		
+	//Sheepshield
+	SheepshieldLaunch:
+		"####" "#" 0 A_PlaySound("Sheepshield/Loop",5,0.7,1)
+		"####" "#" 0 A_GiveToTarget("SheepActive3",1)
+	SheepshieldPhaseOne:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		//"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath + 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath >= 6, 1)
+		Loop
+		"####" "#" 0 A_SetUserVar("User_Breath", 0)
+		"####" "#" 0 A_CustomMissile("ExplosiveSheepFamiliar2",0,0,0,CMF_TRACKOWNER)
+		"####" "#" 0 A_SetUserVar("User_Breath2", User_Breath2 + 1)
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarCheck"), 2)
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,1)
+		Goto SheepshieldPrematureStop
+		"####" "#" 0 A_JumpIf(User_Breath2 >= 25, "SheepshieldPhaseTwo")
+		Loop
+	SheepshieldPhaseTwo:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath + 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath >= 105, "SheepshieldStop")
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,"SheepshieldPhaseTwo")
+		Goto SheepshieldStop
+	SheepshieldStop:
+		"####" "#" 0 A_SetUserVar("User_Breath", 205)
+		"####" "#" 0 A_PlaySound("Sheepshield/Stop",5,0.7)
+		"####" "#" 0 A_TakeFromTarget("SheepActive3",1)
+		"####" "#" 0 A_SetUserVar("User_Breath2", 0)
+		Goto ClearTracer
+	SheepshieldPrematureStop:
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		Goto SheepshieldStop+1
+		
+	//Spiritcannon
+	SpiritcannonLaunch:
+		"####" "#" 0 A_JumpIfInTargetInventory("WyvernTurretEngaged2",5,"ClearTracer")
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_SpawnItemEx("Spiritcannon",45,0,0,0,0,0,0,SXF_TRANSFERPOINTERS) //A_CustomMissile("SpiritcannonSpawner",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Spiritcannon/Use",5,0.8)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	SpiritcannonLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SpiritcannonLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 140)
+		Goto ClearTracer
+		
+	//Darkvoid
+	DarkvoidLaunch:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("DarkWeave",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" A 0 A_PlaySound("DarkVoid/Fire",1)
+		"####" A 0 A_PlaySound("DarkVoid/Add1",5)
+		"####" "#" 0 A_PlaySound("Thunderstruck/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	DarkvoidLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "DarkvoidLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 210)
+		Goto ClearTracer	
+		
+	//Prism Laser
+	PrismLaunch:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*10, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_PlaySound("Prism/Start",5,0.8)
+		"####" "#" 0 A_QuakeEx(1,1,1,9,0,128,"none",QF_SCALEUP)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+	  	"####" A 0 A_GiveInventory("PrismRadius",70)
+	  	"####" A 0 A_GiveInventory("PrismSpin",360)
+	 	"####" A 0 A_SpawnItemEx("PrismLightBlue",192,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightCyan",192,0,0,0,0,0,45,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightGreen",192,0,0,0,0,0,90,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+		"####" A 0 A_SpawnItemEx("PrismLightLime",192,0,0,0,0,0,135,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightYellow",192,0,0,0,0,0,180,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightOrange",192,0,0,0,0,0,225,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightRed",192,0,0,0,0,0,270,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+	 	"####" A 0 A_SpawnItemEx("PrismLightPurple",192,0,0,0,0,0,315,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_NOCHECKPOSITION|SXF_ORIGINATOR)
+		"####" "#" 0 A_SetUserVar("User_Breath", 9)
+	PrismPhaseOne:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "PrismPhaseOne")
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerTomeEffect",1,3)
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_SetUserVar("User_Breath", 210)
+		"####" "#" 0 A_Jump(250,2)
+		"####" "#" 0 A_PlaySound("Prism/Maccaron",5,1.0,1)
+	PrismPhaseTwo:
+	  	"####" "#" 0 A_GiveInventory("PrismPower",1) //Increases power consumption.
+	  	"####" "#" 0 A_JumpIf(CountInv("PrismRadius") < 2,2) // Make sure we wind up with one in the end.
+	  	"####" "#" 0 A_TakeInventory("PrismRadius",1) // Skipped when only one is left.
+	  	"####" "#" 0 A_TakeInventory("PrismSpin",10) // Go ten degrees at a time.
+	  	"####" "#" 0 A_JumpIfInventory("PrismSpin",1,2) // Make sure we loop over the spin amounts.
+	  	"####" "#" 0 A_GiveInventory("PrismSpin",360)
+	  	"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_CustomMissile("PrismProjectileBlue",0,0, atan(sin(CountInv("PrismSpin") + 0.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 0.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileCyan",0,0, atan(sin(CountInv("PrismSpin") + 45.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 45.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileLime",0,0, atan(sin(CountInv("PrismSpin") + 90.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 90.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileLime",0,0, atan(sin(CountInv("PrismSpin") + 135.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 135.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileYellow",0,0, atan(sin(CountInv("PrismSpin") + 180.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 180.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileOrange",0,0, atan(sin(CountInv("PrismSpin") + 225.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 225.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectileRed",0,0, atan(sin(CountInv("PrismSpin") + 270.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 270.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("PrismProjectilePurple",0,0, atan(sin(CountInv("PrismSpin") + 315.0) * CountInv("PrismRadius") / 70), CMF_TRACKOWNER|CMF_OFFSETPITCH, atan(cos(CountInv("PrismSpin") + 315.0) * CountInv("PrismRadius") / 70), AAPTR_TRACER)
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Prism/Loop",4,1.0,1)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "PrismPhaseTwo")
+		"####" "#" 0 A_SetUserVar("User_Breath", 10)
+	PrismPhaseThree:
+		"####" A 0 A_PlaySound("Prism/End",4)
+		"####" A 0 A_StopSound(5)
+	 	"####" A 0 A_TakeInventory("PrismRadius",999)
+	  	"####" A 0 A_TakeInventory("PrismSpin",999)
+	PrismEndLoop:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "PrismEndLoop")
+		"####" "#" 0 A_SetUserVar("User_Breath", 140)
+		Goto ClearTracer
+		
+	//Reference state.
+	AttackAnim:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*8, 0)
+		Goto ClearTracer
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "AttackAnim")
+		Goto ClearTracer
+		
+	BreatheDaSpellT:
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarCheck"), "BreatheDaSpellAltT")
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "Frame")
+		"####" "#" 0 A_JumpIfInTargetInventory("FirebreathActive",1,"FirebreathLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkullfireActive",1,"SkullfireLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("MeteorfistActive",1,"MeteorfistLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("FlamewaveActive",1,"FlamewaveLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("FrostbiteActive",1,"FrostbiteLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ChillgraspActive",1,"ChillgraspLaunch") //tis already in.
+		"####" "#" 0 A_JumpIfInTargetInventory("GumpopActive",1,"GumpopLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkypunchActive",1,"SkypunchLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("CrowsActive",1,"CrowsLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThunderActive",1,"ThunderLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("BreathActive",1,"BreathLaunch") //There's only difference in mana cost; might as well just extend cast time in regular one with a check.
+		"####" "#" 0 A_JumpIfInTargetInventory("CorpseActive",1,"CorpseLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThreadcutterActive",1,"ThreadcutterLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("AnnihilationActive",1,"AnnihilationLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,"SheepshieldLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SpiritcannonActive",1,"SpiritcannonLaunch") //tis already in.
+		"####" "#" 0 A_JumpIfInTargetInventory("DarkvoidActive",1,"DarkvoidLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("PrismActive",1,"PrismLaunch")
+
+		Goto ClearTracer
+	BreatheDaSpellAltT:
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "Frame")
+		"####" "#" 0 A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
+		"####" "#" 0 A_JumpIfInTargetInventory("FirebreathTome",1,"FirebreathLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkullfireTome",1,"SkullfireLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("MeteorfistTome",1,"MeteorfistLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("FlamewaveTome",1,"FlamewaveLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("FrostbiteTome",1,"FrostbiteLaunchT")
+		//"####" "#" 0 A_JumpIfInTargetInventory("ChillgraspTome",1,"ChillgraspLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("GumpopTome",1,"GumpopLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SkypunchTome",1,"SkypunchLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("CrowsTome",1,"CrowsLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThunderTome",1,"ThunderLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("BreathTome",1,"BreathLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("CorpseTome",1,"CorpseLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("ThreadcutterTome",1,"ThreadcutterLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("AnnihilationTome",1,"AnnihilationLaunchT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SpiritcannonActive",1,"SpiritcannonLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("DarkvoidTome",1,"DarkvoidLaunchT")
+		//"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldTome",1,"SheepshieldLaunch")
+		"####" "#" 0 A_JumpIfInTargetInventory("PrismTome",1,"PrismLaunch")
+		Goto ClearTracer
+
+	//Tomed Firebreath
+	FirebreathLaunchT:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*2, 0)
+		Goto ClearTracer
+		"####" "#" 0 A_PlaySound("TNT/Ignition",1,0.9)
+		"####" "#" 0 A_SetUserVar("User_Breath", 8)
+	FirebreathPhaseOneT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,3)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FirebreathPhaseOneT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 6)
+	FirebreathPhaseTwoT:
+		"####" "###" 0 A_CustomMissile("FiresweepSnort",0,0,frandom(32.0,-32.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "#####" 0 A_CustomMissile("FiresweepSmoke",0,0,frandom(32.0,-32.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,4)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FirebreathPhaseTwoT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+		Goto ClearTracer
+		
+	//Tomed Skullfire
+	SkullfireLaunchT:
+		"####" "#" 0 A_CustomMissile("SkullfireTomedProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Skullfire/Launch",0)
+	    "####" "#" 0 A_PlaySound("Skullfire/Whizz",6,0.55)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	SkullfireLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SkullfireLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 45)
+		Goto ClearTracer
+		
+	//Tomed Meteorfist
+	MeteorfistLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Stomp/Use",5,1)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_GiveToTarget("FamiliarOnTheHunt2",1)
+		"####" "#" 0 A_SpawnItemEx("SuperMeteorfistFamiliar2",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		Goto MeteorfistIdleT
+	MeteorfistIdleT:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInTargetInventory("FamiliarOnTheHunt2",1,"MeteorfistIdleT")
+		TNT1 A 0 A_SetUserVar("User_Breath",175)
+		Goto Frame
+		
+	//Tomed Flamewave
+	FlamewaveLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Skullfire/Launch",5)
+		"####" "#" 0 A_CustomMissile("SuperFlamewaveSpawner",-10,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	FlamewaveLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FlamewaveLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 140)
+		Goto ClearTracer
+		
+	//Tomed Frostbite
+	FrostbiteLaunchT:
+		"####" "#" 0 A_JumpIfInTargetInventory("AltModeEnabled",1,"FrostbiteAltLaunchT")
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedFrostbiteProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Frostbite/Launch",5)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+		Goto FrostbiteLoopT
+	FrostbiteAltLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedFrozenOrbProjectile",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("TomedFrozenOrbProjectileFade1",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_CustomMissile("TomedFrozenOrbProjectileFade2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Frostbite/Launch",5)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+		Goto FrostbiteLoopT
+	FrostbiteLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "FrostbiteLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 105)
+		Goto ClearTracer
+		
+	//Tomed Gumpop
+	GumpopLaunchT:
+		"####" "#" 0 A_JumpIfTargetInLOS(1, 0, JLOSF_PROJECTILE, 64*6, 0)
+		Goto ClearTracer
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("GumpodSpawner",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Gumpop/Cast",5,0.7)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	GumpopLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "GumpopLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Tomed Skypunch
+	SkypunchLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("SkypunchLauncher2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Skypunch/Layer",5,0.9)
+		"####" "#" 0 A_PlaySound("Skypunch/Blast",4,1.0)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 11)
+	SkypunchLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "SkypunchLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 95)
+		Goto ClearTracer
+		
+	//Tomed Crows
+	CrowsLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_PlaySound("Crows/Launch",5,0.8)
+		"####" "#" 0 A_PlaySound("Crows/Scream",7,0.4)
+		"####" "#" 0 A_PlaySound("Crows/Add",4,0.7)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 15)
+	CrowsLoopT:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("CrowLauncher",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "CrowsLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 95)
+		Goto ClearTracer
+		
+	//Tomed Thunderstruck
+	ThunderLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedThunderSpawner",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Thunderstruck/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 14)
+	ThunderLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ThunderLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 95)
+		Goto ClearTracer
+		
+	//Tomed Corpseblast
+	CorpseLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("CorpseblastProjectile2",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Corpseblast/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 15)
+	CorpseLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "CorpseLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 95)
+		Goto ClearTracer
+		
+	//Tomed Threadcutter
+	ThreadcutterLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "####################" 0 A_CustomMissile("ThreadcutterKnife2",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(4.0,-4.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "##########" 0 A_CustomMissile("ThreadcutterCleaver2",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(4.0,-4.0),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(4.0,-4.0),AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Threadcutter/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 20)
+	ThreadcutterLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "ThreadcutterLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 70)
+		Goto ClearTracer
+		
+	//Tomed Annihilation
+	AnnihilationLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedAnnihilationShot",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" "#" 0 A_PlaySound("Annihilation/Use",5,0.8)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	AnnihilationLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "AnnihilationLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 210)
+		Goto ClearTracer
+		
+	//Tomed Sheepshield
+	SheepshieldLaunchT:
+		"####" "#" 0 A_PlaySound("Sheepshield/Loop",5,0.7,1)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_GiveToTarget("SheepActive3",1)
+		"####" "#" 0 A_CustomMissile("SuperFam2ExplosiveSheep1",0,0,0,CMF_TRACKOWNER)
+		"####" "#" 0 A_CustomMissile("SuperFam2ExplosiveSheep2",0,0,0,CMF_TRACKOWNER)
+		"####" "#" 0 A_CustomMissile("SuperFam2ExplosiveSheep3",0,0,0,CMF_TRACKOWNER)
+	SheepshieldPhaseOneT:
+		"####" "#" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		//"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath + 1)
+		"####" "#" 0 A_JumpIf(User_Breath >= 105, "SheepshieldStopT")
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepshieldActive",1,"SheepshieldPhaseOneT")
+		Goto SheepshieldStopT
+	SheepshieldStopT:
+		"####" "#" 0 A_SetUserVar("User_Breath", 205)
+		"####" "#" 0 A_PlaySound("Sheepshield/Stop",5,0.7)
+		"####" "#" 0 A_TakeFromTarget("SheepActive3",1)
+		Goto ClearTracer
+	DarkvoidLaunchT:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,10)
+		"####" "#" 0 A_CustomMissile("TomedDarkWeave",0,0,0,CMF_TRACKOWNER|CMF_OFFSETPITCH,0,AAPTR_TRACER)
+		"####" A 0 A_PlaySound("DarkVoid/Fire",1)
+		"####" A 0 A_PlaySound("DarkVoid/Add1",5)
+		"####" "#" 0 A_PlaySound("Thunderstruck/Use",5,0.9)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Breath", 35)
+	DarkvoidLoopT:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		DFAM E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Breath", User_Breath - 1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,55.0,-45.0,45.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_JumpIf(User_Breath > 0, "DarkvoidLoopT")
+		"####" "#" 0 A_SetUserVar("User_Breath", 210)
+		Goto ClearTracer		
+
+	Death:
+		"####" "#" 0 A_SpawnItemEx("CasterFamiliarRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_TakeFromTarget("CasterFamiliarActive")
+	DeathLoop:
+		DFAM F 1 A_FadeOut(0.05)
+		Loop
+	}
+}
+
+//Spawning/Despawning
+ACTOR CasterFamiliarRelease
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	var int User_Cycle;
+	var int User_MainCycle;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_MainCycle", 7)
+		TNT1 A 0 A_PlaySound("CasterFamiliar/Spawn",5)
+	CycleParticle:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 40)
+	Particle:
+		TNT1 A 0 A_SpawnItemEx("FamiliarEffectParticle2",0,0,0,frandom(4.0,-4.0),frandom(4.0,-4.0),frandom(4.0,-4.0),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleLightning")
+		Loop
+	CycleLightning:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 15)
+	Lightning:
+		TNT1 A 0 A_SpawnItemEx("FamiliarEffectLightning",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(4.0,1.5),frandom(4.0,1.5),frandom(4.0,-4.0),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleCloud")
+		Loop
+	CycleCloud:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 15)
+	Cloud:
+		TNT1 A 0 A_SpawnItemEx("FamiliarEffectCloud",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(5.5,1.5),frandom(5.5,1.5),frandom(5.5,-5.5),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "RinseAndRepeat")
+		Loop
+	RinseAndRepeat:
+		TNT1 A 0 A_SetUserVar("User_MainCycle", User_MainCycle - 1)
+		TNT1 A random(1,2)
+		TNT1 A 0 A_JumpIf(User_MainCycle <= 0, "Death")
+		Goto CycleParticle
+	Death:
+		TNT1 A 15
+		Stop
+	}
+}
+
+ACTOR FamiliarEffect
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	Scale 0
+	Alpha 0.99
+	Renderstyle Add
+}
+
+ACTOR FamiliarEffectLightning : FamiliarEffect
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.075,0.1))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+		RLIT A 0 A_Jump(256,"Main")
+	SpriteB:
+		RLIT B 0 A_Jump(256,"Main")
+	SpriteC:
+		RLIT C 0 A_Jump(256,"Main")
+	SpriteD:
+		RLIT D 0 A_Jump(256,"Main")
+	SpriteE:
+		RLIT E 0 A_Jump(256,"Main")
+	SpriteF:
+		RLIT F 0 A_Jump(256,"Main")
+	SpriteG:
+		RLIT G 0 A_Jump(256,"Main")
+	SpriteH:
+		RLIT H 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5),CVF_RELATIVE)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.004,0.002))
+		"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.05))
+		Loop
+	}
+}
+
+ACTOR FamiliarEffectCloud : FamiliarEffect
+{
+	Alpha 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.3,0.4))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+		RLTD A 0 A_Jump(256,"Main")
+	SpriteB:
+		RLTD B 0 A_Jump(256,"Main")
+	SpriteC:
+		RLTD C 0 A_Jump(256,"Main")
+	SpriteD:
+		RLTD D 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.004,0.002))
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(-0.2,0.2),CVF_RELATIVE)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.075,0.05))
+		Loop
+	}
+}
+
+
+ACTOR FamiliarEffectParticle : FamiliarEffect
+{
+	Alpha 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.025,0.035))
+	Sprite:
+		RPRT A 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_JumpIf(Alpha >= 0.98,"Main2")
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeIn(frandom(0.1,0.04))
+		Loop
+	Main2:
+		"####" "#" 0 A_ScaleVelocity(random(-1.05,-1.02))
+	Main3:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.05,0.03))
+		Loop
+	}
+}
+
+ACTOR FamiliarEffectParticle2 : FamiliarEffect
+{
+	Alpha 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.025,0.035))
+	Sprite:
+		RPRT A 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_JumpIf(Alpha >= 0.98,"Main2")
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeIn(frandom(0.1,0.04))
+		Loop
+	Main2:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.05,0.03))
+		Loop
+	}
+}
+
+//Meteorfist stuff
+ACTOR MeteorfistFamiliar
+{
+	Radius 12
+	Height 16
+	Projectile
+	Speed 30
+	Damage 40
+	+SEEKERMISSILE
+	+BLOODLESSIMPACT
+	Damagetype Meteorfist
+	States
+	{
+	Spawn:
+		"####" "#" 0 NoDelay A_SeekerMissile(20,20,SMF_LOOK|SMF_CURSPEED,256,8) //No frame looper system here. I got lazy.
+		DFAM AA 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_SeekerMissile(20,20,SMF_LOOK|SMF_CURSPEED,256,8)
+		DFAM BB 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_SeekerMissile(20,20,SMF_LOOK|SMF_CURSPEED,256,8)
+		DFAM CC 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_SeekerMissile(20,20,SMF_LOOK|SMF_CURSPEED,256,8)
+		DFAM DD 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_SeekerMissile(20,20,SMF_LOOK|SMF_CURSPEED,256,8)
+		DFAM CC 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_SeekerMissile(20,20,SMF_LOOK|SMF_CURSPEED,256,8)
+		DFAM BB 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		Loop
+	Death:
+		"####" "#" 0 A_SpawnItemEx("MeteorfistImpact",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_SpawnItemEx("MeteorfistFamiliarReturn",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERTRANSLATION)
+		Stop
+	}
+}
+
+ACTOR SuperMeteorfistFamiliar : MeteorfistFamiliar
+{
+	States
+	{
+	Death:
+		"####" "#" 0 A_SpawnItemEx("SuperMeteorfistImpact",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_SpawnItemEx("MeteorfistFamiliarReturn",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERTRANSLATION)
+		Stop
+	}
+}
+
+ACTOR MeteorfistFamiliarReturn : MeteorfistFamiliar
+{
+	Damage 0
+	+NOCLIP
+	+THRUACTORS
+	+DONTBLAST
+	States
+	{
+	Spawn:
+		"####" "#" 0 NoDelay A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_TARGET)
+	Looplet:
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SeekerMissile(50,50,SMF_LOOK|SMF_CURSPEED,256,8) //No frame looper system here. I got lazy.
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarSpot"), "Death")
+		DFAM AA 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SeekerMissile(50,50,SMF_LOOK|SMF_CURSPEED,256,8)
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarSpot"), "Death")
+		DFAM BB 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SeekerMissile(50,50,SMF_LOOK|SMF_CURSPEED,256,8)
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarSpot"), "Death")
+		DFAM CC 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SeekerMissile(50,50,SMF_LOOK|SMF_CURSPEED,256,8)
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarSpot"), "Death")
+		DFAM DD 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SeekerMissile(50,50,SMF_LOOK|SMF_CURSPEED,256,8)
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarSpot"), "Death")
+		DFAM CC 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SeekerMissile(50,50,SMF_LOOK|SMF_CURSPEED,256,8)
+		"####" "#" 0 A_JumpIf(CallACS("FamiliarSpot"), "Death")
+		DFAM BB 1 A_SpawnItemEx("MeteorfistFamiliarTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_CLIENTSIDE|SXF_TRANSFERTRANSLATION)
+		Loop
+	Death:
+		"####" "#" 0 A_TakeFromTarget("FamiliarOnTheHunt",1)
+		Stop
+	}
+}
+
+ACTOR MeteorfistFamiliarTrail
+{
+	Renderstyle Translucent
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+	"####" "#" 1 NoDelay A_FadeOut(0.1)
+	Loop
+	}
+}
+
+//Meteorfist Mirror
+ACTOR MeteorfistFamiliar2 : MeteorfistFamiliar
+{
+	States
+	{
+	Death:
+		"####" "#" 0 A_SpawnItemEx("MeteorfistImpact",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_SpawnItemEx("MeteorfistFamiliarReturn2",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERTRANSLATION)
+		Stop
+	}
+}
+
+ACTOR SuperMeteorfistFamiliar2 : MeteorfistFamiliar2
+{
+	States
+	{
+	Death:
+		"####" "#" 0 A_SpawnItemEx("SuperMeteorfistImpact",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_SpawnItemEx("MeteorfistFamiliarReturn2",0,0,0,60,0,0,0,SXF_TRANSFERPOINTERS|SXF_TRANSFERTRANSLATION)
+		Stop
+	}
+}
+
+ACTOR MeteorfistFamiliarReturn2 : MeteorfistFamiliarReturn
+{
+	Damage 0
+	+NOCLIP
+	+THRUACTORS
+	+DONTBLAST
+	States
+	{
+	Death:
+		"####" "#" 0 A_TakeFromTarget("FamiliarOnTheHunt2",1)
+		Stop
+	}
+}
+
+//Sheepshield stuff
+Actor ExplosiveSheepFamiliar : ExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	"####" "#" 0 NoDelay A_SetUserVar("User_Superposition",30.0+frandom(180.0,0.0))
+		//"####" "#" 0 A_GiveToTarget("SheepOut",1)
+    	"####" "#" 0 A_SetUserVar("User_Angle",random(0,360))
+	ISetMySightsOnYou:
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 7, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "#" 0 A_SpawnItemEx("SheepSpawnGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SheepSpawnShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SheepSpawnFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_PlaySound("Sheep/Spawn",5,0.4)
+  	YouSpinMeRound:
+		"####" "#" 0 A_JumpIf(User_Baa >= 105, "GiveItANoise")
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 7, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE) //
+		"####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetUserVar("User_Angle", User_Angle + 10)
+		"####" "#" 0 A_Explode(8,64,0)
+		//"####" "#" 0 A_SpawnItemEx("SheepTrail",0,0,0,0,0,0,90,SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 1 A_SetAngle(Angle + 90)
+		"####" "#" 0 A_SpawnItemEx("SheepBlock",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_SetUserVar("User_Baa", User_Baa + random(1,2))
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepActive2",1,1)
+		Goto UnleashTheShitstorm
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1") //I am so infuriated on repeating functions with each frame that I decided to come up with this convoluted piece of shit just to not repeat frames. D'oh.
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+
+	UnleashTheShitstorm:
+		"####" "#" 0 A_SetPitch(-CallACS("Pitchfork Simulation"))
+		"####" "#" 0 A_SetUserVar("User_Timer", random(210,245))
+		"####" "#" 0 A_SetUserVar("User_Released",1)
+		"####" "#" 0 A_ChangeFlag("NOINTERACTION",0)
+		"####" "#" 0 A_ChangeFlag("NOCLIP",0)
+		"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 20, sin(angle) * cos(pitch) * 20, sin(pitch) * 20, CVF_REPLACE)
+	LikeARecordBaby: //RELEASE THE SHEEPS.
+		"####" "#" 0 A_CheckFloor("IzSpeedCorrect")
+	HereICome:
+		"####" "#" 0 A_JumpIf(User_Baa >= 140, "GiveItANoise")
+		//"####" "#" 0 A_SpawnItemEx("SheepCollider",25,0,-15,0,0,0,0,SXF_TRANSFERPOINTERS) ..hoped this would work, but it doesn't. Shame on me.
+		"####" "#" 1 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetUserVar("User_Timer", User_Timer - 1)
+		"####" "#" 0 A_JumpIf(User_Timer <= 0, "Death")
+		"####" "#" 0 A_SetUserVar("User_Baa", User_Baa + random(1,2))
+		//"####" "#" 0 A_SpawnItemEx("SheepTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME)
+		//"####" "#" 0 A_JumpIf(CallACS("Large Sheep Collider") == true, "Jump")
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+		Loop
+	GiveItANoise:
+		"####" "#" 0 A_SetUserVar("User_Baa", 0)
+		"####" "#" 0 A_Jump(128,2)
+		"####" "#" 0 A_PlaySound("Sheep/Noise",6,0.6)
+		"####" "#" 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Jump:
+		"####" "#" 0 A_PlaySound("Sheep/Noise",6)
+		"####" "#" 0 A_ChangeVelocity(25,0,25,CVF_RELATIVE)
+		Goto LikeARecordBaby
+	Frame1:
+		SHEP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame2:
+		SHEP B 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame3:
+		SHEP C 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame4:
+		SHEP D 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Reset:
+		SHEP A 0 A_SetUserVar("User_Frame", 0)
+		SHEP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	IzSpeedCorrect:
+		"####" "#" 0 A_JumpIf(Velx < 20,1)
+		Goto HereICome
+		"####" "#" 0 A_SetPitch(0)
+		"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 20, sin(angle) * cos(pitch) * 20, sin(pitch) * 20, CVF_REPLACE)
+		Goto HereICome
+	Death:
+		//TNT1 A 0 A_TakeFromTarget("SheepOut",1)
+		TNT1 A 0 A_PlaySound("Sheep/Blast",4,0.6)
+		TNT1 A 0 A_SpawnItemEx("SheepBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor SuperFamExplosiveSheep : SuperExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	"####" "#" 0 NoDelay A_SetUserVar("User_Superposition",40.0+frandom(180.0,0.0))
+	ISetMySightsOnYou:
+		//"####" "#" 0 A_GiveToTarget("SuperSheepOut",1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 15, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "#" 0 A_SpawnItemEx("SuperSheepSpawnGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SuperSheepSpawnShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SuperSheepSpawnFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_PlaySound("Sheep/Spawn",5,0.4)
+  	YouSpinMeRound:
+		"####" "#" 0 A_PlaySound("SuperSheep/Whoosh",6,0.7,1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 15, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE) //
+		"####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetUserVar("User_Angle", User_Angle + 10)
+		"####" "#" 0 A_Explode(30,64,0)
+		"####" "#" 0 A_SpawnItemEx("SheepReflector",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "###" 0 A_SpawnItemEx("SuperSheepStarTrail",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(1.0,-0.5),frandom(225.0,315.0),SXF_CLIENTSIDE,64)
+		//"####" "#" 0 A_SpawnItemEx("SuperSheepTrail",0,0,0,0,0,0,90,SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 1 A_SetAngle(Angle + 90)
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepActive2",1,1)
+		Goto UnleashTheShitstorm
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+
+	UnleashTheShitstorm:
+		"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 25, sin(angle) * cos(pitch) * 25, sin(pitch) * 25, CVF_REPLACE)
+		"####" "#" 0 A_SetUserVar("User_Released", 1)
+		"####" "#" 0 A_SetUserVar("User_MaxSpeed", 30 << 16)
+		"####" "#" 0 A_SetUserVar("User_Acceleration", 1.3 * 65535)
+		"####" "#" 0 A_ChangeFlag("NOINTERACTION",0)
+		"####" "#" 0 A_ChangeFlag("NOCLIP",0)
+		"####" "#" 0 ACS_NamedExecuteAlways("KD Laser Track", 0)
+	LikeARecordBaby:
+	HereICome:
+
+		"####" "###" 0 A_SpawnItemEx("SuperSheepStarTrail",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(1.0,-0.5),frandom(225.0,315.0),SXF_CLIENTSIDE,64)
+		"####" "#" 1 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_FaceTracer
+		//"####" "#" 0 A_SpawnItemEx("SheepTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME)
+		 //A_JumpIf(CallACS("Large Sheep Collider") == true, "Jump")
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+		Loop
+	Frame1:
+		SSHP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame2:
+		SSHP B 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame3:
+		SSHP C 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame4:
+		SSHP D 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Reset:
+		SSHP A 0 A_SetUserVar("User_Frame", 0)
+		SSHP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Death:
+		TNT1 A 0
+		Goto RestOfDeath
+	RestOfDeath:
+		TNT1 A 0 A_StopSound(6)
+		//TNT1 A 0 A_TakeFromTarget("SuperSheepOut", 1)
+		TNT1 A 0 A_SpawnItemEx("SuperSheepBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor SuperFamExplosiveSheep1 : SuperFamExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	SSHP A 0 NoDelay A_SetUserVar("User_Superposition",60.0)
+		SSHP A 0 A_SetUserVar("User_Angle",0)
+		Goto ISetMySightsOnYou
+	}
+}
+
+Actor SuperFamExplosiveSheep2 : SuperFamExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	SSHP A 0 NoDelay A_SetUserVar("User_Superposition",60.0)
+    	SSHP A 0 A_SetUserVar("User_Angle",120)
+		Goto ISetMySightsOnYou
+	}
+}
+
+Actor SuperFamExplosiveSheep3 : SuperFamExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	SSHP A 0 NoDelay A_SetUserVar("User_Superposition",60.0)
+    	SSHP A 0 A_SetUserVar("User_Angle",240)
+		Goto ISetMySightsOnYou
+	}
+}
+
+//Mirror sheep
+Actor ExplosiveSheepFamiliar2 : ExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	"####" "#" 0 NoDelay A_SetUserVar("User_Superposition",30.0+frandom(180.0,0.0))
+		//"####" "#" 0 A_GiveToTarget("SheepOut",1)
+    	"####" "#" 0 A_SetUserVar("User_Angle",random(0,360))
+	ISetMySightsOnYou:
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 7, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "#" 0 A_SpawnItemEx("SheepSpawnGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SheepSpawnShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SheepSpawnFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_PlaySound("Sheep/Spawn",5,0.4)
+  	YouSpinMeRound:
+		"####" "#" 0 A_JumpIf(User_Baa >= 105, "GiveItANoise")
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 7, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE) //
+		"####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetUserVar("User_Angle", User_Angle + 10)
+		"####" "#" 0 A_Explode(8,64,0)
+		//"####" "#" 0 A_SpawnItemEx("SheepTrail",0,0,0,0,0,0,90,SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 1 A_SetAngle(Angle + 90)
+		"####" "#" 0 A_SpawnItemEx("SheepBlock",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_SetUserVar("User_Baa", User_Baa + random(1,2))
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepActive3",1,1)
+		Goto UnleashTheShitstorm
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1") //I am so infuriated on repeating functions with each frame that I decided to come up with this convoluted piece of shit just to not repeat frames. D'oh.
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+
+	UnleashTheShitstorm:
+		"####" "#" 0 A_SetPitch(-CallACS("Pitchfork Simulation"))
+		"####" "#" 0 A_SetUserVar("User_Timer", random(210,245))
+		"####" "#" 0 A_SetUserVar("User_Released",1)
+		"####" "#" 0 A_ChangeFlag("NOINTERACTION",0)
+		"####" "#" 0 A_ChangeFlag("NOCLIP",0)
+		"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 20, sin(angle) * cos(pitch) * 20, sin(pitch) * 20, CVF_REPLACE)
+	LikeARecordBaby: //RELEASE THE SHEEPS.
+		"####" "#" 0 A_CheckFloor("IzSpeedCorrect")
+	HereICome:
+		"####" "#" 0 A_JumpIf(User_Baa >= 140, "GiveItANoise")
+		//"####" "#" 0 A_SpawnItemEx("SheepCollider",25,0,-15,0,0,0,0,SXF_TRANSFERPOINTERS) ..hoped this would work, but it doesn't. Shame on me.
+		"####" "#" 1 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetUserVar("User_Timer", User_Timer - 1)
+		"####" "#" 0 A_JumpIf(User_Timer <= 0, "Death")
+		"####" "#" 0 A_SetUserVar("User_Baa", User_Baa + random(1,2))
+		//"####" "#" 0 A_SpawnItemEx("SheepTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME)
+		//"####" "#" 0 A_JumpIf(CallACS("Large Sheep Collider") == true, "Jump")
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+		Loop
+	GiveItANoise:
+		"####" "#" 0 A_SetUserVar("User_Baa", 0)
+		"####" "#" 0 A_Jump(128,2)
+		"####" "#" 0 A_PlaySound("Sheep/Noise",6,0.6)
+		"####" "#" 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Jump:
+		"####" "#" 0 A_PlaySound("Sheep/Noise",6)
+		"####" "#" 0 A_ChangeVelocity(25,0,25,CVF_RELATIVE)
+		Goto LikeARecordBaby
+	Frame1:
+		SHEP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame2:
+		SHEP B 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame3:
+		SHEP C 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame4:
+		SHEP D 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Reset:
+		SHEP A 0 A_SetUserVar("User_Frame", 0)
+		SHEP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	IzSpeedCorrect:
+		"####" "#" 0 A_JumpIf(Velx < 20,1)
+		Goto HereICome
+		"####" "#" 0 A_SetPitch(0)
+		"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 20, sin(angle) * cos(pitch) * 20, sin(pitch) * 20, CVF_REPLACE)
+		Goto HereICome
+	Death:
+		//TNT1 A 0 A_TakeFromTarget("SheepOut",1)
+		TNT1 A 0 A_PlaySound("Sheep/Blast",4,0.6)
+		TNT1 A 0 A_SpawnItemEx("SheepBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor SuperFam2ExplosiveSheep : SuperExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	"####" "#" 0 NoDelay A_SetUserVar("User_Superposition",40.0+frandom(180.0,0.0))
+	ISetMySightsOnYou:
+		//"####" "#" 0 A_GiveToTarget("SuperSheepOut",1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 15, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		"####" "#" 0 A_SpawnItemEx("SuperSheepSpawnGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SuperSheepSpawnShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_SpawnItemEx("SuperSheepSpawnFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_PlaySound("Sheep/Spawn",5,0.4)
+  	YouSpinMeRound:
+		"####" "#" 0 A_PlaySound("SuperSheep/Whoosh",6,0.7,1)
+		"####" "#" 0 A_Warp(AAPTR_TARGET, User_Superposition, 0, 15, User_Angle, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE) //
+		"####" "#" 0 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_SetUserVar("User_Angle", User_Angle + 10)
+		"####" "#" 0 A_Explode(30,64,0)
+		"####" "#" 0 A_SpawnItemEx("SheepReflector",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		"####" "###" 0 A_SpawnItemEx("SuperSheepStarTrail",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(1.0,-0.5),frandom(225.0,315.0),SXF_CLIENTSIDE,64)
+		//"####" "#" 0 A_SpawnItemEx("SuperSheepTrail",0,0,0,0,0,0,90,SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 1 A_SetAngle(Angle + 90)
+		"####" "#" 0 A_JumpIfInTargetInventory("SheepActive3",1,1)
+		Goto UnleashTheShitstorm
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+
+	UnleashTheShitstorm:
+		"####" "#" 0 A_ChangeVelocity(cos(angle) * cos(pitch) * 25, sin(angle) * cos(pitch) * 25, sin(pitch) * 25, CVF_REPLACE)
+		"####" "#" 0 A_SetUserVar("User_Released", 1)
+		"####" "#" 0 A_SetUserVar("User_MaxSpeed", 30 << 16)
+		"####" "#" 0 A_SetUserVar("User_Acceleration", 1.3 * 65535)
+		"####" "#" 0 A_ChangeFlag("NOINTERACTION",0)
+		"####" "#" 0 A_ChangeFlag("NOCLIP",0)
+		"####" "#" 0 ACS_NamedExecuteAlways("KD Laser Track", 0)
+	LikeARecordBaby:
+	HereICome:
+
+		"####" "###" 0 A_SpawnItemEx("SuperSheepStarTrail",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(1.0,-0.5),frandom(225.0,315.0),SXF_CLIENTSIDE,64)
+		"####" "#" 1 A_SetUserVar("User_Frame", User_Frame + 1)
+		"####" "#" 0 A_FaceTracer
+		//"####" "#" 0 A_SpawnItemEx("SheepTrail",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME)
+		 //A_JumpIf(CallACS("Large Sheep Collider") == true, "Jump")
+
+		"####" "#" 0 A_JumpIf(User_Frame <= 4, "Frame1")
+		"####" "#" 0 A_JumpIf(User_Frame <= 8, "Frame2")
+		"####" "#" 0 A_JumpIf(User_Frame <= 12, "Frame3")
+		"####" "#" 0 A_JumpIf(User_Frame <= 16, "Frame4")
+		"####" "#" 0 A_JumpIf(User_Frame > 16, "Reset")
+		Loop
+	Frame1:
+		SSHP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame2:
+		SSHP B 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame3:
+		SSHP C 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Frame4:
+		SSHP D 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Reset:
+		SSHP A 0 A_SetUserVar("User_Frame", 0)
+		SSHP A 0 A_JumpIf(User_Released == 1, "LikeARecordBaby")
+		Goto YouSpinMeRound
+	Death:
+		TNT1 A 0
+		Goto RestOfDeath
+	RestOfDeath:
+		TNT1 A 0 A_StopSound(6)
+		//TNT1 A 0 A_TakeFromTarget("SuperSheepOut", 1)
+		TNT1 A 0 A_SpawnItemEx("SuperSheepBlast",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		Stop
+	}
+}
+
+Actor SuperFam2ExplosiveSheep1 : SuperFam2ExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	SSHP A 0 NoDelay A_SetUserVar("User_Superposition",60.0)
+		SSHP A 0 A_SetUserVar("User_Angle",0)
+		Goto ISetMySightsOnYou
+	}
+}
+
+Actor SuperFam2ExplosiveSheep2 : SuperFam2ExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	SSHP A 0 NoDelay A_SetUserVar("User_Superposition",60.0)
+    	SSHP A 0 A_SetUserVar("User_Angle",120)
+		Goto ISetMySightsOnYou
+	}
+}
+
+Actor SuperFam2ExplosiveSheep3 : SuperFam2ExplosiveSheep
+{
+	States
+	{
+	Spawn:
+    	SSHP A 0 NoDelay A_SetUserVar("User_Superposition",60.0)
+    	SSHP A 0 A_SetUserVar("User_Angle",240)
+		Goto ISetMySightsOnYou
+	}
+}

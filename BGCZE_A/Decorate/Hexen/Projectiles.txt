@@ -1,0 +1,24 @@
+ACTOR HexMageStaffFX2 : MageStaffFX2 replaces MageStaffFX2
+{
+	DamageType "Fire2"
+}
+
+ACTOR HexDemon1FX1 : Demon1FX1 replaces Demon1FX1
+{
+	DamageType "Fire2"
+}
+
+ACTOR HexDragonExplosion : DragonExplosion replaces DragonExplosion
+{
+	DamageType "Fire2"
+}
+
+ACTOR HexDragonFireball : DragonFireball replaces DragonFireball
+{
+	DamageType "Fire2"
+}
+
+ACTOR HexSerpentFX : SerpentFX replaces SerpentFX
+{
+	DamageType "Poison"
+}

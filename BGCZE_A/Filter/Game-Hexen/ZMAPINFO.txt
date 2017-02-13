@@ -1,0 +1,4 @@
+gameinfo
+{
+	playerclasses = "Guncaster3" // Hexen
+}

@@ -1,0 +1,254 @@
+ACTOR GuncastKorax : Korax replaces Korax
+{
+	//Loot
+	DropItem "Diamond"
+	DropItem "TomeSpawner"
+	DropItem "StratSpawner"
+
+	//PAAAAAIN
+	PainChance 20
+	PainChance Crow, 1
+	PainChance Crow2, 1
+	
+	//Resists and... weaknesses?
+	
+	//Maybe not a wazard, but still pain in the ass.
+	
+	DamageFactor Flesh, 0.8
+	DamageFactor Manuel, 0.7
+	DamageFactor Normal, 0.7
+	DamageFactor Crow, 0.6
+	DamageFactor Crow2, 0.6
+	DamageFactor Matriarch, 0.7
+	
+	DamageFactor Acid, 0.8
+	DamageFactor Fire, 0.8
+	DamageFactor Ice, 0.8
+	DamageFactor Meteorfist, 0.8
+	DamageFactor Lightning, 0.6
+	DamageFactor LightningBlue, 0.6
+	DamageFactor Annihiliation, 0.6
+	DamageFactor Breath, 0.4
+	DamageFactor Tiberium, 0.5
+	DamageFactor BlueTiberium, 0.5
+	
+	//Guaranteed Effects
+	PainChance SuperCloseCombat, 256
+	PainChance SuperShoelaces, 256
+	PainChance SuperMidasCloseCombat, 256
+	PainChance SuperMidasShoelaces, 256
+	PainChance Acid, 256
+	PainChance Meteorfist, 256
+	
+	//Chance Effects
+	PainChance Lightning, 72
+	PainChance LightningBlue, 4
+	PainChance Manuel, 20
+	PainChance Fire, 20
+	
+	var int User_DeathByFire;
+	var int User_DeathByTiberium;
+	var int User_DeathByBlueTiberium;
+	var int User_LightningLock;
+	
+	States
+	{
+	Pain.SuperCloseCombat:
+	Pain.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-2.0,-4.0),0,frandom(0.5,1.0),CVF_RELATIVE)
+		Goto Super::Pain
+	Pain.SuperShoelaces:
+	Pain.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-4.0,-8.0),0,frandom(3.0,5.0),CVF_RELATIVE)
+		Goto Super::Pain
+	Death.SuperCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-2.0,-4.0),0,frandom(0.5,1.0),CVF_RELATIVE)
+		Goto Super::Death
+	Death.SuperShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-4.0,-8.0),0,frandom(3.0,5.0),CVF_RELATIVE)
+		Goto Super::Death
+	Death.MidasCloseCombat:
+	Death.MidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_KoraxBonePop
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Korax",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS) //SXF_TRANSFERSPRITEFRAME|SXF_SETMASTER)
+		TNT1 A 5 A_KoraxBonePop
+		Stop
+	Death.SuperMidasCloseCombat:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_KoraxBonePop
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Korax",0,0,0,frandom(-2.0,-4.0),0,frandom(0.5,1.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 0 A_KoraxBonePop
+		TNT1 A 10 A_KillChildren
+		stop
+	Death.SuperMidasShoelaces:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_KoraxBonePop
+		TNT1 A 0 A_PlaySound("Midas/Touched")
+		TNT1 A 0 A_SpawnItemEx("Midas_Statue_Korax",0,0,0,frandom(-4.0,-8.0),0,frandom(3.0,5.0),0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		TNT1 A 0 A_KoraxBonePop
+		TNT1 A 10 A_KillChildren
+		Stop
+		
+	//Standard death stuff
+	Death:
+	    KORX I 5
+		KORX J 5 A_FaceTarget
+		KORX K 5 A_Scream
+		KORX LMNOP 5
+		KORX Q 10
+		KORX R 5 A_KoraxBonePop
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		KORX S 5 A_NoBlocking
+		KORX TU 5
+		KORX V -1
+		Stop
+			
+	//Gumpop
+	Pain.Acid:
+		"####" "#" 0 A_JumpIfInventory("PowerGumpopDamage",1,2)
+		"####" "#" 0 A_SpawnItemEx("GumpopIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR|SXF_TRANSFERSPRITEFRAME)
+		"####" "#" 0 A_SpawnItemEx("GumpopGlow",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		"####" "#" 0 A_Jump(200,"Pain")
+		Goto Super::See
+		
+	//Dreadful
+	Death.Tiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Super::Death
+	Death.BlueTiberium:
+		TNT1 A 0 A_SetUserVar("User_DeathByBlueTiberium", 1)
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Super::Death
+		
+	//Threadcutter
+	Pain.Manuel:
+		"####" "#" 0 A_Jump(64,1)
+		Goto Super::Pain
+		"####" "#" 0 A_GiveInventory("BleedItem")
+		"####" "#" 0 A_SpawnItemEx("BleedIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Super::Pain
+		
+	//Thunderstruck
+	Pain.Lightning:
+		"####" "#" 0 A_Jump(96,1)
+		Goto Super::Pain
+		KORX H 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	LightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty")
+		"####" "###" 2 A_SpawnItemEx("MonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "LightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto Super::See
+		
+	//Cauterizer
+	Pain.LightningBlue:
+		"####" "#" 0 A_Jump(12,1)
+		Goto Super::Pain
+		KORX H 0 A_ChangeFlag("NOPAIN",1)
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock + 10)
+	BlueLightningLock:
+		"####" "#" 0 A_SetUserVar("User_LightningLock", User_LightningLock - 1)
+		"####" "#" 0 A_Pain
+		"####" "#" 0 A_PlaySound("Thunderstruck/Shocked",5,0.6,1)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "##" 0 ACS_NamedExecuteAlways("Shock me Plenty Blue")
+		"####" "###" 2 A_SpawnItemEx("CauterMonsterShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_TRANSFERPOINTERS)
+		"####" "#" 0 A_JumpIf(User_LightningLock >= 1, "BlueLightningLock")
+		"####" "#" 0 A_StopSound(5)
+		"####" "#" 0 A_ChangeFlag("NOPAIN",0)
+		Goto Super::See
+		
+	//Fire
+	Pain.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-4.0,-8.0),0,frandom(3.0,5.0),CVF_RELATIVE)
+		"####" "#" 0 A_Jump(256,2) //Guaranteed "On Fire!" effect, heeeh.
+	Pain.Fire:
+		"####" "#" 0 A_Jump(8,1)
+		Goto Super::Pain
+		"####" "#" 0 A_JumpIfInventory("PowerOnFire",1,"Pain")
+		"####" "#" 0 A_GiveInventory("OnFireItem")
+		"####" "#" 0 A_SpawnItemEx("OnFireIndicator",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Super::Pain
+	Death.Meteorfist:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeVelocity(frandom(-4.0,-8.0),0,frandom(3.0,5.0),CVF_RELATIVE)
+	Death.Lightning:
+	Death.LightningBlue:
+	Death.Fire:
+		"####" "#" 0 A_SetUserVar("User_DeathByFire", 1)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_SpawnItemEx("FlamingDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Super::Death
+		
+	//Scourgebreath
+	/*Death.Breath:
+		"####" "######" 0 A_DropItem("MajorManaPot",-1,224)
+		"####" "#" 0 ACS_NamedExecuteAlways("Extra Crispy")
+		"####" "#" 0 A_Scream
+		"####" "#" 0 A_NoBlocking
+		"####" "#" 0 A_KoraxBonePop
+		"####" "#" 0 A_SpawnItemEx("BreathSoulburst",0,0,0,0,0,0,0,SXF_TRANSFERSPRITEFRAME|SXF_TRANSFERPOINTERS)
+	DeathBreathLoop:
+		"####" "#" 0 A_SpawnItemEx("BreathDisintegration",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_JumpIf(ScaleX <= 0, "Null")
+		"####" "#" 0 A_FadeOut(0.05)
+		"####" "#" 1 A_SetScale(ScaleX - 0.03, ScaleY - 0.005)
+		Loop*/
+  }
+}
+
+//HOW DO YOU LIKE YOUR GOLD NOW, HUH? HUH!?!
+ACTOR Midas_Statue_Korax : Midas_Statue
+{
+	Radius 65
+	Height 115
+	Health 250
+	States
+	{
+	Spawn:
+		KORX H 1
+		Goto Super::Cycle
+	Death:
+	Crash:
+		TNT1 A 0 A_SetUserVar("User_GoldRange",30)
+		TNT1 A 0 A_SetUserVar("User_GoldAmount",40)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter1",45)
+		TNT1 A 0 A_SetUserVar("User_GoldCounter2",45)
+		Goto Super::DeathInit
+	MidasReward:
+		TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+		TNT1 A 0 A_GiveToTarget("Dosh",2000)
+		Stop
+		TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,2000)
+		Stop
+	}
+}

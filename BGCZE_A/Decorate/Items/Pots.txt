@@ -1,0 +1,174 @@
+ACTOR HealVial : Stimpack replaces CrystalVial
+{
+   inventory.amount 10
+   inventory.pickupsound "Pot/Use"
+   inventory.pickupmessage "Obtained a healing vial."
+   States
+   {
+   Spawn:
+   PTN1 AABBCCDDEE 1 A_SpawnItemEx("RedParticle",frandom(3.0,-3.0),frandom(3.0,-3.0),frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+   Loop
+   }
+}
+
+ACTOR HealPot : HealthPickup// replaces ArtiHealth
+{
+   Tag "Potion of Healing"
+   Inventory.Amount 1
+   Inventory.MaxAmount 10
+   Inventory.InterHubAmount 10
+   Inventory.PickupSound "Pot/Pickup"
+   Inventory.UseSound "Pot/Use"
+   Inventory.PickupMessage "Picked up a healing pot."
+   Inventory.Icon ARTIPTN2
+   HealthPickup.Autouse 1
+   Health 25
+   +INVBAR
+   States
+   {
+   Spawn:
+      PTN2 AABBCCDDEEFF 1 A_SpawnItemEx("RedParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+      Loop
+   } 
+}
+
+ACTOR RejuvPot : CustomInventory
+{
+  Tag "Potion of Rejuvenation"
+  Inventory.Amount 1
+  Inventory.MaxAmount 10
+  Inventory.InterHubAmount 10
+  Inventory.Icon ARTIPTN5
+  Inventory.PickupSound "Pot/Pickup"
+  Inventory.UseSound "Pot/Use"
+  Inventory.PickupMessage "Grabbed a rejuvenation pot."
+  +INVBAR
+  States
+  {
+  Spawn:
+    PTN5 AABBCCDDEEFF 1 A_SpawnItemEx("YellowParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  Use:
+	TNT1 A 0 A_JumpIf(CallACS("HPMPChecker") == 1, 1)
+	Fail
+	TNT1 A 0 ACS_NamedExecuteAlways("RejuvRegen")
+	Stop
+  }
+}
+
+ACTOR RejuvHeal : Health
+{
+  Inventory.Amount 1
+}
+
+ACTOR BerserkPot : CustomInventory
+{
+  Inventory.Icon ARTIBZPT
+  Inventory.PickupMessage "You've got the Berserk potion!"
+  Inventory.Amount 1
+  Inventory.MaxAmount 5
+  Inventory.InterHubAmount 5
+  Inventory.PickupSound "Pot/Pickup"
+  Inventory.UseSound "Berserk/Use"
+  Tag "Potion of Berserking"
+  +INVBAR
+  //+COUNTITEM
+  States
+  {
+  Spawn:
+    BZPT AABBCCDDEEFFGG 1 A_SpawnItemEx("RedParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  Use:
+    //Has additive time, soooo... why should I restrict it? If someone can't stop using it by accident, not my fault, duh.
+	//TNT1 A 0 A_JumpIfInventory("PowerBerserkDamage",1,"Nope")
+	TNT1 A 0 A_GiveInventory("PowerBerserking")
+	TNT1 A 0 A_GiveInventory("PowerJumping")
+	TNT1 A 0 A_GiveInventory("PowerSpeeding")
+	TNT1 A 0 A_GiveInventory("PowerBerserkingResist")
+	//TNT1 A 0 A_GiveInventory("BerserkIcon")
+    TNT1 A 0 HealThing(200, 0)
+    Stop
+  Nope:
+	TNT1 A 0
+	Fail
+  }
+}
+
+ACTOR GunzerkPot : CustomInventory
+{
+  Inventory.Icon ARTIGZPT
+  Inventory.PickupMessage "You've got the Gunzerk potion!"
+  Inventory.Amount 1
+  Inventory.MaxAmount 5
+  Inventory.InterHubAmount 5
+  Inventory.PickupSound "Pot/Pickup"
+  Inventory.UseSound "Gunzerk/Use"
+  Tag "Potion of Gunzerking"
+  +INVBAR
+  //+COUNTITEM
+  States
+  {
+  Spawn:
+    GZPT AABBCCDDEEFFGG 1 A_SpawnItemEx("PurpleParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(17.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  Use:
+	//TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"Nope")
+    TNT1 A 0 A_GiveInventory("GunzerkingGiver")
+	TNT1 A 0 A_GiveInventory("PowerGunzerkingResist")
+	//TNT1 A 0 A_GiveInventory("GunzerkIcon")
+    TNT1 A 0 ACS_NamedExecute("GC Ammo Regen")	
+    TNT1 A 0 HealThing(200, 0)
+    Stop
+  Nope:
+	TNT1 A 0
+	Fail
+  }
+}
+
+ACTOR IronLizardPot : CustomInventory
+{
+  Inventory.Icon ARTIIRNP
+  Inventory.PickupMessage "You've got the Iron Lizard potion!"
+  Inventory.Amount 1
+  Inventory.MaxAmount 5
+  Inventory.InterHubAmount 5
+  Inventory.PickupSound "Pot/Pickup"
+  Inventory.UseSound "IronLizard/Use"
+  Tag "Potion of Iron Lizard"
+  +INVBAR
+  //+COUNTITEM
+  States
+  {
+  Spawn:
+    IRNP AABBCCDDEEFFGG 1 A_SpawnItemEx("CyanParticle",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.6,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  Use:
+	TNT1 A 0 A_GiveInventory("DragonTerminator")
+    Stop
+  Nope:
+	TNT1 A 0
+	Fail
+  }
+}
+
+ACTOR PowerGodMode : PowerInvulnerable
+{
+	Inventory.Icon "" //"GDMOD0"
+}
+
+ACTOR DragonTerminator : PowerupGiver
+{
+	Powerup.Duration -45
+	Powerup.Color Grey, 0.05
+	Powerup.Type "GodMode" //"IronLizard"
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+/*
+ACTOR PowerIronLizard : PowerInvulnerable
+{
+	Powerup.Duration -45
+	Inventory.Icon "IRONLZD0"
+	Powerup.Color Grey, 0.05
+}
+*/

@@ -1,0 +1,115 @@
+ACTOR Medbag : CustomInventory
+{
+   Inventory.Amount 100
+   Inventory.MaxAmount 500
+   Inventory.InterHubAmount 500
+   Inventory.PickupSound "Health/Pickup"
+   Inventory.UseSound ""
+   Inventory.PickupMessage "You are in possession of a medic bag!"
+   Inventory.Icon ARTIMBAG
+   Tag "Medbag"
+   +INVBAR
+   +INVENTORY.UNDROPPABLE
+   States
+   {
+   Spawn:
+      MBAG A -1
+      Stop
+   Use:
+	  TNT1 A 0 A_JumpIfInventory("PowerMedbagFake",1,"Nope")
+	  TNT1 A 0 ACS_NamedExecuteAlways("MedbagHealing")
+	  Fail
+   Nope:
+	  TNT1 A 0
+	  Fail
+   } 
+}
+
+actor MedbagDelay : PowerupGiver
+{
+  Inventory.Amount 0
+  Powerup.Type "MedbagFake"
+  Powerup.Duration -15
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.ADDITIVETIME
+}
+
+actor PowerMedbagFake : PowerDamage
+{	
+	Inventory.Icon "HEALED0"
+	DamageFactor "Normal", 1.0
+}
+
+ACTOR MedbagEffect : CustomInventory
+{
+	+INVENTORY.AUTOACTIVATE
+	States
+	{	
+		Spawn:
+			TNT1 A 0
+			Stop
+		Pickup:
+			TNT1 A 0 A_PlaySound("Health/Use",3)
+			TNT1 A 0 A_SpawnItemEx("MedbagHealEffect",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+			TNT1 A 0 A_SetBlend("Red",0.15,25)
+			Stop
+	}
+}
+
+ACTOR MedbagHealth : Health
+{
+  Inventory.Amount 1
+}
+
+ACTOR MedbagGiver : CustomInventory
+{
+  Inventory.MaxAmount 0
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.ALWAYSPICKUP
+  States
+  {
+  Spawn:
+    TNT1 A -1
+    Stop
+  Pickup:
+    TNT1 A 0 A_GiveInventory("Medbag",100)
+    Stop
+  }
+}
+
+ACTOR MedbagHealEffect
+{
+	+NOINTERACTION
+	ReactionTime 50
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("MedbagCross",frandom(20.0,-20.0),frandom(10.0,-10.0),frandom(50.0,0.0),frandom(0.75,0.5),frandom(0.75,0.5),frandom(0.75,0.5),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		TNT1 A 0 A_Countdown
+		Loop
+	Death:
+		TNT1 A 30
+		Stop
+	}
+}
+
+ACTOR MedbagCross
+{
+	+NOINTERACTION
+	+NOTONAUTOMAP
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+	Alpha 0.0
+	States
+	{
+	Spawn:
+		MBAG B 0 NoDelay A_SetScale(frandom(0.1,0.3))
+		MBAG B 0 A_FadeIn(frandom(0.7,1.0))
+	Looplet:
+		MBAG B 0 A_ChangeVelocity(frandom(0.3,-0.3),frandom(0.3,-0.3),frandom(0.3,-0.1),CVF_RELATIVE)
+		MBAG B 0 A_SetScale(ScaleX - 0.005)
+		MBAG B 0 A_JumpIf(ScaleX <= 0, "Null")
+		MBAG B 1 Bright A_FadeOut(0.04)
+		Loop
+	}
+}

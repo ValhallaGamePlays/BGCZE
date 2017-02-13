@@ -1,0 +1,95 @@
+pointlight HEALVIAL
+{
+    color 0.8 0.1 0.1
+    size 9
+    offset 0 3 0
+}
+
+object HealVial
+{
+    frame PTN1 { light HEALVIAL }
+}
+
+pointlight HEALPOT
+{
+    color 0.8 0.1 0.1
+    size 14
+    offset 0 3 0
+}
+
+object HealPot
+{
+    frame PTN2 { light HEALPOT }
+}
+
+pointlight REJUVPOT
+{
+    color 0.8 0.8 0.1
+    size 14
+    offset 0 3 0
+}
+
+object RejuvPot
+{
+    frame PTN5 { light REJUVPOT }
+}
+
+pointlight MANAVIAL
+{
+    color 0.1 0.1 0.8
+    size 9
+    offset 0 3 0
+}
+
+object MinorManaPot
+{
+    frame PTN4 { light MANAVIAL }
+}
+
+pointlight MANAPOT
+{
+    color 0.1 0.1 0.8
+    size 14
+    offset 0 3 0
+}
+
+object MajorManaPot
+{
+    frame PTN3 { light MANAPOT }
+}
+
+pointlight GUNZPOT
+{
+    color 0.8 0.1 0.8
+    size 16
+    offset 0 4 0
+}
+
+object GunzerkPot
+{
+    frame GZPT { light GUNZPOT }
+}
+
+pointlight BERZPOT
+{
+    color 0.8 0.3 0.1
+    size 16
+    offset 0 4 0
+}
+
+object BerserkPot
+{
+    frame BZPT { light BERZPOT }
+}
+
+pointlight IRONPOT
+{
+    color 0.1 0.7 0.8
+    size 16
+    offset 0 4 0
+}
+
+object IronLizardPot
+{
+    frame IRNP { light IRONPOT }
+}

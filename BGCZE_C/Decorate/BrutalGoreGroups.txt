@@ -1,0 +1,1726 @@
+ACTOR GC_ZombieXDeath : ZombieXDeath replaces ZombieXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_SpawnItem("BloodSplasher3")
+		
+		TNT1 AAAAAAAAAAAAAAA 0 A_CustomMissile ("SuperWallRedBlood", 40, 0, random (0, 360), 2, random (-15, 15))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathArm1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHalfZombiemanNoArmNoHead", 48, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("XDeath5", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath2b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath3b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece2", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece1", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan1", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan2", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("GC_Instestin", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathZombieLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_GibZombieBoot", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathZombiemanHeadOnXDeath", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		 
+		TNT1 A 1
+		TNT1 A 0 ACS_ExecuteAlways(799, 0, 0, 0, 0)//Check Blood density
+		TNT1 A 2
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		Stop
+		 
+	LowBlood:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 2
+		Stop
+	LotsOfBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	AbsurdBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 24, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_SargeXDeath: SargeXDeath replaces SargeXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_SpawnItem("BloodSplasher3")
+		TNT1 AAAAAAAAAAAAAAA 0 A_CustomMissile ("SuperWallRedBlood", 40, 0, random (0, 360), 2, random (-15, 15))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathArm1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 AA 0 A_CustomMissile ("XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("XDeath5", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath2b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath3b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece2", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece1", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan1", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan2", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHalfShotgunguyNoArmNoHead", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("GC_Instestin", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathSargeLeg2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_GibSargeBoot", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathSergeantHeadOnXDeath", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		 
+		TNT1 A 1
+		TNT1 A 0 ACS_ExecuteAlways(799, 0, 0, 0, 0)//Check Blood density
+		TNT1 A 2
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		Stop
+		 
+	LowBlood:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 2
+		Stop
+	LotsOfBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	AbsurdBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 24, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_ImpXDeath: ImpXDeath replaces ImpXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_SpawnItem("BloodSplasher3")
+		TNT1 AAAAAAAAAAAAAAA 0 A_CustomMissile ("SuperWallRedBlood", 40, 0, random (0, 360), 2, random (-15, 15))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathImpArm", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHalfImpUpperPart32", 32, 0, random (0, 360), 2, random (10, 60))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan1", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan2", 24, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 AA 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("GC_XDeath5", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath2b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath3b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece2", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece1", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("GC_Instestin", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathImpLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathImpHeadOnXDeath", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		TNT1 A 1
+		TNT1 A 0 ACS_ExecuteAlways(799, 0, 0, 0, 0)//Check Blood density
+		TNT1 A 2
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+		 
+	LowBlood:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 2
+		Stop
+	LotsOfBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	AbsurdBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 24, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_KnightXDeath: KnightXDeath replaces KnightXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_SpawnItem("BloodSplasher3")
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHellKnightArm", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHellKnightTorso", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathHellKnightLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan1", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan2", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath2b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath3b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece2", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece1", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHellKnightHead", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		 
+		TNT1 A 1
+		TNT1 A 0 ACS_ExecuteAlways(799, 0, 0, 0, 0)//Check Blood density
+		TNT1 A 2
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+		 
+	LowBlood:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 2
+		Stop
+	LotsOfBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	AbsurdBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 24, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_BaronXDeath: BaronXDeath replaces BaronXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_SpawnItem("BloodSplasher3")
+		TNT1 A 0 A_CustomMissile ("GC_XDeathBaronOfHellTorso", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathHellKnightLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan1", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan2", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath2b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath3b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece2", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece1", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		
+		TNT1 A 1
+		TNT1 A 0 ACS_ExecuteAlways(799, 0, 0, 0, 0)//Check Blood density
+		TNT1 A 2
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+		 
+	LowBlood:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 2
+		Stop
+	LotsOfBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	AbsurdBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 24, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_CyberXDeath: CyberXDeath replaces CyberXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_SpawnItem("BloodSplasher3")
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistXXBig", 30, 0, random (0, 360), 2, random (70, 90))
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistXXBig", 100, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_XDeathBrain1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_XDeathBrain2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 10, 0, random (0, 360), 2, random (0, 180))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 0, 0, random (0, 180), 2, random (0, 180))
+		TNT1 AAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 25, 0, random (0, 360), 2, random (0, 180))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 35, 0, random (0, 180), 2, random (0, 180))
+		TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 54, 0, random (0, 360), 2, random (0, 90))
+		TNT1 A 0 A_SpawnItem ("GiantBloodSpot")
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_BullXDeath: BullXDeath replaces BullXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+	    TNT1 A 0 A_SpawnItem("BloodSplasher3")
+	    TNT1 AAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+        TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		 //TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		 //TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		 //TNT1 A 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath2b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath3b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece2", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece1", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathStomach", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathBullLeg12", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathDemonArm", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath2b", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath3b", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathPinkyDemonHead", 42, 0, random (0, 360), 2, random (0, 160))
+		 
+		TNT1 A 1
+		TNT1 A 0 ACS_ExecuteAlways(799, 0, 0, 0, 0)//Check Blood density
+		TNT1 A 2
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+		 
+	LowBlood:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 2
+		Stop
+	LotsOfBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	AbsurdBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 24, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_ChainXDeath: ChainXDeath replaces ChainXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_SpawnItem("BloodSplasher3")
+		TNT1 AAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathChainArm", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathChaingunguyHeadOnXDeath", 42, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath2b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath3b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece2", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece1", 15, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		//TNT1 A 0 A_CustomMissile ("GC_XDeath5", 32, 0, random (0, 360), 2, random (0, 160))
+		 
+		TNT1 A 1
+		TNT1 A 0 ACS_ExecuteAlways(799, 0, 0, 0, 0)//Check Blood density
+		TNT1 A 2
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+		 
+	LowBlood:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 2
+		Stop
+	LotsOfBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	AbsurdBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 24, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_MarineXDeath: MarineXDeath replaces MarineXDeath
+{
+	States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+	    TNT1 A 0 A_SpawnItem("BloodSplasher3")
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 35, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+        TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathArm1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathArm2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath2b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_XDeath3b", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece2", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeathSkinPiece1", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		 
+		TNT1 A 1
+		TNT1 A 0 ACS_ExecuteAlways(799, 0, 0, 0, 0)//Check Blood density
+		TNT1 A 2
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+		 
+	LowBlood:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 2
+		Stop
+	LotsOfBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	AbsurdBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 24, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_SpiderDeath: SpiderDeath replaces SpiderDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+	    TNT1 A 0 A_SpawnItem("BloodSplasher3")
+	    TNT1 AAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 35, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAAAA 0 A_CustomMissile ("GC_Instestin", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathBrain1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathBrain2", 32, 0, random (0, 360), 2, random (0, 160))
+		 
+        TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		 
+		TNT1 A 1
+		TNT1 A 0 ACS_ExecuteAlways(799, 0, 0, 0, 0)//Check Blood density
+		TNT1 A 2
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+		 
+	LowBlood:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 2
+		Stop
+	LotsOfBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	AbsurdBlood:
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+		TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("SuperGoreMist", 24, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SuperGoreSpawner2", 64, 0, random (0, 360), 2, random (20, 40))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_SkeletonXDeath: SkeletonXDeath replaces SkeletonXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+	    TNT1 A 0 A_SpawnItem("BloodSplasher3")
+	    TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 35, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAA 0 A_CustomMissile ("GC_Instestin", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHalfSkeleton", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_HalfManDeath: HalfManDeath replaces HalfManDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+	   TNT1 A 0 A_SpawnItem("BloodSplasher3")
+	   TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 35, 0, random (0, 360), 2, random (0, 160))
+       TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathArm1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathArm2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_MeatDeath: MeatDeath replaces MeatDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+
+ACTOR GC_SmallMeatDeath: SmalllMeatDeath replaces SmalllMeatDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+       TNT1 AAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("Brutal_FlyingBlood", 15, 0, random (0, 360), 2, random (0, 160))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_MuchMeatDeath: MuchMeatDeath replaces MuchMeatDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+        TNT1 AAAAAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("GC_XDeath2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("GC_XDeath3", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath4", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAA 0 A_CustomMissile ("BloodMistExtraBig", 30, 0, random (0, 360), 2, random (20, 90))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+
+
+
+ACTOR GC_RipGuts: RipGuts replaces RipGuts
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 AAA 0 A_CustomMissile ("Brutal_FlyingBlood", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_Instestin2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan1", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan2", 24, 0, random (0, 360), 2, random (0, 160))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_RipZombieMan: RipZombieMan replaces RipZombieMan
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 AAA 0 A_CustomMissile ("Brutal_FlyingBlood", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHalfZombieMan", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan1", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan2", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_Instestin2", 32, 0, random (0, 360), 2, random (0, 160))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+
+ACTOR GC_FatalityZombieMan: FatalityZombieMan replaces FatalityZombieMan
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+        TNT1 A 0 A_SpawnItem("BloodSplasher2")
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath2", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath3", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath4", 0, 0, random (0, 360), 2, random (0, 160))
+       TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 15, 0, random (0, 360), 2, random (0, 160))
+       TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("GC_Instestin2", 32, 0, random (0, 360), 2, random (0, 160))
+
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_RipSergeant: RipSergeant replaces RipSergeant
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_SpawnItem("BloodSplasher2")
+		TNT1 AAA 0 A_CustomMissile ("Brutal_FlyingBlood", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_Instestin2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan1", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan2", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHalfSergeant", 32, 0, random (0, 360), 2, random (0, 160))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_RipZombieman2: RipZombieman2 replaces RipZombieman2
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+	   TNT1 A 0 A_SpawnItem("BloodSplasher2")
+       TNT1 AAA 0 A_CustomMissile ("Brutal_FlyingBlood", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("GC_Instestin2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHalfZombieman2", 32, 0, random (0, 360), 2, random (0, 160))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_RipImp: RipImp replaces RipImp
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+       TNT1 AAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 15, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_Instestin2", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan1", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathOrgan2", 24, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathHalfImp", 40, 0, random (0, 360), 2, random (0, 160))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_CacoXDeath: CacoXDeath replaces CacoXDeath
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 AAAAA 0 A_CustomMissile ("BlueSuperGoreSpawner", 10, 0, random (0, 360), 2, random (0, 180))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("BlueSuperGoreSpawner", 0, 0, random (0, 180), 2, random (0, 180))
+		TNT1 A 0 A_CustomMissile ("GC_CacoXDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_CacoXDeath2", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_CacoXDeath3", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_CacoXDeath4", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_CacoXDeath5", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_CacoXDeath6", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("GC_CacoXDeath7", 0, 0, random (0, 360), 2, random (0, 160))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_RipCaco: RipCaco replaces RipCaco
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+        TNT1 A 0
+		TNT1 A 0 A_CustomMissile ("HalfCacoDemon", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_CacoXDeath6", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("GC_CacoXDeath7", 0, 0, random (0, 360), 2, random (0, 160))
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_BeheadZombieMan: BeheadZombieMan replaces BeheadZombieMan
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+        TNT1 A 1
+        TNT1 A 0 A_SpawnItemEx ("GC_XDeathZombieManHead", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0
+		Goto Death
+	Death:
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+        Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}
+
+ACTOR GC_ZombiemanHeadExplode: ZombiemanHeadExplode replaces ZombiemanHeadExplode
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AAAAA 0 A_CustomMissile ("BloodMistBig", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("GC_Brains2", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains3", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains4Green", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains4GreenBig", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_SmallBrainPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 A_CustomMissile ("GC_Teeth", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3b", 10, 0, random (0, 360), 2, random (50, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 10
+	    Stop
+	TibDeath:
+		TNT1 A 10 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 10 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_NaziHeadExplode: NaziHeadExplode replaces NaziHeadExplode
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AAAAA 0 A_CustomMissile ("BloodMistBig", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("GC_Brains2", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains3", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains4Blonde", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains4BlondeBig", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_SmallBrainPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 A_CustomMissile ("GC_Teeth", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3b", 10, 0, random (0, 360), 2, random (50, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 10
+	    Stop
+	TibDeath:
+		TNT1 A 10 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 10 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_ShotgunguyHeadExplode: ShotgunguyHeadExplode replaces ShotgunguyHeadExplode
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AAAAA 0 A_CustomMissile ("BloodMistBig", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("GC_Brains2", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains3", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_BrainsSergeantHeadPiece", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains5", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_SmallBrainPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 A_CustomMissile ("GC_Teeth", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3b", 10, 0, random (0, 360), 2, random (50, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 10
+	    Stop
+	TibDeath:
+		TNT1 A 10 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 10 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_ChaingunguyHeadExplode: ChaingunguyHeadExplode replaces ChaingunguyHeadExplode
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AAAAA 0 A_CustomMissile ("BloodMistBig", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("GC_Brains3", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains6", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains7", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_BrainsImpHeadPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_SmallBrainPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_Teeth", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3b", 10, 0, random (0, 360), 2, random (50, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 10
+	    Stop
+	TibDeath:
+		TNT1 A 10 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 10 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_ImpHeadExplode: ImpHeadExplode replaces ImpHeadExplode
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AAAAA 0 A_CustomMissile ("BloodMistBig", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("GC_Brains3", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains6", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains7", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_BrainsImpHeadPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_SmallBrainPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 A_CustomMissile ("GC_Teeth", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeath3b", 10, 0, random (0, 360), 2, random (50, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 10
+	    Stop
+	TibDeath:
+		TNT1 A 10 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 10 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_HellKnightHeadExplode: HellKnightHeadExplode replaces HellKnightHeadExplode
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+	   TNT1 AAAAA 0 A_CustomMissile ("BloodMistBig", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("GC_Brains2", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains3", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_HellKnightHeadPiece", 0, 0, random (0, 360), 2, random (50, 80))
+		TNT1 A 0 A_CustomMissile ("GC_HellKnightHeadPiece2", 0, 0, random (0, 360), 2, random (50, 80))
+		TNT1 AAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_SmallBrainPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 A_CustomMissile ("GC_Teeth", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath3b", 10, 0, random (0, 360), 2, random (50, 80))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 10
+	    Stop
+	TibDeath:
+		TNT1 A 10 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 10 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_HellKnightHeadExplodeHalf: HellKnightHeadExplodeHalf replaces HellKnightHeadExplodeHalf
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AAAA 0 A_CustomMissile ("BloodMistBig", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("GC_Brains2", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains3", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_HellKnightHeadPiece2", 0, 0, random (0, 360), 2, random (50, 80))
+		TNT1 AA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAA 0 A_CustomMissile ("GC_SmallBrainPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_Teeth", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath3b", 10, 0, random (0, 360), 2, random (50, 80))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 10
+	    Stop
+	TibDeath:
+		TNT1 A 10 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 10 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_BaronOfHellHeadExplode: BaronOfHellHeadExplode replaces BaronOfHellHeadExplode
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AAAAA 0 A_CustomMissile ("BloodMistBig", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("GC_Brains2", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_Brains3", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_BaronHeadPiece", 62, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_SmallBrainPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 A_CustomMissile ("GC_Teeth", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath3b", 10, 0, random (0, 360), 2, random (50, 80))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath2b", 10, 0, random (0, 360), 2, random (50, 80))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 10
+	    Stop
+	TibDeath:
+		TNT1 A 10 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 10 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_MancubusHeadExplode: MancubusHeadExplode replaces MancubusHeadExplode
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AAAAA 0 A_CustomMissile ("BloodMistBig", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 0, 0, random (0, 360), 2, random (30, 90))
+		TNT1 AA 0 A_CustomMissile ("GC_MancubusEyeballs", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_Brains6Big", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_Brains7Big", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("SmallBrainPieceFast", random (45, 55), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AAAAA 0 A_CustomMissile ("GC_SmallBrainPiece", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 6, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAA 0 A_CustomMissile ("GC_Teeth", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath1", 0, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath3b", 10, 0, random (0, 360), 2, random (50, 90))
+		TNT1 AAA 0 A_CustomMissile ("GC_XDeath2b", 10, 0, random (0, 360), 2, random (50, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 10
+	    Stop
+	TibDeath:
+		TNT1 A 10 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 10 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+	}
+}
+
+ACTOR GC_MeatDeathSmall: MeatDeathSmall replaces MeatDeathSmall
+{
+    States
+    {
+    Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("TibDeathCounter",1,"TibSpawn")
+		TNT1 A 0 A_JumpIfInTargetInventory("BlueTibDeathCounter",1,"BlueTibSpawn")
+		Goto Continue
+	TibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Toxic Avenger")
+		TNT1 A 0 A_GiveInventory("TibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("TiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	BlueTibSpawn:
+		TNT1 A 0 ACS_NamedExecuteAlways("Blue Oyster Cult")
+		TNT1 A 0 A_GiveInventory("BlueTibDeathCounter")
+		//TNT1 A 0 A_SpawnItemEx("BlueTiberiumDeath",0,0,0,0,0,0,0,SXF_CLIENTSIDE|SXF_SETTARGET|SXF_ORIGINATOR)
+		Goto Continue
+	Continue:
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath2b", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("GC_XDeath3b", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 10, 0, random (0, 360), 2, random (40, 90))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathSkinPiece2", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("GC_XDeathSkinPiece1", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("SmallSuperGore", 10, 0, random (0, 360), 2, random (10, 170))
+		TNT1 AAAA 0 A_CustomMissile ("BloodMistSmall", 35, 0, random (0, 360), 2, random (40, 90))
+		TNT1 A 0 A_JumpIfInventory("TibDeathCounter",1,"TibDeath")
+		TNT1 A 0 A_JumpIfInventory("BlueTibDeathCounter",1,"BlueTibDeath")
+		TNT1 A 1
+		Stop
+	TibDeath:
+		TNT1 A 1 A_GiveToChildren("TibDeathCounter")
+		Stop
+	BlueTibDeath:
+		TNT1 A 1 A_GiveToChildren("BlueTibDeathCounter")
+        Stop
+    }
+}

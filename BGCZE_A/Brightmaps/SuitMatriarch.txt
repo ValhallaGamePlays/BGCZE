@@ -1,0 +1,171 @@
+//Matriarch
+brightmap sprite MCRGA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Kick
+brightmap sprite MCRKA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRKB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRKC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRKD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRKE0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRKF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRKG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRKH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRKI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRKZ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Midas Kick
+
+//Zerk Kick
+brightmap sprite 1CRKA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite 1CRKB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite 1CRKC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite 1CRKD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite 1CRKE0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite 1CRKF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite 1CRKG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite 1CRKH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite 1CRKI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite 1CRKZ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Zerk Midas Kick
+
+//Cast
+brightmap sprite MCRMA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRME0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMJ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMK0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRML0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMM0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMN0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRMZ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Meteor Fist
+brightmap sprite M1CGA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite M1CGB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite M1CGC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite M1CGD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite M1CGZ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Single
+brightmap sprite MCRFA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRFB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGE0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGJ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRGK0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Loader
+brightmap sprite MCRLA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLE0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLJ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCRLK0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+
+
+
+//Strat mode switch
+brightmap sprite MCTMA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTME0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMJ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMK0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTML0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMM0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMN0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCTMO0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+
+//Strat mode stuff
+brightmap sprite MCUGA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Kick
+brightmap sprite MCUKA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUKB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUKC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUKD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUKE0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUKF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUKG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUKH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUKI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUKZ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Midas Kick
+
+//Cast
+brightmap sprite MCUMA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUME0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMJ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMK0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUML0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMM0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMN0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUMZ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Meteor Fist
+brightmap sprite M2CGA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite M2CGB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite M2CGC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite M2CGD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite M2CGZ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Single
+brightmap sprite MCUFA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUFB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGE0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGJ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCUGK0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+
+//Loader
+brightmap sprite MCULA0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULB0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULC0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULD0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULE0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULF0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULG0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULH0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULI0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULJ0 { map "Bmaps/Matriarch/MTRGBMAP.png" }
+brightmap sprite MCULK0 { map "Bmaps/Matriarch/MTRGBMAP.png" }

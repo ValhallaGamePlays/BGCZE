@@ -1,0 +1,527 @@
+actor CoreDreadball : FastProjectile
+{
+  Radius 9
+  Height 12
+  Speed 15
+  Damage (random(0,0))
+  Projectile
+  ProjectileKickback 20
+  +NOGRAVITY
+  -THRUGHOST
+  +DONTSPLASH
+  +EXPLODEONWATER
+  +RIPPER
+  +BLOODLESSIMPACT
+  +FORCERADIUSDMG
+  +DONTREFLECT
+  +DONTBLAST
+  +FOILINVUL //Fook dat invulnerable shit!
+  DamageType BlueTiberium
+  MissileHeight 12
+  MissileType "CoreDreadfulTrailSpawner"
+  Decal "CoreDreadfulLightning"
+  States
+  {
+  Spawn:
+    TNT1 A 0
+  Looplet:
+    TNT1 A 0 A_SpawnItemEx("CoreDreadfulFlightSmoke",random(10,-10),random(10,-10),random(10,-10),frandom(0.05,-0.05),frandom(0.05,-0.05),frandom(0.05,-0.05),frandom(0.0,359.0),128,80)
+    TNT1 A 0 A_SpawnItemEx("CoreDreadfulParticle",random(20,-20),random(20,-20),random(20,-20),frandom(0.1,1.0),frandom(0.1,1.0),frandom(-1.0,1.0),random(0,359),128,90)
+    TNT1 A 0 A_SpawnItemEx("CoreDreadfulParticle2",random(20,-20),random(20,-20),random(20,-20),0,0,0,0,128,90)
+    TNT1 A 0 A_SpawnItemEx("CoreDreadfulShockwaveTrail",random(10,-10),random(10,-10),random(10,-10),0,0,0,0,128,50)
+    TNT1 A 0 A_Quake (6, 1, 0, 256, none)
+    TNT1 A 0 A_Weave(1, 1, 2.0, 2.0)
+    TNT1 A 0 A_PlaySound("Dreadful/Fly",5,0.8,1)
+    TNT1 A 1 A_Explode((18*random(2,3)),144,0,0)
+	TNT1 A 0 A_Jump(24,"LightningPatch")
+    Loop
+  LightningPatch:
+    TNT1 A 0 A_SpawnItemEx("CoreDreadfulLightning",random(10,-10),random(10,-10),random(10,-10),0,0,0,0,128,0)
+    Goto Looplet
+  Death:
+    TNT1 A 0 A_Quake (6, 70, 0, 1024, none)
+    TNT1 A 0 A_Quake (4, 105, 0, 2048, none)
+    TNT1 A 0 A_Quake (2, 140, 0, 3064, none)
+    TNT1 A 0 A_PlaySound("Dreadful/Exp",5,0.5,0)
+    TNT1 A 0 A_Explode((200*random(2,3)),168,0,1)
+    TNT1 A 0 A_Explode((100*random(2,3)),560,0)
+    TNT1 A 0 A_AlertMonsters
+	TNT1 A 0 A_BFGSpray("CoreDreadfulFlash",10,25)
+	TNT1 A 0 A_SpawnItemEx("CoreDreadfulSmokeSpawner")
+	TNT1 A 0 A_SpawnItemEx("CoreDreadfulShockwaver")
+	TNT1 A 0 A_SpawnItemEx("CoreDreadfulBlast")
+	TNT1 A 0 A_SpawnItemEx("CoreDreadfulParticleBlastSpawner")
+	TNT1 A 0 A_SpawnItemEx("CoreDreadfulLightningSpawner")
+	TNT1 A 0 A_SpawnItemEx("CoreDreadfulParticleSpawner")
+	TNT1 A 0 A_SpawnItemEx("CoreDreadfulDamager",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	//TNT1 A 0 A_SpawnItemEx("CoreDreadfulRing")
+	TNT1 A 0 A_SpawnItemEx("CoreDreadfulSphere")
+	TNT1 A 185
+	TNT1 B 55
+    stop
+  }
+}
+
+ACTOR CoreDreadball1 : CoreDreadball { WeaveIndexXY 0  WeaveIndexZ 48 }
+ACTOR CoreDreadball2 : CoreDreadball { WeaveIndexXY 21  WeaveIndexZ 5 }
+ACTOR CoreDreadball3 : CoreDreadball { WeaveIndexXY 42  WeaveIndexZ 26 }
+
+//Flight
+
+ACTOR CoreDreadfulTrailSpawner
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 1 A_SpawnItemEx("CoreDreadfulTrail",frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),0,0,0,0,128,0)
+      Stop
+    }
+}
+
+ACTOR CoreDreadfulTrail
+{ 
+    Scale 0.15
+    Alpha 1
+    Renderstyle Add
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+    States
+    {
+    Spawn:
+	  TNT1 A 0
+	  TNT1 A 0 A_SetScale(ScaleX-0.01,ScaleY-0.01)
+	  PRNB A 1 Bright A_FadeOut(0.075)
+	  Loop
+    }
+}
+
+ACTOR CoreDreadfulShockwaveTrail
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+    Scale 1
+	Alpha 0.99
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_FadeOut(0.025)
+      TNT1 A 0 A_SetScale(ScaleX+0.025,ScaleY+0.025)
+      PRNR A 1 Bright
+      Loop
+    }
+}
+
+ACTOR CoreDreadfulFlightSmoke
+{ 
+    Scale 0.2
+    Alpha 0.79
+    Renderstyle Add
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+    States
+    {
+    Spawn:
+	  TNT1 A 0
+	  TNT1 A 0 A_Jump(255,"SmokeA","SmokeB","SmokeC","SmokeD")
+	SmokeA:
+	  PRNS A 0
+	  Goto RandomScale
+	SmokeB:
+	  PRNS B 0
+	  Goto RandomScale
+	SmokeC:
+	  PRNS C 0
+	  Goto RandomScale
+	SmokeD:
+	  PRNS D 0
+	  Goto RandomScale
+	RandomScale:
+	  "####" "#" 0 A_SetScale(ScaleX+random(0.1,0.25))
+	Looplo:
+	  "####" "#" 0 A_SetScale(ScaleX+0.01,ScaleY+0.01)
+	  "####" "#" 1 A_FadeOut(0.01)
+	  Loop
+    }
+}
+
+ACTOR CoreDreadfulParticle
+{ 
+    Scale 0.2
+	Alpha 0.99
+    Renderstyle Add
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+    States
+    {
+    Spawn:
+	  TNT1 A 0 NoDelay A_JumpIf(GetCvar("GC_ParticleChoke") == true,"NULL")
+	  TNT1 AA 0 A_ChangeVelocity (frandom(-0.4, 0.4), frandom(-0.4, 0.4), frandom(-0.1, 0.2), 0)
+	  TNT1 A 0 A_SetScale(ScaleX+0.01,ScaleY+0.01)
+	  PRNP A 1 Bright A_FadeOut(0.02)
+	  Loop
+    }
+}
+
+ACTOR CoreDreadfulParticle2 : CoreDreadfulParticle
+{ 
+    States
+    {
+    Spawn:
+	  TNT1 A 0 NoDelay A_JumpIf(GetCvar("GC_ParticleChoke") == true,"NULL")
+	  TNT1 AA 0 A_ChangeVelocity (frandom(-0.1, 0.1), frandom(-0.1, 0.1), frandom(-0.1, 0.1), 0)
+	  TNT1 A 0 A_SetScale(ScaleX+0.01,ScaleY+0.01)
+	  PRNP A 1 Bright A_FadeOut(0.0125)
+	  Loop
+    }
+}
+
+ACTOR CoreDreadfulParticleBlast
+{
+    +NOINTERACTION
+    +NOGRAVITY
+    ReactionTime 50
+    States
+    {
+    Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_SpawnItemEx("CoreDreadfulParticle2",random(30,-30),random(30,-30),random(30,-30),frandom(15.0,5.0),frandom(15.0,5.0),frandom(-15.0,15.0),frandom(0.0,359.0))
+    TNT1 A 0 A_Countdown
+    Loop
+    Death:
+    Stop
+    }
+}
+
+ACTOR CoreDreadfulParticleBlastSpawner
+{
+    +NOINTERACTION
+    +NOGRAVITY
+    ReactionTime 10
+    States
+    {
+    Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_SpawnItemEx("CoreDreadfulParticleBlast")
+    TNT1 A 2 A_Countdown
+    Loop
+    Death:
+    Stop
+    }
+}
+
+ACTOR CoreDreadfulLightning
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+	Alpha 0.99
+	Scale 0.8
+	States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_Jump(255,"Spawn1A","Spawn1B","Spawn1C","Spawn1D","Spawn2A","Spawn2B","Spawn2C","Spawn2D")
+	Spawn1A:
+	3LIT A 1 Bright A_FadeOut(0.02)
+	Wait
+	Spawn1B:
+	3LIT B 1 Bright A_FadeOut(0.02)
+	Wait
+	Spawn1C:
+	3LIT C 1 Bright A_FadeOut(0.02)
+	Wait
+	Spawn1D:
+	3LIT D 1 Bright A_FadeOut(0.02)
+	Wait
+	Spawn2A:
+	4LIT A 1 Bright A_FadeOut(0.02)
+	Wait
+	Spawn2B:
+	4LIT B 1 Bright A_FadeOut(0.02)
+	Wait
+	Spawn2C:
+	4LIT C 1 Bright A_FadeOut(0.02)
+	Wait
+	Spawn2D:
+	4LIT D 1 Bright A_FadeOut(0.02)
+	Wait
+	}
+}
+
+//TFG Spray
+
+ACTOR CoreDreadfulFlash
+{
+    +NOGRAVITY
+    +NOINTERACTION
+	DamageType BlueTiberium
+	States
+	{
+	Spawn:
+	TNT1 A 0
+    TNT1 A 0 A_SpawnItemEx("CoreDreadfulLightning")
+    TNT1 AAAA 0 A_SpawnItemEx("CoreDreadfulFlightSmoke",random(10,-10),random(10,-10),random(10,-10),frandom(0.05,-0.05),frandom(0.05,-0.05),frandom(0.05,-0.05),frandom(0.0,359.0),128,0)
+	TNT1 AAAAAAAAAAAAAAA 0 A_SpawnItemEx("CoreDreadfulParticle2",random(30,-30),random(30,-30),random(30,-30),frandom(6.0,3.0),frandom(6.0,3.0),frandom(6.0,-6.0),frandom(0.0,359.0))
+	Stop
+	}
+}
+
+//Impact
+
+ACTOR CoreDreadfulFX //For GLDEF
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+    States
+    {
+    Spawn:
+      TNT1 A 105
+      Stop
+    }
+}
+
+ACTOR CoreDreadfulBlast
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+	Alpha 0.99
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_SpawnItemEx("CoreDreadfulBlast1")
+      TNT1 A 0 A_SpawnItemEx("CoreDreadfulBlast2")
+      TNT1 A 0 A_SpawnItemEx("CoreDreadfulBlast3")
+      TNT1 A 0 A_SpawnItemEx("CoreDreadfulBlast4")
+      Stop
+    }
+}
+
+ACTOR CoreDreadfulBlast1 : CoreDreadfulBlast
+{ 
+    Scale 0.5
+	Alpha 0.9
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_FadeOut(0.01)
+      TNT1 A 0 A_SetScale(ScaleX+0.07,ScaleY+0.07)
+      PRNF A 1 Bright
+      Loop
+    }
+}
+
+ACTOR CoreDreadfulBlast2 : CoreDreadfulBlast
+{ 
+    Scale 0.75
+	Alpha 0.8
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_FadeOut(0.01)
+      TNT1 A 0 A_SetScale(ScaleX+0.06,ScaleY+0.06)
+      PRNF A 1 Bright
+      Loop
+    }
+}
+
+ACTOR CoreDreadfulBlast3 : CoreDreadfulBlast
+{ 
+    Scale 1
+	Alpha 0.7
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_FadeOut(0.0125)
+      TNT1 A 0 A_SetScale(ScaleX+0.05,ScaleY+0.05)
+      PRNF A 1 Bright
+      Loop
+    }
+}
+
+ACTOR CoreDreadfulBlast4 : CoreDreadfulBlast
+{ 
+    Scale 1.5
+	Alpha 0.6
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_FadeOut(0.015)
+      TNT1 A 0 A_SetScale(ScaleX+0.05,ScaleY+0.05)
+      PRNF A 1 Bright
+      Loop
+    }
+}
+
+ACTOR CoreDreadfulShockwaver
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+	ReactionTime 23
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 8 A_SpawnItemEx("CoreDreadfulShockwave")
+	  TNT1 A 0 A_Countdown
+      Loop
+	Death:
+	  Stop
+    }
+}
+
+ACTOR CoreDreadfulShockwave
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+    Scale 2.5
+	Alpha 0.99
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_FadeOut(0.025)
+      TNT1 A 0 A_SetScale(ScaleX+0.15,ScaleY+0.15)
+      PRNR A 1 Bright
+      Loop
+    }
+}
+
+ACTOR CoreDreadfulLightningSpawner
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+	ReactionTime 30
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 5 A_SpawnItemEx("CoreDreadfulLightning",random(190,-190),random(190,-190),random(190,-190))
+	  TNT1 A 0 A_Countdown
+      Loop
+	Death:
+      TNT1 AA 6 A_SpawnItemEx("CoreDreadfulLightning",random(190,-190),random(190,-190),random(190,-190))
+	  Stop
+    }
+}
+
+ACTOR CoreDreadfulSmokeSpawner
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+	ReactionTime 22
+    States
+    {
+    Spawn:
+	  TNT1 A 15
+	Looplet:
+      TNT1 A 0
+      TNT1 A 5 A_SpawnItemEx("CoreDreadfulSmoker")
+	  TNT1 A 0 A_Countdown
+      Loop
+	Death:
+	  Stop
+    }
+}
+
+ACTOR CoreDreadfulSmoker
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+	ReactionTime 5
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 0 A_SpawnItemEx("CoreDreadfulSmoke",random(170,-170),random(170,-170),random(170,-170),frandom(0.05,-0.05),frandom(0.05,-0.05),frandom(0.05,-0.05),frandom(0.0,360.0))
+	  TNT1 A 0 A_Countdown
+      Loop
+	Death:
+	  Stop
+    }
+}
+
+ACTOR CoreDreadfulSmoke : CoreDreadfulFlightSmoke
+{ 
+    Scale 0.25
+    Alpha 0.89
+}
+
+ACTOR CoreDreadfulSphere
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+	+FORCEXYBILLBOARD
+	Renderstyle Add
+	Scale 0.3
+	Alpha 0.99
+    ReactionTime 100
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      PRNB A 0 A_SetScale(ScaleX-0.001,ScaleY-0.001)
+      PRNB A 1 A_FadeOut(0.005)
+      Loop
+    Death:
+      PRNB A 1 A_FadeOut(0.01)
+      Wait
+    }
+}
+
+ACTOR CoreDreadfulParticleSpawner
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+	ReactionTime 25
+    States
+    {
+    Spawn:
+      TNT1 A 0
+      TNT1 A 5 A_SpawnItemEx("CoreDreadfulParticler",random(90,-90),random(90,-90),random(90,-90))
+	  TNT1 A 0 A_Countdown
+      Loop
+	Death:
+	  Stop
+    }
+}
+
+ACTOR CoreDreadfulParticler
+{
+    +NOINTERACTION
+    +NOGRAVITY
+    ReactionTime 4
+    States
+    {
+    Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_SpawnItemEx("CoreDreadfulParticle2",random(90,-90),random(90,-90),random(90,-90),frandom(2.0,02.0),frandom(2.0,-2.0),frandom(-2.0,2.0),frandom(0.0,360.0))
+    TNT1 A 0 A_Countdown
+    Loop
+    Death:
+    Stop
+    }
+}
+
+ACTOR CoreDreadfulDamager : DreadfulDamager
+{ 
+	DamageType BlueTiberium
+}

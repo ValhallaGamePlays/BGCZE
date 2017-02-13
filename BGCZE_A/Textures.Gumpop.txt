@@ -1,0 +1,1979 @@
+Sprite NPODA0, 45, 38
+{
+	Offset 22, 19
+	Patch PPODA0, 0, 0
+}
+
+Sprite NPODB0, 54, 43
+{
+	Offset 27, 21
+	Patch PPODB0, 0, 0
+}
+
+Sprite NPODC0, 51, 44
+{
+	Offset 25, 22
+	Patch PPODC0, 0, 0
+}
+
+Sprite NPODD0, 64, 54
+{
+	Offset 32, 27
+	Patch PPODD0, 0, 0
+}
+
+Sprite NPODE0, 63, 53
+{
+	Offset 31, 26
+	Patch PPODE0, 0, 0
+}
+
+Sprite NPODF0, 69, 60
+{
+	Offset 34, 30
+	Patch PPODF0, 0, 0
+}
+
+Sprite NPODI0, 24, 17
+{
+	Offset 11, 5
+	Patch PPODI0, 0, 0
+}
+
+Sprite NPODJ0, 31, 15
+{
+	Offset 16, 7
+	Patch PPODJ0, 0, 0
+}
+
+Sprite NPODK0, 30, 23
+{
+	Offset 15, 15
+	Patch PPODK0, 0, 0
+}
+
+Sprite NPODL0, 31, 28
+{
+	Offset 18, 18
+	Patch PPODL0, 0, 0
+}
+
+Sprite NPODM0, 29, 28
+{
+	Offset 14, 16
+	Patch PPODM0, 0, 0
+}
+
+Sprite NPODN0, 33, 28
+{
+	Offset 16, 14
+	Patch PPODN0, 0, 0
+}
+
+Sprite NPODO0, 37, 31
+{
+	Offset 18, 15
+	Patch PPODO0, 0, 0
+}
+
+Sprite NPODP0, 41, 34
+{
+	Offset 20, 17
+	Patch PPODO0, -217, 67
+	Patch PPODP0, 0, 0
+}
+
+Sprite BBLAB0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEB0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAC0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEC0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAD0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLED0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAE0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEA0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAF0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEB0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAG0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEC0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAH0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLED0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAE0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEA0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAF0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEB0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAG0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEC0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAH0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLED0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAI0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEA0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAJ0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEB0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAK0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLEC0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite BBLAL0, 24, 24
+{
+	Offset 12, 12
+	Patch BBLED0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite NPODA0, 45, 38
+{
+	Offset 22, 19
+	Patch PPODA0, 0, 0
+}
+
+Sprite NPODB0, 54, 43
+{
+	Offset 27, 21
+	Patch PPODB0, 0, 0
+}
+
+Sprite NPODC0, 51, 44
+{
+	Offset 25, 22
+	Patch PPODC0, 0, 0
+}
+
+Sprite NPODD0, 64, 54
+{
+	Offset 32, 27
+	Patch PPODD0, 0, 0
+}
+
+Sprite NPODE0, 63, 53
+{
+	Offset 31, 26
+	Patch PPODE0, 0, 0
+}
+
+Sprite NPODF0, 69, 60
+{
+	Offset 34, 30
+	Patch PPODF0, 0, 0
+}
+
+Sprite NPODI0, 24, 17
+{
+	Offset 11, 5
+	Patch PPODI0, 0, 0
+}
+
+Sprite NPODJ0, 31, 15
+{
+	Offset 16, 7
+	Patch PPODJ0, 0, 0
+}
+
+Sprite NPODK0, 30, 23
+{
+	Offset 15, 15
+	Patch PPODK0, 0, 0
+}
+
+Sprite NPODL0, 31, 28
+{
+	Offset 18, 18
+	Patch PPODL0, 0, 0
+}
+
+Sprite NPODM0, 29, 28
+{
+	Offset 14, 16
+	Patch PPODM0, 0, 0
+}
+
+Sprite NPODN0, 33, 28
+{
+	Offset 16, 14
+	Patch PPODN0, 0, 0
+}
+
+Sprite NPODO0, 37, 31
+{
+	Offset 18, 15
+	Patch PPODO0, 0, 0
+}
+
+Sprite NPODP0, 41, 34
+{
+	Offset 20, 17
+	Patch PPODO0, -217, 67
+	Patch PPODP0, 0, 0
+}
+
+Sprite 1SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1A0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1B0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1C0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1D0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1E0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1F0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1G0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1H0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1I0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1J0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1K0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1L0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1M0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTN0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1N0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTO0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1O0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTP0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1P0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTQ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1Q0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTR0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1R0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 1SPTS0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1S0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2A0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2B0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2C0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2D0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2E0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2F0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2G0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2H0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2I0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2J0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2K0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2L0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2M0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTN0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2N0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTO0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2O0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTP0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2P0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTQ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2Q0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 2SPTR0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2R0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3A0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3B0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3C0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3D0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3E0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3F0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3G0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3H0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3I0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3J0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3K0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3L0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 3SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3M0, 0, 0
+	{
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1A0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1B0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1C0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1D0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1E0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1F0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1G0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1H0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1I0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1J0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1K0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1L0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1M0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTN0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1N0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTO0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1O0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTP0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1P0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTQ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1Q0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTR0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1R0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 4SPTS0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1S0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1A0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1B0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1C0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1D0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1E0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1F0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1G0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1H0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1I0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1J0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1K0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1L0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1M0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTN0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1N0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTO0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1O0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTP0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1P0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTQ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1Q0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTR0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1R0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 5SPTS0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1S0, 0, 0
+	{
+		FlipX
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1A0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1B0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1C0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1D0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1E0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1F0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1G0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1H0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1I0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1J0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1K0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1L0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1M0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTN0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1N0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTO0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1O0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTP0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1P0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTQ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1Q0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTR0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1R0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 6SPTS0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT1S0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2A0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2B0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2C0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2D0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2E0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2F0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2G0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2H0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2I0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2J0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2K0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2L0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2M0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTN0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2N0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTO0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2O0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTP0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2P0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTQ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2Q0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 7SPTR0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2R0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2A0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2B0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2C0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2D0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2E0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2F0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2G0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2H0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2I0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2J0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2K0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2L0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2M0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTN0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2N0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTO0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2O0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTP0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2P0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTQ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2Q0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 8SPTR0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT2R0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3A0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3B0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3C0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3D0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3E0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3F0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3G0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3H0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3I0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3J0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3K0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3L0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 9SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3M0, 0, 0
+	{
+		FlipX
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTA0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3A0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTB0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3B0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTC0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3C0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTD0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3D0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTE0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3E0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTF0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3F0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTG0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3G0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTH0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3H0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTI0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3I0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTJ0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3J0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTK0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3K0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTL0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3L0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}
+
+Sprite 0SPTM0, 128, 128
+{
+	Offset 64, 64
+	Patch SPT3M0, 0, 0
+	{
+		FlipY
+		Blend "#25F900"
+	}
+}

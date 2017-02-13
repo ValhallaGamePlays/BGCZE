@@ -1,0 +1,219 @@
+//Pulverizer
+brightmap sprite PLVGA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Recoil
+brightmap sprite PLVRA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVRB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVRC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVRD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVRE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+brightmap sprite PLVEA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVEB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVEC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVED0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVEE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Kick
+brightmap sprite PLVKA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVKB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVKC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVKD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVKE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVKF0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVKG0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVKH0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVKI0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVKZ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Midas Kick
+brightmap sprite PLMKA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLMKB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLMKC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLMKD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLMKE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLMKF0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLMKG0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLMKH0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLMKI0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLMKZ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Gunzerk Kick
+brightmap sprite 1LVKA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVKB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVKC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVKD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVKE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVKF0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVKG0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVKH0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVKI0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVKZ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Gunzerk Midas Kick
+brightmap sprite 1LMKA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LMKB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LMKC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LMKD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LMKE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LMKF0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LMKG0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LMKH0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LMKI0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LMKZ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Cast
+brightmap sprite PLVMA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVME0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMF0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMG0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMH0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMI0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMJ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMK0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVML0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMM0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMN0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLVMZ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Meteor Fist
+brightmap sprite PL1GZ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Gunzerk-Both
+brightmap sprite 3LVGA0 { map "Bmaps/Pulverizer/CHNGC.png" }
+
+//Gunzerk Right
+brightmap sprite 1LVGA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+brightmap sprite 1LVRA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVRB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVRC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVRD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVRE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+brightmap sprite 1LVEA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVEB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVEC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVED0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite 1LVEE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Gunzerk Left
+brightmap sprite 2LVGA0 { map "Bmaps/Pulverizer/CHNGB.png" }
+
+brightmap sprite 2LVRA0 { map "Bmaps/Pulverizer/CHNGB.png" }
+brightmap sprite 2LVRB0 { map "Bmaps/Pulverizer/CHNGB.png" }
+brightmap sprite 2LVRC0 { map "Bmaps/Pulverizer/CHNGB.png" }
+brightmap sprite 2LVRD0 { map "Bmaps/Pulverizer/CHNGB.png" }
+brightmap sprite 2LVRE0 { map "Bmaps/Pulverizer/CHNGB.png" }
+
+brightmap sprite 2LVEA0 { map "Bmaps/Pulverizer/CHNGB.png" }
+brightmap sprite 2LVEB0 { map "Bmaps/Pulverizer/CHNGB.png" }
+brightmap sprite 2LVEC0 { map "Bmaps/Pulverizer/CHNGB.png" }
+brightmap sprite 2LVED0 { map "Bmaps/Pulverizer/CHNGB.png" }
+brightmap sprite 2LVEE0 { map "Bmaps/Pulverizer/CHNGB.png" }
+
+//Stratocaster
+brightmap sprite PLBGA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+//Recoil
+brightmap sprite PLBRA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBRB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBRC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBRD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBRE0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+brightmap sprite PLBEA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBEB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBEC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBED0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBEE0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+brightmap sprite PLBUA0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBUB0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBUC0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBUD0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBUE0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBUF0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBUG0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUH0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUI0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUJ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUK0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUL0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUM0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUN0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUO0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUP0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUQ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUR0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUS0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUT0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUU0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUV0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUW0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUX0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUY0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBUZ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+brightmap sprite PLBDA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBDB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBDC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBDD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBDE0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBDF0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBDG0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBDH0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBDI0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBDJ0 { map "Bmaps/Pulverizer/CHNGA.png" }
+brightmap sprite PLBDK0 { map "Bmaps/Pulverizer/CHNGA.png" }
+
+//Kick
+brightmap sprite PLBKA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBKB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBKC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBKD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBKE0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBKF0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBKG0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBKH0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBKI0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBKZ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+//Midas Kick
+brightmap sprite PBMKA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PBMKB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PBMKC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PBMKD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PBMKE0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PBMKF0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PBMKG0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PBMKH0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PBMKI0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PBMKZ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+//Cast
+brightmap sprite PLBMA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBME0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMF0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMG0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMH0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMI0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMJ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMK0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBML0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMM0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMN0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PLBMZ0 { map "Bmaps/Pulverizer/CHNGD.png" }
+
+//Meteor Fist
+brightmap sprite PL1GA0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PL1GB0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PL1GC0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PL1GD0 { map "Bmaps/Pulverizer/CHNGD.png" }
+brightmap sprite PL1GZ0 { map "Bmaps/Pulverizer/CHNGD.png" }

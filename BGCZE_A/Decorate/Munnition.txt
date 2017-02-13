@@ -1,0 +1,268 @@
+//Longhorn
+actor LonghornAmmo : Ammo replaces GoldWandAmmo
+{
+	Inventory.PickupMessage "Picked up a pair of ''Longhorn'' bullets."
+	Inventory.PickupSound "Longhorn/Ammo"
+	Inventory.Amount 2
+	Inventory.MaxAmount 40
+	Ammo.BackpackAmount 8
+	Ammo.BackpackMaxAmount 80
+	Inventory.Icon "LRCAC0"
+	States
+	{
+	Spawn:
+		LRCA A -1
+		Loop
+	}
+}
+
+actor LonghornBox : LonghornAmmo replaces GoldWandHefty
+{
+	Inventory.PickupMessage "Picked up a box of ''Longhorn'' bullets."
+	Inventory.PickupSound "Longhorn/Ammo"
+	Inventory.Amount 12
+	States
+	{
+	Spawn:
+		LRCA B -1
+		Loop
+	}
+}
+
+//Strucker
+actor ShotgunAmmo : Ammo replaces CrossbowAmmo
+{
+	Inventory.PickupMessage "Picked up a fistful of shotgun shells."
+	Inventory.PickupSound "Strucker/Ammo"
+	Inventory.Amount 6
+	Inventory.MaxAmount 150
+	Ammo.BackpackAmount 24
+	Ammo.BackpackMaxAmount 300
+	Inventory.Icon "STRAC0"
+	States
+	{
+	Spawn:
+		STRA A -1
+		Loop
+	}
+}
+
+actor ShotgunBandolier : ShotgunAmmo replaces CrossbowHefty
+{
+	Inventory.PickupMessage "Picked up a belt of shotgun shells."
+	Inventory.PickupSound "Strucker/Ammo"
+	Inventory.Amount 32
+	States
+	{
+	Spawn:
+		STRA B -1
+		Loop
+	}
+}
+
+//Pulverizer
+actor PulverizerAmmo : Ammo replaces BlasterAmmo
+{
+	Inventory.PickupMessage "Picked up a drum of ''Pulverizer'' bullets."
+	Inventory.PickupSound "Pulverizer/Ammo"
+	Inventory.Amount 20
+	Inventory.MaxAmount 400
+	Ammo.BackpackAmount 60
+	Ammo.BackpackMaxAmount 800
+	Inventory.Icon "TRLAC0"
+	Scale 0.75
+	States
+	{
+	Spawn:
+		TRLA A -1
+		Loop
+	}
+}
+
+actor PulverizerBox : PulverizerAmmo replaces BlasterHefty
+{
+	Inventory.PickupMessage "Picked up a box of ''Pulverizer'' bullets."
+	Inventory.PickupSound "Pulverizer/Ammo"
+	Inventory.Amount 80
+	States
+	{
+	Spawn:
+		TRLA B -1
+		Loop
+	}
+}
+
+//Matriarch
+actor MatriarchAmmo : Ammo
+{
+	Inventory.PickupMessage "Picked up a bunch of ''Matriarch'' slugs."
+	Inventory.PickupSound "Matriarch/Ammo"
+	Inventory.Amount 3
+	Inventory.MaxAmount 50
+	Ammo.BackpackAmount 9
+	Ammo.BackpackMaxAmount 100
+	Inventory.Icon "WINAD0"
+	Scale 0.7
+	States
+	{
+	Spawn:
+		WINA A -1
+		Loop
+	}
+}
+
+actor MatriarchBox : MatriarchAmmo
+{
+	Inventory.PickupMessage "Picked up a box of ''Matriarch'' slugs."
+	Inventory.PickupSound "Matriarch/Ammo"
+	Inventory.Amount 12
+	Scale 0.9
+	States
+	{
+	Spawn:
+		WINA B -1
+		Loop
+	}
+}
+
+//Sovereign 
+actor SovereignAmmo : Ammo
+{
+	Inventory.PickupMessage "Picked up a pair of specialized ''Sovereign'' slugs."
+	Inventory.PickupSound "Matriarch/Ammo"
+	Inventory.Amount 3
+	Inventory.MaxAmount 40
+	Ammo.BackpackAmount 6
+	Ammo.BackpackMaxAmount 80
+	Inventory.Icon "SVMND0"
+	Scale 0.7
+	States
+	{
+	Spawn:
+		SVMN A -1
+		Loop
+	}
+}
+
+actor SovereignBox : SovereignAmmo
+{
+	Inventory.PickupMessage "Picked up a box of specialized ''Sovereign'' slugs."
+	Inventory.PickupSound "Matriarch/Ammo"
+	Inventory.Amount 12
+	Scale 0.9
+	States
+	{
+	Spawn:
+		SVMN B -1
+		Loop
+	}
+}
+
+
+ACTOR Phoenix_Giver : RandomSpawner replaces PhoenixRodAmmo
+{
+	DropItem "MatriarchAmmo" 255 1
+	DropItem "SovereignAmmo" 255 1
+	DropItem "TNTAmmo" 255 1
+}
+
+ACTOR PhoenixHefty_Giver : RandomSpawner replaces PhoenixRodHefty
+{
+	Dropitem "MatriarchBox" 255 1
+	DropItem "SovereignBox" 255 1
+	Dropitem "TNTBox" 255 1
+}
+
+//Dynamite
+actor TNTAmmo : Ammo replaces ArtiTimeBomb
+{
+	Inventory.PickupMessage "Picked up a bundle of TNT."
+	Inventory.PickupSound "TNT/Pick"
+	Inventory.Amount 1
+	Inventory.MaxAmount 15
+	Ammo.BackpackAmount 3
+	Ammo.BackpackMaxAmount 30
+	Inventory.Icon "DYNAA0"
+	States
+	{
+	Spawn:
+		DYNG X -1
+		Loop
+	}
+}
+
+actor TNTBox : TNTAmmo
+{
+	Inventory.PickupMessage "Picked up a box of TNT."
+	Inventory.Amount 5
+	States
+	{
+	Spawn:
+		DYNB A -1
+		Loop
+	}
+}
+
+//Cauterizer
+actor CauterizerAmmo : Ammo replaces SkullrodAmmo
+{
+	Inventory.PickupMessage "Picked up a cell of ''Cauterizer'' charge."
+	Inventory.PickupSound "Cauterizer/Ammo"
+	Inventory.Amount 2
+	Inventory.MaxAmount 30
+	Ammo.BackpackAmount 6
+	Ammo.BackpackMaxAmount 60
+	Inventory.Icon "CAUAC0"
+	States
+	{
+	Spawn:
+		CAUA A -1
+		Stop
+	}
+}
+
+actor CauterizerBox : CauterizerAmmo replaces SkullrodHefty
+{
+	Inventory.PickupMessage "Picked up a pack of ''Cauterizer'' charge."
+	Inventory.PickupSound "Cauterizer/Ammo"
+	Inventory.Amount 8
+	States
+	{
+	Spawn:
+		CAUB ABCDEFGFEDCB 1
+		Loop
+	}
+}
+
+//Dreadful
+actor TiberiumAmmo : Ammo replaces MaceAmmo
+{
+	Inventory.PickupMessage "Picked up an ''Old Dreadful'' liquid tiberium cannister."
+	Inventory.PickupSound "Dreadful/Ammo"
+	Inventory.Amount 1
+	Inventory.MaxAmount 8
+	Ammo.BackpackAmount 1
+	Ammo.BackpackMaxAmount 16
+	Inventory.Icon "TIBAC0"
+	Scale 0.9
+	States
+	{
+	Spawn:
+		TIBA A 1
+		Loop
+	}
+}
+
+actor TiberiumBloat : TiberiumAmmo replaces MaceHefty
+{
+	Inventory.PickupMessage "Picked up a solid portion of ''Old Dreadful'' liquid tiberium."
+	Inventory.PickupSound "Dreadful/Ammo"
+	Inventory.Amount 3
+	Scale 0.8
+	States
+	{
+	Spawn:
+		TIBA B 1
+		Loop
+	}
+}

@@ -1,0 +1,37 @@
+//Longhorn
+pointlight STRATLONGHORN
+{
+    color 1.0 0.4 0.1
+    size 52
+    offset 0 24 0
+	dontlightself 1
+}
+
+object LonghornStratGiver
+{
+    frame STCK { light STRATLONGHORN }
+}
+
+object LonghornStrat
+{
+    frame STCK { light STRATLONGHORN }
+}
+
+//Strucker
+pointlight STRATSTRUCKER
+{
+    color 1.0 0.2 0.1
+    size 52
+    offset 0 24 0
+	dontlightself 1
+}
+
+object StruckerStratGiver
+{
+    frame STCK { light STRATSTRUCKER }
+}
+
+object StruckerStrat
+{
+    frame STCK { light STRATSTRUCKER }
+}

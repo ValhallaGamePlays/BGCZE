@@ -1,0 +1,193 @@
+//Dude, you just went full Nithor. Never go full Nithor.
+ACTOR EXTREMEsphere : Megasphere
+{
+  Inventory.PickupMessage "EXTREMEsphere!!"
+  Inventory.PickupSound ""
+  Renderstyle Add
+  +FLOATBOB
+  +NOTIMEFREEZE
+  States
+  {
+  Spawn:
+    XTRS AA 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS AAAA 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	XTRS B 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS BBBB 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	XTRS A 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS CCCC 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	XTRS A 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS DDDD 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	XTRS E 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS EEEE 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	XTRS F 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS FFFF 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	XTRS E 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS EEEE 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	XTRS D 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS DDDD 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	XTRS C 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS CCCC 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	XTRS B 0 A_SpawnItemEx("EXTREMEFade",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    XTRS BBBB 1 Bright A_SpawnItemEx("EXTREMEsphereParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+  Pickup:
+    TNT1 A 0 A_PlaySound("Extreme/Pickup",3,1.0,0,ATTN_NONE)
+	TNT1 A 0 A_SetBlend("Red",0.3,25,"Black")
+	
+    TNT1 A 0 A_GiveInventory("PowerExtremeSpeed")
+    TNT1 A 0 A_GiveInventory("PowerExtremeJump")
+    TNT1 A 0 A_GiveInventory("PowerExtremeAmmo")
+	TNT1 A 0 A_GiveInventory("PowerExtremeBerserking")
+	TNT1 A 0 A_GiveInventory("PowerExtremeGunzerking")
+	TNT1 A 0 A_GiveInventory("PowerExtremeAmplify")
+	//TNT1 A 0 A_GiveInventory("PowerExtremeMiniderg")
+    TNT1 A 0 A_GiveInventory("ExtremePower")
+    TNT1 A 0 A_GiveInventory("PowerExtremeInvul")
+    TNT1 A 0 A_GiveInventory("EXTREMEsphereArmor", 1)
+    TNT1 A 0 A_GiveInventory("EXTREMEsphereHealth", 1)
+	
+    TNT1 A 0 A_GiveInventory("ArmorPoints", 400)
+	TNT1 A 0 ACS_NamedExecute("PedalToTheMetal")
+	
+	//TNT1 A 0 A_JumpIfInventory("CasterFamiliarActive",2,"Null")
+	//TNT1 A 0 A_JumpIfInventory("CasterFamiliarActive",1,"AnotherOne")
+	//TNT1 A 0 A_SpawnItemEx("CasterFamiliar",0,0,0,0,0,0,0,SXF_ORIGINATOR|SXF_SETTARGET|SXF_TRANSFERTRANSLATION)
+	//AnotherOne:
+	//TNT1 A 0 A_SpawnItemEx("CasterFamiliar2",0,0,0,0,0,0,0,SXF_ORIGINATOR|SXF_SETTARGET|SXF_TRANSFERTRANSLATION)
+    Stop
+  }
+}
+
+ACTOR ExtremePower : PowerupGiver
+{
+	Powerup.Duration -117
+	Powerup.Type "ExtremeDamage"
+	Inventory.MaxAmount 0
+	Powerup.Color Red, 0.1
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+
+ACTOR PowerExtremeBerserking : PowerupGiver
+{
+	Powerup.Duration -117
+	Powerup.Type "BerserkDamage"
+	Inventory.MaxAmount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+
+ACTOR PowerExtremeGunzerking : PowerupGiver
+{
+	Powerup.Duration -117
+	Powerup.Type "Gunzerking"
+	Inventory.MaxAmount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+
+ACTOR PowerExtremeAmplify : PowerupGiver
+{
+	Powerup.Duration -117
+	Powerup.Type "TomeEffect"
+	Inventory.MaxAmount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+
+ACTOR PowerExtremeMiniderg : PowerupGiver
+{
+	Powerup.Duration -117
+	Powerup.Type "Miniderg"
+	Inventory.MaxAmount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+
+ACTOR PowerExtremeSpeed : PowerSpeed
+{
+	Powerup.Duration -117
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+	Inventory.Icon ""
+}
+
+ACTOR PowerExtremeJump : PowerHighJump
+{
+	Powerup.Duration -117
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+	Inventory.Icon ""
+}
+
+ACTOR PowerExtremeAmmo : PowerInfiniteAmmo
+{
+	Powerup.Duration -117
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+
+ACTOR PowerExtremeInvul : PowerupGiver
+{
+	Powerup.Duration -117
+	Powerup.Type "GodMode"
+	Inventory.MaxAmount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+
+actor PowerExtremeDamage : PowerDamage
+{	
+	//you get berserk anyway, so no point in that. Left just in case!
+	/*DamageFactor "CloseCombat", 4
+	DamageFactor "Shoelaces", 4
+	DamageFactor "SuperCloseCombat", 4
+	DamageFactor "SuperShoelaces", 4*/
+	
+	DamageFactor "Normal", 4
+	DamageFactor "Bueller", 4
+	DamageFactor "Tiberium", 4
+	DamageFactor "BlueTiberium", 4
+	DamageFactor "Fire", 4
+	DamageFactor "Sovereign", 4
+	DamageFactor "Lightning", 4
+	DamageFactor "LightningBlue", 4
+	DamageFactor "Breath", 4 
+	DamageFactor "Crow", 4 
+	DamageFactor "Crow2", 4
+	DamageFactor "Manuel", 4
+	DamageFactor "Flesh", 4
+	DamageFactor "Acid", 4
+	DamageFactor "AcidReflux", 4
+	DamageFactor "Ice", 4
+	DamageFactor "Matriarch", 4
+	DamageFactor "Annihilation", 4
+	DamageFactor "Darkness", 4
+	Inventory.Icon "XTRMSPH0"
+}
+
+ACTOR EXTREMEsphereHealth : MegasphereHealth
+{
+  Inventory.Amount 300
+  Inventory.MaxAmount 300
+}
+
+Actor EXTREMEsphereArmor : TankArmor
+{
+	Armor.SaveAmount 400
+}
+
+ACTOR EXTREMEFade
+{
+  +NOGRAVITY
+  +NOINTERACTION
+  +NOTONAUTOMAP
+  Renderstyle Add
+  States
+  {
+  Spawn:
+	XTRS C 1 A_FadeOut(0.12)
+	XTRS C 0 A_SetScale(ScaleX+0.02,ScaleX)
+	Loop
+  }
+}

@@ -1,0 +1,7 @@
+#library "keys"
+#include "zcommon.acs"
+
+script "CheckGameType"(void)
+{
+	SetResultValue(GameType());
+}

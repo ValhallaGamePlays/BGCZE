@@ -1,0 +1,104 @@
+ACTOR TomeOfPowah : CustomInventory replaces ArtiTomeOfPower
+{
+  Inventory.Amount 1
+  Inventory.MaxAmount 5
+  Inventory.InterHubAmount 5
+  Inventory.PickupSound "Tome/Pickup"
+  Inventory.UseSound "Tome/Use"
+  Inventory.Icon "ARTIPWBK"
+  Inventory.PickupMessage "Obtained a Tome'o'Power!"
+  Tag "Tome of Power"
+  +COUNTITEM
+  +FLOATBOB
+  +INVBAR
+  States
+  {
+  Spawn:
+		TOME A 0 NoDelay A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME AA 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME BB 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME CC 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME DD 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME EE 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME FF 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME GG 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME HH 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME II 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME JJ 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME KK 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME LL 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME MM 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME NN 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME OO 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TOME A 0 A_SpawnItemEx("Tome_Shadow",random(3.0,-3.0),random(3.0,-3.0),random(3.0,-3.0),0,0,0,0,SXF_CLIENTSIDE)
+		TOME PP 1 Bright A_SpawnItemEx("TomeOfPowerParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),35+frandom(10.0,-10.0),frandom(0.6,-0.6),frandom(0.6,-0.6),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		Loop
+	Use:
+		TNT1 A 0 A_GiveInventory("Amplify")
+		//TNT1 A 0 A_GiveInventory("AmplifyIcon")
+		Stop
+  }
+}
+
+ACTOR Amplify : PowerupGiver
+{
+	Powerup.Duration -45
+	Powerup.Type "TomeEffect"
+	Inventory.MaxAmount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	+INVENTORY.ADDITIVETIME
+}
+/*
+actor AmplifyIcon : PowerupGiver
+{
+  Inventory.Amount 0
+  Powerup.Type "TomeFake"
+  Powerup.Duration -45
+  Powerup.Color Purple, 0.05
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.ALWAYSPICKUP
+  +INVENTORY.ADDITIVETIME
+}
+
+actor PowerTomeFake : PowerDamage
+{	
+	Inventory.Icon "TOMEON0"
+	DamageFactor Normal, 1.0
+}
+*/
+ //Just a fake powerup for the tomed effect, eh. Why this, instead of regular,
+ //tomed powerup? It's quite simple - less of a pain in the ass to maintain.
+ 
+actor PowerTomeEffect : PowerDamage
+{
+	Inventory.Icon "TOMEON0"
+	DamageFactor Normal, 1.0
+}
+
+Actor Tome_Shadow
+{
+	Alpha 0.5
+	RenderStyle Stencil
+	+NoInteraction
+	States
+	{
+		Spawn:
+			TOME ABCDEFGHIJKLMNOP 2 A_FadeOut(0.03)
+			Stop
+	}
+}

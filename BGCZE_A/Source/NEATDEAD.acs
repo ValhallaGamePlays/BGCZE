@@ -1,0 +1,50 @@
+#library "RAINBLOWS"
+#include "zcommon.acs"
+
+script "Translation Table" open
+{
+	 CreateTranslation(11, 0:255=%[0.045, 0.1, 0.015]:[0.25, 1.2, 0.11]);	//Toxicity
+	 CreateTranslation(12, 0:255=%[0.0, 0.0, 0.0]:[0.1, 0.1, 0.1]);			//Charcoal
+	 CreateTranslation(13, 0:255=0:255);									//Normalization
+	 CreateTranslation(14, 0:255=%[0.9, 0.9, 0.1]:[1.0, 1.0, 1.0]);			//Yellow Shock
+	 CreateTranslation(15, 0:255=%[0.1, 0.1, 0.9]:[1.0, 1.0, 1.0]);			//Blue Shock
+	 CreateTranslation(16, 0:255=%[0.025, 0.02, 0.1]:[0.15, 0.1, 1.2]);		//Blue Tiberium
+}
+
+script "Toxic Avenger" (void)
+{
+    Thing_SetTranslation(0, 11);
+}
+
+script "Extra Crispy" (void)
+{
+    Thing_SetTranslation(0, 12);
+}
+
+script "Normalization" (void)
+{
+    Thing_SetTranslation(0, 13);
+}
+
+script "Shock me Plenty" (void)
+{
+    Thing_SetTranslation(0, 14);
+	Delay(2);
+    Thing_SetTranslation(0, 12);
+	Delay(2);
+    Thing_SetTranslation(0, 13);
+}
+
+script "Shock me Plenty Blue" (void)
+{
+    Thing_SetTranslation(0, 15);
+	Delay(2);
+    Thing_SetTranslation(0, 12);
+	Delay(2);
+    Thing_SetTranslation(0, 13);
+}
+
+script "Blue Oyster Cult" (void)
+{
+    Thing_SetTranslation(0, 16);
+}

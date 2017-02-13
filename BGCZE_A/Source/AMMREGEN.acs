@@ -1,0 +1,74 @@
+#library "REGEN"
+
+// -----------------------------------------------------------------------------
+//
+// Guncaster ammo regen script by KeksDose
+//
+// 30 / 3 / 2014
+//
+// This gets activated with the dual akimbo super death powerup. It allows you
+// to be even deadlier.
+//
+// Reuse as you wish, but include the source file (this one) and credit me
+// somewhere (KeksDose).
+//
+// ZHS2 EDIT: I had to add a case for Hexen ammotypes, so I also changed up the
+// timer method so as not to rely on the game's (for fairer regen) and also
+// added a check so that more than one doesn't run at once.
+// -----------------------------------------------------------------------------
+
+#libdefine AMMO_TYPES	8
+#libdefine AMMO_AMOUNT	1
+#libdefine AMMO_DELAY	1
+
+int regenTime[AMMO_TYPES] = { 73, 8, 21, 95, 60, 50, 700, 350 };
+int regenTimeHexen[3] = { 25, 25, 350 };
+
+str powerupType = "PowerGunzerking";
+str regenTypes[AMMO_TYPES] = {
+	"LonghornAmmo", "PulverizerAmmo", "ShotgunAmmo",
+	"CauterizerAmmo", "MatriarchAmmo", "SovereignAmmo", "TiberiumAmmo",
+	"TNTAmmo"
+};
+str regenTypesHexen[3] = {"BlueMana", "GreenMana", "TNTAmmo"};
+
+script "GC Ammo Regen" (void)
+{
+	int ammotimer, i;
+	// A simple killswitch, to ensure that we don't run more than one of these or extend them
+	if(CheckInventory("GunzerkActive")) { terminate; }
+	GiveInventory("GunzerkActive", 1); // The kill token, doesn't depend on the powerup
+	while(CheckInventory(powerupType))
+	{
+		Delay(AMMO_DELAY);
+		ammotimer++;
+		if(CheckInventory("HexenCounter"))
+		{
+			for(i = 0; i < 2; i++)
+			{
+				if(ammotimer % regenTimeHexen[i] == 0) { GiveInventory(regenTypesHexen[i], AMMO_AMOUNT); }
+			}
+		}
+		else
+		{
+			for(i = 0; i < AMMO_TYPES; i++)
+			{
+				if(ammotimer % regenTime[i] == 0) { GiveInventory(regenTypes[i], AMMO_AMOUNT); }
+			}
+		}
+	}
+	ammotimer = 0;
+	TakeInventory("GunzerkActive", 999); // Take our kill token so another can be used successfully
+}
+
+// [DoomKrakken]: 'Cuz the kill token doesn't get removed whenever exiting a level while this stuff is active.
+
+script "GunzerkActiveRemoverEnter" ENTER
+{
+	TakeInventory("GunzerkActive",999);
+}
+
+script "GunzerkActiveRemoverReturn" RETURN
+{
+	TakeInventory("GunzerkActive",999);
+}

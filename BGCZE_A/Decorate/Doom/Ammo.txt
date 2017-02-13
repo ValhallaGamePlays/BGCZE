@@ -1,0 +1,101 @@
+//Bullets
+ACTOR Clip_Giver : RandomSpawner replaces Clip
+{
+	DropItem "LonghornAmmo"
+	Dropitem "PulverizerAmmo"
+}
+
+ACTOR ClipBox_Giver : RandomSpawner replaces ClipBox
+{
+	DropItem "LonghornBox"
+	Dropitem "PulverizerBox"
+}
+
+//Shells
+ACTOR ShotgunAmmo2 : ShotgunAmmo
+{
+	Inventory.Amount 6 //4
+	States
+	{
+	Spawn:
+	STRA A -1 //STRA D -1
+	Stop
+	}
+}
+
+ACTOR Shell_Giver : RandomSpawner replaces Shell
+{
+	DropItem "ShotgunAmmo2"
+}
+
+ACTOR ShotgunBandolier2 : ShotgunBandolier
+{
+	Inventory.Amount 30 //24
+}
+
+ACTOR ShellBox_Giver : RandomSpawner replaces ShellBox
+{
+	Dropitem "ShotgunBandolier2"
+}
+
+//Rockets
+ACTOR MatriarchAmmo2 : MatriarchAmmo
+{
+	Inventory.Amount 2
+	Inventory.PickupMessage "Picked up a pair of ''Matriarch'' slugs."
+	States
+	{
+	Spawn:
+	WINA E -1
+	Stop
+	}
+}
+
+ACTOR SovereignAmmo2 : SovereignAmmo
+{
+	Inventory.Amount 2
+	Inventory.PickupMessage "Picked up a pair of specialized ''Sovereign'' slugs."
+	States
+	{
+	Spawn:
+	SVMN E -1
+	Stop
+	}
+}
+
+ACTOR Rocket_Giver : RandomSpawner replaces RocketAmmo
+{
+	DropItem "MatriarchAmmo2" 255 1
+	DropItem "SovereignAmmo2" 255 1
+	DropItem "TNTAmmo" 255 1
+}
+
+actor MatriarchBox2 : MatriarchBox
+{
+	Inventory.Amount 10
+}
+
+actor SovereignBox2 : SovereignBox
+{
+	Inventory.Amount 10
+}
+
+ACTOR RocketBox_Giver : RandomSpawner replaces RocketBox
+{
+	DropItem "MatriarchBox2" 255 1
+	DropItem "SovereignBox2" 255 1
+	DropItem "TNTBox" 255 1
+}
+
+//Cells
+ACTOR Cell_Giver : RandomSpawner replaces Cell
+{
+	DropItem "CauterizerAmmo" 255 5
+	DropItem "TiberiumAmmo" 255 1
+}
+
+ACTOR CellPack_Giver : RandomSpawner replaces CellPack
+{
+	Dropitem "CauterizerBox" 255 5
+	Dropitem "TiberiumBloat" 255 1
+}

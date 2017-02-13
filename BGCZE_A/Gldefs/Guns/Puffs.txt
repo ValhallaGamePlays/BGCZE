@@ -1,0 +1,11 @@
+//Puffs
+pointlight PUFFFLASH
+{
+    color 1.0 0.9 0.4
+    size 7
+}
+
+Object BuellerPuff_Main
+{
+    frame "####" { light PUFFFLASH }
+}

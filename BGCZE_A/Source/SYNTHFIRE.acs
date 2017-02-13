@@ -1,0 +1,66 @@
+/*
+Synthetic-Fire system. Uses ACS and GetPlayerInput to 'simulate' the use of
+fire buttons. This effectively allows for true dual-wielded weapons. Nifty!
+Courtesy of Xaser. Shoot first, ask questions later!
+*/
+
+// Zhs2 added some things. I love you Xaser!
+
+#library "synthfire"
+#include "zcommon.acs"
+
+script "SynthLeft" (void) // Automatic fire.
+{
+	while(CheckInventory("SynthFireActive"))
+	{
+		if((GetPlayerInput(-1, INPUT_BUTTONS) & BT_ATTACK) && !(GetUserVariable(0, "user_amuletopen")))
+		{
+			giveinventory("SynthFireLeft",1);
+			while((GetPlayerInput(-1, INPUT_BUTTONS) & BT_ATTACK) && !(GetUserVariable(0, "user_amuletopen"))) { delay(1); }
+			takeinventory("SynthFireLeft",1);
+		}
+		delay(1);
+	}
+}
+
+script "SynthRight" (void)
+{
+	while(CheckInventory("SynthFireActive"))
+	{
+		if((GetPlayerInput(-1, INPUT_BUTTONS) & BT_ALTATTACK) && !(GetUserVariable(0, "user_amuletopen")))
+		{
+			GiveInventory("SynthFireRight",1);
+			while((GetPlayerInput(-1, INPUT_BUTTONS) & BT_ALTATTACK) && !(GetUserVariable(0, "user_amuletopen"))) { delay(1); }
+			TakeInventory("SynthFireRight",1);
+		}
+		delay(1);
+	}
+}
+
+script "SynthLeftClicky" (void) // The semi-automatic kind.
+{
+	while(CheckInventory("SynthFireActive"))
+	{
+		if((getplayerinput(-1, INPUT_BUTTONS) & BT_ATTACK) && !(getplayerinput(-1, INPUT_OLDBUTTONS) & BT_ATTACK) && !(GetUserVariable(0, "user_amuletopen")))
+		{
+			giveinventory("SynthFireLeft",1);
+			delay(1);
+			takeinventory("SynthFireLeft",1);
+		}
+		delay(1);
+	}
+}
+
+script "SynthRightClicky" (void)
+{
+	while(CheckInventory("SynthFireActive"))
+	{
+		if((getplayerinput(-1, INPUT_BUTTONS) & BT_ALTATTACK) && !(getplayerinput(-1, INPUT_OLDBUTTONS) & BT_ALTATTACK) && !(GetUserVariable(0, "user_amuletopen")))
+		{
+			giveinventory("SynthFireRight",1);
+			delay(1);
+			takeinventory("SynthFireRight",1);
+		}
+		delay(1);
+	}
+}

@@ -1,0 +1,26 @@
+pulselight THUNDERSTRUCK
+{
+    color 1.0 1.0 0.1 //0.1 0.8 1.0
+    size 0
+    secondarySize 164
+    interval 0.4
+}
+
+object LightningBlast1
+{
+    frame TNT1A { light THUNDERSTRUCK }
+}
+
+pulselight THUNDERLIGHTENING
+{
+    color 0.6 0.6 0.1 //0.1 0.8 1.0
+    size 384
+    secondarySize 320
+    interval 1.0
+}
+
+
+object RajtninguStormuru
+{
+    frame TFLRA { light THUNDERLIGHTENING }
+}

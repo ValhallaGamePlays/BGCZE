@@ -1,0 +1,1010 @@
+//Used for all corpseblast actors within monsters.
+ACTOR BlastShared
+{
+	+NOINTERACTION
+	-NOGRAVITY
+	+FORCERADIUSDMG
+	DamageType Flesh
+	var int User_PlayerCount;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("Corpseblast/Hit")
+		TNT1 A 0 A_SetUserVar("User_PlayerCount", 0)
+		TNT1 A 0 A_Jump(256,"Looplet")
+	Looplet:
+		TNT1 A 0 A_JumpIf(IsPointerEqual(AAPTR_TARGET, AAPTR_PLAYER1 << User_PlayerCount), "DamageStuff")
+		TNT1 A 0 A_SetUserVar("User_PlayerCount", User_PlayerCount + 1)
+		TNT1 A 0 A_JumpIf(User_PlayerCount > 7, "Main")
+		Loop
+	}
+}
+
+ACTOR GibShared
+{
+	-NOGRAVITY
+}
+
+ACTOR CorpseblastProjectile : FastProjectile
+{
+	Radius 12
+	Height 14
+	MissileHeight 14
+	MissileType "CorpseblastTrail"
+	Damage 10
+	Speed 80
+	Projectile
+	+BLOODLESSIMPACT
+	//Renderstyle Add
+	Scale 0.15
+	States
+	{
+	Spawn:
+		TNT1 A 1 //RPRT A 1 Bright
+		Loop
+	Death:
+		RPRT A 0 A_RadiusGive("CorpseBlaster", 256, RGF_MONSTERS|RGF_CORPSES, 1)
+		RPRT A 0 A_SpawnItemEx("CorpseblastProjectileHit",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_Explode(100,128,0)
+		TNT1 A 0 A_PlaySound("Corpsespirit/Hit")
+		/*TNT1 A 0 A_PlaySound("Corpseblast/Hit")
+		TNT1 AAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("SuperWallRedBlood", 40, 0, random (0, 360), 2, random (-5, 5))
+		TNT1 AAAAA 0 A_CustomMissile ("Instestin", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("SuperGoreSpawner", 32, 0, random (0, 360), 2, random (50, 130))*/
+		Stop
+	Looplo:
+		RPRT A 0 A_FadeOut(frandom(0.1,0.05))
+		RPRT A 0 A_SetScale(ScaleX - 0.005)
+		RPRT A 1 Bright A_JumpIf(ScaleX <= 0, "Null")
+		Loop
+	}
+}
+
+ACTOR CorpseblastProjectile2 : CorpseblastProjectile
+{
+	Damage 20
+	States
+	{
+	Death:
+		RPRT A 0 A_RadiusGive("CorpseBlaster2", 512, RGF_MONSTERS|RGF_CORPSES, 1)
+		RPRT A 0 A_SpawnItemEx("CorpseblastProjectileHit2",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_Explode(150,192,0)
+		TNT1 A 0 A_PlaySound("Corpsespirit/Hit")
+		/*TNT1 A 0 A_PlaySound("Corpseblast/Hit")
+		TNT1 AAAAAA 0 A_CustomMissile ("CeilBloodLauncherLong", 0, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("SuperWallRedBlood", 40, 0, random (0, 360), 2, random (-5, 5))
+		TNT1 AAAAA 0 A_CustomMissile ("Instestin", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("Brutal_FlyingBlood", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAA 0 A_CustomMissile ("SuperGoreSpawner", 32, 0, random (0, 360), 2, random (50, 130))*/
+	Looplo:
+		RPRT A 0 A_FadeOut(frandom(0.1,0.05))
+		RPRT A 0 A_SetScale(ScaleX - 0.005)
+		RPRT A 1 Bright A_JumpIf(ScaleX <= 0, "Null")
+		Loop
+	}
+}
+
+ACTOR CorpseblastTrail
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	Renderstyle Add
+	Scale 0.15
+	States
+	{
+	Spawn:
+		RPRT A 0 NoDelay A_SpawnItemEx("CorpseEffectLightning",0,0,0,0,0,0,0,SXF_CLIENTSIDE,32)
+		RPRT A 0 A_SpawnItemEx("CorpseEffectCloud",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),0,0,0,0,SXF_CLIENTSIDE,32)
+		RPRT A 0 A_SpawnItemEx("CorpseEffectParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(2.0,6.0),frandom(2.0,6.0),0,frandom(-4.0,4.0),frandom(195.0,165.0),SXF_CLIENTSIDE,32)
+	Looplet:
+		RPRT A 0 A_FadeOut(0.1)
+		RPRT A 0 A_SetScale(ScaleX - 0.005)
+		RPRT A 1 Bright A_JumpIf(ScaleX <= 0, "Null")
+		Loop
+	}
+}
+
+ACTOR CorpseblastProjectileHit
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	var int User_Cycle;
+	var int User_MainCycle;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_Cycle",40)
+	Initiate:
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectPart",frandom(192.0,-192.0),frandom(192.0,-192.0),frandom(32.0,-32.0),frandom(1.0,-1.0),frandom(1.0,-1.0),0,frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "Main")
+		Loop
+	Main:
+		TNT1 A 0 A_SetUserVar("User_MainCycle", 7)
+	CycleParticle:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 10)
+	Particle:
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectPart",frandom(192.0,-192.0),frandom(192.0,-192.0),frandom(64.0,-32.0),frandom(2.0,-2.0),frandom(2.0,-2.0),0,frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleParticle2")
+		Loop
+	CycleParticle2:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 10)
+	Particle2:
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectParticle2",0,0,0,frandom(8.0,2.0),frandom(8.0,2.0),frandom(frandom(8.0,2.0),frandom(-2.0,-8.0)),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleLightning")
+		Loop
+	CycleLightning:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 10)
+	Lightning:
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectLightning2",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(5.0,1.5),frandom(5.0,1.5),frandom(4.0,-4.0),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleCloud")
+		Loop
+	CycleCloud:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 10)
+	Cloud:
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectCloud2",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(6.5,2.5),frandom(6.5,2.5),frandom(6.5,-6.5),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "RinseAndRepeat")
+		Loop
+	RinseAndRepeat:
+		TNT1 A 0 A_SetUserVar("User_MainCycle", User_MainCycle - 1)
+		TNT1 A random(1,2)
+		TNT1 A 0 A_JumpIf(User_MainCycle <= 0, "Death")
+		Goto CycleParticle
+	Death:
+		TNT1 A 15
+		Stop
+	}
+}
+
+ACTOR CorpseblastProjectileHit2
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	var int User_Cycle;
+	var int User_MainCycle;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_Cycle",80)
+	Initiate:
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectPart",frandom(384.0,-384.0),frandom(384.0,-384.0),frandom(32.0,-32.0),frandom(1.0,-1.0),frandom(1.0,-1.0),0,frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "Main")
+		Loop
+	Main:
+		TNT1 A 0 A_SetUserVar("User_MainCycle", 7)
+	CycleParticle:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 20)
+	Particle:
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectPart",frandom(384.0,-384.0),frandom(384.0,-384.0),frandom(64.0,-32.0),frandom(2.0,-2.0),frandom(2.0,-2.0),0,frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleParticle2")
+		Loop
+	CycleParticle2:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 10)
+	Particle2:
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectParticle2",0,0,0,frandom(8.0,2.0),frandom(8.0,2.0),frandom(frandom(8.0,2.0),frandom(-2.0,-8.0)),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleLightning")
+		Loop
+	CycleLightning:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 10)
+	Lightning:
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectLightning2",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(5.0,1.5),frandom(5.0,1.5),frandom(4.0,-4.0),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleCloud")
+		Loop
+	CycleCloud:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 10)
+	Cloud:
+		TNT1 A 0 A_SpawnItemEx("CorpseEffectCloud2",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(6.5,2.5),frandom(6.5,2.5),frandom(6.5,-6.5),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "RinseAndRepeat")
+		Loop
+	RinseAndRepeat:
+		TNT1 A 0 A_SetUserVar("User_MainCycle", User_MainCycle - 1)
+		TNT1 A random(1,2)
+		TNT1 A 0 A_JumpIf(User_MainCycle <= 0, "Death")
+		Goto CycleParticle
+	Death:
+		TNT1 A 15
+		Stop
+	}
+}
+
+ACTOR CorpseInherit
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	Scale 0
+	Alpha 0.99
+	Renderstyle Add
+}
+
+//Trail
+ACTOR CorpseEffectLightning : CorpseInherit
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.05,0.045))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+		RLIT A 0 A_Jump(256,"Main")
+	SpriteB:
+		RLIT B 0 A_Jump(256,"Main")
+	SpriteC:
+		RLIT C 0 A_Jump(256,"Main")
+	SpriteD:
+		RLIT D 0 A_Jump(256,"Main")
+	SpriteE:
+		RLIT E 0 A_Jump(256,"Main")
+	SpriteF:
+		RLIT F 0 A_Jump(256,"Main")
+	SpriteG:
+		RLIT G 0 A_Jump(256,"Main")
+	SpriteH:
+		RLIT H 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5),CVF_RELATIVE)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.001,0.002))
+		"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.05))
+		Loop
+	}
+}
+
+ACTOR CorpseEffectCloud : CorpseInherit
+{
+	ProjectileKickback 0
+	Alpha 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.05,0.075))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+		RLOD A 0 A_Jump(256,"Main")
+	SpriteB:
+		RLOD B 0 A_Jump(256,"Main")
+	SpriteC:
+		RLOD C 0 A_Jump(256,"Main")
+	SpriteD:
+		RLOD D 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.001,0.002))
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(-0.2,0.2),CVF_RELATIVE)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.075,0.05))
+		Loop
+	}
+}
+
+ACTOR CorpseEffectParticle : CorpseInherit
+{
+	Scale 0
+	Alpha 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.025,0.025))
+	Sprite:
+		RPRT A 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_JumpIf(Alpha >= 0.98,"Main2")
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.004,0.0002))
+		"####" "#" 1 Bright A_FadeIn(frandom(0.1,0.04))
+		Loop
+	Main2:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.003,0.0002))
+		"####" "#" 1 Bright A_FadeOut(frandom(0.05,0.03))
+		Loop
+	}
+}
+
+//Impact
+ACTOR CorpseEffectLightning2 : CorpseInherit
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.45,0.55))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+		RLIT A 0 A_Jump(256,"Main")
+	SpriteB:
+		RLIT B 0 A_Jump(256,"Main")
+	SpriteC:
+		RLIT C 0 A_Jump(256,"Main")
+	SpriteD:
+		RLIT D 0 A_Jump(256,"Main")
+	SpriteE:
+		RLIT E 0 A_Jump(256,"Main")
+	SpriteF:
+		RLIT F 0 A_Jump(256,"Main")
+	SpriteG:
+		RLIT G 0 A_Jump(256,"Main")
+	SpriteH:
+		RLIT H 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5),CVF_RELATIVE)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.003,0.002))
+		"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.05))
+		Loop
+	}
+}
+
+ACTOR CorpseEffectCloud2 : CorpseInherit
+{
+	ProjectileKickback 0
+	Alpha 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.3,0.4))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+		RLOD A 0 A_Jump(256,"Main")
+	SpriteB:
+		RLOD B 0 A_Jump(256,"Main")
+	SpriteC:
+		RLOD C 0 A_Jump(256,"Main")
+	SpriteD:
+		RLOD D 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.001,0.002))
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(-0.2,0.2),CVF_RELATIVE)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.075,0.05))
+		Loop
+	}
+}
+
+ACTOR CorpseEffectParticle2 : CorpseInherit
+{
+	Scale 0
+	Alpha 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.035,0.025))
+	Sprite:
+		RPRT A 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_JumpIf(Alpha >= 0.98,"Main2")
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.004,0.0005))
+		"####" "#" 1 Bright A_FadeIn(frandom(0.1,0.04))
+		Loop
+	Main2:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.004,0.0005))
+		"####" "#" 1 Bright A_FadeOut(frandom(0.05,0.04))
+		Loop
+	}
+}
+
+ACTOR CorpseEffect
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOTONAUTOMAP
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_SpawnItemEx("CorpseEffectSpawner")
+	TNT1 A 20
+	Stop
+	}
+}
+
+ACTOR CorpseEffectPart
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOTONAUTOMAP
+	Scale 0.35
+	Alpha 0.99
+	Renderstyle Add
+	States
+	{
+	Spawn:
+	TNT1 A 0
+	Sprite:
+	RPRT A 0 A_Jump(256,"Main")
+	Main:
+	"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+	"####" "#" 0 A_FadeOut(frandom(0.02,0.04))
+	"####" "#" 0 A_ChangeVelocity(0,0,frandom(-0.1,0.15),CVF_RELATIVE)
+	"####" "#" 1 Bright A_SetScale(ScaleX-frandom(0.03,0.02),ScaleY+frandom(0.01,0.02))
+	Loop
+	}
+}
+
+ACTOR CorpseEffectSpawner
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOTONAUTOMAP
+	var int User_Count1;
+	var int User_Count2;
+	States
+	{
+	Spawn:
+	TNT1 AA 0 A_SetUserVar("User_Count1",30)
+	Looplet1:
+	TNT1 A 0 A_SetUserVar("User_Count1", User_Count1 - 1)
+	TNT1 A 0 A_JumpIf(User_Count1 <= 0, "Phase2")
+	TNT1 A 0 A_SpawnItemEx("CorpseEffectPart",random(60,-60),random(60,-60),random(50,-30),frandom(1.0,-1.0),frandom(1.0,-1.0),0,random(0,360),SXF_CLIENTSIDE,20)
+	Loop
+	Phase2:
+	TNT1 AA 0 A_SetUserVar("User_Count2",10)
+	Looplet2:
+	TNT1 A 0 A_SetUserVar("User_Count2", User_Count2 - 1)
+	TNT1 A 0 A_JumpIf(User_Count2 <= 0, "NULL")
+	TNT1 A 1 A_SpawnItemEx("CorpseEffectPart",random(30,-30),random(30,-30),random(40,-40),frandom(1.0,-1.0),frandom(1.0,-1.0),0,random(0,360),SXF_CLIENTSIDE,20)
+	Loop
+	}
+}
+
+Actor CorpseBlaster : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+	TNT1 A -1
+	Stop
+	Pickup:
+	Use:
+	TNT1 A 0 A_CheckFlag("CORPSE","Yus")
+	Stop
+	Yus:
+	TNT1 A 0 A_GiveInventory("CorpseTrigger",1)
+	Stop
+	}
+}
+
+Actor CorpseTrigger : Inventory { Inventory.MaxAmount 1 }
+
+//Tomed
+Actor CorpseBlaster2 : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ALWAYSPICKUP
+	States
+	{
+	Spawn:
+	TNT1 A -1
+	Stop
+	Pickup:
+	Use:
+	TNT1 A 0 A_CheckFlag("CORPSE","Yus")
+	Stop
+	Yus:
+	TNT1 A 0 A_GiveInventory("CorpseTrigger2",1)
+	Stop
+	}
+}
+
+Actor CorpseTrigger2 : Inventory { Inventory.MaxAmount 1 }
+
+//Spirit
+ACTOR CorpsespiritMedium
+{
+	Radius 16
+	Height 20
+	Speed 1
+	Damage 20
+	Projectile
+	Renderstyle Add
+	SeeSound "Corpsespirit/Release"
+	Damagetype Flesh
+	+SEEKERMISSILE
+	+THRUACTORS
+	+FORCERADIUSDMG
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		GHOS A 0 NoDelay A_PlaySound("Corpsespirit/Loop",5,0.6,1)
+		GHOS A 0 A_SetUserVar("User_Counter",random(6,17))
+		GHOS A 0 A_ScaleVelocity(frandom(0.5,1.1))
+	Main:
+		GHOS ABCDE 1 Bright A_SpawnItemEx("CorpsespiritMediumTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		GHOS A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		GHOS A 0 A_JumpIf(User_Counter > 0, "Main")
+		GHOS A 0 A_ChangeFlag("THRUACTORS",0)
+		GHOS A 0 A_SetAngle(frandom(0.0,360.0))
+		GHOS A 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED|SMF_PRECISE,256,12)
+		GHOS A 0 A_FaceTracer
+		GHOS A 0 A_ChangeVelocity(40,0,0,CVF_REPLACE|CVF_RELATIVE)
+	Main2:
+	    TNT1 A 0 A_SpawnItemEx("CorpsespiritMediumTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_SeekerMissile(20,20,SMF_LOOK|SMF_CURSPEED|SMF_PRECISE,64,6)
+		GHOS ABCDE 1 Bright //Weeeell, I guess it won't hurt to finally use this neat trick.
+		//Yes it would. More than you could know.
+		Loop
+	Death:
+		GHOS A 0 A_PlaySound("Corpsespirit/Hit",5)
+		GHOS A 0 A_Jump(256,"DeathInterlude")
+	DeathInterlude:
+		GHOS A 0 A_SpawnItemEx("CorpsespiritMediumImpact",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		GHOS A 0 A_Jump(256,"DeathMain")
+	DeathMain:
+		GHOS A 0 A_Explode(160,128,0)
+		Stop
+	}
+}
+
+ACTOR CorpsespiritEffectShared
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOTONAUTOMAP
+}
+
+ACTOR CorpsespiritMediumTrail : CorpsespiritEffectShared
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritMediumSmoke",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),
+													frandom(0.25,1.5),frandom(0.25,1.5),random(frandom(-0.25,-1.5),frandom(0.25,1.5)),
+													frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+        TNT1 A 1 A_SpawnItemEx("CorpsespiritParticle",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+												 frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(0.5,-0.5),
+												 frandom(0.0,360.0),SXF_CLIENTSIDE,64)		
+		Stop
+	}
+}
+
+ACTOR CorpsespiritMediumSmoke : CorpsespiritEffectShared
+{
+	Renderstyle Add
+	Alpha 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_SetScale(frandom(0.5,0.6))
+		TNT1 A 0 A_FadeIn(frandom(0.4,0.6))		
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+		RLOD A 0 A_Jump(256,"Main")
+	SpriteB:
+		RLOD B 0 A_Jump(256,"Main")
+	SpriteC:
+		RLOD C 0 A_Jump(256,"Main")
+	SpriteD:
+		RLOD D 0 A_Jump(256,"Main")
+	Main:
+	    "####" "#" 0 A_SetScale(ScaleX + frandom(0.02,0.05))
+		"####" "#" 1 Bright	A_FadeOut(frandom(0.02,0.01))		
+		Loop
+	}
+}
+
+ACTOR CorpsespiritParticle : CorpsespiritEffectShared
+{
+	/*Renderstyle Add
+	Scale 0.35
+	Alpha 0.0
+	States
+	{
+	Spawn:
+		RPRT A 0 NoDelay
+		{
+			A_SetScale(frandom(0.3,0.4));
+			A_FadeIn(frandom(0.8,0.99));
+		}
+	Looplet:
+		RPRT A 1 Bright
+		{
+			A_FadeOut(frandom(0.02,0.04));
+			A_ChangeVelocity(0,0,frandom(-0.1,0.15),CVF_RELATIVE);
+			A_SetScale(ScaleX-frandom(0.03,0.02),ScaleY+frandom(0.01,0.02));
+		}
+		RPRT A 0 A_JumpIf(ScaleX <= 0,"Null")
+		Loop
+	}*/
+}
+
+ACTOR CorpsespiritMediumImpact : CorpsespiritEffectShared
+{
+/*	Renderstyle Add
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_SpawnItemEx("CorpsespiritMediumSmoker",0,0,0,0,0,0,0,SXF_CLIENTSIDE);
+			A_SpawnItemEx("CorpsespiritMediumParticler",0,0,0,0,0,0,0,SXF_CLIENTSIDE);
+		}
+		GHOS FGHIJK 1 Bright
+		{
+			A_FadeOut(frandom(0.05,0.02));
+			A_SetScale(ScaleX + 0.05);
+		}
+		GHOS K 1 Bright
+		{
+			A_FadeOut(frandom(0.1,0.02));
+			A_SetScale(ScaleX + 0.05);
+		}
+		Wait
+	}*/
+}
+
+ACTOR CorpsespiritMediumSmoker : CorpsespiritEffectShared
+{
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_Counter",random(35,45))
+	Looplet1:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritMediumSmoke",frandom(20.0,-20.0),frandom(20.0,-20.0),frandom(20.0,-20.0),
+														 frandom(3.0,1.0),frandom(3.0,1.0),random(frandom(-3.0,-1.0),frandom(3.0,1.0)),
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Looplet1")
+		TNT1 A 0 A_SetUserVar("User_Counter",random(15,20))
+	Looplet2:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 AA 0 A_SpawnItemEx("CorpsespiritMediumSmoke",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(5.0,-5.0),
+														 frandom(3.0,1.0),frandom(3.0,1.0),random(frandom(-3.0,-1.0),frandom(3.0,1.0)),
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 1
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Null")
+		Loop
+	}
+}
+
+ACTOR CorpsespiritMediumParticler : CorpsespiritEffectShared
+{
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_Counter",random(25,35))
+	Looplet1:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritParticle",frandom(60.0,-60.0),frandom(60.0,-60.0),frandom(30.0,-30.0),
+														 frandom(1.0,-1.0),frandom(1.0,-1.0),0,
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Looplet1")
+		TNT1 A 0 A_SetUserVar("User_Counter",random(15,20))
+	Looplet2:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 AA 0 A_SpawnItemEx("CorpsespiritParticle",frandom(60.0,-60.0),frandom(60.0,-60.0),frandom(30.0,-30.0),
+														 frandom(1.0,-1.0),frandom(1.0,-1.0),0,
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 1
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Null")
+		Loop
+	}
+}
+
+//Small spirit
+ACTOR CorpsespiritSmall : CorpsespiritMedium
+{
+/*	Radius 8
+	Height 10
+	Damage 10
+	Scale 0.5
+	States
+	{
+	Spawn:
+		GHOS A 0 NoDelay A_PlaySound("Corpsespirit/Loop",5,0.6,1)
+		GHOS A 0 A_SetUserVar("User_Counter",random(6,17))
+		GHOS A 0 A_ScaleVelocity(frandom(0.5,1.1))
+	Main:
+		GHOS ABCDE 1 Bright A_SpawnItemEx("CorpsespiritSmallTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		GHOS A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		GHOS A 0 A_JumpIf(User_Counter > 0, "Main")
+		GHOS A 0 A_ChangeFlag("THRUACTORS",0)
+		GHOS A 0 A_SetAngle(frandom(0.0,360.0))
+		GHOS A 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED|SMF_PRECISE,256,12)
+		GHOS A 0 A_FaceTracer
+		GHOS A 0 A_ChangeVelocity(50,0,0,CVF_REPLACE|CVF_RELATIVE)
+	/*Main2:
+		GHOS ABCDE 1 Bright
+		{
+			A_SpawnItemEx("CorpsespiritSmallTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE);
+			A_SeekerMissile(25,25,SMF_LOOK|SMF_CURSPEED|SMF_PRECISE,64,6);
+		}
+		Loop
+	DeathInterlude:
+		GHOS A 0 A_SpawnItemEx("CorpsespiritSmallImpact",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		GHOS A 0 A_Jump(256,"DeathMain")
+	DeathMain:
+		GHOS A 0 A_Explode(90,96,0)
+		Stop
+	}*/
+}
+
+ACTOR CorpsespiritSmallTrail : CorpsespiritEffectShared
+{
+	/*States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_SpawnItemEx("CorpsespiritSmallSmoke",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(5.0,-5.0),
+													frandom(0.25,1.0),frandom(0.25,1.0),random(frandom(-0.25,-1.0),frandom(0.25,1.5)),
+													frandom(0.0,360.0),SXF_CLIENTSIDE,64);
+			A_SpawnItemEx("CorpsespiritParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),
+												 frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(0.5,-0.5),
+												 frandom(0.0,360.0),SXF_CLIENTSIDE,64);
+		}
+		Stop
+	}*/
+}
+
+ACTOR CorpsespiritSmallSmoke : CorpsespiritEffectShared
+{
+	/*Renderstyle Add
+	Alpha 0
+	States
+	{
+	Spawn:			
+		TNT1 A 0 A_SetScale(frandom(0.2,0.3))
+		TNT1 A 0 A_FadeIn(frandom(0.3,0.5))		
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	/SpriteA:
+		RLOD A 0 A_Jump(256,"Main")
+	SpriteB:
+		RLOD B 0 A_Jump(256,"Main")
+	SpriteC:
+		RLOD C 0 A_Jump(256,"Main")
+	SpriteD:
+		RLOD D 0 A_Jump(256,"Main")
+	/*Main:
+		"####" "#" 1 Bright
+		{
+			A_SetScale(ScaleX + frandom(0.01,0.03));
+			A_FadeOut(frandom(0.015,0.01));
+		}
+		Loop
+	}*/
+}
+
+ACTOR CorpsespiritSmallImpact : CorpsespiritEffectShared
+{
+	/*Renderstyle Add
+	Scale 0.5
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_SpawnItemEx("CorpsespiritSmallSmoker",0,0,0,0,0,0,0,SXF_CLIENTSIDE);
+			A_SpawnItemEx("CorpsespiritSmallParticler",0,0,0,0,0,0,0,SXF_CLIENTSIDE);
+		}
+		GHOS FGHIJK 1 Bright
+		{
+			A_FadeOut(frandom(0.05,0.02));
+			A_SetScale(ScaleX + 0.025);
+		}
+		GHOS K 1 Bright
+		{
+			A_FadeOut(frandom(0.1,0.02));
+			A_SetScale(ScaleX + 0.025);
+		}
+		Wait
+	}*/
+}
+
+ACTOR CorpsespiritSmallSmoker : CorpsespiritEffectShared
+{
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_Counter",random(15,25))
+	Looplet1:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritSmallSmoke",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),
+														 frandom(2.0,1.0),frandom(2.0,1.0),random(frandom(-2.0,-1.0),frandom(2.0,1.0)),
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Looplet1")
+		TNT1 A 0 A_SetUserVar("User_Counter",random(10,15))
+	Looplet2:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 AA 0 A_SpawnItemEx("CorpsespiritSmallSmoke",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(5.0,-5.0),
+														 frandom(2.0,1.0),frandom(2.0,1.0),random(frandom(-2.0,-1.0),frandom(2.0,1.0)),
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 1
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Null")
+		Loop
+	}
+}
+
+ACTOR CorpsespiritSmallParticler : CorpsespiritEffectShared
+{
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_Counter",random(15,25))
+	Looplet1:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritParticle",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(15.0,-15.0),
+														 frandom(1.0,-1.0),frandom(1.0,-1.0),0,
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Looplet1")
+		TNT1 A 0 A_SetUserVar("User_Counter",random(15,20))
+	Looplet2:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 AA 0 A_SpawnItemEx("CorpsespiritParticle",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(15.0,-15.0),
+														 frandom(1.0,-1.0),frandom(1.0,-1.0),0,
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 1
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Null")
+		Loop
+	}
+}
+
+//Large spirit
+ACTOR CorpsespiritLarge : CorpsespiritMedium
+{
+/*	Radius 20
+	Height 24
+	Damage 30
+	Scale 1.5
+	States
+	{
+	Spawn:
+		GHOS A 0 NoDelay A_PlaySound("Corpsespirit/Loop",5,0.6,1)
+		GHOS A 0 A_SetUserVar("User_Counter",random(6,17))
+		GHOS A 0 A_ScaleVelocity(frandom(0.5,1.1))
+	Main:
+		GHOS ABCDE 1 Bright A_SpawnItemEx("CorpsespiritLargeTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		GHOS A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		GHOS A 0 A_JumpIf(User_Counter > 0, "Main")
+		GHOS A 0 A_ChangeFlag("THRUACTORS",0)
+		GHOS A 0 A_SetAngle(frandom(0.0,360.0))
+		GHOS A 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED|SMF_PRECISE,256,12)
+		GHOS A 0 A_FaceTracer
+		GHOS A 0 A_ChangeVelocity(50,0,0,CVF_REPLACE|CVF_RELATIVE)
+	Main2:
+		GHOS ABCDE 1 Bright
+		{
+			A_SpawnItemEx("CorpsespiritLargeTrail",0,0,0,0,0,0,0,SXF_CLIENTSIDE);
+			A_SeekerMissile(15,15,SMF_LOOK|SMF_CURSPEED|SMF_PRECISE,64,6);
+		}
+		Loop
+	Death:
+		GHOS A 0 A_PlaySound("Corpsespirit/Hit",5)
+		GHOS A 0 A_Jump(256,"DeathInterlude")
+	DeathInterlude:
+		GHOS A 0 A_SpawnItemEx("CorpsespiritLargeImpact",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+		GHOS A 0 A_Jump(256,"DeathMain")
+	DeathMain:
+		GHOS A 0 A_Explode(300,192,0)
+		Stop
+	}*/
+}
+
+ACTOR CorpsespiritLargeTrail : CorpsespiritEffectShared
+{
+	States
+	{
+	Spawn:		
+			TNT1 A 0 A_SpawnItemEx("CorpsespiritLargeSmoke",frandom(20.0,-20.0),frandom(20.0,-20.0),frandom(20.0,-20.0),
+													frandom(0.25,1.75),frandom(0.25,1.75),random(frandom(-0.25,-1.75),frandom(0.25,1.75)),
+													frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+			TNT1 A 0 A_SpawnItemEx("CorpsespiritParticle",frandom(25.0,-25.0),frandom(25.0,-25.0),frandom(25.0,-25.0),
+												 frandom(0.5,-0.5),frandom(0.5,-0.5),frandom(0.5,-0.5),
+												 frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		Stop
+	}
+}
+
+ACTOR CorpsespiritLargeSmoke : CorpsespiritEffectShared
+{
+	Renderstyle Add
+	Alpha 0
+	States
+	{
+	Spawn:		
+		TNT1 A 0 A_SetScale(frandom(0.6,0.8))
+		TNT1 A 0 A_FadeIn(frandom(0.4,0.6))		
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+		RLOD A 0 A_Jump(256,"Main")
+	SpriteB:
+		RLOD B 0 A_Jump(256,"Main")
+	SpriteC:
+		RLOD C 0 A_Jump(256,"Main")
+	SpriteD:
+		RLOD D 0 A_Jump(256,"Main")
+	Main:
+	    "####" "#" 0 A_FadeOut(frandom(0.02,0.01))
+		"####" "#" 1 Bright A_SetScale(ScaleX + frandom(0.03,0.06))		
+		Loop
+	}
+}
+
+ACTOR CorpsespiritLargeImpact : CorpsespiritEffectShared
+{
+	Renderstyle Add
+	Scale 1.5
+	States
+	{
+	Spawn:
+		 		
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritLargeSmoker",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritLargeParticler",0,0,0,0,0,0,0,SXF_CLIENTSIDE)		
+		TNT1 A 0 A_FadeOut(frandom(0.05,0.02))		
+		GHOS FGHIJK 1 Bright A_SetScale(ScaleX + 0.06)
+		TNT1 A 0 A_SetScale(ScaleX + 0.06)
+		GHOS K 1 Bright A_FadeOut(frandom(0.1,0.02))
+		Wait
+	}
+}
+
+ACTOR CorpsespiritLargeSmoker : CorpsespiritEffectShared
+{
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_Counter",random(45,65))
+	Looplet1:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritLargeSmoke",frandom(25.0,-25.0),frandom(25.0,-25.0),frandom(25.0,-25.0),
+														 frandom(4.0,1.0),frandom(4.0,1.0),random(frandom(-4.0,-1.0),frandom(4.0,1.0)),
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Looplet1")
+		TNT1 A 0 A_SetUserVar("User_Counter",random(20,30))
+	Looplet2:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 AA 0 A_SpawnItemEx("CorpsespiritLargeSmoke",frandom(15.0,-15.0),frandom(15.0,-15.0),frandom(15.0,-15.0),
+														 frandom(4.0,1.0),frandom(4.0,1.0),random(frandom(-4.0,-1.0),frandom(4.0,1.0)),
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 1
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Null")
+		Loop
+	}
+}
+
+ACTOR CorpsespiritLargeParticler : CorpsespiritEffectShared
+{
+	var int User_Counter;
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_SetUserVar("User_Counter",random(35,45))
+	Looplet1:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 A 0 A_SpawnItemEx("CorpsespiritParticle",frandom(90.0,-90.0),frandom(90.0,-90.0),frandom(50.0,-50.0),
+														 frandom(1.0,-1.0),frandom(1.0,-1.0),0,
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Looplet1")
+		TNT1 A 0 A_SetUserVar("User_Counter",random(20,30))
+	Looplet2:
+		TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+		TNT1 AA 0 A_SpawnItemEx("CorpsespiritParticle",frandom(90.0,-90.0),frandom(90.0,-90.0),frandom(50.0,-50.0),
+														 frandom(1.0,-1.0),frandom(1.0,-1.0),0,
+														 frandom(0.0,360.0),SXF_CLIENTSIDE,35)
+		TNT1 A 1
+		TNT1 A 0 A_JumpIf(User_Counter > 0, "Null")
+		Loop
+	}
+}

@@ -1,0 +1,657 @@
+//Strat
+ACTOR FloaterblastActive : Inventory { Inventory.MaxAmount 1 }
+ACTOR AnotherIronblast : Inventory { Inventory.MaxAmount 1 }
+
+ACTOR IronblastRevert : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Inventory.Icon "ARTIPIRN"
+	Inventory.PickupSound ""
+	Inventory.UseSound ""
+	Inventory.PickupMessage "You weren't supposed to pick it up like that, cringe-worthy mortal."
+	Tag "Ironblast Return"
+	+INVBAR
+	States
+	{
+	Spawn:
+		IRNG X -1
+		Stop
+	Use:
+		TNT1 A 0 A_TakeInventory("IronblastRevert")
+		Stop
+	}
+}	
+
+ACTOR IronblastItem : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Inventory.Icon "ICONSHT2"
+	Inventory.PickupSound ""
+	Inventory.UseSound ""
+	Inventory.PickupMessage "You weren't supposed to pick it up like that, cringe-worthy mortal."
+	Tag "Extra Ironblast"
+	+INVBAR
+	States
+	{
+	Spawn:
+		IRNG X -1
+		Stop
+	Use:
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,"HexenUse")
+		TNT1 A 0 A_JumpIfInventory("Ironblast",1,"Failure")
+		TNT1 A 0 A_GiveInventory("IronblastDropped")
+		TNT1 A 0 A_SelectWeapon("Ironblast")
+		Stop
+	HexenUse:
+		TNT1 A 0 A_JumpIfInventory("Ironblast2",1,"Failure")
+		TNT1 A 0 A_GiveInventory("Ironblast2Dropped")
+		TNT1 A 0 A_SelectWeapon("Ironblast2")
+		Stop
+	Failure:
+		TNT1 A 0 A_PlaySound("Menu/Change",6)
+		TNT1 A 0 A_Print("\c[white]You can't use this while you have an Ironblast in your inventory!  What are you doing, finding a loophole for Gunzerk?")		
+		Fail
+	}
+}
+
+/*ACTOR Ironblast2Item : IronblastItem
+{	
+	States
+	{
+	Spawn:
+		IRNG X -1
+		Stop
+	Use:
+		TNT1 A 0 A_JumpIfInventory("Ironblast2",1,"Failure")
+		TNT1 A 0 A_GiveInventory("Ironblast2")
+		TNT1 A 0 A_SelectWeapon("Ironblast2")
+		Stop
+	Failure:
+		TNT1 A 0 A_PlaySound("Menu/Change",6)
+		TNT1 A 0 A_Print("\c[white]You can't use this while you have an Ironblast in your inventory!  What are you doing, finding a loophole for Gunzerk?")		
+		Fail
+	}
+}*/
+
+
+//THIS IS QUITE MESSY ISN'T IT.
+ACTOR FloatingIronblast
+{
+	Speed 0
+	var int User_Cycle;
+	var int User_Angle;
+	var int User_Idling;
+	var int User_ShotCount;
+	PROJECTILE
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOCLIP
+	+FLOATBOB
+	+SEEKERMISSILE
+	+FORCEXYBILLBOARD
+	+NOTIMEFREEZE
+	+DONTBLAST
+	Scale 0.7
+	States
+	{
+	Spawn:
+		"####" "#" 0 NoDelay A_GiveToTarget("IronblastRevert")
+		/*
+		"####" "#" 0 A_JumpIfInTargetInventory("IronblastItem",1,1)
+		Goto SpawnContinue
+		"####" "#" 0 A_JumpIfInTargetInventory("HexenCounter",1,3)
+		"####" "#" 0 A_GiveToTarget("IronblastDropped")
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_GiveToTarget("Ironblast2Dropped")
+		"####" "#" 0 A_TakeFromTarget("IronblastItem")
+	SpawnContinue:
+		*/
+		"####" "#" 0 A_GiveToTarget("FloaterblastActive")
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_SpawnItemEx("IronblastRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_PlaySound("Ironspirit/Spawn",6)
+		"####" "#" 0 A_JumpIf(CallACS("MuteShotgun"),3)
+		"####" "#" 0 A_Jump(128,2)
+		"####" "#" 0 A_PlaySound("Ironspirit/Ready",7,0.8)
+		"####" "#" 0 A_PlaySound("Ironspirit/Loop",4,0.2,1)
+	Main:
+		"####" "#" 0 A_JumpIfInTargetInventory("IronblastRevert",1,1)
+		Goto Death
+		"####" "#" 0 A_JumpIfInTargetInventory("AnotherIronblast",1,3)
+		"####" "#" 0 A_JumpIf(CallACS("GunslingerMode"), "SummonTheSibling")
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerGunzerking",1,"SummonTheSibling")
+	Idle:
+		"####" "#" 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256,4)
+		"####" "#" 0 A_JumpIf(CallACS("MuteShotgun"),2)
+		"####" "#" 0 A_SetUserVar("User_Idling", User_Idling + 1)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN A 0 A_JumpIfInTargetInventory("HexenCounter",1,2)
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_JumpIfInTargetInventory("GreenMana",8,3)
+		"####" "#" 0 A_JumpIfInTargetInventory("ShotgunAmmo",8,2)
+		PIRN F 0
+		"####" "#" 1 A_JumpIf(User_Idling > 420,"IdleChatter")
+		"####" "#" 0 A_JumpIfTargetInLOS("FireYourGuns", 0, JLOSF_PROJECTILE, 64*6, 0)
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		Goto Main
+	ClearTracer:
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		Goto Idle+2
+	SummonTheSibling:
+		"####" "#" 0 A_SpawnItemEx("FloatingIronblast2",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS,0)
+		"####" "#" 0 A_GiveToTarget("AnotherIronblast")
+		Goto Idle
+	IdleChatter:
+		"####" "#" 0 A_JumpIfInTargetInventory("HexenCounter",1,2)
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_JumpIfInTargetInventory("GreenMana",8,2)
+		Goto OutOfAmmo
+		"####" "#" 0 A_JumpIfInTargetInventory("ShotgunAmmo",8,1)
+		Goto OutOfAmmo
+		"####" "#" 0 A_Jump(128,2)
+		"####" "#" 0 A_PlaySound("Ironspirit/Idle",7,0.8)
+		"####" "#" 0 A_SetUserVar("User_Idling",0)
+		Goto Main
+	OutOfAmmo:
+		"####" "#" 0 A_PlaySound("Ironspirit/Nope",7,0.8)
+		"####" "#" 0 A_SetUserVar("User_Idling",0)
+		Goto Main
+	FireYourGuns:
+		"####" "#" 0 A_JumpIfInTargetInventory("HexenCounter",1,2)
+		"####" "#" 0 A_JumpIfInTargetInventory("ShotgunAmmo",8,"ImmaShootingMalaysia")
+		Goto Main
+		"####" "#" 0 A_JumpIfInTargetInventory("GreenMana",8,1)
+		Goto Main
+	ImmaShootingMalaysia:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,4)
+		"####" "#" 0 A_JumpIfInTargetInventory("HexenCounter",1,3)
+		"####" "#" 0 A_TakeFromTarget("ShotgunAmmo",8,TIF_NOTAKEINFINITE)
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_TakeFromTarget("GreenMana",8,TIF_NOTAKEINFINITE)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_SetUserVar("User_Idling",0)
+		"####" "#" 0 A_JumpIf(CallACS("MuteShotgun"), 2)
+		"####" "#" 0 A_SetUserVar("User_ShotCount", User_ShotCount + 1)
+		"####" "#" 0 A_PlaySound("Ironblast/Fire",1,0.4)
+		"####" "#" 0 A_PlaySound("Ironblast/Add",5,0.5)
+		//"####" "########################" 0 A_CustomMissile("IronblastProjectile",0,0,frandom(8.5,-8.5),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(3.0,-3.0),AAPTR_TRACER)
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_FaceTracer
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN A 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN A 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN A 1 A_SetAngle(User_Angle)
+	FiringCycleA:
+		"####" A 0 A_SetUserVar("User_Cycle",10)
+	FiringA:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "FiringA")
+	FiringCycleB:
+		"####" B 0 A_SetUserVar("User_Cycle",10)
+		"####" "#" 0 A_JumpIf(User_ShotCount >= 4, "YayCarnage")
+		Goto FiringB
+	YayCarnage:
+		"####" "#" 0 A_Jump(128,2)
+		"####" "#" 0 A_PlaySound("Ironspirit/Attack",7,1.0)
+		"####" "#" 0 A_SetUserVar("User_ShotCount",0)
+	FiringB:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "FiringB")
+	FiringCycleC:
+		"####" C 0 A_SetUserVar("User_Cycle",7)
+	FiringC:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "FiringC")
+	ReloadCycle1:
+		"####" D 0 A_PlaySound("Ironblast/Pump/In",6,0.6)
+		"####" "########" 0 A_SpawnItemEx("ShottyCasing",0,0,0,frandom(2.0,-2.0),0,frandom(8.0,3.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_SetUserVar("User_Cycle",14)
+	Reload1:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "Reload1")
+	ReloadCycle2:
+		"####" C 0 A_PlaySound("Ironblast/Pump/Out",6,0.6)
+		"####" "#" 0 A_SetUserVar("User_Cycle",10)
+	Reload2:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "Reload2")
+	ReloadCycle3:
+		"####" B 0 A_SetUserVar("User_Cycle",9)
+	Reload3:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,-55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "Reload3")
+		Goto Main
+	Death:
+		"####" "#" 0 A_PlaySound("Ironspirit/Release",4,1.0)
+		"####" "#" 0 A_JumpIf(CallACS("MuteShotgun"),3)
+		"####" "#" 0 A_Jump(128,2)
+		"####" "#" 0 A_PlaySound("Ironspirit/End",7,0.8)
+		"####" "#" 0 A_SpawnItemEx("IronblastRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_TakeFromTarget("IronblastRevert")
+		"####" "#" 0 A_TakeFromTarget("FloaterblastActive")
+		"####" "#" 0 A_TakeFromTarget("IronblastStratActive")
+		"####" "#" 0 A_JumpIfInTargetInventory("Ironblast",1,"DropIt")
+		"####" "#" 0 A_JumpIfInTargetInventory("HexenCounter",1,2)
+		"####" "#" 0 A_GiveToTarget("IronblastDropped")
+		Stop
+		"####" "#" 0 A_JumpIfInTargetInventory("Ironblast2",1,"DropItHexen")
+		"####" "#" 0 A_GiveToTarget("Ironblast2Dropped")
+		Stop
+	DropIt:
+		//"####" "#" 0 A_SpawnItemEx("IronblastDropped")
+		"####" "#" 0 A_GiveToTarget("IronblastItem")
+		Stop
+	DropItHexen:
+		//"####" "#" 0 A_SpawnItemEx("Ironblast2Dropped")
+		"####" "#" 0 A_GiveToTarget("IronblastItem")
+		Stop
+	}
+}
+
+ACTOR FloatingIronblast2 : FloatingIronblast
+{
+	States
+	{
+	Spawn:
+		"####" "#" 0 NoDelay A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 0 A_SpawnItemEx("IronblastRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_PlaySound("Ironspirit/Spawn",6)
+		"####" "#" 0 A_PlaySound("Ironspirit/Loop",4,0.2,1)
+	Main:
+		"####" "#" 0 A_JumpIf(CallACS("GunslingerMode"),2)
+		"####" "#" 0 A_JumpIfInTargetInventory("PowerGunzerking",1,1)
+		Goto Death
+		"####" "#" 0 A_JumpIfInTargetInventory("IronblastRevert",1,1)
+		Goto Death
+	Idle:
+		"####" "#" 0 A_SeekerMissile(0,0,SMF_LOOK|SMF_CURSPEED,256,4)
+		"####" "#" 0 A_JumpIf(CallACS("MuteShotgun"),2)
+		"####" "#" 0 A_SetUserVar("User_Idling", User_Idling + 1)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN A 0 A_JumpIfInTargetInventory("HexenCounter",1,2)
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_JumpIfInTargetInventory("GreenMana",8,3)
+		"####" "#" 0 A_JumpIfInTargetInventory("ShotgunAmmo",8,2)
+		PIRN F 0
+		"####" "#" 1 A_JumpIf(User_Idling > 420,"IdleChatter")
+		"####" "#" 0 A_JumpIfTargetInLOS("FireYourGuns", 0, JLOSF_PROJECTILE, 64*6, 0)
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		Goto Main
+	ClearTracer:
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		Goto Idle+2
+	IdleChatter:
+		"####" "#" 0 A_JumpIfInTargetInventory("HexenCounter",1,2)
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_JumpIfInTargetInventory("GreenMana",8,2)
+		Goto OutOfAmmo
+		"####" "#" 0 A_JumpIfInTargetInventory("ShotgunAmmo",8,1)
+		Goto OutOfAmmo
+		"####" "#" 0 A_SetUserVar("User_Idling",0)
+		Goto Main
+	OutOfAmmo:
+		"####" "#" 0 A_SetUserVar("User_Idling",0)
+		Goto Main
+	FireYourGuns:
+		"####" "#" 0 A_JumpIfInTargetInventory("HexenCounter",1,2)
+		"####" "#" 0 A_JumpIfInTargetInventory("ShotgunAmmo",8,"ImmaShootingMalaysia")
+		Goto Main
+		"####" "#" 0 A_JumpIfInTargetInventory("GreenMana",8,1)
+		Goto Main
+	ImmaShootingMalaysia:
+		"####" "####" 0 A_SeekerMissile(90,90,SMF_LOOK|SMF_CURSPEED,256,4)
+		"####" "#" 0 A_JumpIfInTargetInventory("HexenCounter",1,3)
+		"####" "#" 0 A_TakeFromTarget("ShotgunAmmo",8,TIF_NOTAKEINFINITE)
+		"####" "#" 0 A_Jump(256,2)
+		"####" "#" 0 A_TakeFromTarget("GreenMana",8,TIF_NOTAKEINFINITE)
+		"####" "#" 0 A_AlertMonsters
+		"####" "#" 0 A_FaceTracer
+		"####" "#" 0 A_PlaySound("Ironblast/Fire",1,0.4)
+		"####" "#" 0 A_PlaySound("Ironblast/Add",5,0.5)
+		//"####" "########################" 0 A_CustomMissile("IronblastProjectile",0,0,frandom(8.5,-8.5),CMF_TRACKOWNER|CMF_OFFSETPITCH,frandom(3.0,-3.0),AAPTR_TRACER)
+		"####" "#" 0 A_SetUserVar("User_Angle",angle)
+		"####" "#" 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_DEFAULT,AAPTR_NULL)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_FaceTracer
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN E 1 Bright A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN A 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN A 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		PIRN A 1 A_SetAngle(User_Angle)
+	FiringCycleA:
+		"####" A 0 A_SetUserVar("User_Cycle",10)
+	FiringA:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "FiringA")
+	FiringCycleB:
+		"####" B 0 A_SetUserVar("User_Cycle",10)
+		"####" "#" 0 A_JumpIf(User_ShotCount >= 4, "YayCarnage")
+		Goto FiringB
+	YayCarnage:
+		"####" "#" 0 A_SetUserVar("User_ShotCount",0)
+	FiringB:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "FiringB")
+	FiringCycleC:
+		"####" C 0 A_SetUserVar("User_Cycle",7)
+	FiringC:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "FiringC")
+	ReloadCycle1:
+		"####" D 0 A_PlaySound("Ironblast/Pump/In",6,0.6)
+		"####" "########" 0 A_SpawnItemEx("ShottyCasing",0,0,0,frandom(2.0,-2.0),0,frandom(8.0,3.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		"####" "#" 0 A_SetUserVar("User_Cycle",14)
+	Reload1:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "Reload1")
+	ReloadCycle2:
+		"####" C 0 A_PlaySound("Ironblast/Pump/Out",6,0.6)
+		"####" "#" 0 A_SetUserVar("User_Cycle",10)
+	Reload2:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "Reload2")
+	ReloadCycle3:
+		"####" B 0 A_SetUserVar("User_Cycle",9)
+	Reload3:
+		"####" "#" 0 A_SpawnItemEx("IronblastPossession",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		"####" "#" 0 A_Warp(AAPTR_TARGET,45.0,55.0,35.0,0,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB)
+		"####" "#" 1 A_SetAngle(User_Angle)
+		"####" "#" 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		"####" "#" 0 A_JumpIf(User_Cycle >> 0, "Reload3")
+		Goto Main
+	Death:
+		"####" "#" 0 A_PlaySound("Ironspirit/Release",4,1.0)
+		"####" "#" 0 A_TakeFromTarget("AnotherIronblast")
+		"####" "#" 0 A_SpawnItemEx("IronblastRelease",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		Stop
+	}
+}
+
+ACTOR IronblastDropped : WeaponGiver
+{
+	+DONTBLAST
+	DropItem "Ironblast"
+	Weapon.AmmoGive 0
+	Inventory.PickupMessage "$GOTIRONBLAST"
+    Scale 0.8
+	States
+	{
+	Spawn:
+		IRNG X -1
+		Stop
+	}
+}
+
+ACTOR Ironblast2Dropped : WeaponGiver
+{
+	+DONTBLAST
+	DropItem "Ironblast2"
+	Weapon.AmmoGive 0
+	Inventory.PickupMessage "$GOTIRONBLAST"
+    Scale 0.8
+	States
+	{
+	Spawn:
+		IRNG X -1
+		Stop
+	}
+}
+
+ACTOR IronblastPossession
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	+DONTBLAST
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SpawnItemEx("IronEffectParticle",0,0,0,frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(2.0,-2.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+		TNT1 A 0 A_SpawnItemEx("IronEffectLightning",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),0,0,0,0,SXF_CLIENTSIDE,64)
+		TNT1 AA 0 A_SpawnItemEx("IronEffectCloud",frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(10.0,-10.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE)
+		//TNT1 A 1 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION)
+		Stop
+	Death:
+		TNT1 A 0
+		Stop
+	}
+}
+
+ACTOR IronblastRelease
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	+DONTBLAST
+	var int User_Cycle;
+	var int User_MainCycle;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetUserVar("User_MainCycle", 7)
+	CycleParticle:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 40)
+	Particle:
+		TNT1 A 0 A_SpawnItemEx("IronEffectParticle2",0,0,0,frandom(4.0,-4.0),frandom(4.0,-4.0),frandom(4.0,-4.0),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleLightning")
+		Loop
+	CycleLightning:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 15)
+	Lightning:
+		TNT1 A 0 A_SpawnItemEx("IronEffectLightning",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(4.0,1.5),frandom(4.0,1.5),frandom(4.0,-4.0),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "CycleCloud")
+		Loop
+	CycleCloud:
+		TNT1 A 0 A_SetUserVar("User_Cycle", 15)
+	Cloud:
+		TNT1 A 0 A_SpawnItemEx("IronEffectCloud",frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(30.0,-30.0),frandom(5.5,1.5),frandom(5.5,1.5),frandom(5.5,-5.5),frandom(0.0,360.0),SXF_CLIENTSIDE,20)
+		TNT1 A 0 A_SetUserVar("User_Cycle", User_Cycle - 1)
+		TNT1 A 0 A_JumpIf(User_Cycle <= 0, "RinseAndRepeat")
+		Loop
+	RinseAndRepeat:
+		TNT1 A 0 A_SetUserVar("User_MainCycle", User_MainCycle - 1)
+		TNT1 A random(1,2)
+		TNT1 A 0 A_JumpIf(User_MainCycle <= 0, "Death")
+		Goto CycleParticle
+	Death:
+		TNT1 A 0
+		Stop
+	}
+}
+
+ACTOR IronEffect
+{
+	+NOTONAUTOMAP
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	+DONTBLAST
+	Scale 0
+	Alpha 0.99
+	Renderstyle Translucent
+}
+
+ACTOR IronEffectLightning : IronEffect
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.075,0.1))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD","SpriteE","SpriteF","SpriteG","SpriteH")
+	SpriteA:
+		BLIT A 0 A_Jump(256,"Main")
+	SpriteB:
+		BLIT B 0 A_Jump(256,"Main")
+	SpriteC:
+		BLIT C 0 A_Jump(256,"Main")
+	SpriteD:
+		BLIT D 0 A_Jump(256,"Main")
+	SpriteE:
+		BLIT E 0 A_Jump(256,"Main")
+	SpriteF:
+		BLIT F 0 A_Jump(256,"Main")
+	SpriteG:
+		BLIT G 0 A_Jump(256,"Main")
+	SpriteH:
+		BLIT H 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.5,0.5),frandom(-0.5,0.5),frandom(-0.5,0.5),CVF_RELATIVE)
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.004,0.002))
+		"####" "#" 1 Bright A_FadeOut(frandom(0.1,0.05))
+		Loop
+	}
+}
+
+ACTOR IronEffectCloud : IronEffect
+{
+	Alpha 0.7
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ScaleVelocity(random(0.9,1.0))
+		TNT1 A 0 A_SetScale(ScaleX + frandom(0.3,0.4))
+		TNT1 A 0 A_Jump(256,"SpriteA","SpriteB","SpriteC","SpriteD")
+	SpriteA:
+		BLTD A 0 A_Jump(256,"Main")
+	SpriteB:
+		BLTD B 0 A_Jump(256,"Main")
+	SpriteC:
+		BLTD C 0 A_Jump(256,"Main")
+	SpriteD:
+		BLTD D 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.004,0.002))
+		"####" "#" 0 A_ChangeVelocity(frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(-0.2,0.2),CVF_RELATIVE)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.075,0.05))
+		Loop
+	}
+}
+
+
+ACTOR IronEffectParticle : IronEffect
+{
+	Alpha 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.025,0.035))
+	Sprite:
+		BPRT A 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_JumpIf(Alpha >= 0.98,"Main2")
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeIn(frandom(0.1,0.04))
+		Loop
+	Main2:
+		"####" "#" 0 A_ScaleVelocity(random(-1.05,-1.02))
+	Main3:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.05,0.03))
+		Loop
+	}
+}
+
+ACTOR IronEffectParticle2 : IronEffect
+{
+	Alpha 0
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(ScaleX + frandom(0.025,0.035))
+	Sprite:
+		BPRT A 0 A_Jump(256,"Main")
+	Main:
+		"####" "#" 0 A_JumpIf(Alpha >= 0.98,"Main2")
+		"####" "#" 0 A_SetScale(ScaleX + frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeIn(frandom(0.1,0.04))
+		Loop
+	Main2:
+		"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+		"####" "#" 0 A_SetScale(ScaleX - frandom(0.005,0.0002))
+		//"####" "#" 0 A_Warp(AAPTR_MASTER,0,0,0,angle,WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_BOB|WARPF_COPYVELOCITY)
+		"####" "#" 1 Bright A_FadeOut(frandom(0.05,0.03))
+		Loop
+	}
+}

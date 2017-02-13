@@ -1,0 +1,63 @@
+object SuperPawnchPuff
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+object SuperPawnchPuff2
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+object SuperPawnchPuffLeft
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+object SuperPawnchPuffLeft2
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+object SuperScratchPuffLeft
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+object SuperScratchPuffRight
+{
+    frame TNT1A { light SUPERPAWNCH }
+}
+
+pulselight SUPERPAWNCH
+{
+    color 1.0 0.2 0.1
+    size 32
+    secondarySize 0
+    interval 0.9
+}
+
+object SuperKick_Gldef
+{
+    frame TNT1A { light SUPERKEECK }
+}
+
+pulselight SUPERKEECK
+{
+    color 1.0 0.2 0.1
+    size 128
+    secondarySize 0
+    interval 1.2
+}
+
+object SuperStomp_GLDEF
+{
+    frame TNT1A { light ZERKBLAST }
+}
+
+pulselight ZERKBLAST
+{
+    color 1.0 0.2 0.1
+    size 192
+    secondarySize 0
+    interval 1.4
+}

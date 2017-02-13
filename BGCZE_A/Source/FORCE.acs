@@ -1,0 +1,408 @@
+#library "force"
+#include "zdefs.acs"
+#include "zspecial.acs"
+
+// -----------------------------------------------------------------------------
+//
+// Force Choke / Prop Hunt item carrying script
+// By KeksDose
+//
+// Reuse as you wish but keep this file intact (force.acs) with this entire
+// comment section and credit me somewhere.
+//
+// 1 / 8 / 2014, based off my old script from 20 / 8 / 2013
+//
+// Use the force to choke monsters into their certain demise. Set painActor to
+// a projectile of your liking to induce custom effects, obituaries and more.
+// KD_ForceDamage is provided as an example!
+//
+// 2 / 7 / 2015, some slight changes for pillow
+//
+// Ceasing to choke your victim will blast them away in front of you in addition
+// to your typical turn around motion flinging. You require ammo to use the
+// power at all.
+// 
+// 29 / 11 / 2015, PILLOW: another update, this time with Keks'n'Zhs2
+// assistance!
+//
+// PILLOW: Since I am a dumbwit and can never expect what exactly might be
+// needed in combo of D8 and ACS, the previous method of determing for the
+// weapon if you caught anything was screwed up, because it was solely done in 
+// D8, I decided to use the proper, mostly ACS method for that.
+//
+// 28 / 1 / 2016 [keks] (9): Made some adjustments. Added the abs function,
+// fixed an odd check in the "Chilly Gift" script with it because negative
+// velocities are a thing in zdoom. Formatted changes pillow and Zhs2 made so
+// they're in line with the 80-character limit.
+//
+// For now, you can still fling actors by turning quickly and then letting go,
+// but the velocity will be clamped to FC_MAXFLINGVEL.
+//
+// 29 / 1 / 2016 [keks] (9): Basically, pillow wants this to work with the new
+// wyvern familiar thingy, so I'll adjust the script to work when it's called by
+// anything. Anything can choke you.
+//
+// 30 / 1 / 2016 [keks] (9): You people are incompetent. Check my note.
+//
+// 31 / 1 / 2016 [keks] (9): Here's a list of changes now that the script is
+// basically done:
+//
+//	-Works for any actor, not just players
+//	-Now uses Warp to have uncapped rendering interpolation stuff
+//	-Activating the pain state is up to the projectile used
+//	-Flinging velocity is capped so prevent opening a wormhole
+//
+// 7 / 2 / 2016 [keks] (9): The scripts are now compatible with the new item,
+// the Wyvern Idol. Also, I made sure that even SpawnForced succeeds. The name
+// implies there should be no failure, but its return value is defined, so I
+// don't see why not to check for it.
+//
+// -----------------------------------------------------------------------------
+
+// All this could be array-fied for multiple choke weapons.
+
+#libdefine FC_CHOKEZOFFSET	-20.0			// Z-offset from choker's view Z
+#libdefine FC_CARRYSPEED	0.5				// Slight lag effect (looks cool)
+#libdefine FC_DMGTICS		8				// Tics between damage applications
+#libdefine FC_DISTMUL		2.5				// How far in front the actor floats
+#libdefine FC_OFFSETMUL		2.0				// Multiplier to side offset
+#libdefine FC_OFFSETANG		-0.25			// Shoot and choke at the same time!
+#libdefine FC_FLINGSPEED	20.0			// How fast flung actors travel
+// #libdefine FC_PAINSTATE	"Pain"			// Choked victims enter this state
+#libdefine FC_PAINACTOR		"KD_ForceDamage"// This projectile causes the damage
+#libdefine FC_RANGE			512.0			// Distance limit to choked actor
+#libdefine FC_MAXFLINGVEL	17.0			// Upper fling speed limit
+#libdefine FC_WARPFLAGS		WARPF_ABSOLUTEPOSITION | WARPF_INTERPOLATE
+#libdefine FC_TOKENITEM		"ChillyFishCatch"	// Inv. that determines carrying
+#libdefine FC_DEATHITEM		"DeathByChillFish"	// Inv. given when killed by it
+#libdefine FC_TRIGGER		"ChillgraspCaught"	// The trigger to determine 
+												// whether thing's being held
+
+// Remember that your weapon must take the ammo away by itself!
+
+// Linear interpolation function for smooth movement.
+
+function int lerp(int a, int b, int f)
+{
+	return a + FixedMul(b - a, f);
+}
+
+// This little helper here has an irrational hate towards minus-signs, so they
+// just truncate them off.
+
+function int abs(int x)
+{
+	if(x < 0)
+		return -x;
+	return x;
+}
+
+// Here comes the magic based off my Prop Hunt scripts...
+
+// [keks] For some reason I have to go back to this script. Let me just explain
+// a few things before anybody runs into the same walls as pillow:
+
+// The script works for all cases I consider sane: Used by a player, a monster,
+// a player's summoned friendly monster and even a fired projectile that chokes
+// its tracer. If a player summons a friendly monster that shoots a choking
+// projectile that calls this script, it probably won't work. You need to go up
+// in the pointer hierarchy in that case.
+
+// Also lol nametags.
+
+script "KD GC Carry" (void)
+{
+	int uType = ClassifyActor(0);
+	int me = ActivatorTid();
+	int ptr = 0;
+	int intrPtr = 0;
+	int run = true;
+	
+	// A player chokes somebody. Big deal.
+	
+	if(uType & ACTOR_PLAYER)
+		ptr = AAPTR_PLAYER_GETTARGET | AAPTR_TARGET;
+	
+	// A monster is choking somebody. If it's not friendly, let it behave kind
+	// of like a player, while if it is, the inflictor should be the summoner.
+	
+	else if(uType & ACTOR_MONSTER)
+	{
+		ptr = AAPTR_TARGET;
+		
+		if(GetActorProperty(0, APROP_FRIENDLY))
+			intrPtr = AAPTR_MASTER;
+	}
+		
+	// A missile shot by somebody chokes a target. The choked is its tracer and
+	// so, the missile's target is its owner.
+	
+	else if(uType & ACTOR_MISSILE)
+	{
+		ptr = AAPTR_TRACER;
+		intrPtr = AAPTR_TARGET;
+	}
+	
+	else
+		terminate;
+	
+	if(me == 0)
+	{
+		me = UniqueTid();
+		Thing_ChangeTid(0, me);
+	}
+	
+	if(!SetActivator(0, ptr))
+		terminate;
+	if(CheckInventory(FC_TRIGGER))
+		terminate;
+	
+	int tType = ClassifyActor(0);
+	
+	if(	!(tType & (ACTOR_MONSTER | ACTOR_GENERIC)) ||
+		tType & ACTOR_PLAYER)
+		terminate;
+	
+	// Preliminary distance check. While the loop checks the distance as well,
+	// I did not find a way to use it so all these functions still apply:
+	
+	// -The weapon "scan" doesn't cause an animation over too far away targets
+	// -If the choked actor can't follow fast enough, it'll still be flung
+	
+	// So here it is. Looks dumb but yeah. Whatever.
+	
+	int x = GetActorX(me);
+	int y = GetActorY(me);
+	int z = GetActorZ(me);
+	
+	int u = GetActorX(0);
+	int v = GetActorY(0);
+	int w = GetActorZ(0);
+	
+	int dist = VectorLength(VectorLength(x - u, y - v), z - w);
+	
+	if(dist > FC_RANGE)
+		terminate;
+	
+	int tics = 0;
+	int ang, vAng;	// Caller's angle and pitch.
+	int gravity = GetActorProperty(0, APROP_GRAVITY);
+	int radT = GetActorProperty(0, APROP_RADIUS);
+	int radU = GetActorProperty(me, APROP_RADIUS);
+	int offset = FixedMul(FC_OFFSETMUL, radT);
+	int carryDist = FixedMul(FC_DISTMUL, radU + radT);
+	
+	// Some variables to store trigonometric calculations.
+	
+	int cosAng = 0;
+	int sinAng = 0;
+	int cosVang = 0;
+	int sinVang = 0;
+	
+	SetActorProperty(0, APROP_GRAVITY, 0.0);
+	GiveActorInventory(me, FC_TOKENITEM, 1);
+	GiveInventory(FC_TRIGGER, 1);
+	
+	while(run)
+	{
+		// Cause damage in set intervals.
+		
+		if(++tics % FC_DMGTICS == 0)
+		{
+			tics = 0;
+			
+			if(ClassifyActor(0) & ACTOR_MONSTER) // For barrel carrying! Yay!
+				ACS_NamedExecuteAlways("KD GC Carry Damage", 0, me, intrPtr);
+		}
+		
+		// Some trigonometric calculations:
+		
+		cosAng = cos(ang);
+		cosVang = cos(vAng);
+		sinAng = sin(ang);
+		sinVang = sin(vAng);
+		
+		x = GetActorX(me) + FixedMul(cos(ang - FC_OFFSETANG), offset);
+		y = GetActorY(me) + FixedMul(sin(ang - FC_OFFSETANG), offset);
+		z = GetActorZ(me) + GetActorViewHeight(me) + FC_CHOKEZOFFSET;
+		ang = GetActorAngle(me);
+		vAng = GetActorPitch(me);
+		
+		// Find the object's new position on a sphere.
+		
+		u = x + FixedMul(FixedMul(cosAng, carryDist), cosVang);
+		v = y + FixedMul(FixedMul(sinAng, carryDist), cosVang);
+		w = z + FixedMul(-sinVang, carryDist);
+		
+		// Slowly interpolate between the object's old and new positions.
+		
+		x = GetActorX(0);
+		y = GetActorY(0);
+		z = GetActorZ(0);
+		u = lerp(x, u, FC_CARRYSPEED);
+		v = lerp(y, v, FC_CARRYSPEED);
+		w = lerp(z, w, FC_CARRYSPEED);
+		
+		dist = VectorLength(VectorLength(u - x, v - y), w - z);
+		
+		if(	dist > FC_RANGE ||
+			!CheckActorInventory(me, FC_TOKENITEM) ||
+			ClassifyActor(0) & ACTOR_WORLD)
+			run = false;
+		
+		// Set each new component individually to reduce getting stuck.
+		// Basically makes the actor slide.
+		
+		else
+		{
+			Warp(0, u, GetActorY(0), GetActorZ(0), ang, FC_WARPFLAGS);
+			Warp(0, GetActorX(0), v, GetActorZ(0), ang, FC_WARPFLAGS);
+			Warp(0, GetActorX(0), GetActorY(0), w, ang, FC_WARPFLAGS);
+		
+			// This here is a weird catch. If you don't set the monster's
+			// velocity to 0, then an ice burst death will not work until you
+			// let go, because A_FreezeDeathChunks waits for the calling actor
+			// to come to a full stop before exploding.
+		
+			SetActorVelocity(0, 0, 0, 0, false, false);
+		}
+		
+		Delay(const:1);
+	}
+	
+	// The following is a little more actor clean up in case it still exists.
+	
+	if(!(ClassifyActor(0) & ACTOR_WORLD))
+	{
+		// Since (u, v, w) and (x, y, z) are the old and new positions for each
+		// tic, the difference is a speed vector. So yeah, we can throw stuff
+		// precisely now.
+		
+		// Let's also avoid quantum superpositioning.
+		
+		int vx = u - x;
+		int vy = v - y;
+		int vz = w - z;
+		int vel = FixedSqrt(FixedMul(vx, vx) +
+							FixedMul(vy, vy) +
+							FixedMul(vz, vz)) + FC_FLINGSPEED;
+		
+		vx = FixedDiv(vx, vel);
+		vy = FixedDiv(vy, vel);
+		vz = FixedDiv(vz, vel);
+		
+		if(vel > FC_MAXFLINGVEL)
+			vel = FC_MAXFLINGVEL;
+		
+		vx = FixedMul(vx, vel);
+		vy = FixedMul(vy, vel);
+		vz = FixedMul(vz, vel);
+		
+		SetActorProperty(0, APROP_GRAVITY, gravity);
+		SetActorVelocity(0, vx, vy, vz, true, true);
+		
+		// Now add some basic fling velocity on top of it:
+		
+		SetActorVelocity(	0,
+							FixedMul(cosAng, FixedMul(cosVang, FC_FLINGSPEED)),
+							FixedMul(sinAng, FixedMul(cosVang, FC_FLINGSPEED)),
+							FixedMul(-sinVang, FC_FLINGSPEED), true, true);
+		TakeInventory(FC_TRIGGER, 1);
+	}
+	
+	TakeActorInventory(me, FC_TOKENITEM, 1);
+	
+	// We're not doing this until there is a way to properly check for
+	// collisions between actors in ACS.
+	
+	/*if(ClassifyActor(0) & ACTOR_GENERIC)
+	{
+		ACS_NamedExecuteAlways("Chilly Gift", 0, me);
+	}*/
+}
+
+// This script is called from the weapon that activates the Chillgrasp. The
+// intended reason is running out of ammo. For some reason, an ACS-only solution
+// tended to combust and cause crazy collateral damage to our underground labs.
+
+script "KD GC Stop Carrying" (void)
+{
+	TakeInventory(FC_TOKENITEM, 1);
+}
+
+// You could totally disable this script here. If you die while choking a
+// monster, you could actually kill them in your death.
+
+script "KD GC Carry Death" death
+{
+	ACS_NamedExecuteAlways("KD GC Stop Carrying", 0);
+}
+
+// This is basically a sub script so I can mess around with SetActivator a
+// little more easily. It causes damage to the choked actor by spawning a
+// projectile on top of it. You can count frags this way.
+
+script "KD GC Carry Damage" (int infTid, int intrPtr)
+{
+	// The activator is still the actor you are holding. We just need your tid
+	// so we can mess around with the projectile's pointers a little to make it
+	// think you shot it.
+	
+	int pTid = UniqueTid();
+	int x = GetActorX(0);
+	int y = GetActorY(0);
+	int z = GetActorZ(0) + GetActorViewHeight(0);
+	
+	if(SpawnForced(FC_PAINACTOR, x, y, z, pTid) > 0)
+	{
+		SetActivator(pTid);
+		SetPointer(AAPTR_TARGET, infTid, intrPtr);
+	}
+}
+
+// [Zhs2] This is an addition so that throwing shootable actors gives
+// your enemies an ice surprise. ;)
+
+// [keks] Wink while you still have two eyes.
+
+script "Chilly Gift" (int tid) // for passing along the player
+{
+	// This script will wait until the fling velocity for the affected actor
+	// is below a certain speed. Good for exploding things!
+	// Wait a few tics to ensure it still doesn't explode too close to you.
+	
+	Delay(const:15);
+	
+	SetHudSize(320, 200, true);
+	SetFont("confont");
+	HudMessageBold(s:"Chilly."; 0, 4, CR_YELLOW, 0.1, 28.1, 0);
+	HudMessageBold(s:"Not plowy."; 0, 5, CR_YELLOW, 0.1, 36.1, 0);
+	
+	int x, y, z;
+	
+	// [keks] What this script checked for was coming to a halt from any
+	// speed. Since this is supposed to be something that gets launched, it's
+	// better to check if there was a very large decrease in velocity.
+	
+	// I'm not going to do that now, though, because I feel this tries to
+	// implement something the engine should be exposing.
+	
+	while(	abs(GetActorVelX(0)) >= 1.0 &&
+			abs(GetActorVelY(0)) >= 1.0 &&
+			abs(GetActorVelZ(0)) >= 1.0)
+	{
+		
+		x = GetActorVelX(0);
+		y = GetActorVelY(0);
+		z = GetActorVelZ(0);
+		
+		HudMessageBold(f:x; 0, 1, CR_PURPLE + 2 * (abs(x) >= 1.0), 0.1, 0.1, 0);
+		HudMessageBold(f:y; 0, 2, CR_PURPLE + 2 * (abs(y) >= 1.0), 0.1, 8.1, 0);
+		HudMessageBold(f:z; 0, 3, CR_PURPLE + 2 * (abs(z) >= 1.0), 0.1,16.1, 0);
+		
+		Delay(const:1);
+	}
+	// Spawn a burst at the end.
+	HudMessageBold(s:"Went plowy."; 0, 5, CR_PURPLE, 0.1, 36.1, 0);
+	ACS_NamedExecuteAlways("KD GC Carry Damage", 0, tid);
+}

@@ -1,0 +1,1979 @@
+ACTOR TossPower : Inventory { Inventory.MaxAmount 999 }
+ACTOR TossPower2 : Inventory { Inventory.MaxAmount 999 }
+ACTOR DynamiteTossTimer : Inventory { Inventory.MaxAmount 280 } //8 seconds.
+ACTOR DynamiteTossCounter : GenericToken {}
+ACTOR DynamiteSelected : GenericToken {}
+ACTOR DynamiteBounceCounter : GenericToken {}
+
+#include "Decorate/Guns/Projectile/Dynamite.txt"
+#include "Decorate/Guns/Projectile/DynamiteExp.txt"
+
+//Quick-throw item
+ACTOR DynamiteQuickToss : CustomInventory
+{
+  Inventory.Amount 1
+  Inventory.MaxAmount 1
+  Inventory.InterHubAmount 1
+  Inventory.PickupMessage "I want to donate some blood... somebody else's."
+  -INVENTORY.INVBAR
+  +INVENTORY.UNDROPPABLE
+  States
+  {
+	Spawn:
+		REDG A -1
+		Stop
+	Use:
+		TNT1 A 0 A_JumpIfInventory("TNTAmmo",1,1)
+		Fail
+		//DYNG A 0 A_JumpIfInventory("Mana",25,1)
+		//Fail
+		TNT1 A 0 A_JumpIfInventory("DynamiteTossCounter",1,"Nope")
+		TNT1 A 0 A_JumpIfInventory("LeftFireToken",1,"Nope")
+		TNT1 A 0 A_JumpIfInventory("RightFireToken",1,"Nope")
+		TNT1 A 0 A_GiveInventory("DynamiteTossTimer",280)
+		TNT1 A 0 A_GiveInventory("DynamiteTossCounter",1)
+		TNT1 A 0 A_JumpIfInventory("DergfistSelected",1,"DergfistStuff")
+		TNT1 A 0 A_JumpIfInventory("LonghornSelected",1,"LonghornStuff")
+		TNT1 A 0 A_JumpIfInventory("StruckerSelected",1,"StruckerStuff")
+		TNT1 A 0 A_JumpIfInventory("IronblastSelected",1,"IronblastStuff")
+		TNT1 A 0 A_JumpIfInventory("PulverizerSelected",1,"PulverizerStuff")
+		TNT1 A 0 A_JumpIfInventory("MatriarchSelected",1,"MatriarchStuff")
+		TNT1 A 0 A_JumpIfInventory("SovereignSelected",1,"SovereignStuff")
+		TNT1 A 0 A_JumpIfInventory("CauterizerSelected",1,"CauterizerStuff")
+		TNT1 A 0 A_JumpIfInventory("DreadfulSelected",1,"DreadfulStuff")
+		TNT1 A 0 A_JumpIfInventory("DynamiteSelected",1,"DynamiteStuff")
+		TNT1 A 1
+		Fail
+	DergfistStuff:
+		TNT1 A 0 A_GiveInventory("DergfistSelect")
+		Goto GoOn
+	LonghornStuff:
+		TNT1 A 1 A_GiveInventory("LonghornSelect")
+		Goto GoOn
+	StruckerStuff:
+		TNT1 A 1 A_GiveInventory("StruckerSelect")
+		Goto GoOn
+	IronblastStuff:
+		TNT1 A 1 A_GiveInventory("IronblastSelect")
+		Goto GoOn
+	PulverizerStuff:
+		TNT1 A 1 A_GiveInventory("PulverizerSelect")
+		Goto GoOn
+	MatriarchStuff:
+		TNT1 A 1 A_GiveInventory("MatriarchSelect")
+		Goto GoOn
+	SovereignStuff:
+		TNT1 A 1 A_GiveInventory("SovereignSelect")
+		Goto GoOn
+	CauterizerStuff:
+		TNT1 A 1 A_GiveInventory("CauterizerSelect")
+		Goto GoOn
+	DreadfulStuff:
+		TNT1 A 1 A_GiveInventory("DreadfulSelect")
+		Goto GoOn
+	DynamiteStuff:
+		TNT1 A 1 A_GiveInventory("DynamiteSelect")
+		Goto GoOn
+	GoOn:
+		TNT1 A 0 A_GiveInventory("Dynatoss")
+		TNT1 A 0 A_SelectWeapon("Dynatoss")	
+	Nope:
+		TNT1 A 0
+		Fail
+  }
+}
+
+ACTOR Dynatoss : Weapon
+{
+	Weapon.SelectionOrder 999
+	+CHEATNOTWEAPON
+	States
+	{
+	Spawn:
+		TNT1 A 0
+	Select:
+		TNT1 AAAAAAAAAAAAAAA 0 A_Raise
+		Goto Ready
+	Ready:
+		TNT1 A 0 A_JumpIfInventory("DergfistSelect",1,"DergfistStuff")
+		TNT1 A 0 A_JumpIfInventory("LonghornSelect",1,"LonghornStuff")
+		TNT1 A 0 A_JumpIfInventory("StruckerSelect",1,"StruckerStuff")
+		TNT1 A 0 A_JumpIfInventory("IronblastSelect",1,"IronblastStuff")
+		TNT1 A 0 A_JumpIfInventory("PulverizerSelect",1,"PulverizerStuff")
+		TNT1 A 0 A_JumpIfInventory("MatriarchSelect",1,"MatriarchStuff")
+		TNT1 A 0 A_JumpIfInventory("SovereignSelect",1,"SovereignStuff")
+		TNT1 A 0 A_JumpIfInventory("CauterizerSelect",1,"CauterizerStuff")
+		TNT1 A 0 A_JumpIfInventory("DreadfulSelect",1,"DreadfulStuff")
+		TNT1 A 0 A_JumpIfInventory("DynamiteSelect",1,"DynamiteStuff")
+		TNT1 A 1 
+		Goto GoOn
+	DergfistStuff:
+		TNT1 A 1 A_TakeInventory("DergfistSelect")
+		TNT1 A 1 A_SelectWeapon("Dergfist")
+		TNT1 A 1 
+		Goto GoOn
+	LonghornStuff:
+		TNT1 A 0 A_TakeInventory("LonghornSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 0 A_SelectWeapon("Longhorn")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_SelectWeapon("Longhorn2")
+		TNT1 A 1 
+		Goto GoOn
+	StruckerStuff:
+		TNT1 A 0 A_TakeInventory("StruckerSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 0 A_SelectWeapon("Strucker")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_SelectWeapon("Strucker2")
+		TNT1 A 1 
+		Goto GoOn
+	IronblastStuff:
+		TNT1 A 0 A_TakeInventory("IronblastSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 0 A_SelectWeapon("Ironblast")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_SelectWeapon("Ironblast2")
+		TNT1 A 1 
+		Goto GoOn
+	PulverizerStuff:
+		TNT1 A 0 A_TakeInventory("PulverizerSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 0 A_SelectWeapon("Pulverizer")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_SelectWeapon("Pulverizer2")
+		TNT1 A 1 
+		Goto GoOn
+	MatriarchStuff:
+		TNT1 A 0 A_TakeInventory("MatriarchSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 0 A_SelectWeapon("Matriarch")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_SelectWeapon("Matriarch2")
+		TNT1 A 1 
+		Goto GoOn
+	SovereignStuff:
+		TNT1 A 0 A_TakeInventory("SovereignSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 0 A_SelectWeapon("Sovereign")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_SelectWeapon("Sovereign2")
+		TNT1 A 1 
+		Goto GoOn
+	CauterizerStuff:
+		TNT1 A 0 A_TakeInventory("CauterizerSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 0 A_SelectWeapon("Cauterizer")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_SelectWeapon("Cauterizer2")
+		TNT1 A 1 
+		Goto GoOn
+	DreadfulStuff:
+		TNT1 A 0 A_TakeInventory("DreadfulSelect")
+		TNT1 A 0 A_JumpIfInventory("HexenCounter",1,3)
+		TNT1 A 0 A_SelectWeapon("Old Dreadful")
+		TNT1 A 0 A_Jump(256,2)
+		TNT1 A 0 A_SelectWeapon("Old Dreadful2")
+		TNT1 A 1 
+		Goto GoOn
+	DynamiteStuff:
+		TNT1 A 0 A_TakeInventory("DynamiteSelect")
+		TNT1 A 0 A_SelectWeapon("DynamiteWeapon")
+		TNT1 A 1 
+		Goto GoOn
+	GoOn:
+		TNT1 A 0 A_JumpIfInventory("PowerBerserkDamage",1,"GoOnZerking")
+		DC2T A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DU2T A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DY2T A 0
+		"####" A 0
+		"####" A 1 A_PlaySound("TNT/Toss",5,0.9)
+		"####" BCDEF 1
+		//"####" A 0 A_TakeInventory("Mana",25,TIF_NOTAKEINFINITE)
+		"####" A 0 A_TakeInventory("TNTAmmo",1,TIF_NOTAKEINFINITE)
+		"####" A 0 ACS_NamedExecuteAlways("TNT Blockade")
+		"####" A 0 A_PlaySound("Flechette/Throw")
+		"####" A 0 A_GiveInventory("TossPower",3)
+		"####" G 1 A_FireCustomMissile("DynamiteProjectile",0,0,0,-4,0,18)
+		"####" HIJKLMN 1
+
+		TNT1 A 0 A_TakeInventory("TossPower") //Just in case, even if the projectile handles it.
+		TNT1 A 0 A_CheckReload
+		Goto Deselect
+	GoOnZerking:
+		DCNT A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DUNT A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DYNT A 0
+		"####" ABCDEF 1
+		"####" A 0 A_PlaySound("Guncaster/Kick",2)
+		"####" A 0 A_PlaySound("TNT/Toss",5,0.9)
+		//"####" A 0 A_TakeInventory("Mana",25,TIF_NOTAKEINFINITE)
+		"####" A 0 A_TakeInventory("TNTAmmo",1,TIF_NOTAKEINFINITE)
+		"####" A 0 ACS_NamedExecuteAlways("TNT Blockade")
+		"####" A 0 A_PlaySound("Flechette/Throw")
+		"####" A 0 A_GiveInventory("TossPower",3)
+		"####" A 1 A_FireCustomMissile("DynamiteProjectile",0,0,0,-4,0,18)
+		"####" GH 1
+		TNT1 A 6
+		TNT1 A 0 A_CheckReload
+		Goto Deselect
+	Deselect:
+		TNT1 A 1 A_TakeInventory("Dynatoss")
+		TNT1 AAAAAAAAAAAAAAA 0 A_Lower
+		Goto Ready
+	Fire:
+		TNT1 A 1
+		Goto Deselect
+	}
+}
+
+ACTOR DynamiteWeapon : GuncasterWeapon
+{
+	Inventory.PickupSound "misc/w_pkup"
+	Inventory.PickupMessage "Picked up a bundle of TNT."
+	Obituary "%o was done extra-crispy, thanks to %k's TNT."
+	//Weapon.UpSound "" 
+	Weapon.SelectionOrder 7
+	Weapon.AmmoGive 0
+	Weapon.AmmoType "TNTAmmo"
+	Weapon.AmmoUse 1
+	Weapon.SlotNumber 5
+	Weapon.BobStyle InverseSmooth
+	Weapon.BobSpeed 2.3
+	Weapon.BobRangeY 0.7
+	Weapon.BobRangeX 0.9
+	Tag "Dynamite"
+	Scale 1.1
+	+NOALERT
+	+NOAUTOAIM
+	+UNDROPPABLE
+	States
+	{
+	Spawn:
+		DYNG X -1
+		Stop
+	Ready:
+		TNT1 A 0 A_TakeInventory("RightFireToken")
+		DCNG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DUNG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DYNG A 0
+		"####" A 0 A_TakeInventory("NoInterruption",1)
+		"####" A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiReady")
+		"####" A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiReady")
+		"####" A 1 A_WeaponReady(WRF_ALLOWZOOM|WRF_ALLOWRELOAD)
+		Loop
+	DeselectMain:
+		DCNG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DUNG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DYNG A 0
+	    "####" A 0 A_TakeInventory("DynamiteSelected")
+		"####" A 0 A_StopSound(5)
+		"####" A 0 SetPlayerProperty(0,0,2)
+		"####" A 0 A_TakeInventory("TossPower")
+		"####" A 0 A_TakeInventory("TossPower2")
+		"####" A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiDeselect")
+		"####" A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiDeselect")
+		"####" A 0 A_JumpIfInventory("TNTAmmo",1,1)
+		Goto DeselectNoAmmo
+		"####" AAA 0 A_Lower
+		"####" A 1 A_Lower
+		Loop
+	DeselectNoAmmo:
+		TNT1 AAAAAAAA 0 A_Lower
+		TNT1 A 1 A_Lower
+		Loop
+	Select:
+	    TNT1 A 0 A_GiveInventory("DynamiteSelected")
+		TNT1 A 0 A_JumpIfNoAmmo("InstantLockingBoys")
+        TNT1 A 0 A_JumpIf(CallACS("CrosshairMode"), 2)
+		TNT1 A 0 A_SetCrosshair(57)
+		TNT1 A 0 SetPlayerProperty(0,1,2)
+		TNT1 A 0 A_JumpIf(CallACS("GunslingerMode"),"ZweiSelect")
+		TNT1 A 0 A_JumpIfInventory("PowerGunzerking",1,"ZweiSelect")
+		TNT1 A 1 A_Raise
+		TNT1 AAAAAAAAAAAAAA 0 A_Raise
+	GrabIt:
+		TNT1 A 0 A_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH)
+		DCNU A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DUNU A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DYNU A 0
+		"####" ABCDEFGHI 1
+		"####" I 0 A_PlaySound("TNT/Grab",1,0.8)
+		"####" JKLMNOPQRS 1
+		Goto Ready
+	InstantLockingBoys: //Okay guvnor, nobodies comin' this way.
+		TNT1 A 0 A_CheckReload
+		Goto DeselectMain
+		
+	Reload:
+		"####" "#" 0 A_JumpIfInventory("DynamiteBounceCounter",1,"DontBounceIt")
+		"####" "#" 0 A_GiveInventory("DynamiteBounceCounter")
+		"####" "#" 0 A_Print("Dynamite Hostile Contact Detonation \c[Green]Enabled\c-.")
+		"####" "#" 25 A_PlaySound("Menu/Change",6)
+		Goto Ready
+	DontBounceIt:
+		"####" "#" 0 A_TakeInventory("DynamiteBounceCounter")
+		"####" "#" 0 A_Print("Dynamite Hostile Contact Detonation \c[Red]Disabled\c-.")
+		"####" "#" 25 A_PlaySound("Menu/Change",6)		
+		Goto Ready
+		
+	//Zweihander
+
+   ZweiSelect:
+		TNT1 A 1 A_Raise
+		TNT1 A 0 A_GunFlash("GrabItLeft",GFF_NOEXTCHANGE)
+		TNT1 AAAAAAAAAAAAAA 0 A_Raise
+   GrabItRight:
+		//"####" A 0 A_GunFlash("GrabItLeft",GFF_NOEXTCHANGE)
+		//"####" A 0
+		CRNU A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		URNU A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DRNU A 0
+		"####" ABCDEFGHI 1
+		"####" I 0 A_PlaySound("TNT/Grab",1,0.8)
+		"####" JKLMNOPQRS 1
+		CRNG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		URNG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DRNG A 0
+		"####" A 0 A_JumpIfInventory("NoInterruption",1,2)
+		"####" A 10
+		"####" A 0
+		Goto ZweiReady
+   ZweiDeselect:
+		"####" A 0 A_GunFlash("Nullify",GFF_NOEXTCHANGE)
+		"####" A 0 A_TakeInventory("SynthFireActive",1)
+		"####" A 0 A_TakeInventory("SynthFireLeft",1)
+		"####" A 0 A_TakeInventory("SynthFireRight",1)
+   Zweihander:
+   		DC3G A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DU3G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DY3G A 0
+		"####" A 0 A_Lower
+		"####" A 1 A_Lower
+		Loop
+   ZweiReady:
+		"####" A 0 A_GiveInventory("SynthFireActive",1)
+		"####" A 0 ACS_NamedExecuteAlways("SynthLeft")
+		"####" A 0 ACS_NamedExecuteAlways("SynthRight")
+		"####" A 0 A_JumpIfInventory("NoInterruption",1,2)
+		"####" A 0 A_GunFlash("LIdle",GFF_NOEXTCHANGE)
+		"####" A 0
+		Goto RIdle
+	GrabItLeft:
+		TNT1 A 0 A_JumpIfInventory("NoInterruption",1,2)
+		TNT1 A 10 A_GiveInventory("NoInterruption",1)
+		TNT1 A 0 A_TakeInventory("LeftFireToken",1)
+		CLNU A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		ULNU A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DLNU A 0
+		"####" ABCDEFGHI 1
+		"####" I 0 A_PlaySound("TNT/Grab",1,0.8)
+		"####" JKLMNOPQRS 1
+		Goto LIdle
+	  
+   //Sides
+   
+	RIdle:
+		TNT1 A 0 A_TakeInventory("RightFireToken")
+		CRNG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		URNG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DRNG A 0
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,"RFire")
+		"####" A 0 A_JumpIfInventory("LeftFireToken",1,3)
+		"####" A 1 A_WeaponReady(WRF_NOFIRE|WRF_ALLOWZOOM|WRF_ALLOWRELOAD)
+		"####" A 0 A_Jump(256,2)
+		"####" A 1 A_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH)
+		"####" A 0 A_JumpIf(CallACS("GunslingerMode"),"RIdle")
+		"####" A 0 A_JumpIfInventory("PowerGunzerking",1,"RIdle") 
+		Goto BackToReady
+	BackToReady:
+		"####" A 0 A_GunFlash("Nullify",GFF_NOEXTCHANGE)
+		Goto Ready
+	Nullify:
+		TNT1 A 0 A_TakeInventory("LeftFireToken",1)
+		TNT1 A 0 A_TakeInventory("NoInterruption",1)
+		Stop
+	LIdle:
+		CLNG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		ULNG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DLNG A 0
+		"####" A 1 A_JumpIfInventory("SynthFireLeft",1,"LFire")
+		Loop
+		
+	//Standard
+		
+	Fire:
+		"####" A 0 A_GiveInventory("RightFireToken")
+		//"####" A 0 A_JumpIfInventory("Mana",25,1)
+		//Goto Ready
+		//"####" A 0 A_TakeInventory("Mana",25,TIF_NOTAKEINFINITE)
+		DCNG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DUNG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DYNG A 0
+		"####" A 0 A_PlaySound("TNT/Ignition",1,0.9)
+		"####" A 1 A_SetPitch(Pitch-0.5)
+		"####" A 1 A_SetPitch(Pitch-0.5)
+		"####" A 1 A_SetPitch(Pitch-1.0)
+		"####" A 1 A_SetPitch(Pitch-2.0)
+		"####" A 1 A_SetPitch(Pitch-4.0)
+		"####" AAA 1 A_SetPitch(Pitch-5.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnort",frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmoke",frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+6.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnort",frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmoke",frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+5.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnort",frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmoke",frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+4.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnort",frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmoke",frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+3.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnort",frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmoke",frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+2.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnort",frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmoke",frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" AA 1 A_SetPitch(Pitch+1.0)
+		"####" AA 1 A_SetPitch(Pitch+0.5)
+		"####" A 0 A_PlaySound("TNT/Burn",5,0.8,1)
+		DC1B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DU1B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DY1B A 0 
+		"####" A 0 A_GiveInventory("TossPower",3)
+		"####" A 1 Bright Offset(1,33) //A_SetPitch(Pitch-0.5)
+		//"####" A 1 Bright Offset(3,35) A_SetPitch(Pitch-0.75)
+		"####" B 1 Bright Offset(7,39) //A_SetPitch(Pitch-1.0)
+		//"####" B 1 Bright Offset(9,43) A_SetPitch(Pitch-1.25)
+		"####" C 1 Bright Offset(10,47) //A_SetPitch(Pitch-1.0)
+		//"####" C 1 Bright Offset(11,49) A_SetPitch(Pitch-0.75)
+		"####" D 1 Bright Offset(12,50) //A_SetPitch(Pitch-0.5)
+		//"####" D 1 Bright Offset(13,51) A_SetPitch(Pitch-0.5)
+		"####" E 1 Bright Offset(14,52) //A_SetPitch(Pitch-0.25)
+		//"####" E 1 Bright Offset(15,53) A_SetPitch(Pitch-0.25)
+		"####" A 0 A_ReFire("Sequence1A")
+		Goto Toss1A
+	
+	//Sequence 1 (I wish there was a better way to handle that.)
+	Sequence1A:
+		"####" F 0 A_GiveInventory("TossPower",1)
+		"####" FGHI 1 Bright
+		"####" A 0 A_ReFire("Sequence1B")
+		Goto Toss1A
+	Sequence1B:
+		"####" I 0 A_GiveInventory("TossPower",1)
+		"####" JKLM 1 Bright
+		"####" A 0 A_ReFire("Sequence1C")
+		Goto Toss1B
+	Sequence1C:
+		"####" M 0 A_GiveInventory("TossPower",1)
+		"####" NOPQ 1 Bright
+		"####" A 0 A_ReFire("Sequence1D")
+		Goto Toss1C
+	Sequence1D:
+		"####" P 0 A_GiveInventory("TossPower",1)
+		"####" RSTU 1 Bright
+		"####" A 0 A_ReFire("Sequence1E")
+		Goto Toss1D
+	Sequence1E:
+		"####" S 0 A_GiveInventory("TossPower",1)
+		"####" VWXY 1 Bright
+		"####" A 0 A_ReFire("Sequence1F")
+		Goto Toss1E
+	Sequence1F:
+		"####" V 0 A_GiveInventory("TossPower",1)
+		"####" Z 1 Bright
+		"####" A 0 A_ReFire("Sequence2A")
+		Goto Toss1F
+		
+	//Sequence 2
+		
+	Sequence2A:
+		DC2B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DU2B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DY2B A 0
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" ABCD 1 Bright
+		"####" A 0 A_ReFire("Sequence2B")
+		Goto Toss2A
+	Sequence2B:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" EFGH 1 Bright
+		"####" A 0 A_ReFire("Sequence2C")
+		Goto Toss2B
+	Sequence2C:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" IJKL 1 Bright
+		"####" A 0 A_ReFire("Sequence2D")
+		Goto Toss2C
+	Sequence2D:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" MNOP 1 Bright
+		"####" A 0 A_ReFire("Sequence2E")
+		Goto Toss2D
+	Sequence2E:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" QRST 1 Bright
+		"####" A 0 A_ReFire("Sequence2F")
+		Goto Toss2E
+	Sequence2F:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" UVWX 1 Bright
+		"####" A 0 A_ReFire("Sequence2G")
+		Goto Toss2F
+	Sequence2G:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" YZ 1 Bright
+		"####" A 0 A_ReFire("Sequence3A")
+		Goto Toss2G
+		
+	//Sequence 3
+		
+	Sequence3A:
+		DC3B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DU3B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DY3B A 0
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" ABCD 1 Bright
+		"####" A 0 A_ReFire("Sequence3B")
+		Goto Toss3A
+	Sequence3B:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" EFGH 1 Bright
+		"####" A 0 A_ReFire("Sequence3C")
+		Goto Toss3B
+	Sequence3C:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" IJKL 1 Bright
+		"####" A 0 A_ReFire("Sequence3D")
+		Goto Toss3C
+	Sequence3D:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" MNOP 1 Bright
+		"####" A 0 A_ReFire("Sequence3E")
+		Goto Toss3D
+	Sequence3E:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" QRST 1 Bright
+		"####" A 0 A_ReFire("Sequence3F")
+		Goto Toss3E
+	Sequence3F:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" UVWX 1 Bright
+		"####" A 0 A_ReFire("Sequence3G")
+		Goto Toss3F
+	Sequence3G:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" YZ 1 Bright
+		"####" A 0 A_ReFire("Sequence4A")
+		Goto Toss3G
+		
+	//Sequence 4 (BETTER TOSS IT NOW OR NEVER!)
+		
+	Sequence4A:
+		DC4B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DU4B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DY4B A 0
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" ABCD 1 Bright
+		"####" A 0 A_ReFire("Sequence4B")
+		Goto Toss4A
+	Sequence4B:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" EFGH 1 Bright
+		"####" A 0 A_ReFire("Sequence4C")
+		Goto Toss4B
+	Sequence4C:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" IJKL 1 Bright
+		"####" A 0 A_ReFire("Sequence4D")
+		Goto Toss4C
+	Sequence4D:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" MNOP 1 Bright
+		"####" A 0 A_ReFire("Sequence4E")
+		Goto Toss4D
+	Sequence4E:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" QRST 1 Bright
+		"####" A 0 A_ReFire("Sequence4F")
+		Goto Toss4E
+	Sequence4F: //Too late, mate.
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" UVW 1 Bright
+		Goto Kaboom
+	Kaboom:
+		TNT1 A 0 Offset(-1,33)
+		TNT1 A 0 A_SetBlend("White",1.0,70)
+		TNT1 A 0 A_FireCustomMissile("DynamiteTooLate",0,1,0)
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 15
+		"####" A 0 A_TakeInventory("RightFireToken")
+		Goto GrabIt
+		
+	Toss1A:
+		CT1A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT1A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT1A A 0
+		"####" A 0
+		Goto TossMain
+	Toss1B:
+		CT1B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT1B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT1B A 0
+		"####" A 0
+		Goto TossMain
+	Toss1C:
+		CT1C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT1C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT1C A 0
+		"####" A 0
+		Goto TossMain
+	Toss1D:
+		CT1D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT1D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT1D A 0
+		"####" A 0
+		Goto TossMain
+	Toss1E:
+		CT1E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT1E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT1E A 0
+		"####" A 0
+		Goto TossMain
+	Toss1F:
+		CT1F A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT1F A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT1F A 0
+		"####" A 0
+		Goto TossMain
+		
+	Toss2A:
+		CT2A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT2A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT2A A 0
+		"####" A 0
+		Goto TossMain
+	Toss2B:
+		CT2B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT2B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT2B A 0
+		"####" A 0
+		Goto TossMain
+	Toss2C:
+		CT2C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT2C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT2C A 0
+		"####" A 0
+		Goto TossMain
+	Toss2D:
+		CT2D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT2D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT2D A 0
+		"####" A 0
+		Goto TossMain
+	Toss2E:
+		CT2E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT2E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT2E A 0
+		"####" A 0
+		Goto TossMain
+	Toss2F:
+		CT2F A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT2F A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT2F A 0
+		"####" A 0
+		Goto TossMain
+	Toss2G:
+		CT2G A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+		UT2G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT2G A 0
+		"####" A 0
+		Goto TossMain
+		
+	Toss3A:
+		CT3A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT3A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT3A A 0
+		"####" A 0
+		Goto TossMain
+	Toss3B:
+		CT3B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT3B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT3B A 0
+		"####" A 0
+		Goto TossMain
+	Toss3C:
+		CT3C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT3C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT3C A 0
+		"####" A 0
+		Goto TossMain
+	Toss3D:
+		CT3D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT3D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT3D A 0
+		"####" A 0
+		Goto TossMain
+	Toss3E:
+		CT3E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT3E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT3E A 0
+		"####" A 0
+		Goto TossMain
+	Toss3F:
+		CT3F A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT3F A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT3F A 0
+		"####" A 0
+		Goto TossMain
+	Toss3G:
+		CT3G A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT3G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT3G A 0
+		"####" A 0
+		Goto TossMain
+		
+	Toss4A:
+		CT4A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT4A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT4A A 0
+		"####" A 0
+		Goto TossMain
+	Toss4B:
+		CT4B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT4B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT4B A 0
+		"####" A 0
+		Goto TossMain
+	Toss4C:
+		CT4C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT4C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT4C A 0
+		"####" A 0
+		Goto TossMain
+	Toss4D:
+		CT4D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT4D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT4D A 0
+		"####" A 0
+		Goto TossMain
+	Toss4E:
+		CT4E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UT4E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DT4E A 0
+		"####" A 0
+		Goto Kaboom
+
+		
+	TossMain:
+		"####" ABCDEFGH 1 Bright
+		TNT1 A 0 A_JumpIfInventory("PowerBerserkDamage",1,"TossType2")
+		TNT1 A 0 A_JumpIfInventory("TossPower",8,"TossType2")
+	TossType1:
+		/*TNT1 A 1 A_SetPitch(Pitch+0.5)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		TNT1 A 1 A_SetPitch(Pitch+2)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		TNT1 A 1 A_SetPitch(Pitch+0.5)
+		
+		TNT1 A 0 A_PlaySound("TNT/Toss",5,0.9)
+		DY2T A 1 A_SetPitch(Pitch-0.5)
+		DY2T B 1 A_SetPitch(Pitch-1)
+		DY2T C 1 A_SetPitch(Pitch-2)
+		DY2T D 1 A_SetPitch(Pitch-3)
+		DY2T E 1 A_SetPitch(Pitch-2)
+		DY2T F 1 A_SetPitch(Pitch-1.5)
+		TNT1 A 0 A_FireCustomMissile("DynamiteProjectile",0,1,0,-4,0,18)
+		
+		DY2T G 1 A_SetPitch(Pitch-1)
+		DY2T H 1 A_SetPitch(Pitch-0.5)
+		DY2T I 1 A_SetPitch(Pitch-0.25)
+		DY2T J 1
+		DY2T K 1 A_SetPitch(Pitch+0.1)
+		DY2T L 1 A_SetPitch(Pitch+0.25)
+		DY2T M 1 A_SetPitch(Pitch+0.25)
+		DY2T N 1 A_SetPitch(Pitch+0.1)*/
+		
+		TNT1 A 5
+		DC2T A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DU2T A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DY2T A 0
+		"####" A 0
+		"####" A 1 A_PlaySound("TNT/Toss",5,0.9)
+		"####" BCDEF 1
+		"####" G 1 A_FireCustomMissile("DynamiteProjectile",0,1,0,-4,0,18)
+		"####" HIJKLMN 1
+
+		TNT1 A 0 A_TakeInventory("TossPower") //Just in case, even if the projectile handles it.
+		TNT1 A 0 A_CheckReload
+		"####" A 0 A_TakeInventory("RightFireToken")
+		Goto GrabIt
+	TossType2:
+		/*//TNT1 A 0 A_SetAngle(Angle-1)
+		TNT1 A 1 A_SetPitch(Pitch+0.5)
+		
+		//TNT1 A 0 A_SetAngle(Angle-2)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		
+		//TNT1 A 0 A_SetAngle(Angle-3)
+		TNT1 A 1 A_SetPitch(Pitch+1.25)
+		
+		//TNT1 A 0 A_SetAngle(Angle-2)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		
+		//TNT1 A 0 A_SetAngle(Angle-1)
+		TNT1 A 1 A_SetPitch(Pitch+0.5)
+		TNT1 A 0 A_Jump(192,2)
+		
+		//DYNT A 0 A_SetAngle(Angle+1)
+		DYNT A 1 A_SetPitch(Pitch-0.25)
+		
+		//DYNT B 0 A_SetAngle(Angle+1)
+		DYNT B 1 A_SetPitch(Pitch-0.75)
+		
+		//DYNT A 0 A_SetAngle(Angle+3)
+		DYNT C 1 A_SetPitch(Pitch-1.25)
+		
+		//DYNT A 0 A_SetAngle(Angle+2)
+		DYNT D 1 A_SetPitch(Pitch-1.5)
+		
+		
+		//DYNT A 0 A_SetAngle(Angle+1)
+		DYNT E 1 A_SetPitch(Pitch-1)
+		
+		//DYNT A 0 A_SetAngle(Angle+1)
+		DYNT F 1 A_SetPitch(Pitch-0.5)
+		
+		TNT1 A 0 A_PlaySound("Guncaster/Kick",2)
+		TNT1 A 0 A_PlaySound("TNT/Toss",5,0.9)
+		TNT1 A 0 A_FireCustomMissile("DynamiteProjectile",0,1,0,-4,0,13)
+		
+		//DYNT A 0 A_SetAngle(Angle+0.5)
+		DYNT G 1 A_SetPitch(Pitch-0.25)
+		
+		//DYNT A 0 A_SetAngle(Angle+0.25)
+		DYNT H 1 A_SetPitch(Pitch-0.1)
+		
+		TNT1 A 0 A_TakeInventory("TossPower")
+		TNT1 A 6
+		TNT1 A 0 A_CheckReload*/
+		
+		TNT1 A 5
+		
+		DCNT A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DUNT A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DYNT A 0
+		"####" ABCDEF 1
+		"####" A 0 A_PlaySound("Guncaster/Kick",2)
+		"####" A 0 A_PlaySound("TNT/Toss",5,0.9)
+		"####" A 0 A_FireCustomMissile("DynamiteProjectile",0,1,0,-4,0,13)
+		"####" GH 1
+		TNT1 A 6
+		TNT1 A 0 A_CheckReload
+		"####" A 0 A_TakeInventory("RightFireToken")
+		Goto GrabIt
+		
+	//Right
+	
+	RFire:
+		"####" A 0 A_JumpIf(CallACS("GunslingerMode"),2)
+		"####" A 0 A_JumpIfInventory("PowerGunzerking",1,1) 
+		Goto BackToReady
+		//DRNG A 0 A_JumpIfInventory("Mana",5,1)
+		//Goto RIdle
+		"####" A 1 A_JumpIfInventory("TNTAmmo",1,1)
+		Goto RIdle
+		"####" A 0 A_GiveInventory("RightFireToken")
+		//DRNG A 0 A_TakeInventory("Mana",5,TIF_NOTAKEINFINITE)
+		//DRNG A 0 A_TakeInventory("TNTAmmo",1,TIF_NOTAKEINFINITE)
+		"####" A 0 A_PlaySound("TNT/Ignition",1,0.8)
+		"####" A 1 A_SetPitch(Pitch-0.25)
+		"####" A 1 A_SetPitch(Pitch-0.25)
+		"####" A 1 A_SetPitch(Pitch-0.5)
+		"####" A 1 A_SetPitch(Pitch-1.0)
+		"####" A 1 A_SetPitch(Pitch-2.0)
+		"####" AAA 1 A_SetPitch(Pitch-2.5)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+3.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+2.5)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+2.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+1.5)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+1.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",-15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" AA 1 A_SetPitch(Pitch+0.5)
+		"####" AA 1 A_SetPitch(Pitch+0.25)
+		"####" A 0 A_PlaySound("TNT/Burn",5,0.8,1)
+		
+		CR1Z A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR1Z A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR1Z A 0
+		"####" A 0 A_GiveInventory("TossPower",3)
+		"####" A 1 Bright //A_SetPitch(Pitch-0.5)
+		"####" B 1 Bright //A_SetPitch(Pitch-1.0)
+		"####" C 1 Bright //A_SetPitch(Pitch-1.0)
+		"####" D 1 Bright //A_SetPitch(Pitch-0.5)
+		"####" E 1 Bright //A_SetPitch(Pitch-0.25)
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight1A
+		"####" A 0
+		Goto SequenceRight1A
+	//Sequence 1
+		
+	SequenceRight1A:
+		"####" F 0 A_GiveInventory("TossPower",1)
+		"####" FGHI 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight1A
+		"####" A 0
+		Goto SequenceRight1B
+	SequenceRight1B:
+		"####" I 0 A_GiveInventory("TossPower",1)
+		"####" JKLM 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight1B
+		"####" A 0
+		Goto SequenceRight1C
+	SequenceRight1C:
+		"####" M 0 A_GiveInventory("TossPower",1)
+		"####" NOPQ 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight1C
+		"####" A 0
+		Goto SequenceRight1D
+	SequenceRight1D:
+		"####" P 0 A_GiveInventory("TossPower",1)
+		"####" RSTU 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight1D
+		"####" A 0
+		Goto SequenceRight1E
+	SequenceRight1E:
+		"####" S 0 A_GiveInventory("TossPower",1)
+		"####" VWXY 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight1E
+		"####" A 0
+		Goto SequenceRight1F
+	SequenceRight1F:
+		"####" V 0 A_GiveInventory("TossPower",1)
+		"####" Z 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight1F
+		"####" A 0
+		Goto SequenceRight2A
+		
+	//Sequence 2
+		
+	SequenceRight2A:
+		CR2Z A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR2Z A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR2Z A 0
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" ABCD 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight2A
+		"####" A 0
+		Goto SequenceRight2B
+	SequenceRight2B:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" EFGH 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight2B
+		"####" A 0
+		Goto SequenceRight2C
+	SequenceRight2C:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" IJKL 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight2C
+		"####" A 0
+		Goto SequenceRight2D
+	SequenceRight2D:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" MNOP 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight2D
+		"####" A 0
+		Goto SequenceRight2E
+	SequenceRight2E:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" QRST 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight2E
+		"####" A 0
+		Goto SequenceRight2F
+	SequenceRight2F:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" UVWX 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight2F
+		"####" A 0
+		Goto SequenceRight2G
+	SequenceRight2G:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" YZ 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight2G
+		"####" A 0
+		Goto SequenceRight3A
+		
+	//Sequence 3
+		
+	SequenceRight3A:
+		CR3Z A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR3Z A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR3Z A 0
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" ABCD 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight3A
+		"####" A 0
+		Goto SequenceRight3B
+	SequenceRight3B:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" EFGH 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight3B
+		"####" A 0
+		Goto SequenceRight3C
+	SequenceRight3C:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" IJKL 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight3C
+		"####" A 0
+		Goto SequenceRight3D
+	SequenceRight3D:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" MNOP 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight3D
+		"####" A 0
+		Goto SequenceRight3E
+	SequenceRight3E:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" QRST 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight3E
+		"####" A 0
+		Goto SequenceRight3F
+	SequenceRight3F:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" UVWX 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight3F
+		"####" A 0
+		Goto SequenceRight3G
+	SequenceRight3G:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" YZ 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight3G
+		"####" A 0
+		Goto SequenceRight4A
+		
+	//Sequence 4
+		
+	SequenceRight4A:
+		CR4Z A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR4Z A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR4Z A 0
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" ABCD 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight4A
+		"####" A 0
+		Goto SequenceRight4B
+	SequenceRight4B:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" EFGH 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight4B
+		"####" A 0
+		Goto SequenceRight4C
+	SequenceRight4C:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" IJKL 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight4C
+		"####" A 0
+		Goto SequenceRight4D
+	SequenceRight4D:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" MNOP 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight4D
+		"####" A 0
+		Goto SequenceRight4E
+	SequenceRight4E:
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" QRST 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto TossRight4E
+		"####" A 0
+		Goto SequenceRight4F
+	SequenceRight4F: //Too late, mate.
+		"####" A 0 A_GiveInventory("TossPower",1)
+		"####" UVW 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireRight",1,1)
+		Goto KaboomRight
+	KaboomRight:
+		TNT1 A 0 A_SetBlend("White",1.0,70)
+		TNT1 A 0 A_FireCustomMissile("DynamiteTooLate",0,1,0)
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 15
+		"####" A 0 A_TakeInventory("RightFireToken")
+		GoTo GrabItRight//+2
+		
+	TossRight1A:
+		CR1A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR1A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR1A A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight1B:
+		CR1B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR1B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR1B A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight1C:
+		CR1C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR1C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR1C A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight1D:
+		CR1D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR1D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR1D A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight1E:
+		CR1E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR1E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR1E A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight1F:
+		CR1F A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR1F A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR1F A 0
+		"####" A 0
+		Goto TossRightMain
+		
+	TossRight2A:
+		CR2A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR2A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR2A A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight2B:
+		CR2B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR2B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR2B A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight2C:
+		CR2C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR2C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR2C A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight2D:
+		CR2D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR2D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR2D A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight2E:
+		CR2E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR2E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR2E A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight2F:
+		CR2F A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR2F A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR2F A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight2G:
+		CR2G A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR2G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR2G A 0
+		"####" A 0
+		Goto TossRightMain
+		
+	TossRight3A:
+		CR3A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR3A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR3A A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight3B:
+		CR3B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR3B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR3B A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight3C:
+		CR3C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR3C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR3C A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight3D:
+		CR3D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR3D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR3D A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight3E:
+		CR3E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR3E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR3E A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight3F:
+		CR3F A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR3F A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR3F A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight3G:
+		CR3G A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR3G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR3G A 0
+		"####" A 0
+		Goto TossRightMain
+		
+	TossRight4A:
+		CR4A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR4A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR4A A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight4B:
+		CR4B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR4B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR4B A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight4C:
+		CR4C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR4C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR4C A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight4D:
+		CR4D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR4D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR4D A 0
+		"####" A 0
+		Goto TossRightMain
+	TossRight4E:
+		CR4D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR4D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR4D A 0
+		"####" A 0
+		Goto KaboomRight
+		
+	TossRightMain:
+		"####" ABCDEFGH 1 Bright
+		"####" A 0 A_JumpIfInventory("PowerBerserkDamage",1,"TossRightType2")
+		"####" A 0 A_JumpIfInventory("TossPower",8,"TossRightType2")
+	TossRightType1:
+		/*TNT1 A 1 A_SetPitch(Pitch+0.5)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		TNT1 A 1 A_SetPitch(Pitch+2)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		TNT1 A 1 A_SetPitch(Pitch+0.5)
+		
+		TNT1 A 0 A_PlaySound("TNT/Toss",5,0.9)
+		DR2T A 1 A_SetPitch(Pitch-0.5)
+		DR2T B 1 A_SetPitch(Pitch-1)
+		DR2T C 1 A_SetPitch(Pitch-2)
+		DR2T D 1 A_SetPitch(Pitch-3)
+		DR2T E 1 A_SetPitch(Pitch-2)
+		DR2T F 1 A_SetPitch(Pitch-1.5)
+		TNT1 A 0 A_FireCustomMissile("DynamiteProjectile",0,1,0,-4,0,18)
+		
+		DR2T G 1 A_SetPitch(Pitch-1)
+		DR2T H 1 A_SetPitch(Pitch-0.5)
+		DR2T I 1 A_SetPitch(Pitch-0.25)
+		DR2T J 1
+		DR2T K 1 A_SetPitch(Pitch+0.1)
+		DR2T L 1 A_SetPitch(Pitch+0.25)
+		DR2T M 1 A_SetPitch(Pitch+0.25)
+		DR2T N 1 A_SetPitch(Pitch+0.1)
+
+		TNT1 A 0 A_TakeInventory("TossPower")*/
+		
+		TNT1 A 5
+		CR2T A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UR2T A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DR2T A 0
+		"####" A 1 A_PlaySound("TNT/Toss",5,0.9)
+		"####" BCDEF 1
+		"####" G 1 A_FireCustomMissile("DynamiteProjectile",0,1,0,-4,0,18)
+		"####" HIJKLMN 1
+
+		"####" A 0 A_TakeInventory("TossPower")
+		"####" A 0 A_TakeInventory("RightFireToken")
+		Goto GrabItRight//+2
+	TossRightType2:
+		/*//TNT1 A 0 A_SetAngle(Angle-1)
+		TNT1 A 1 A_SetPitch(Pitch+0.5)
+		
+		//TNT1 A 0 A_SetAngle(Angle-2)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		
+		//TNT1 A 0 A_SetAngle(Angle-3)
+		TNT1 A 1 A_SetPitch(Pitch+1.25)
+		
+		//TNT1 A 0 A_SetAngle(Angle-2)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		
+		//TNT1 A 0 A_SetAngle(Angle-1)
+		TNT1 A 1 A_SetPitch(Pitch+0.5)
+		TNT1 A 0 A_Jump(192,2)
+		
+		//DRNT A 0 A_SetAngle(Angle+1)
+		DRNT A 1 A_SetPitch(Pitch-0.25)
+		
+		//DRNT B 0 A_SetAngle(Angle+1)
+		DRNT B 1 A_SetPitch(Pitch-0.75)
+		
+		//DRNT A 0 A_SetAngle(Angle+3)
+		DRNT A 1 A_SetPitch(Pitch-1.25)
+		
+		//DRNT A 0 A_SetAngle(Angle+2)
+		DRNT D 1 A_SetPitch(Pitch-1.5)
+		
+		
+		//DRNT A 0 A_SetAngle(Angle+1)
+		DRNT E 1 A_SetPitch(Pitch-1)
+		
+		//DRNT A 0 A_SetAngle(Angle+1)
+		DRNT F 1 A_SetPitch(Pitch-0.5)
+		
+		TNT1 A 0 A_PlaySound("Guncaster/Kick",2)
+		TNT1 A 0 A_PlaySound("TNT/Toss",5,0.9)
+		TNT1 A 0 A_FireCustomMissile("DynamiteProjectile",0,1,0,-4,0,13)
+		
+		//DRNT A 0 A_SetAngle(Angle+0.5)
+		DRNT G 1 A_SetPitch(Pitch-0.25)
+		
+		//DRNT A 0 A_SetAngle(Angle+0.25)
+		DRNT H 1 A_SetPitch(Pitch-0.1)
+		
+		TNT1 A 0 A_TakeInventory("TossPower")
+		TNT1 A 6*/
+		TNT1 A 5
+		CRNT A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		URNT A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DRNT A 0
+		"####" ABCDEF 1
+		"####" A 0 A_PlaySound("Guncaster/Kick",2)
+		"####" A 0 A_PlaySound("TNT/Toss",5,0.9)
+		"####" A 0 A_FireCustomMissile("DynamiteProjectile",0,1,0,-4,0,13)
+		"####" GH 1
+		TNT1 A 6
+		TNT1 A 0 A_TakeInventory("TossPower")
+		"####" A 0 A_TakeInventory("RightFireToken")
+		Goto GrabItRight//+2
+	  
+	LFire:	
+		"####" A 0 A_JumpIf(CallACS("GunslingerMode"),2)
+		"####" A 0 A_JumpIfInventory("PowerGunzerking",1,1) 
+		Goto Nullify
+		//"####" A 0 A_JumpIfInventory("Mana",5,1)
+		//Goto LIdle
+		CLNG A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		ULNG A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DLNG A 0
+		"####" A 1 A_JumpIfInventory("TNTAmmo",1,1)
+		Goto LIdle
+		//"####" A 0 A_TakeInventory("Mana",5,TIF_NOTAKEINFINITE)
+		//"####" A 0 A_TakeInventory("TNTAmmo",1,TIF_NOTAKEINFINITE)
+		"####" A 0 A_GiveInventory("LeftFireToken",1)
+		"####" A 0 A_PlaySound("TNT/Ignition",1,0.8)
+		"####" A 1 A_SetPitch(Pitch-0.25)
+		"####" A 1 A_SetPitch(Pitch-0.25)
+		"####" A 1 A_SetPitch(Pitch-0.5)
+		"####" A 1 A_SetPitch(Pitch-1.0)
+		"####" A 1 A_SetPitch(Pitch-2.0)
+		"####" AAA 1 A_SetPitch(Pitch-2.5)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+3.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+2.5)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+2.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+1.5)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" A 1 A_SetPitch(Pitch+1.0)
+		"####" A 0 A_FireCustomMissile("IgnitionSnortNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(2.0,-2.0))
+		"####" AA 0 A_FireCustomMissile("IgnitionSmokeNostril",15+frandom(2.0,-2.0),0,0,0,0,frandom(4.0,-4.0))
+		"####" AA 1 A_SetPitch(Pitch+0.5)
+		"####" AA 1 A_SetPitch(Pitch+0.25)
+		"####" A 0 A_PlaySound("TNT/Burn",5,0.8,1)
+		
+		CL1Z A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL1Z A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL1Z A 0
+		"####" A 0 A_GiveInventory("TossPower2",3)
+		"####" A 1 Bright //A_SetPitch(Pitch-0.5)
+		"####" B 1 Bright //A_SetPitch(Pitch-1.0)
+		"####" C 1 Bright //A_SetPitch(Pitch-1.0)
+		"####" D 1 Bright //A_SetPitch(Pitch-0.5)
+		"####" E 1 Bright //A_SetPitch(Pitch-0.25)
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft1A
+		"####" A 0
+		Goto SequenceLeft1A
+		
+	//Sequence 1
+		
+	SequenceLeft1A:
+		"####" F 0 A_GiveInventory("TossPower2",1)
+		"####" FGHI 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft1A
+		"####" A 0
+		Goto SequenceLeft1B
+	SequenceLeft1B:
+		"####" I 0 A_GiveInventory("TossPower2",1)
+		"####" JKLM 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft1B
+		"####" A 0
+		Goto SequenceLeft1C
+	SequenceLeft1C:
+		"####" M 0 A_GiveInventory("TossPower2",1)
+		"####" NOPQ 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft1C
+		"####" A 0
+		Goto SequenceLeft1D
+	SequenceLeft1D:
+		"####" P 0 A_GiveInventory("TossPower2",1)
+		"####" RSTU 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft1D
+		"####" A 0
+		Goto SequenceLeft1E
+	SequenceLeft1E:
+		"####" S 0 A_GiveInventory("TossPower2",1)
+		"####" VWXY 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft1E
+		"####" A 0
+		Goto SequenceLeft1F
+	SequenceLeft1F:
+		"####" V 0 A_GiveInventory("TossPower2",1)
+		"####" Z 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft1F
+		"####" A 0
+		Goto SequenceLeft2A
+		
+	//Sequence 2
+		
+	SequenceLeft2A:
+		CL2Z A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL2Z A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2Z A 0
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" ABCD 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft2A
+		"####" A 0
+		Goto SequenceLeft2B
+	SequenceLeft2B:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" EFGH 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft2B
+		"####" A 0
+		Goto SequenceLeft2C
+	SequenceLeft2C:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" IJKL 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft2C
+		"####" A 0
+		Goto SequenceLeft2D
+	SequenceLeft2D:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" MNOP 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft2D
+		"####" A 0
+		Goto SequenceLeft2E
+	SequenceLeft2E:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" QRST 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft2E
+		"####" A 0
+		Goto SequenceLeft2F
+	SequenceLeft2F:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" UVWX 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft2F
+		"####" A 0
+		Goto SequenceLeft2G
+	SequenceLeft2G:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" YZ 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft2G
+		"####" A 0
+		Goto SequenceLeft3A
+		
+	//Sequence 3
+		
+	SequenceLeft3A:
+		CL3Z A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL3Z A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL3Z A 0
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" ABCD 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft3A
+		"####" A 0
+		Goto SequenceLeft3B
+	SequenceLeft3B:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" EFGH 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft3B
+		"####" A 0
+		Goto SequenceLeft3C
+	SequenceLeft3C:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" IJKL 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft3C
+		"####" A 0
+		Goto SequenceLeft3D
+	SequenceLeft3D:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" MNOP 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft3D
+		"####" A 0
+		Goto SequenceLeft3E
+	SequenceLeft3E:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" QRST 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft3E
+		"####" A 0
+		Goto SequenceLeft3F
+	SequenceLeft3F:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" UVWX 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft3F
+		"####" A 0
+		Goto SequenceLeft3G
+	SequenceLeft3G:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" YZ 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft3G
+		"####" A 0
+		Goto SequenceLeft4A
+		
+	//Sequence 4
+		
+	SequenceLeft4A:
+		CL4Z A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL4Z A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL4Z A 0
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" ABCD 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft4A
+		"####" A 0
+		Goto SequenceLeft4B
+	SequenceLeft4B:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" EFGH 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft4B
+		"####" A 0
+		Goto SequenceLeft4C
+	SequenceLeft4C:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" IJKL 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft4C
+		"####" A 0
+		Goto SequenceLeft4D
+	SequenceLeft4D:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" MNOP 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft4D
+		"####" A 0
+		Goto SequenceLeft4E
+	SequenceLeft4E:
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" QRST 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto TossLeft4E
+		"####" A 0
+		Goto SequenceLeft4F
+	SequenceLeft4F: //Too late, mate.
+		"####" A 0 A_GiveInventory("TossPower2",1)
+		"####" UVW 1 Bright
+		"####" A 0 A_JumpIfInventory("SynthFireLeft",1,1)
+		Goto KaboomLeft
+	KaboomLeft:
+		TNT1 A 0 A_SetBlend("White",1.0,70)
+		TNT1 A 0 A_FireCustomMissile("DynamiteTooLate",0,1,0)
+		TNT1 A 0 A_StopSound(5)
+		TNT1 A 15
+		Goto GrabItLeft
+		
+	TossLeft1A:
+		CL1A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL1A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL1A A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft1B:
+		CL1B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL1B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL1B A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft1C:
+		CL1C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL1C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL1C A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft1D:
+		CL1D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL1D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL1D A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft1E:
+		CL1E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL1E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL1E A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft1F:
+		CL1F A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL1F A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL1F A 0
+		"####" A 0
+		Goto TossLeftMain
+		
+	TossLeft2A:
+		CL2A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL2A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2A A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft2B:
+		CL2B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL2B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2B A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft2C:
+		CL2C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL2C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2C A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft2D:
+		CL2D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL2D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2D A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft2E:
+		CL2E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL2E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2E A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft2F:
+		CL2F A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL2F A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2F A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft2G:
+		CL2G A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL2G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2G A 0
+		"####" A 0
+		Goto TossLeftMain
+		
+	TossLeft3A:
+		CL3A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL3A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL3A A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft3B:
+		CL2B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL3B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2B A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft3C:
+		CL2C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL3C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2C A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft3D:
+		CL2D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL3D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2D A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft3E:
+		CL3E A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL3E A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL3E A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft3F:
+		CL3F A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL3F A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL3F A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft3G:
+		CL3G A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL3G A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL3G A 0
+		"####" A 0
+		Goto TossLeftMain
+		
+	TossLeft4A:
+		CL4A A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL4A A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL4A A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft4B:
+		CL4B A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL4B A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL4B A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft4C:
+		CL4C A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL4C A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL4C A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft4D:
+		CL4D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL4D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL4D A 0
+		"####" A 0
+		Goto TossLeftMain
+	TossLeft4E:
+		CL4D A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL4D A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL4D A 0
+		"####" A 0
+		Goto KaboomLeft
+		
+	TossLeftMain:
+		"####" ABCDEFGH 1 Bright
+		"####" A 0 A_JumpIfInventory("PowerBerserkDamage",1,"TossLeftType2")
+		"####" A 0 A_JumpIfInventory("TossPower2",8,"TossLeftType2")
+	TossLeftType1:
+		/*TNT1 A 1 A_SetPitch(Pitch+0.5)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		TNT1 A 1 A_SetPitch(Pitch+2)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		TNT1 A 1 A_SetPitch(Pitch+0.5)
+		
+		TNT1 A 0 A_PlaySound("TNT/Toss",5,0.9)
+		DL2T A 1 A_SetPitch(Pitch-0.5)
+		DL2T B 1 A_SetPitch(Pitch-1)
+		DL2T C 1 A_SetPitch(Pitch-2)
+		DL2T D 1 A_SetPitch(Pitch-3)
+		DL2T E 1 A_SetPitch(Pitch-2)
+		DL2T F 1 A_SetPitch(Pitch-1.5)
+		TNT1 A 0 A_FireCustomMissile("DynamiteProjectile2",0,1,0,-4,0,18)
+		
+		DL2T G 1 A_SetPitch(Pitch-1)
+		DL2T H 1 A_SetPitch(Pitch-0.5)
+		DL2T I 1 A_SetPitch(Pitch-0.25)
+		DL2T J 1
+		DL2T K 1 A_SetPitch(Pitch+0.1)
+		DL2T L 1 A_SetPitch(Pitch+0.25)
+		DL2T M 1 A_SetPitch(Pitch+0.25)
+		DL2T N 1 A_SetPitch(Pitch+0.1)
+
+		TNT1 A 0 A_TakeInventory("TossPower2")*/
+		
+		TNT1 A 5
+		CL2T A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		UL2T A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DL2T A 0
+		"####" A 1 A_PlaySound("TNT/Toss",5,0.9)
+		"####" BCDEF 1
+		"####" G 1 A_FireCustomMissile("DynamiteProjectile2",0,1,0,-4,0,18)
+		"####" HIJKLMN 1
+
+		"####" A 0 A_TakeInventory("TossPower2")
+		Goto GrabItLeft
+	TossLeftType2:
+		/*//TNT1 A 0 A_SetAngle(Angle-1)
+		TNT1 A 1 A_SetPitch(Pitch+0.5)
+		
+		//TNT1 A 0 A_SetAngle(Angle-2)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		
+		//TNT1 A 0 A_SetAngle(Angle-3)
+		TNT1 A 1 A_SetPitch(Pitch+1.25)
+		
+		//TNT1 A 0 A_SetAngle(Angle-2)
+		TNT1 A 1 A_SetPitch(Pitch+1)
+		
+		//TNT1 A 0 A_SetAngle(Angle-1)
+		TNT1 A 1 A_SetPitch(Pitch+0.5)
+		TNT1 A 0 A_Jump(192,2)
+		
+		//DLNT A 0 A_SetAngle(Angle+1)
+		DLNT A 1 A_SetPitch(Pitch-0.25)
+		
+		//DLNT B 0 A_SetAngle(Angle+1)
+		DLNT B 1 A_SetPitch(Pitch-0.75)
+		
+		//DLNT A 0 A_SetAngle(Angle+3)
+		DLNT A 1 A_SetPitch(Pitch-1.25)
+		
+		//DLNT A 0 A_SetAngle(Angle+2)
+		DLNT D 1 A_SetPitch(Pitch-1.5)
+		
+		
+		//DLNT A 0 A_SetAngle(Angle+1)
+		DLNT E 1 A_SetPitch(Pitch-1)
+		
+		//DLNT A 0 A_SetAngle(Angle+1)
+		DLNT F 1 A_SetPitch(Pitch-0.5)
+		
+		TNT1 A 0 A_PlaySound("Guncaster/Kick",2)
+		TNT1 A 0 A_PlaySound("TNT/Toss",5,0.9)
+		TNT1 A 0 A_FireCustomMissile("DynamiteProjectile2",0,1,0,-4,0,13)
+		
+		//DLNT A 0 A_SetAngle(Angle+0.5)
+		DLNT G 1 A_SetPitch(Pitch-0.25)
+		
+		//DLNT A 0 A_SetAngle(Angle+0.25)
+		DLNT H 1 A_SetPitch(Pitch-0.1)
+		
+		TNT1 A 0 A_TakeInventory("TossPower2")
+		TNT1 A 6*/
+		TNT1 A 5
+		CLNT A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		ULNT A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DLNT A 0
+		"####" ABCDEF 1
+		"####" A 0 A_PlaySound("Guncaster/Kick",2)
+		"####" A 0 A_PlaySound("TNT/Toss",5,0.9)
+		"####" A 0 A_FireCustomMissile("DynamiteProjectile2",0,1,0,-4,0,13)
+		"####" GH 1
+		TNT1 A 6
+		TNT1 A 0 A_TakeInventory("TossPower2")
+		Goto GrabItLeft
+		
+	AltFire:
+		"####" A 0 A_GiveInventory("RightFireToken")
+		DCNM A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+		DUNM A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+		DYNM A 0
+		"####" A 0
+		Goto Super::CheckForMagic
+	  
+	Zoom:
+	  "####" A 0 A_GiveInventory("RightFireToken")
+      "####" A 0 A_JumpIf(CallACS("GunslingerMode"),"Gunzerk")
+	  "####" A 0 A_JumpIfInventory("PowerGunzerking",1,"Gunzerk")
+	  //"####" A 0 A_JumpIfInventory("DynamiteStratActive",1,"Strat")
+	  Goto Regular
+	Regular:
+	  "####" A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  DCNK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  DUNK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  DYNK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  DCNK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  DUNK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  DYMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  
+	/*Strat:
+	  "####" A 0 A_JumpIfInventory("PowerMidasMode",1,4)
+	  MCUK A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  MAUK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  MCUK A 0 A_JumpIfInventory("PowerSuitToken",1,2)
+	  MUMK A 0
+	  "####" A 0
+	  Goto Super::Zoom*/
+	  
+	Gunzerk:
+	  "####" A 0 A_GunFlash("LeftKickBudge",GFF_NOEXTCHANGE)
+	  "####" A 0 A_JumpIfInventory("PowerMidasMode",1,5)
+	  CRNK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  URNK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  DRNK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  CRNK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  URNK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  DRMK A 0
+	  "####" A 0
+	  Goto Super::Zoom
+	  
+	LeftKickBudge:
+	  CLDK A 0 A_JumpIfInventory("PowerSuitToken",1,3)
+	  ULDK A 0 A_JumpIfInventory("PowerSuitProtect",1,2)
+	  DLDK A 0
+	  "####" ABCDEFGHIHGFEDCBA 1
+	  "####" Z 10
+	  "####" Z 0 
+	  Stop
+	}
+}

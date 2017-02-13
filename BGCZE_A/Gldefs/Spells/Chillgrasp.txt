@@ -1,0 +1,25 @@
+pulselight ChillgraspPulse
+{
+    color 0.3 0.7 1.0
+    size 0
+    secondarySize 192
+    interval 1.7
+}
+
+object ChillgraspPulse
+{
+    frame TNT1A { light ChillgraspPulse }
+}
+
+pulselight ChillyPulse
+{
+    color 0.3 0.7 1.0
+    size 0
+    secondarySize 128
+    interval 1.5
+}
+
+object ChillyPulse
+{
+    frame TNT1 { light ChillyPulse }
+}

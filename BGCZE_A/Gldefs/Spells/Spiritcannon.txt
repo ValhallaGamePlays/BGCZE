@@ -1,0 +1,33 @@
+pulselight SPIRYTSPAWN
+{
+    color 0.1 0.2 0.8
+    size 128
+    secondarySize 24
+	offset 0 16 0
+    interval 1.2
+}
+
+object SpirytusRelease
+{
+    frame TNT1 { light SPIRYTSPAWN }
+}
+
+pointlight SPIRYTIDLE
+{
+    color 0.05 0.1 0.6
+    size 48
+	offset 0 24 0
+}
+
+pointlight SPIRYTFIRE
+{
+    color 1.0 0.7 0.2
+    size 64
+	offset 0 24 0
+}
+
+object SpiritCannon
+{
+    frame CTRT { light SPIRYTIDLE }
+    frame CTRTB { light SPIRYTFIRE }
+}

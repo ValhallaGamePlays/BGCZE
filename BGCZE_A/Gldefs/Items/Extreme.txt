@@ -1,0 +1,12 @@
+pointlight EXTREMELIGHT
+{
+    color 0.9 0.3 0.1
+    size 48
+    offset 0 16 0
+    dontlightself 1
+}
+
+object EXTREMEsphere
+{
+    frame XTRS { light EXTREMELIGHT }
+}

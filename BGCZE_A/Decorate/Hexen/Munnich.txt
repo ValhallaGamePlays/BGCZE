@@ -1,0 +1,58 @@
+ACTOR BlueMana : Ammo replaces Mana1
+{
+  Radius 8
+  Height 8
+  Inventory.Amount 12
+  Inventory.MaxAmount 150
+  Ammo.BackpackAmount 50
+  Ammo.BackpackMaxAmount 300
+  Inventory.PickupMessage "Blue stuff that powers your guns!"
+  Inventory.Icon "MAN1I0"
+  +FLOATBOB
+  +NOGRAVITY
+  States
+  {
+  Spawn:
+    MAN1 ABCDEFGHI 2 Bright A_SpawnItemEx("BlueParticle",frandom(3.0,-3.0),frandom(3.0,-3.0),24+frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  }
+}
+
+ACTOR GreenMana : Ammo replaces Mana2
+{
+  Radius 8
+  Height 8
+  Inventory.Amount 12
+  Inventory.MaxAmount 150
+  Ammo.BackpackAmount 50
+  Ammo.BackpackMaxAmount 300
+  Inventory.PickupMessage "Green stuff that powers your guns!"
+  +FLOATBOB
+  +NOGRAVITY
+  Inventory.Icon "MAN2G0"
+  States
+  {
+  Spawn:
+    MAN2 ABCDEFGHIJKLMNOP 2 Bright A_SpawnItemEx("GreenParticle",frandom(3.0,-3.0),frandom(3.0,-3.0),24+frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  }
+}
+
+//Now 100% more endlessly annoying during invasion-style levels, doctor Freeman.
+ACTOR CombineMana : CustomInventory replaces Mana3
+{
+  Radius 8
+  Height 8
+  +FLOATBOB
+  Inventory.PickupMessage "Holy shit, it's red stuff that powers your guns!"
+  States
+  {
+  Spawn:
+    MAN3 ABCDEFGHIJKLMNOP 2 Bright A_SpawnItemEx("RedParticle",frandom(3.0,-3.0),frandom(3.0,-3.0),24+frandom(15.0,2.0),frandom(0.2,-0.2),frandom(0.2,-0.2),frandom(1.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+    Loop
+  Pickup:
+    TNT1 A 0 A_GiveInventory("BlueMana", 20)
+    TNT1 A 0 A_GiveInventory("GreenMana", 20)
+    Stop
+  }
+}

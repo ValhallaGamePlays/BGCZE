@@ -1,0 +1,198 @@
+//Longhorn
+
+//Recoil-Single Revolver
+brightmap sprite LCHRA0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCHRB0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCHRC0 { map "Bmaps/Longhorn/LGHGC.png" }
+brightmap sprite LCHRD0 { map "Bmaps/Longhorn/LGHGC.png" }
+brightmap sprite LCHRE0 { map "Bmaps/Longhorn/LGHGD.png" }
+brightmap sprite LCHRF0 { map "Bmaps/Longhorn/LGHGD.png" }
+brightmap sprite LCHRG0 { map "Bmaps/Longhorn/LGHGD.png" }
+brightmap sprite LCHRH0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHRI0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHRJ0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHRK0 { map "Bmaps/Longhorn/LGHGF.png" }
+brightmap sprite LCHRL0 { map "Bmaps/Longhorn/LGHGF.png" }
+brightmap sprite LCHRM0 { map "Bmaps/Longhorn/LGHGF.png" }
+brightmap sprite LCHRN0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite LCHRO0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite LCHRP0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite LCHRQ0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite LCHRR0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCHRS0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCHRT0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCHRU0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCHRV0 { map "Bmaps/Longhorn/LGHGA.png" }
+
+//Kick
+brightmap sprite LCHKA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCHKB0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCHKC0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCHKD0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCHKE0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHKF0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHKG0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHKH0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHKI0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHKZ0 { map "Bmaps/Longhorn/LGHGA.png" }
+
+//Gunzerk Kick
+brightmap sprite 1CHKA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite 1CHKB0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite 1CHKC0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite 1CHKD0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite 1CHKE0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite 1CHKF0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite 1CHKG0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite 1CHKH0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite 1CHKI0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite 1CHKZ0 { map "Bmaps/Longhorn/LGHGA.png" }
+
+//Midas Kick
+
+//Midas Gunzerk Kick
+
+
+//Cast
+brightmap sprite LCHMA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCHMB0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCHMC0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCHMD0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCHME0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCHMF0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCHMG0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHMH0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHMI0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHMJ0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHMK0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHML0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHMM0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHMN0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCHMZ0 { map "Bmaps/Longhorn/LGHGA.png" }
+
+//Gunzerk-Both
+brightmap sprite 3CHGA0 { map "Bmaps/Longhorn/3GHGA.png" }
+
+//Gunzerk-Left
+brightmap sprite 1CHGA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite 1CHRA0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite 1CHRB0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite 1CHRC0 { map "Bmaps/Longhorn/LGHGC.png" }
+brightmap sprite 1CHRD0 { map "Bmaps/Longhorn/LGHGC.png" }
+brightmap sprite 1CHRE0 { map "Bmaps/Longhorn/LGHGD.png" }
+brightmap sprite 1CHRF0 { map "Bmaps/Longhorn/LGHGD.png" }
+brightmap sprite 1CHRG0 { map "Bmaps/Longhorn/LGHGD.png" }
+brightmap sprite 1CHRH0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite 1CHRI0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite 1CHRJ0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite 1CHRK0 { map "Bmaps/Longhorn/LGHGF.png" }
+brightmap sprite 1CHRL0 { map "Bmaps/Longhorn/LGHGF.png" }
+brightmap sprite 1CHRM0 { map "Bmaps/Longhorn/LGHGF.png" }
+brightmap sprite 1CHRN0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite 1CHRO0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite 1CHRP0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite 1CHRQ0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite 1CHRR0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite 1CHRS0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite 1CHRT0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite 1CHRU0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite 1CHRV0 { map "Bmaps/Longhorn/LGHGA.png" }
+
+//Gunzerk-Right
+brightmap sprite 2CHGA0 { map "Bmaps/Longhorn/2GHGA.png" }
+brightmap sprite 2CHRA0 { map "Bmaps/Longhorn/2GHGB.png" }
+brightmap sprite 2CHRB0 { map "Bmaps/Longhorn/2GHGB.png" }
+brightmap sprite 2CHRC0 { map "Bmaps/Longhorn/2GHGC.png" }
+brightmap sprite 2CHRD0 { map "Bmaps/Longhorn/2GHGC.png" }
+brightmap sprite 2CHRE0 { map "Bmaps/Longhorn/2GHGD.png" }
+brightmap sprite 2CHRF0 { map "Bmaps/Longhorn/2GHGD.png" }
+brightmap sprite 2CHRG0 { map "Bmaps/Longhorn/2GHGD.png" }
+brightmap sprite 2CHRH0 { map "Bmaps/Longhorn/2GHGE.png" }
+brightmap sprite 2CHRI0 { map "Bmaps/Longhorn/2GHGE.png" }
+brightmap sprite 2CHRJ0 { map "Bmaps/Longhorn/2GHGE.png" }
+brightmap sprite 2CHRK0 { map "Bmaps/Longhorn/2GHGF.png" }
+brightmap sprite 2CHRL0 { map "Bmaps/Longhorn/2GHGF.png" }
+brightmap sprite 2CHRM0 { map "Bmaps/Longhorn/2GHGF.png" }
+brightmap sprite 2CHRN0 { map "Bmaps/Longhorn/2GHGG.png" }
+brightmap sprite 2CHRO0 { map "Bmaps/Longhorn/2GHGG.png" }
+brightmap sprite 2CHRP0 { map "Bmaps/Longhorn/2GHGG.png" }
+brightmap sprite 2CHRQ0 { map "Bmaps/Longhorn/2GHGG.png" }
+brightmap sprite 2CHRR0 { map "Bmaps/Longhorn/2GHGA.png" }
+brightmap sprite 2CHRS0 { map "Bmaps/Longhorn/2GHGA.png" }
+brightmap sprite 2CHRT0 { map "Bmaps/Longhorn/2GHGA.png" }
+brightmap sprite 2CHRU0 { map "Bmaps/Longhorn/2GHGA.png" }
+brightmap sprite 2CHRV0 { map "Bmaps/Longhorn/2GHGA.png" }
+
+//Stratocaster
+
+//Transition
+brightmap sprite LCBUA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBUB0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBUC0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBUD0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBUE0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBUF0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBUG0 { map "Bmaps/Longhorn/LGHGA.png" }
+
+//Fire
+brightmap sprite LCBGA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBGB0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBGC0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBGD0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBGF0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCBGG0 { map "Bmaps/Longhorn/LGHGC.png" }
+brightmap sprite LCBGH0 { map "Bmaps/Longhorn/LGHGD.png" }
+brightmap sprite LCBGI0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBGJ0 { map "Bmaps/Longhorn/LGHGF.png" }
+brightmap sprite LCBGK0 { map "Bmaps/Longhorn/LGHGF.png" }
+brightmap sprite LCBGL0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite LCBGM0 { map "Bmaps/Longhorn/LGHGG.png" }
+brightmap sprite LCBGN0 { map "Bmaps/Longhorn/LGHGG.png" }
+
+//Kick
+brightmap sprite LCBKA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBKB0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBKC0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCBKD0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCBKE0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBKF0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBKG0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBKH0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBKI0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBKZ0 { map "Bmaps/Longhorn/LGHGA.png" }
+
+//Midas Kick
+brightmap sprite LBMKA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LBMKB0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LBMKC0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LBMKD0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LBMKE0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LBMKF0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LBMKG0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LBMKH0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LBMKI0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LBMKZ0 { map "Bmaps/Longhorn/LGHGA.png" }
+
+//Cast
+brightmap sprite LCBMA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBMB0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBMC0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LCBMD0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCBME0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCBMF0 { map "Bmaps/Longhorn/LGHGB.png" }
+brightmap sprite LCBMG0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBMH0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBMI0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBMJ0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBMK0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBML0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBMM0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBMN0 { map "Bmaps/Longhorn/LGHGE.png" }
+brightmap sprite LCBMZ0 { map "Bmaps/Longhorn/LGHGA.png" }
+
+//Meteor Fist
+brightmap sprite LC1GA0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LC1GB0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LC1GC0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LC1GD0 { map "Bmaps/Longhorn/LGHGA.png" }
+brightmap sprite LC1GZ0 { map "Bmaps/Longhorn/LGHGA.png" }

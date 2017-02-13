@@ -1,0 +1,15 @@
+object FlamewavePart
+{
+    frame FLME { light FLAMEWAVEDROP }
+}
+
+object FlamewaveDrop
+ {
+    frame FLME { light FLAMEWAVEDROP }
+}
+
+pointlight FLAMEWAVEDROP
+{
+    color 1.0 0.35 0.1
+    size 128
+}

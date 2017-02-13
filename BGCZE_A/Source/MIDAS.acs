@@ -1,0 +1,49 @@
+#include "zcommon.acs"
+#library "DWARFSNG"
+
+//Pillolz almost got the grasp of this shit!... no, not really.
+//Zhs2 and Keks Are still being nagged to death by him.
+
+script "Moneytalks" enter
+{
+	if  (!CheckInventory("MidasTome") && !CheckInventory("PowerMidasMode")
+	&& CheckInventory("MidasRecharger") && (CheckInventory("MidasTimer") >= 120))
+	{
+			TakeInventory("MidasTimer",999);
+			GiveInventory("MidasTome",1);
+			GiveInventory("MidasReturn",1); 		//Announce the return of the king, Harald!
+	}
+	delay(35);	//Tick tock...
+    if  (!CheckInventory("MidasTome") && !CheckInventory("PowerMidasMode")
+	&& CheckInventory("MidasRecharger"))
+	{
+			GiveInventory("MidasTimer",1);
+	}
+	restart;
+}
+
+script "Fields of Gold" open
+{
+		 CreateTranslation(10, 0:255=%[0.1, 0.05, 0.025]:[1.25, 0.9, 0.11]);
+}
+
+script "Pudlo z Jezusem" (void)
+{
+    Thing_SetTranslation(0, 10);
+	//May be revised in case of being able to meddle with the actor's physical size on a whim.
+	/*int DatTID = UniqueTID();
+	Thing_ChangeTID(0, DatTID);
+	SetActivator (0, AAPTR_MASTER);
+	SetUserVariable(DatTID, "User_GoldCounter1", GetUserVariable(0, "User_GoldCounter1"));
+	SetUserVariable(DatTID, "User_GoldCounter2", GetUserVariable(0, "User_GoldCounter2"));
+	SetUserVariable(DatTID, "User_GoldAmount", GetUserVariable(0, "User_GoldAmount"));
+	SetUserVariable(DatTID, "User_GoldRange", GetUserVariable(0, "User_GoldRange"));*/
+}
+
+script "Pass the Whiskey" (void)
+{
+	int DatTID = UniqueTID();
+	Thing_ChangeTID(0, DatTID);
+	SetActivator (0, AAPTR_MASTER);
+	SetUserVariable(DatTID, "User_GoldRange", GetUserVariable(0, "User_GoldRange"));
+}

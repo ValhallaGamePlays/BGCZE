@@ -1,0 +1,76 @@
+ACTOR BurnDeathCounter : Inventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+}
+
+ACTOR TibDeathCounter : Inventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+}
+
+ACTOR BlueTibDeathCounter : Inventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+}
+
+ACTOR BrutalExplosiveBarrelSpawner : RandomSpawner replaces ExplosiveBarrel1
+{
+	DropItem PopBarrel 255 10
+	DropItem Propane 255 1
+}
+
+ACTOR BrutalPopBarrel : PopBarrel replaces PopBarrel
+{
+  +PUSHABLE
+  Translation "168:191=112:127", "16:47=112:127", "208:231=112:127"
+  States
+  {
+  Spawn:
+    BAR1 ABCDEFGHIJKLM 1 A_SpawnItemEx("GC_BarrelParticle",frandom(10.0,-10.0),frandom(10.0,-10.0),26+frandom(2.0,-2.0),frandom(0.4,-0.4),frandom(0.4,-0.4),frandom(2.2,0.4),frandom(0.0,360.0),SXF_CLIENTSIDE,164)
+    Loop
+  }
+}
+
+ACTOR GC_BarrelParticle
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	+NOTONAUTOMAP
+	Renderstyle Add
+	Alpha 0.5
+	States
+	{
+	Spawn:
+	GPRT A 0 NoDelay A_JumpIf(GetCvar("GC_ParticleChoke") == true,"NULL")
+	SetScale:
+	"####" "#" 0 A_SetScale(0.05)
+	Main:
+	"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+	"####" "#" 0 A_FadeOut(frandom(0.015,0.025))
+	"####" "#" 0 A_ChangeVelocity(frandom(0.1,-0.1),frandom(0.1,-0.1),frandom(0.1,-0.1),CVF_RELATIVE)
+	"####" "#" 1 Bright A_SetScale(ScaleX-frandom(0.0025,0.005))
+	Loop
+	}
+}
+
+ACTOR PowerIAmNotAGhost: PowerIAmInvisibleDerg replaces PowerIAmInvisibleDerg
+{
+	-GHOST
+}
+
+ACTOR ReaverInvisibility1: PowerupGiver
+{
+	Powerup.Duration -45
+	Powerup.Type "IAmNotAGhost"
+	Inventory.MaxAmount 0
+	+INVENTORY.AUTOACTIVATE
+	+INVENTORY.ADDITIVETIME
+}
+
+//[DoomKrakken]: I am so sorry dudes... I absolutely HATE defining an actor of the same name in order to replace something... if I defined another actor to replace the ReaverInvisibility1 actor, then the powerup timer will not show up.  
+
+//[DoomKrakken]: Now, why did I replace the actor at all?  Simple.  Almost all of the projectiles in Brutal Doom have the THRUGHOST flag... so projectiles would simply go through Cygnis... most especially Chaingunner bullets.  This cannot happen.  

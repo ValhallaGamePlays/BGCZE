@@ -1,0 +1,169 @@
+//Main
+#include "Decorate/Guncaster.txt"           //The protagonist, all fired up, baby!
+#include "Decorate/Rest.txt"                //The Janitor's crib, aka I had no fucking idea where to put that.
+#include "Decorate/Mana.txt"                //Ye olde power supply for ye olde fantasy powers.
+#include "Decorate/MidasStatue.txt"			//Erectin' a statue of a moron.
+#include "Decorate/Puffs.txt"               //Sparkity sparkle, walls are full of crackleees.
+#include "Decorate/Zerks.txt"               //COOOMPENSATIOOOON TIMEEEE!!!
+#include "Decorate/Munnition.txt"           //Welcome to the Munnich - enjoy your stay!
+#include "Decorate/Casings.txt"             //That's one kind of bling I enjoy.
+#include "Decorate/Smoking.txt"             //"We're gonna play you a song, a little bit of rock-n-roll!"
+#include "Decorate/Particles.txt"           //Ooooh.... shiny.
+#include "Decorate/Vision.txt"              //Stare worth more than a thousand words.
+#include "Decorate/QTilt.txt"				//Wobblity wobble, I'm drunk with eldritch horrors!
+
+//Skill Wheel
+#include "Decorate/Triggers.txt"		//Active spell triggers & tome power.
+#include "Decorate/Weapon.txt"			//Base class for all the weapons.
+
+//Spells
+#include "Decorate/Spells/Skullfire.txt"	//Hiting your enemies faces with burning skulls? Yes please.
+#include "Decorate/Spells/Flamewave.txt"	//Here it comes, that burning feeling again, winding me up inside, everytime we touch!
+#include "Decorate/Spells/MeteorFist.txt"	//Always liked to be a flaming hard-hitter.
+#include "Decorate/Spells/Frostbite.txt"	//What did kill the dinosaurs? THE ICE AGE! *brick'd*
+#include "Decorate/Spells/Chillgrasp.txt"	//*heavy breathe*, Cyg, jam jest twoj stary. NOSZ KURWA NIEEEE~
+#include "Decorate/Spells/Skypunch.txt"		//"Take on meeeee *TAKE ON ME!* Taaaake meee oooon-"
+#include "Decorate/Spells/Gumpop.txt"		//Gruesome... but you can't deny that's awesome.
+#include "Decorate/Spells/Crows.txt"		//Hitchcock is watching you closely.
+#include "Decorate/Spells/Thunderstruck.txt"	//"The thunder of guns, Tore me apart! You've been - THUNDERSTRUCK!"
+#include "Decorate/Spells/Scourgebreath.txt"	//Inheriting the peculiar fire of your ancestor ain't an easy shit to deal with.
+#include "Decorate/Spells/Corpseblast.txt"	//Rigging corpses into bombs? Yes? Yes. Kill.
+#include "Decorate/Spells/Threadcutter.txt"	//Manuel, it's buttering time!
+#include "Decorate/Spells/Annihilation.txt"	//If all else fails, spam the goddamn thing with biggest and meanest amounts of projectiles.
+#include "Decorate/Spells/Sheepshield.txt"	//Baaaaaa'd to the bone.
+#include "Decorate/Spells/Firebreath.txt"	//It's kind of silly that he got the ability to breathe fire so much later.
+#include "Decorate/Spells/Spiritcannon.txt"	//Automated defense? More like, automated offense.
+#include "Decorate/Spells/Darkvoid.txt"		//Afraid of the dark?  You should be...
+#include "Decorate/Spells/Prism.txt"		//RAAAAINBOOOOWSSSsss~*bleeuuurghhh*
+
+//Guns
+#include "Decorate/Guns/Melee.txt"			//I'm gonna punch your face... IN THE FACE!
+#include "Decorate/Guns/Longhorn.txt"		//That's indeed a nice toy you've got there, Joseph Crane.
+#include "Decorate/Guns/Strucker.txt"		//Strikes the fools like a warhammer.
+#include "Decorate/Guns/Ironblast.txt"		//If there's not enough iron in your diet, this will fix that.
+#include "Decorate/Guns/Pulverizer.txt"		//Sprinkling the lead - compact multi-barrel style.
+#include "Decorate/Guns/Dynamite.txt"		//"TEE AND TEE - WATCH ME EXPLODE!"
+#include "Decorate/Guns/Matriarch.txt"		//She's an ol' hag that eats children. Not really, heh.
+#include "Decorate/Guns/Sovereign.txt"		//IN THE NAME OF THE SOVEREIGN!... KA-BOOOOOOM!!
+#include "Decorate/Guns/Cauterizer.txt"		//Zip zap zoobity bop, you're a fried goop.
+#include "Decorate/Guns/Dreadful.txt"		//*insert running gag about being squashed by a building-sized tank here*
+#include "Decorate/Guns/Dummy.txt"          //In case of althud - insert Zhs2's butt here.
+
+//Bloody Mess
+//Special thanks to Sarge for this one. Say what you say, he's pretty good at dismemberment stuff! Albeit that code could give one a seizure, I guess.
+#include "Decorate/Bloody Mess/Fluids.txt"
+#include "Decorate/Bloody Mess/Meat.txt"
+#include "Decorate/Bloody Mess/Gore.txt"
+
+//Items
+#include "Decorate/Items/TomeParticles.txt"	//Ermahgerd, sparkleing berks!
+#include "Decorate/Items/Tomes.txt"         //Arcane knowledge of YOU JUST GOT DOMINATED!
+#include "Decorate/Items/Money.txt"         //"Money, it's a gas. Grab that cash with both hands and make a stash!"
+#include "Decorate/Items/MidasItem.txt" 	//"They want big fat money!"
+#include "Decorate/Items/Medbag.txt"        //DOCTOR! ARE YOU SURE THIS WILL WORK?!
+#include "Decorate/Items/Armor.txt"	        //In all fashionable colours this season!
+#include "Decorate/Items/Backpack.txt"      //For all the ammo hoarders out there.
+#include "Decorate/Items/Tome.txt"          //The one and only, raven's favourite.
+#include "Decorate/Items/Wings.txt"	        //"A soul in tension that's learning to fly, condition grounded but determined to try!"
+#include "Decorate/Items/Syringes.txt"	    //"I don't like the drugs, but the drugs likes me."
+#include "Decorate/Items/Stratocasters.txt"	//I'M GONNA TURN YOU INTO A NICE PILE OF GIBSONS!
+#include "Decorate/Items/Reaver.txt"		//Xaera, where the hell did you hide again.
+#include "Decorate/Items/Pots.txt"          //Level 420 Bud Paladin's and Lord of Danksworth's best friends.
+#include "Decorate/Items/Map.txt"           //"Do what you want because life of a pirate is free, you are a pirate!"
+#include "Decorate/Items/Extreme.txt"		//"FLESH ON FIRE, LETTUCE SPICE AND SAUCE! MIGHTY WARIOS WITH METTLE ON THEIR SIDE~"
+#include "Decorate/Items/WizEye.Txt"		//The best powerup sound in the world, admit it. ZingzingzingZING, AWWH-HA!
+#include "Decorate/Items/Idol.txt"		 	//Man-dragon's best friend.
+#include "Decorate/Items/Powersuit.txt"		//The pinnacle of Pillowy Mountains-Tech - SEX IN PURE MURDER FORM.
+
+//Afflictions
+#Include "Decorate/Afflictions/Gumpop.txt"		//I feel like something's growing on me.
+#Include "Decorate/Afflictions/Flamingo.txt"	//How about a kiss? IT BUUUUURNS!!
+#Include "Decorate/Afflictions/Bleed.txt"		//If it bleeds, we can kill it.
+#Include "Decorate/Afflictions/Breath.txt"		//Talking about hate removing someone from your life... literally.
+#Include "Decorate/Afflictions/Tiberium.txt"	//Sometimes I wonder if it shouldn't leave crystals behind which you could 'harvest' for money.
+#Include "Decorate/Afflictions/Lightning.txt"	//With this effect on your side, anyone can be Cosby - ZIP ZAP ZOOBITY BOP.
+
+//Game Compatibility
+#include "Decorate/GameCounters.txt"      //We need to know which game...
+
+//Heretic stuff
+#include "Decorate/Heretic/Props.txt"	  //Even moar shineh!
+#include "Decorate/Heretic/Spawners.txt"  //The name'shs shnakes, I've got the shtuph!
+
+//Heretic monsters
+#include "Decorate/Heretic/Monsters/Imp.txt"
+#include "Decorate/Heretic/Monsters/Mummy.txt"
+#include "Decorate/Heretic/Monsters/Beast.txt"
+#include "Decorate/Heretic/Monsters/Chicken.txt"
+#include "Decorate/Heretic/Monsters/Knight.txt"
+#include "Decorate/Heretic/Monsters/Snake.txt"
+#include "Decorate/Heretic/Monsters/Clink.txt"
+#include "Decorate/Heretic/Monsters/Wizard.txt"
+#include "Decorate/Heretic/Monsters/Ironlich.txt"
+#include "Decorate/Heretic/Monsters/Minotaur.txt"
+#include "Decorate/Heretic/Monsters/DSparil.txt"
+
+//Doom stuff
+#include "Decorate/Doom/Dergern.txt"	  //What is this? Taumthegos, or what?
+#include "Decorate/Doom/Props.txt"        //Even moar shineh!
+#include "Decorate/Doom/Projectiles.txt"  //Yes, those fuckers throw shit at you.
+#include "Decorate/Doom/Items.txt"        //Swag!
+#include "Decorate/Doom/Weapongiver.txt"  //What is a dragon without his gun but a fist in the stomach?
+#include "Decorate/Doom/Ammo.txt"         //And without bullets, he might as well just go pistol-whippin'.
+#include "Decorate/Doom/Ninjamode.txt"    //Run really fast, get bonuses.
+#include "Decorate/Doom/Keys.txt"		  //My keyring just got heavier.
+
+//Doom monsters
+#include "Decorate/Doom/Monsters/Arachnotron.txt"
+#include "Decorate/Doom/Monsters/Archvile.txt"
+#include "Decorate/Doom/Monsters/Baron.txt"
+#include "Decorate/Doom/Monsters/Hellknight.txt"
+#include "Decorate/Doom/Monsters/Cacodemon.txt"
+#include "Decorate/Doom/Monsters/Cyberdemon.txt"
+#include "Decorate/Doom/Monsters/Demon.txt"
+#include "Decorate/Doom/Monsters/ChaingunGuy.txt"
+#include "Decorate/Doom/Monsters/Fatso.txt"
+#include "Decorate/Doom/Monsters/Imp.txt"
+#include "Decorate/Doom/Monsters/LostSoul.txt"
+#include "Decorate/Doom/Monsters/Mastermind.txt"
+#include "Decorate/Doom/Monsters/Painis.txt"
+#include "Decorate/Doom/Monsters/Revenant.txt"
+#include "Decorate/Doom/Monsters/ShotgunGuy.txt"
+#include "Decorate/Doom/Monsters/WolfSS.txt"
+#include "Decorate/Doom/Monsters/Zombieman.txt"
+
+//Hexen stuff
+#include "Decorate/Hexen/Dergern.txt"	  //Call me human once again, and I'll bury you like D'Sparil.
+#include "Decorate/Hexen/Munnich.txt"	  //Still hanging out there? Didn't know that lying on an ammo pile may be actually comfortable.
+#include "Decorate/Hexen/Rest.txt"	      //The Hexen's Janitor crib, aka this shit's so big it needs a separate janitor... well not really.
+#include "Decorate/Hexen/Armor.txt"	      //In all fashionable colours this season!
+#include "Decorate/Hexen/Projectiles.txt" //Did... did you just throw your snot at me? You filthy son of a-*screams, incinerated flesh and broken bones*
+#include "Decorate/Hexen/Flechette.txt"	  //I wouldn't drink that if I were you.
+#include "Decorate/Hexen/Pieces.txt"	  //Gotta catch 'em all!
+
+//The Hexen equivalents using correct ammo.
+#include "Decorate/Hexen/Guns/Longhorn.txt"
+#include "Decorate/Hexen/Guns/Strucker.txt"
+#include "Decorate/Hexen/Guns/Ironblast.txt"
+#include "Decorate/Hexen/Guns/Pulverizer.txt"
+#include "Decorate/Hexen/Guns/Matriarch.txt"
+#include "Decorate/Hexen/Guns/Sovereign.txt"
+#include "Decorate/Hexen/Guns/Cauterizer.txt"
+#include "Decorate/Hexen/Guns/Dreadful.txt"
+
+//Hexen monsters
+#include "Decorate/Hexen/Monsters/Ettins.txt"
+#include "Decorate/Hexen/Monsters/Centaurs.txt"
+#include "Decorate/Hexen/Monsters/Serpents.txt"
+#include "Decorate/Hexen/Monsters/Afrits.txt"
+#include "Decorate/Hexen/Monsters/Wendigos.txt"
+#include "Decorate/Hexen/Monsters/Stalkers.txt"
+#include "Decorate/Hexen/Monsters/Reivers.txt"
+#include "Decorate/Hexen/Monsters/Bishops.txt"
+#include "Decorate/Hexen/Monsters/Wyvern.txt"
+#include "Decorate/Hexen/Monsters/Hoomans.txt"
+#include "Decorate/Hexen/Monsters/Heresiarch.txt"
+#include "Decorate/Hexen/Monsters/Korax.txt"
+
+ACTOR Castpack : Backpack{}
+ACTOR HCastpack : HBackpack replaces Castpack {}

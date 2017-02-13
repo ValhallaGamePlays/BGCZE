@@ -1,0 +1,8 @@
+50 "Dreadful"
+51 "Ironblast"
+52 "Sovereign"
+53 "Pulverizer"
+54 "Strucker"
+55 "Longhorn"
+56 "Melee"
+57 "TNT"

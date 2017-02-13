@@ -1,0 +1,12 @@
+pulselight MEDBAGLIGHT
+{
+    color 0.7 0.1 0.1
+    size 0
+    secondarySize 96
+    interval 3.2
+}
+
+Object MedbagHealEffect
+{
+    frame TNT1 { light MEDBAGLIGHT }
+}

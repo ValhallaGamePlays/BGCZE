@@ -1,0 +1,214 @@
+//Silver Shield
+
+actor BasicArmorSpawner : RandomSpawner replaces SilverShield
+{
+    DropItem "VestGiver" 255 2
+    DropItem "CombatGiver" 255 1
+}
+
+Actor ArmorPoints : Inventory // A custom tracker for SBARINFO
+{
+	Inventory.MaxAmount 400
+}
+
+Actor VestGiver : CustomInventory
+{
+	Height 12
+	Inventory.PickupMessage "Obtained a combat vest."
+	Inventory.PickupSound "Armor/Pickup"
+	+INVENTORY.AUTOACTIVATE
+	Scale 0.9
+	States
+	{
+		Spawn:
+		1ARM A -1
+		Stop
+		Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("ArmorCheck"), "Restrictive")
+		Standard:
+		TNT1 A 0 A_JumpIfArmorType("EXTREMEsphereArmor", "Nope", 75)
+		TNT1 A 0 A_JumpIfArmorType("TankArmor", "Nope", 75)
+		TNT1 A 0 A_JumpIfArmorType("MegasphereArmor2", "Nope", 75)
+		TNT1 A 0 A_JumpIfArmorType("AssaultArmor", "Nope", 75)
+		TNT1 A 0 A_JumpIfArmorType("CombatArmor", "Nope", 75)
+		TNT1 A 0 A_JumpIfArmorType("CombatVest", "Nope", 75)
+		Goto GiveArmor
+		Restrictive:
+		TNT1 A 0 A_JumpIfArmorType("EXTREMEsphereArmor", "Nope", 30)
+		TNT1 A 0 A_JumpIfArmorType("TankArmor", "Nope", 30)
+		TNT1 A 0 A_JumpIfArmorType("MegasphereArmor2", "Nope", 30)
+		TNT1 A 0 A_JumpIfArmorType("AssaultArmor", "Nope", 40)
+		TNT1 A 0 A_JumpIfArmorType("CombatArmor", "Nope", 50)
+		TNT1 A 0 A_JumpIfArmorType("CombatVest", "Nope", 35)
+		GiveArmor:
+		TNT1 A 0 A_GiveInventory("CombatVest", 1)
+		TNT1 A 0 A_TakeInventory("ArmorPoints", 400)
+		TNT1 A 0 A_GiveInventory("ArmorPoints", 75)
+		Stop
+		Nope:
+		TNT1 A 0
+		Fail
+	}
+}
+
+Actor CombatGiver : VestGiver
+{
+	Inventory.PickupMessage "Obtained combat armor."
+	States
+	{
+		Spawn:
+		2ARM A -1
+		Stop
+		Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("ArmorCheck"), "Restrictive")
+		Standard:
+		TNT1 A 0 A_JumpIfArmorType("EXTREMEsphereArmor", "Nope", 100)
+		TNT1 A 0 A_JumpIfArmorType("TankArmor", "Nope", 100)
+		TNT1 A 0 A_JumpIfArmorType("MegasphereArmor2", "Nope", 100)
+		TNT1 A 0 A_JumpIfArmorType("AssaultArmor", "Nope", 100)
+		TNT1 A 0 A_JumpIfArmorType("CombatArmor", "Nope", 100)
+		Goto GiveArmor
+		Restrictive:
+		TNT1 A 0 A_JumpIfArmorType("EXTREMEsphereArmor", "Nope", 50)
+		TNT1 A 0 A_JumpIfArmorType("TankArmor", "Nope", 50)
+		TNT1 A 0 A_JumpIfArmorType("MegasphereArmor2", "Nope", 50)
+		TNT1 A 0 A_JumpIfArmorType("AssaultArmor", "Nope", 50)
+		TNT1 A 0 A_JumpIfArmorType("CombatArmor", "Nope", 50)
+		GiveArmor:
+		TNT1 A 0 A_GiveInventory("CombatArmor", 1)
+		TNT1 A 0 A_TakeInventory("ArmorPoints", 400)
+		TNT1 A 0 A_GiveInventory("ArmorPoints", 100)
+		Stop
+	}
+}
+
+Actor CombatVest : BasicArmorPickup
+{
+	Height 12
+	armor.saveamount 75
+	armor.savepercent 25
+	//inventory.pickupmessage "Got yourself a combat vest."
+	//inventory.pickupsound "Armor/Pickup"
+	inventory.icon 1ARMA0
+	Scale 0.9
+	states
+	{
+	Spawn:
+		1ARM A -1
+		Stop
+	}
+}
+
+Actor CombatArmor : BasicArmorPickup
+{
+	Height 12
+	armor.saveamount 100
+	armor.savepercent 40
+	inventory.pickupmessage "Got yourself a combat Armor."
+	inventory.pickupsound "Armor/Pickup"
+	inventory.icon 2ARMA0
+	Scale 0.9
+	states
+	{
+	Spawn:
+		2ARM A -1
+		Stop
+	}
+}
+
+//Enchanted Shield
+
+actor AdvancedArmorSpawner : RandomSpawner replaces EnchantedShield
+{
+    DropItem "AssaultGiver" 255 3
+    DropItem "TankGiver" 255 1
+}
+
+Actor AssaultGiver : VestGiver
+{
+	Inventory.PickupMessage "Obtained assault armor!"
+	States
+	{
+		Spawn:
+		3ARM A -1
+		Stop
+		Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("ArmorCheck"), "Restrictive")
+		Standard:
+		TNT1 A 0 A_JumpIfArmorType("EXTREMEsphereArmor", "Nope", 200)
+		TNT1 A 0 A_JumpIfArmorType("TankArmor", "Nope", 200)
+		TNT1 A 0 A_JumpIfArmorType("MegasphereArmor2", "Nope", 200)
+		TNT1 A 0 A_JumpIfArmorType("AssaultArmor", "Nope", 200)
+		Goto GiveArmor
+		Restrictive:
+		TNT1 A 0 A_JumpIfArmorType("EXTREMEsphereArmor", "Nope", 100)
+		TNT1 A 0 A_JumpIfArmorType("TankArmor", "Nope", 100)
+		TNT1 A 0 A_JumpIfArmorType("MegasphereArmor2", "Nope", 100)
+		TNT1 A 0 A_JumpIfArmorType("AssaultArmor", "Nope", 100)
+		GiveArmor:
+		TNT1 A 0 A_GiveInventory("AssaultArmor", 1)
+		TNT1 A 0 A_TakeInventory("ArmorPoints", 400)
+		TNT1 A 0 A_GiveInventory("ArmorPoints", 200)
+		Stop
+	}
+}
+
+Actor TankGiver : VestGiver
+{
+	Inventory.PickupMessage "Protected with almighty Tank Armor!"
+	States
+	{
+		Spawn:
+		4ARM A -1
+		Stop
+		Pickup:
+		TNT1 A 0 A_JumpIf(CallACS("ArmorCheck"), "Restrictive")
+		Standard:
+		TNT1 A 0 A_JumpIfArmorType("EXTREMEsphereArmor", "Nope", 400)
+		TNT1 A 0 A_JumpIfArmorType("MegasphereArmor2", "Nope", 400)
+		TNT1 A 0 A_JumpIfArmorType("TankArmor", "Nope", 400)
+		Goto GiveArmor
+		Restrictive:
+		TNT1 A 0 A_JumpIfArmorType("EXTREMEsphereArmor", "Nope", 100)
+		TNT1 A 0 A_JumpIfArmorType("MegasphereArmor2", "Nope", 100)
+		TNT1 A 0 A_JumpIfArmorType("TankArmor", "Nope", 100)
+		GiveArmor:
+		TNT1 A 0 A_GiveInventory("TankArmor", 1)
+		TNT1 A 0 A_GiveInventory("ArmorPoints", 400)
+		Stop
+	}
+}
+
+Actor AssaultArmor : BasicArmorPickup
+{
+	Height 12
+	armor.saveamount 200
+	armor.savepercent 50
+	inventory.pickupmessage "Got yourself an assault Armor!"
+	inventory.pickupsound "Armor/Pickup"
+	inventory.icon 3ARMA0
+	Scale 0.9
+	states
+	{
+	Spawn:
+		3ARM A -1
+		Stop
+	}
+}
+
+Actor TankArmor : BasicArmorPickup
+{
+	Height 12
+	armor.saveamount 400
+	armor.savepercent 75
+	inventory.pickupmessage "Now, you got yourself a tank Armor!"
+	inventory.pickupsound "Armor/Pickup"
+	inventory.icon 4ARMA0
+	Scale 0.9
+	states
+	{
+	Spawn:
+		4ARM A -1
+		Stop
+	}
+}

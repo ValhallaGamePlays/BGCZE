@@ -1,0 +1,1000 @@
+actor MeteorfistCheck
+{
+  Radius 10
+  Height 12
+  Speed 50
+  Projectile
+  +NOGRAVITY
+  +DONTSPLASH
+  +EXPLODEONWATER
+  +BLOODLESSIMPACT
+  States
+  {
+  Spawn:
+    TNT1 A 2
+	Stop
+  Death:
+    TNT1 A 0 A_GiveToTarget("MeteorfistConnected")
+    stop
+  }
+}
+
+actor MeteorfistImpact
+{
+  Radius 12
+  Height 14
+  Speed 0
+  Projectile
+  ProjectileKickback 500
+  +NOGRAVITY
+  +NOINTERACTION
+  +NOCLIP
+  +DONTSPLASH
+  +EXPLODEONWATER
+  +BLOODLESSIMPACT
+  +FORCERADIUSDMG
+  var int User_Lifespan;
+  DamageType "Meteorfist"
+  States
+  {
+  Spawn:
+    TNT1 A 0 NoDelay A_SpawnItemEx("MeteorfistNova",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+    TNT1 A 0 A_SpawnItemEx("MeteorfistChunkSpawner1",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+    TNT1 A 0 A_SpawnItemEx("MeteorfistChunkSpawner2",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	
+    TNT1 A 0 A_Quake (6, 25, 0, 256, none)
+    TNT1 A 0 A_Quake (2, 25, 0, 384, none)
+    TNT1 A 0 A_PlaySound("Matriarch/Hit",5,0.8)
+    TNT1 A 0 A_PlaySound("Matriarch/Exp",6,1.0)
+    TNT1 A 0 A_AlertMonsters
+    TNT1 A 0 A_SpawnItemEx("Matriarch_Main",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    TNT1 A 0 A_SpawnItemEx("MatriarchFX",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+    TNT1 A 0 A_Explode((500*random(2,3)),192,0)
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerSuitToken",1,"SuitFinish")
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"MidasFinish")
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"ZerkFinish")
+  FinishMain:
+    TNT1 A 15 A_Quake(3,12,0,512,"none")
+    Stop
+  ZerkFinish:
+	TNT1 A 0 A_SpawnItemEx("MeteorZerk",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto FinishMain
+  MidasFinish:
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"MidasZerkFinish")
+	TNT1 A 0 A_SpawnItemEx("MeteorMidas",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto FinishMain
+  MidasZerkFinish:
+	TNT1 A 0 A_SpawnItemEx("MeteorMidasZerk",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto FinishMain
+  SuitFinish:
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"SuitMidasFinish")
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"SuitZerkFinish")
+	TNT1 A 0 A_SpawnItemEx("MeteorSuit",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto FinishMain
+  SuitMidasFinish:
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"SuitMidasZerkFinish") //That's a mouthful.
+	TNT1 A 0 A_SpawnItemEx("MeteorSuitMidas",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto FinishMain
+  SuitZerkFinish:
+	TNT1 A 0 A_SpawnItemEx("MeteorSuitZerk",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto FinishMain
+  SuitMidasZerkFinish:
+	TNT1 A 0 A_SpawnItemEx("MeteorSuitMidasZerk",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto FinishMain
+  }
+}
+
+Actor MeteorfistNova
+{
+	+NOINTERACTION
+	var int User_Counter;
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_SetUserVar("User_Counter", 96)
+	Looplet:
+	TNT1 A 0 A_JumpIf(User_Counter <= 0, "Death")
+	TNT1 A 0 A_SpawnItemEx("MeteorfistIgnition",0,0,0,frandom(15.0,14.0),0,0,0,SXF_TRANSFERPOINTERS)
+	TNT1 A 0 A_SetAngle(Angle - 3.75)
+	TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+	Loop
+	Death:
+	TNT1 A 0
+	Stop
+	}
+}
+
+ACTOR MeteorfistChunkSpawner1
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+    +DONTSPLASH
+	var int User_Counter;
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_SetUserVar("User_Counter", 6)
+	Looplet:
+	TNT1 A 0 A_JumpIf(User_Counter <= 0, "Death")
+	TNT1 A random(1,3) A_SpawnItemEx("SkullFireChunk",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(6.0,3.0),0,frandom(20.0,12.0),frandom(0.0,360.0),SXF_TRANSFERPOINTERS)
+	TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+	Loop
+	Death:
+	TNT1 A 0
+	Stop
+	}
+}
+
+ACTOR MeteorfistChunkSpawner2
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+    +DONTSPLASH
+	var int User_Counter;
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_SetUserVar("User_Counter", 10)
+	Looplet:
+	TNT1 A 0 A_JumpIf(User_Counter <= 0, "Death")
+	TNT1 A 0 A_SpawnItemEx("SkullFireChunk",frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(5.0,-5.0),frandom(24.0,8.0),0,frandom(4.0,8.0),frandom(0.0,360.0),SXF_TRANSFERPOINTERS)
+	TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+	Loop
+	Death:
+	TNT1 A 0
+	Stop
+	}
+}
+
+ACTOR MeteorfistDrop
+{ 
+	Scale 1.0
+	Renderstyle Add
+	+DONTSPLASH
+	-NOGRAVITY
+	-NOINTERACTION
+	+BLOODLESSIMPACT
+	+FORCEYBILLBOARD
+	//+MISSILE
+	Gravity 0.25
+	Var Int User_BurnCounter;
+	DamageType Fire
+	States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SetUserVar("User_BurnCounter", 12)
+   	 FSKL A 0 A_PlaySound("Skullfire/Fly",5,0.4,1)
+	Looplet:
+	TNT1 A 0 A_CheckFloor("Watercheck")
+	TNT1 A 0 A_Jump(128,2)
+	TNT1 A 0 A_SetUserVar("User_BurnCounter", User_BurnCounter - 1)
+	FLME ABCDEFGHIJKLMN 1 Bright A_Explode(1,64,0,0,64)
+	TNT1 A 0 A_JumpIf(User_BurnCounter <= 0, "Death")
+	Loop
+	Watercheck:
+	TNT1 A 0 A_JumpIf(CallACS("WaterBollocks") == true, "Death")
+	Goto Looplet+2
+	Death:
+	FLME A 1 Bright A_FadeOut(0.1)
+	FLME A 0 A_SetScale(ScaleX-0.1)
+	FLME B 1 Bright A_FadeOut(0.1)
+	FLME A 0 A_SetScale(ScaleX-0.1)
+	FLME C 1 Bright A_FadeOut(0.1)
+	FLME A 0 A_SetScale(ScaleX-0.1)
+	FLME D 1 Bright A_FadeOut(0.1)
+	FLME A 0 A_SetScale(ScaleX-0.1)
+	FLME E 1 Bright A_FadeOut(0.1)
+	FLME A 0 A_SetScale(ScaleX-0.1)
+	FLME F 1 Bright A_FadeOut(0.1)
+	FLME A 0 A_SetScale(ScaleX-0.1)
+	FLME G 1 Bright A_FadeOut(0.1)
+	FLME A 0 A_SetScale(ScaleX-0.1)
+	FLME H 1 Bright A_FadeOut(0.1)
+	FLME A 0 A_SetScale(ScaleX-0.1)
+	FLME I 1 Bright A_FadeOut(0.1)
+	FLME A 0 A_SetScale(ScaleX-0.1)
+	FLME J 1 Bright A_FadeOut(0.1)
+  	FSKL A 0 A_StopSound(5)
+	Stop
+	}
+}
+
+ACTOR MeteorfistIgnition : MeteorfistDrop
+{ 
+	ProjectileKickback 400
+	+FORCERADIUSDMG
+	States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SetUserVar("User_BurnCounter", 1)
+   	 FSKL A 0 A_PlaySound("Skullfire/Fly",5,0.4,1)
+	Looplet:
+	TNT1 A 0 A_CheckFloor("Watercheck")
+	TNT1 A 0 A_Jump(128,2)
+	TNT1 A 0 A_SetUserVar("User_BurnCounter", User_BurnCounter - 1)
+	FLME ABCDEFGHIJKLMN 1 Bright A_GiveInventory("MeteorfistIgnitionCycle")
+	TNT1 A 0 A_JumpIf(User_BurnCounter <= 0, "Death")
+	Loop
+	}
+}
+
+ACTOR MeteorfistIgnitionCycle : CustomInventory
+{
+	+INVENTORY.AUTOACTIVATE
+	+FORCERADIUSDMG
+	Inventory.MaxAmount 0
+	DamageType Fire
+	States
+	{
+	Spawn:
+	TNT1 A -1
+	Stop
+	Pickup:
+	TNT1 A 0 A_Explode(3,64,0,0,64)
+	TNT1 A 0 A_ChangeVelocity(0,6,0,CVF_RELATIVE)
+	Stop
+	}
+}
+
+actor SuperMeteorfistImpact : MeteorfistImpact
+{
+  ProjectileKickback 1000
+  States
+  {
+  Spawn:
+    TNT1 A 0 NoDelay A_SpawnItemEx("SuperMeteorfistNova",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+    TNT1 A 0 A_SpawnItemEx("SuperMeteorfistChunkSpawner1",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+    TNT1 A 0 A_SpawnItemEx("SuperMeteorfistChunkSpawner2",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	
+	TNT1 A 0 A_SetUserVar("User_Lifespan",14)
+	TNT1 A 0 A_PlaySound("TNT/Explosion",5,0.9)
+	TNT1 A 0 A_PlaySound("TNT/Add",7)
+	TNT1 A 0 A_PlaySound("TNT/Far",6,0.8)
+	TNT1 A 0 A_SpawnItemEx("TNTMain",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+	TNT1 A 0 A_Quake(4,55,0,768,"none")
+	TNT1 A 0 A_Quake(7,55,0,384,"none")
+	TNT1 A 0 A_Explode(500,364,0,1)
+	TNT1 A 0 A_Explode(350,256,0,1)
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerSuitToken",1,"SuitFinish")
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"MidasFinish")
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"ZerkFinish")
+	Goto DeathLoop
+  ZerkFinish:
+	TNT1 A 0 A_SpawnItemEx("SuperMeteorZerk",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto DeathLoop
+  MidasFinish:
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"MidasZerkFinish")
+	TNT1 A 0 A_SpawnItemEx("SuperMeteorMidas",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto DeathLoop
+  MidasZerkFinish:
+	TNT1 A 0 A_SpawnItemEx("SuperMeteorMidasZerk",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto DeathLoop
+  SuitFinish:
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerMidasMode",1,"SuitMidasFinish")
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"SuitZerkFinish")
+	TNT1 A 0 A_SpawnItemEx("SuperMeteorSuit",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto DeathLoop
+  SuitMidasFinish:
+	TNT1 A 0 A_JumpIfInTargetInventory("PowerBerserkDamage",1,"SuitMidasZerkFinish") //That's a mouthful.
+	TNT1 A 0 A_SpawnItemEx("SuperMeteorSuitMidas",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto DeathLoop
+  SuitZerkFinish:
+	TNT1 A 0 A_SpawnItemEx("SuperMeteorSuitZerk",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto DeathLoop
+  SuitMidasZerkFinish:
+	TNT1 A 0 A_SpawnItemEx("SuperMeteorSuitMidasZerk",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+	Goto DeathLoop
+  DeathLoop:
+	TNT1 A 0 A_SetUserVar("User_Lifespan", User_Lifespan - 1)
+	TNT1 A 4 A_Explode(20,364,0,1)
+	TNT1 A 0 A_Explode(10,256,0,1)
+	TNT1 A 0 A_JumpIf(User_Lifespan <= 0, 1)
+	Loop
+	TNT1 A 6
+	Stop
+  }
+}
+
+Actor SuperMeteorfistNova
+{
+	+NOINTERACTION
+	var int User_Counter;
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_SetUserVar("User_Counter", 256)
+	Looplet:
+	TNT1 A 0 A_JumpIf(User_Counter <= 0, "Death")
+	TNT1 A 0 A_SpawnItemEx("SuperMeteorfistIgnition",0,0,0,frandom(50.0,49.0),0,0,0,SXF_TRANSFERPOINTERS)
+	TNT1 A 0 A_SetAngle(Angle - 1.40625)
+	TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+	Loop
+	Death:
+	TNT1 A 0
+	Stop
+	}
+}
+
+ACTOR SuperMeteorfistChunkSpawner1
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+    +DONTSPLASH
+	var int User_Counter;
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_SetUserVar("User_Counter", 16)
+	Looplet:
+	TNT1 A 0 A_JumpIf(User_Counter <= 0, "Death")
+	TNT1 A random(1,2) A_SpawnItemEx("SkullFireChunk",frandom(25.0,-25.0),frandom(25.0,-25.0),frandom(15.0,-15.0),frandom(6.0,3.0),0,frandom(24.0,12.0),frandom(0.0,360.0),SXF_TRANSFERPOINTERS)
+	TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+	Loop
+	Death:
+	TNT1 A 0
+	Stop
+	}
+}
+
+ACTOR SuperMeteorfistChunkSpawner2
+{ 
+    +NOGRAVITY
+    +NOINTERACTION
+    +DONTSPLASH
+	var int User_Counter;
+	States
+	{
+	Spawn:
+	TNT1 A 0 NoDelay A_SetUserVar("User_Counter", 40)
+	Looplet:
+	TNT1 A 0 A_JumpIf(User_Counter <= 0, "Death")
+	TNT1 A 0 A_SpawnItemEx("SkullFireChunk",frandom(25.0,-25.0),frandom(25.0,-25.0),frandom(15.0,-15.0),frandom(36.0,12.0),0,frandom(8.0,12.0),frandom(0.0,360.0),SXF_TRANSFERPOINTERS)
+	TNT1 A 0 A_SetUserVar("User_Counter", User_Counter - 1)
+	Loop
+	Death:
+	TNT1 A 0
+	Stop
+	}
+}
+
+ACTOR SuperMeteorfistIgnition : MeteorfistDrop
+{ 
+	ProjectileKickback 600
+	+FORCERADIUSDMG
+	States
+	{
+	Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SetUserVar("User_BurnCounter", 2)
+   	 FSKL A 0 A_PlaySound("Skullfire/Fly",5,0.4,1)
+	Looplet:
+	TNT1 A 0 A_CheckFloor("Watercheck")
+	TNT1 A 0 A_Jump(128,2)
+	TNT1 A 0 A_SetUserVar("User_BurnCounter", User_BurnCounter - 1)
+	FLME ABCDEFGHIJKLMN 1 Bright A_GiveInventory("SuperMeteorfistIgnitionCycle")
+	TNT1 A 0 A_JumpIf(User_BurnCounter <= 0, "Death")
+	Loop
+	}
+}
+
+ACTOR SuperMeteorfistIgnitionCycle : CustomInventory
+{
+	+INVENTORY.AUTOACTIVATE
+	+FORCERADIUSDMG
+	Inventory.MaxAmount 0
+	DamageType Fire
+	States
+	{
+	Spawn:
+	TNT1 A -1
+	Stop
+	Pickup:
+	TNT1 A 0 A_Explode(6,64,0,0,64)
+	TNT1 A 0 A_ChangeVelocity(0,6,0,CVF_RELATIVE)
+	Stop
+	}
+}
+
+//Powerup-affected stuff
+
+//Zerk
+ACTOR MeteorZerk
+{
+	DamageType SuperShoelaces
+	DeathType SuperShoelaces
+    +FORCERADIUSDMG
+	+FOILINVUL
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((200*random(2,3)),192,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	Rest:
+		TNT1 A 0 A_PlaySound("SuperKick/Hit",0.9)
+		TNT1 A 0 A_SpawnItemEx("SuperKick_Shock",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperKick_Impact",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperKick_Wave",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperKick_Gldef",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 25 A_Quake(4,25,0,512,"none")
+		Stop
+	}
+}
+
+ACTOR SuperMeteorZerk : MeteorZerk
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((300*random(2,3)),256,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	}
+}
+
+//Midas
+ACTOR MeteorMidas : MeteorZerk
+{
+	DamageType MidasShoelaces
+	DeathType MidasShoelaces
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((100*random(2,3)),192,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	Rest:
+		TNT1 A 0 A_SpawnItemEx("MidasKick_Shock",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 25 A_Quake(2,15,0,512,"none")
+		Stop
+	}
+}
+
+ACTOR SuperMeteorMidas : MeteorMidas
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((200*random(2,3)),256,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	}
+}
+
+//Midas + Zerk
+ACTOR MeteorMidasZerk : MeteorZerk
+{
+	DamageType SuperMidasShoelaces
+	DeathType SuperMidasShoelaces
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((200*random(2,3)),192,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	Rest:
+		TNT1 A 0 A_PlaySound("SuperKick/Hit",0.9)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Shock",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Impact",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Wave",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Gldef",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 25 A_Quake(4,25,0,512,"none")
+		Stop
+	}
+}
+
+ACTOR SuperMeteorMidasZerk : MeteorMidasZerk
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((300*random(2,3)),256,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	}
+}
+
+//Suit
+ACTOR MeteorSuit : MeteorZerk
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((200*random(2,3)),192,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	Rest:
+		TNT1 A 0 A_PlaySound("Stomp/Impact",5,0.9)
+		TNT1 A 0 A_PlaySound("Bishop/Hit",6,0.7)
+		TNT1 A 0 A_SpawnItemEx("KickImpactDustSpawner",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("KickImpactShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("KickImpactShock2",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 35 A_Quake(5,45,0,768,"none")
+		Stop
+	}
+}
+
+ACTOR SuperMeteorSuit : MeteorSuit
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((300*random(2,3)),256,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	}
+}
+
+//Suit + Zerk
+ACTOR MeteorSuitZerk : MeteorZerk
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((300*random(2,3)),256,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	Rest:
+		TNT1 A 0 A_PlaySound("Stomp/Impact",5,0.9)
+		TNT1 A 0 A_PlaySound("Bishop/Hit",6,0.7)
+		TNT1 A 0 A_PlaySound("SuperKick/Hit",7,0.9)
+		
+		TNT1 A 0 A_SpawnItemEx("SuperKick_Shock",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperKick_Impact",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperKick_Wave",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperKick_Gldef",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		
+		TNT1 A 0 A_SpawnItemEx("SuperKickImpactShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("SuperKickImpactShock2",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 35 A_Quake(7,35,0,1024,"none")
+		Stop
+	}
+}
+
+ACTOR SuperMeteorSuitZerk : MeteorSuitZerk
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((400*random(2,3)),384,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	}
+}
+
+//Suit + Midas
+ACTOR MeteorSuitMidas : MeteorZerk
+{
+	DamageType MidasShoelaces
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((200*random(2,3)),192,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	Rest:
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKickImpactShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKickImpactShock2",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_PlaySound("Stomp/Impact",5,0.9)
+		TNT1 A 0 A_PlaySound("Bishop/Hit",6,0.7)
+		TNT1 A 35 A_Quake(5,45,0,768,"none")
+		Stop
+	}
+}
+
+ACTOR SuperMeteorSuitMidas : MeteorMidas
+{
+	DamageType SuperMidasShoelaces
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((300*random(2,3)),192,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	Rest:
+		TNT1 A 0 A_PlaySound("Stomp/Impact",5,0.9)
+		TNT1 A 0 A_PlaySound("Bishop/Hit",6,0.7)
+		TNT1 A 0 A_PlaySound("SuperKick/Hit",7,0.9)
+		
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Shock",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Impact",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Wave",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Gldef",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKickImpactShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKickImpactShock2",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 35 A_Quake(7,35,0,1024,"none")
+		Stop
+	}
+}
+
+//Suit + Midas + Zerk
+ACTOR MeteorSuitMidasZerk : MeteorZerk
+{
+	DamageType SuperMidasShoelaces
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((300*random(2,3)),256,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	Rest:
+		TNT1 A 0 A_PlaySound("Stomp/Impact",5,0.9)
+		TNT1 A 0 A_PlaySound("Bishop/Hit",6,0.7)
+		TNT1 A 0 A_PlaySound("SuperKick/Hit",7,0.9)
+		
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Shock",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Impact",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Wave",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKick_Gldef",0,0,0,0,0,0,0,SXF_CLIENTSIDE,0)
+		
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKickImpactShock",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("SuperMidasKickImpactShock2",0,0,0,0,0,0,0,SXF_CLIENTSIDE)
+		TNT1 A 35 A_Quake(7,35,0,1024,"none")
+		Stop
+	}
+}
+
+ACTOR SuperMeteorSuitMidasZerk : MeteorSuitMidasZerk
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode((400*random(2,3)),384,0)
+		TNT1 A 0 A_Jump(256,"Rest")
+	}
+}
+
+//[DoomKrakken]: Alternate Mode... (FALCON PAWNCH! Both Tomed and Non-Tomed versions are integrated here...)
+ACTOR PhoenixPunch
+{
+	Radius 11
+	Height 6
+	Speed 20
+	Damage 0
+	Projectile
+	ProjectileKickback 0
+	+RIPPER
+	+FORCERADIUSDMG
+	+EXPLODEONWATER
+	+DONTBLAST
+	+DONTREFLECT
+	+FOILINVUL //EFF DAT INVULNERABLE STUPH.
+	+SHOOTABLE
+	+NODAMAGETHRUST
+	-NOBLOCKMAP
+	DamageType "Meteorfist"
+	Obituary "%k showed %o his moves."
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("PowerTomeEffect",1,"Tomed")
+		TNT1 A 0
+		TNT1 AAAAAAAAAA 1 A_Explode(200,240,0)
+		//TNT1 A 0 A_Blast(BF_AFFECTBOSSES, 255, 128, 55, "BlastEffect", None)
+		Stop
+	Tomed:
+		TNT1 A 0
+		TNT1 AAAAAAAAAA 1 A_Explode(400,360,0)
+		//TNT1 A 0 A_Blast(BF_AFFECTBOSSES, 255, 128, 55, "BlastEffect", None)
+		Stop
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * [PillowBlaster]:
+ *
+ * Neutral B, or in human jargon, FALCON PAWWWWNNNCHH!!!!!! effects by
+ * Christopher "KeksDose" D. for Russian Overkill!
+ *
+ * Particle graphics drawn and effect written by myself, yup. Reuse as you wish,
+ * just don't let me see them on Realm667 and credit me somewhere,
+ * somehow, I dunno.
+ *
+ * Eagle sprites drawn by Neoworm. Thank you for making Falcon's signature move
+ * look like Falcon's signature move.
+ *
+ * ------------------------------------------------------------------------- */
+
+Actor KDRO_BaseParticle
+{
+	+NoInteraction
+	+ForceXYBillboard
+	+DontBlast
+	RenderStyle Normal
+	Alpha 0.99
+	States
+	{
+		Spawn:				// Initialization goes here.
+			TNT1 A 0
+			Goto FadeIn
+		FadeIn:				// Optional fading in.
+			TNT1 A 0
+			Goto Idle
+		Idle:				// Fly around.
+			TNT1 A 0
+			Goto FadeOut
+		FadeOut:			// Dissipate.
+			TNT1 A 0
+			Stop
+	}
+}
+
+Actor KDRO_BaseParticleMultiple : KDRO_BaseParticle
+{
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(255, "SpriteA", "SpriteB", "SpriteC", "SpriteD")
+			Goto Spawn
+		SpriteA:
+			TNT1 A 0 A_Jump(255, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			TNT1 A 0 A_Jump(255, "FadeIn")
+			Goto SpriteB
+		SpriteC:
+			TNT1 A 0 A_Jump(255, "FadeIn")
+			Goto SpriteC
+		SpriteD:
+			TNT1 A 0 A_Jump(255, "FadeIn")
+			Goto SpriteD
+		FadeIn:				// Optional fading in.
+			TNT1 A 0
+			Goto Idle
+		Idle:				// Fly around.
+			TNT1 A 0
+			Goto FadeOut
+		FadeOut:			// Dissipate.
+			TNT1 A 0
+			Stop
+	}
+}
+
+Actor KDRO_BaseEmitter
+{
+	Var Int User_SpawnCount;
+	
+	+NoInteraction
+	+DontBlast
+	States
+	{
+		Spawn:				// Initialize particle counter.
+			TNT1 AA 0 A_SetUserVar("User_SpawnCount", 10)
+			Goto Emit
+		Emit:				// Emit particles.
+			TNT1 A 0 A_Jump(0xFF, "Count") // You MUST use A_Jump.
+			Goto Count
+		Count:				// Emit until SpawnCount <= 0.
+			TNT1 A 0 A_SetUserVar("User_SpawnCount", User_SpawnCount - 1)
+			TNT1 A 0 A_JumpIf(User_SpawnCount <= 0, "NULL")
+			TNT1 A 0 A_Jump(0xFF, "Emit")
+			Goto Emit
+	}
+}
+
+
+Actor KDRO_FalconFalcon : KDRO_BaseParticle
+{
+	Alpha 0.99
+	RenderStyle Add
+	Scale 1.5
+	States
+	{
+		Spawn:
+			PHOX A 7 Bright
+		FadeOut:
+			PHOX A 1 Bright A_ScaleVelocity(0.95)
+			PHOX A 0 A_FadeOut(0.07)
+			Loop
+	}
+}
+
+Actor KDRO_FalconGlow : KDRO_BaseParticleMultiple
+{
+	Alpha 0.4
+	RenderStyle Add
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(255, "SpriteA", "SpriteB")
+		SpriteA:
+			FALC M 0 A_Jump(255, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			FALC R 0 A_Jump(255, "FadeIn")
+			Goto SpriteB
+		FadeIn:
+			"####" "#" 0 Bright A_SetScale(FRandom(0.5, 0.6))
+			Goto Idle
+		Idle:
+			"####" "#" 2 Bright A_Jump(200, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 Bright A_FadeOut(0.02)
+			"####" "#" 0 A_ScaleVelocity(FRandom(0.97, 0.99))
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.02, 0.04))
+			Loop
+	}
+}
+
+Actor KDRO_FalconFlame : KDRO_BaseParticleMultiple
+{
+	Alpha 0.6
+	RenderStyle Add
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(255, "SpriteA", "SpriteB", "SpriteC", "SpriteD",
+								 "SpriteE", "SpriteF", "SpriteG", "SpriteH")
+		SpriteA:
+			FALC A 0 A_Jump(255, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			FALC B 0 A_Jump(255, "FadeIn")
+			Goto SpriteB
+		SpriteC:
+			FALC C 0 A_Jump(255, "FadeIn")
+			Goto SpriteC
+		SpriteD:
+			FALC D 0 A_Jump(255, "FadeIn")
+			Goto SpriteD
+		SpriteE:
+			FALC E 0 A_Jump(255, "FadeIn")
+			Goto SpriteE
+		SpriteF:
+			FALC F 0 A_Jump(255, "FadeIn")
+			Goto SpriteF
+		SpriteG:
+			FALC G 0 A_Jump(255, "FadeIn")
+			Goto SpriteG
+		SpriteH:
+			FALC H 0 A_Jump(255, "FadeIn")
+			Goto SpriteH
+		FadeIn:
+			"####" "#" 0 Bright A_SetScale(FRandom(0.5, 0.55))
+			Goto Idle
+		Idle:
+			"####" "#" 2 Bright A_Jump(190, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 Bright A_FadeOut(0.035)
+			"####" "#" 0 A_ScaleVelocity(FRandom(1.01, 1.03))
+			"####" "#" 0 A_SetScale(ScaleX - FRandom(0.01, 0.03))
+			Loop
+	}
+}
+
+Actor KDRO_FalconSmoke : KDRO_BaseParticleMultiple
+{
+	Alpha 0.0
+	RenderStyle Translucent
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(255, "SpriteA", "SpriteB", "SpriteC", "SpriteD")
+		SpriteA:
+			FALC N 0 A_Jump(255, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			FALC O 0 A_Jump(255, "FadeIn")
+			Goto SpriteB
+		SpriteC:
+			FALC P 0 A_Jump(255, "FadeIn")
+			Goto SpriteC
+		SpriteD:
+			FALC Q 0 A_Jump(255, "FadeIn")
+			Goto SpriteD
+		FadeIn:
+			"####" "#" 0 A_SetScale(FRandom(0.6, 0.7))
+			Goto RealFadeIn
+		RealFadeIn:
+			"####" "#" 1 A_FadeIn(FRandom(0.02, 0.05))
+			"####" "#" 0 A_JumpIf(Alpha >= 0.5, "Idle")
+			Loop
+		Idle:
+			"####" "#" 4 A_Jump(200, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 A_FadeOut(0.01)
+			/* "####" "#" 0 A_ChangeVelocity(VelX * FRandom(0.97, 0.99),
+										  VelY * FRandom(0.97, 0.99),
+										  VelZ + FRandom(0.02, 0.06),
+										  CVF_REPLACE) */
+			"####" "#" 0 A_ScaleVelocity(0.96)
+			"####" "#" 0 A_SetScale(ScaleX + FRandom(0.015, 0.025))
+			Loop
+	}
+}
+
+Actor KDRO_FalconEmber : KDRO_BaseParticleMultiple
+{
+	Alpha 0.99
+	RenderStyle Add
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_Jump(255, "SpriteA", "SpriteB", "SpriteC")
+		SpriteA:
+			FALC J 0 A_Jump(255, "FadeIn")
+			Goto SpriteA
+		SpriteB:
+			FALC K 0 A_Jump(255, "FadeIn")
+			Goto SpriteB
+		SpriteC:
+			FALC L 0 A_Jump(255, "FadeIn")
+			Goto SpriteC
+		FadeIn:
+			"####" "#" 0 Bright A_SetScale(FRandom(0.07, 0.15))
+			Goto Idle
+		Idle:
+			"####" "#" 2 Bright A_Jump(200, "FadeOut")
+			Loop
+		FadeOut:
+			"####" "#" 1 Bright A_Weave(FRandom(0.9, 1.0), FRandom(0.9, 1.0),
+										FRandom(70, 90), FRandom(70, 90))
+			"####" "#" 0 A_JumpIf(ScaleX <= 0.0, "NULL")
+			"####" "#" 0 A_ChangeVelocity(VelX * FRandom(0.93, 0.99),
+										  VelY * FRandom(0.93, 0.99),
+										  VelZ - FRandom(0.1, 0.2),
+										  CVF_REPLACE)
+			"####" "#" 0 A_SetScale(ScaleX - FRandom(0.003, 0.0015))
+			Loop
+	}
+}
+
+Actor KDRO_FalconFlare : KDRO_BaseParticle
+{
+	RenderStyle Add
+	Scale 0.9
+	States
+	{
+		Spawn:
+			FALC I 1 Bright A_FadeOut(0.19)
+			Loop
+	}
+}
+
+Actor KDRO_FalconFlames : KDRO_BaseEmitter //FALCON GLORY!
+{
+	Speed 20
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_SetUserVar("User_SpawnCount", 15)
+			//TNT1 A 0 A_ChangeVelocity(20, 0, 0, CVF_RELATIVE)
+			TNT1 A 0 A_SpawnItemEx("KDRO_FalconFalcon", 0, 0, 0,
+									velx,vely,velz,0,SXF_ABSOLUTEMOMENTUM|SXF_TRANSFERPITCH,0)
+			Goto Emit
+		Emit:
+			TNT1 AAAAAA 0 A_SpawnItemEx("KDRO_FalconFlame", FRandom(-10, 10),
+									FRandom(-10, 10), FRandom(-10, 10),
+									FRandom(-4.5, -8.8), FRandom(-1.0, 1.0),
+									FRandom(-1.0, 1.0), 0, SXF_CLIENTSIDE, 10)
+			TNT1 AA 0 A_SpawnItemEx("KDRO_FalconSmoke", FRandom(-10, 10),
+									FRandom(-10, 10), FRandom(-10, 10),
+									FRandom(1.5, -2.5), FRandom(-1.0, 1.0),
+									FRandom(-1.0, 1.0), 0, SXF_CLIENTSIDE, 10)
+			TNT1 AAAAAA 0 A_SpawnItemEx("KDRO_FalconGlow", FRandom(-10, 10),
+									FRandom(-10, 10), FRandom(-10, 10),
+									FRandom(-1.5, -3.5), FRandom(-1.0, 1.0),
+									FRandom(-1.0, 1.0), 0, SXF_CLIENTSIDE, 10)
+			TNT1 AAAAAAA 0 A_SpawnItemEx("KDRO_FalconEmber", FRandom(-10, 10),
+									FRandom(-10, 10), FRandom(-10, 10),
+									FRandom(-2.0, -13.0), FRandom(-6.0, 6.0),
+									FRandom(1.0, 8.0), 0, SXF_CLIENTSIDE, 10)
+			TNT1 AA 0 A_SpawnItemEx("KDRO_FalconFlare", FRandom(-10, 10),
+									FRandom(-10, 10), FRandom(-10, 10),
+									0, 0, 0, 0, SXF_CLIENTSIDE)
+			TNT1 A 1
+			TNT1 A 0 A_Jump(0xFF, "Count")
+			Goto Count
+	}
+}
+
+Actor KDRO_FalconSparks : KDRO_BaseEmitter
+{
+	States
+	{
+		Spawn:
+			TNT1 AA 0 A_SetUserVar("User_SpawnCount", 80)
+			Goto Emit
+		Emit:
+			TNT1 A 0 A_SpawnItemEx("KDRO_FalconEmber", FRandom(-10, 10),
+									FRandom(-10, 10), FRandom(-10, 10),
+									FRandom(5.0, 20.0), 0,
+									FRandom(1.0, 11.0), Random(0, 359),
+									SXF_CLIENTSIDE, 10)
+			TNT1 A 0 A_Jump(0xFF, "Count")
+			Goto Count
+	}
+}

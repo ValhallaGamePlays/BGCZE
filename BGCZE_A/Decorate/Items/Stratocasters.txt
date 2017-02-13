@@ -1,0 +1,474 @@
+/*
+Not enough dumb puns you say? Kay, how about... Dire Strats?
+Feeling like De-Fender-ing yourself from this already?
+HUHEUHEUHEUEHUEHUEHU~*panfried*
+Ahem... eitherway, name inspired by Cage. Blame the guitar-nut right there.
+*/
+
+//Shared stuff
+ACTOR StratSpawner : RandomSpawner
+{
+	DropItem "LonghornStratGiver"
+	DropItem "StruckerStratGiver"
+	DropItem "IronblastStratGiver"
+	DropItem "PulverizerStratGiver"
+	DropItem "MatriarchStratGiver"
+	DropItem "CauterizerStratGiver"
+	DropItem "DreadfulStratGiver"
+	DropItem "DynamiteStratGiver"
+}
+
+ACTOR StratParticle
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+NOTONAUTOMAP
+	Alpha 0.0
+	Scale 0.0
+	Renderstyle Add
+	States
+	{
+	Spawn:
+	TNT1 A 0
+	SetScale:
+	"####" "#" 0 A_SetScale(frandom(0.01,0.02))
+	"####" "#" 0 A_FadeIn(frandom(0.1,0.2))
+	Main1:
+	"####" "#" 0 A_JumpIf(Alpha >= 0.96,"Main2")
+	"####" "#" 0 A_FadeIn(frandom(0.05,0.075))
+	"####" "#" 0 A_ChangeVelocity(0,0,frandom(-0.1,0.15),CVF_RELATIVE)
+	"####" "#" 1 Bright A_SetScale(ScaleX+frandom(0.0025,0.005),ScaleY+frandom(0.0025,0.005))
+	Loop
+	Main2:
+	"####" "#" 0 A_ScaleVelocity(frandom(-0.9,-1.2))
+	Main2Looplet:
+	"####" "#" 0 A_JumpIf(ScaleX <= 0,"NULL")
+	"####" "#" 0 A_FadeOut(frandom(0.05,0.1))
+	"####" "#" 0 A_ChangeVelocity(0,0,frandom(-0.1,0.15),CVF_RELATIVE)
+	"####" "#" 1 Bright A_SetScale(ScaleX-frandom(0.002,0.005),ScaleY-frandom(0.002,0.005))
+	Loop
+	}
+}
+
+ACTOR StratBringer : CustomInventory
+{
+	Inventory.MaxAmount 0
+	Inventory.PickupSound "Stratocaster/Pickup"
+	+INVENTORY.AUTOACTIVATE
+	+COUNTITEM
+	States
+	{
+	Spawn:
+	TNT1 A 0
+	Stop
+	}
+}
+
+//Longhorn
+ACTOR StratParticleOrange : StratParticle
+{
+	States
+	{
+	Spawn:
+	OPRT A 0
+	Goto Super::SetScale
+	}
+}
+
+ACTOR LonghornStratGiver : StratBringer
+{
+	Inventory.PickupMessage "Obtained the ''Longhorn'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK A 1 Bright NoDelay A_SpawnItemEx("StratParticleOrange",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	Pickup:
+	TNT1 A 0 A_JumpIfInventory("LonghornStrat",1,"Dosh")
+	TNT1 A 0 A_GiveInventory("LonghornStrat",1)
+	Stop
+	Dosh:
+	TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+	TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+	TNT1 A 0 A_GiveToTarget("Dosh",1500)
+	Stop
+	TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,1500)
+	Stop
+	Nope:
+	TNT1 A 0
+	Fail
+	}
+}
+
+ACTOR LonghornStrat : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 1
+	Inventory.PickupSound "Stratocaster/Pickup"
+	Inventory.PickupMessage "Obtained the ''Longhorn'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK A 1 Bright A_SpawnItemEx("StratParticleOrange",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	}
+}
+
+//Strucker
+ACTOR StratParticleRed : StratParticle
+{
+	States
+	{
+	Spawn:
+	RPRT A 0
+	Goto Super::SetScale
+	}
+}
+
+ACTOR StruckerStratGiver : StratBringer
+{
+	Inventory.PickupSound "Stratocaster/Pickup"
+	Inventory.PickupMessage "Obtained the ''Strucker'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK B 1 Bright NoDelay A_SpawnItemEx("StratParticleRed",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	Pickup:
+	TNT1 A 0 A_JumpIfInventory("StruckerStrat",1,"Dosh")
+	TNT1 A 0 A_GiveInventory("StruckerStrat",1)
+	Stop
+	Dosh:
+	TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+	TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+	TNT1 A 0 A_GiveToTarget("Dosh",1500)
+	Stop
+	TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,1500)
+	Stop
+	Nope:
+	TNT1 A 0
+	Fail
+	}
+}
+
+ACTOR StruckerStrat : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 1
+	Inventory.PickupSound "Stratocaster/Pickup"
+	Inventory.PickupMessage "Obtained the ''Strucker'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK B 1 Bright A_SpawnItemEx("StratParticleRed",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	}
+}
+
+//Ironblast
+ACTOR StratParticleBlack : StratParticle
+{
+	Renderstyle Translucent
+	States
+	{
+	Spawn:
+	BPRT A 0
+	Goto Super::SetScale
+	}
+}
+
+ACTOR IronblastStratGiver : StratBringer
+{
+	Inventory.PickupSound "Stratocaster/Pickup"
+	Inventory.PickupMessage "Obtained the ''Ironblast'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK C 1 Bright NoDelay A_SpawnItemEx("StratParticleRed",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	STCK C 0 A_SpawnItemEx("StratParticleBlack",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	Pickup:
+	TNT1 A 0 A_JumpIfInventory("IronblastStrat",1,"Dosh")
+	TNT1 A 0 A_GiveInventory("IronblastStrat",1)
+	Stop
+	Dosh:
+	TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+	TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+	TNT1 A 0 A_GiveToTarget("Dosh",3000)
+	Stop
+	TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,3000)
+	Stop
+	Nope:
+	TNT1 A 0
+	Fail
+	}
+}
+
+ACTOR IronblastStrat : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 1
+	Inventory.PickupSound "Stratocaster/Pickup"
+	Inventory.PickupMessage "Obtained the ''Ironblast'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK C 1 Bright A_SpawnItemEx("StratParticleRed",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	STCK C 0 A_SpawnItemEx("StratParticleBlack",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	}
+}
+
+//Pulverizer
+ACTOR StratParticleYellow : StratParticle
+{
+	States
+	{
+	Spawn:
+	YPRT A 0
+	Goto Super::SetScale
+	}
+}
+
+ACTOR PulverizerStratGiver : StratBringer
+{
+	Inventory.PickupMessage "Obtained the ''Pulverizer'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK D 1 Bright NoDelay A_SpawnItemEx("StratParticleYellow",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	Pickup:
+	TNT1 A 0 A_JumpIfInventory("PulverizerStrat",1,"Dosh")
+	TNT1 A 0 A_GiveInventory("PulverizerStrat",1)
+	Stop
+	Dosh:
+	TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+	TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+	TNT1 A 0 A_GiveToTarget("Dosh",1500)
+	Stop
+	TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,1500)
+	Stop
+	Nope:
+	TNT1 A 0
+	Fail
+	}
+}
+
+ACTOR PulverizerStrat : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 1
+	Inventory.PickupSound "Stratocaster/Pickup"
+	Inventory.PickupMessage "Obtained the ''Pulverizer'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK D 1 Bright A_SpawnItemEx("StratParticleYellow",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	}
+}
+
+//Matriarch
+ACTOR StratParticleGreen : StratParticle
+{
+	States
+	{
+	Spawn:
+	GPRT A 0
+	Goto Super::SetScale
+	}
+}
+
+ACTOR MatriarchStratGiver : StratBringer
+{
+	Inventory.PickupSound "Stratocaster/Pickup"
+	Inventory.PickupMessage "Obtained the ''Matriarch'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK E 1 Bright NoDelay A_SpawnItemEx("StratParticleGreen",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	Pickup:
+	TNT1 A 0 A_JumpIfInventory("MatriarchStrat",1,"Dosh")
+	TNT1 A 0 A_GiveInventory("MatriarchStrat",1)
+	Stop
+	Dosh:
+	TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+	TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+	TNT1 A 0 A_GiveToTarget("Dosh",1500)
+	Stop
+	TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,1500)
+	Stop
+	Nope:
+	TNT1 A 0
+	Fail
+	}
+}
+
+ACTOR MatriarchStrat : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 1
+	Inventory.PickupMessage "Obtained the ''Matriarch'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK E 1 Bright A_SpawnItemEx("StratParticleGreen",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	}
+}
+
+//Cauterizer
+ACTOR StratParticleCyan : StratParticle
+{
+	States
+	{
+	Spawn:
+	CPRT A 0
+	Goto Super::SetScale
+	}
+}
+
+ACTOR CauterizerStratGiver : StratBringer
+{
+	Inventory.PickupMessage "Obtained the ''Cauterizer'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK F 1 Bright NoDelay A_SpawnItemEx("StratParticleCyan",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	Pickup:
+	TNT1 A 0 A_JumpIfInventory("CauterizerStrat",1,"Dosh")
+	TNT1 A 0 A_GiveInventory("CauterizerStrat",1)
+	Stop
+	Dosh:
+	TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+	TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+	TNT1 A 0 A_GiveToTarget("Dosh",2500)
+	Stop
+	TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,2500)
+	Stop
+	Nope:
+	TNT1 A 0
+	Fail
+	}
+}
+
+ACTOR CauterizerStrat : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 1
+	Inventory.PickupMessage "Obtained the ''Cauterizer'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK F 1 Bright A_SpawnItemEx("StratParticleCyan",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	}
+}
+
+//Old Dreadful
+ACTOR DreadfulStratGiver : StratBringer
+{
+	Inventory.PickupMessage "Obtained the ''Old Dreadful'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK G 1 Bright NoDelay A_SpawnItemEx("StratParticleGreen",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	Pickup:
+	TNT1 A 0 A_JumpIfInventory("Old DreadfulStrat",1,"Dosh")
+	TNT1 A 0 A_GiveInventory("Old DreadfulStrat",1)
+	Stop
+	Dosh:
+	TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+	TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+	TNT1 A 0 A_GiveToTarget("Dosh",16084) //That's a lot of cash.
+	Stop
+	TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,16084)
+	Stop
+	Nope:
+	TNT1 A 0
+	Fail
+	}
+}
+
+ACTOR "Old DreadfulStrat" : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 1
+	Inventory.PickupMessage "Obtained the ''Old Dreadful'' Stratocaster case! Alternate firing mode unlocked!\n(bind yourself a button for a toggle while your weapon is out.)"
+	States
+	{
+	Spawn:
+	STCK G 1 Bright A_SpawnItemEx("StratParticleGreen",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	}
+}
+
+//Dynamite
+ACTOR DynamiteStratGiver : StratBringer
+{
+	Inventory.PickupMessage "Obtained the ''Dynamite'' Stratocaster case!  Time to take flametaming to a whole new level!\n(Dynamite now has a fancy flame effect.  You'll see...)"
+	States
+	{
+	Spawn:
+	STCK H 1 Bright NoDelay A_SpawnItemEx("StratParticlePurple",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	Pickup:
+	TNT1 A 0 A_JumpIfInventory("DynamiteStrat",1,"Dosh")
+	TNT1 A 0 A_GiveInventory("DynamiteStrat",1)
+	Stop
+	Dosh:
+	TNT1 A 0 A_JumpIfInventory("Dosh",0,"Nope")
+	TNT1 A 0 A_JumpIf(CallACS("MoneyShareCheck"),2)
+	TNT1 A 0 A_GiveToTarget("Dosh",3750)
+	Stop
+	TNT1 A 0 ACS_NamedExecuteAlways("MoneySharing",0,3750)
+	Stop
+	Nope:
+	TNT1 A 0
+	Fail
+	}
+}
+
+ACTOR DynamiteStrat : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 1
+	Inventory.PickupSound "Stratocaster/Pickup"
+	Inventory.PickupMessage "Obtained the ''Dynamite'' Stratocaster case!  Time to take flametaming to a whole new level!\n(Dynamite now has a fancy flame effect.  You'll see...)"
+	States
+	{
+	Spawn:
+	STCK H 1 Bright A_SpawnItemEx("StratParticlePurple",frandom(2.0,-2.0),frandom(2.0,-2.0),23+frandom(2.0,-2.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(1.0,-1.0),frandom(0.0,360.0),SXF_CLIENTSIDE,64)
+	Loop
+	}
+}
+
+ACTOR StratParticlePurple : StratParticle
+{
+	States
+	{
+	Spawn:
+	PPRT A 0
+	Goto Super::SetScale
+	}
+}

@@ -1,0 +1,12 @@
+pulselight ROCKETFLIGHT
+{
+    color 1.0 0.5 0.1
+    size 36
+    secondarySize 0
+    interval 0.8
+}
+
+Object Rocketpack_Emitter
+{
+    frame TNT1 { light ROCKETFLIGHT }
+}

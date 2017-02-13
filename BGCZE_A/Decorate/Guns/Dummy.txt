@@ -1,0 +1,14 @@
+// Because a couple ammotypes don't show up on the bar themselves
+
+ACTOR ATotallyUselessSomething : Weapon
+{
+	+WEAPON.CHEATNOTWEAPON
+	Weapon.AmmoType1 "Dosh"
+	Weapon.AmmoType2 "Mana"
+	States
+	{
+		Spawn:
+		TNT1 A 1
+		Stop
+	}
+}
